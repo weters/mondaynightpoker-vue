@@ -44,7 +44,7 @@
             </template>
         </div>
 
-        <div class="guests">
+        <div class="guests" v-if="guestClients.length > 0">
             <h4>Guests</h4>
 
             <ul>
@@ -204,6 +204,14 @@
         div.admin-options {
             margin-left: calc(12px + #{$spacing-small});
             display: flex;
+
+            & > * {
+                flex: 1 0 auto;
+            }
+
+            label {
+                width: auto;
+            }
         }
 
         span.balance {
