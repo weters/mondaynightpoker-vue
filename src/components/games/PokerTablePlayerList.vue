@@ -10,22 +10,18 @@
             <template v-for="client in clients">
                 <div class="player" :key="client.player.id">
                     <div class="primary">
+                        <div class="connected">
+                            <span class="connected" v-if="client.active && client.isConnected"></span>
+                            <span class="sitting-out" v-else-if="client.isConnected"></span>
+                            <span class="disconnected" v-else></span>
+                        </div>
+
                         <span class="name" :key="`name-${client.player.id}`">{{ client.player.displayName }}</span>
 
                         <span class="balance" :key="`balance-${client.player.id}`">
                             <span v-if="client.isSeated">{{ formatAmount(client.balance) }}</span>
                             <span v-else class="na">N/A</span>
                         </span>
-
-                    </div>
-                    <div class="status">
-                        <span class="guest" v-if="!client.isSeated">Guest</span>
-                        <template v-else>
-                            <span class="yes" v-if="client.isConnected">Connected</span>
-                            <span class="no" v-else>Disconnected</span>
-
-                            <span class="sitting-out" v-if="!client.active">Sitting Out</span>
-                        </template>
                     </div>
                     <div class="admin-options" v-if="isTableAdmin && client.isSeated">
                         <span class="active" :key="`active-${client.player.id}`">
@@ -46,6 +42,14 @@
                     </div>
                 </div>
             </template>
+        </div>
+
+        <div class="guests">
+            <h4>Guests</h4>
+
+            <ul>
+                <li v-for="client in guestClients" :key="client.player.id">{{ client.player.displayName }}</li>
+            </ul>
         </div>
     </div>
 </template>
@@ -77,9 +81,15 @@
         computed: {
             ...mapState(['user', 'webSocket']),
             ...mapGetters(['isTableAdmin', 'userClientState']),
-            clients() {
+            allClients() {
                 return this.clientState && Object.values(this.clientState).sort((a, b) => a.player.displayName.localeCompare(b.player.displayName))
             },
+            clients() {
+                return this.allClients.filter(c => c.isSeated)
+            },
+            guestClients() {
+                return this.allClients.filter(c => !c.isSeated)
+            }
         },
         methods: {
             setTableAdmin(event, client) {
@@ -131,6 +141,31 @@
     @import '../../variables';
 
     .players-list {
+        margin-bottom: $spacing;
+        div.connected {
+
+            span {
+                display: block;
+                width: 8px;
+                height: 8px;
+                background-color: black;
+                border-radius: 8px;
+                vertical-align: middle;
+                margin-right: $spacing-small;
+
+                &.connected {
+                    background-color: $primary;
+                }
+
+                &.sitting-out {
+                    background-color: $red;
+                }
+
+                &.disconnected {
+                    background-color: $border-color;
+                }
+            }
+        }
         .player {
             margin-bottom: $spacing-small;
 
@@ -142,11 +177,13 @@
 
         .primary {
             display: flex;
+            align-items: center;
         }
 
         div.status {
             font-size:      0.6em;
             text-transform: uppercase;
+            margin-left: calc(8px + #{$spacing-small});
 
             .yes {
             }
@@ -156,11 +193,6 @@
             }
 
             span.sitting-out {
-                &::before {
-                    content:     ' • ';
-                    font-weight: normal;
-                }
-
                 font-weight: bold;
             }
 
@@ -170,6 +202,7 @@
         }
 
         div.admin-options {
+            margin-left: calc(12px + #{$spacing-small});
             display: flex;
         }
 
@@ -195,6 +228,19 @@
             order:        1;
             display:      inline;
             margin-right: $spacing-small;
+        }
+    }
+
+    .guests ul {
+        list-style: none;
+        margin: 0 0 $spacing;
+
+        li {
+            display: inline-block;
+
+            &:not(:first-child)::before {
+                content: ', ';
+            }
         }
     }
 </style>
