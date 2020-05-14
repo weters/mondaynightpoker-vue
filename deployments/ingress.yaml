@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: mondaynightpoker-vue
+  labels:
+    app: mondaynightpoker-vue
+    type: frontend
+spec:
+  tls:
+    - hosts:
+        - beta.monday-night.poker
+      secretName: tls-mondaynightpoker
+  rules:
+    - host: beta.monday-night.poker
+      http:
+        paths:
+          - backend:
+              serviceName: mondaynightpoker-vue
+              servicePort: 80
