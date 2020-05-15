@@ -30,6 +30,7 @@ const store = new Vuex.Store({
             }
 
             state.user.player = player
+            state.user = Object.assign({}, state.user)
         },
         clearUser(state) {
             state.user = null
