@@ -4,7 +4,8 @@
             <div class="settings">
                 <p>Game balance: {{ formatAmount(gameData.balance) }}</p>
                 <p>Table balance: {{ formatAmount(userClientState.balance) }}</p>
-                <p><label class="optional"><span>Sit out</span><input type="checkbox" v-model="sitOut" :disabled="sitOutLoading"/></label></p>
+                <p><label class="optional"><span>Sit out</span><input type="checkbox" v-model="sitOut"
+                                                                      :disabled="sitOutLoading"/></label></p>
 
                 <template v-if="isTableAdmin">
                     <h3>Admin</h3>
@@ -87,8 +88,14 @@
         mounted() {
             this.$watch(() => this.$refs.bar.offsetHeight, newVal => {
                 document.querySelector('main').style.paddingBottom = `${newVal + 20}px`
-            }, { immediate: true })
+            }, {immediate: true})
+
+            // give time for images to load
+            setTimeout(() => {
+                document.querySelector('main').style.paddingBottom = `${this.$refs.bar.offsetHeight + 20}px`
+            }, 100)
         },
+
         watch: {
             sitOut(sitOut) {
                 if (this.sitOutLoading) {
@@ -131,6 +138,7 @@
         left:             0;
         right:            0;
         padding:          $spacing $spacing 0;
+        z-index:          100;
 
         &.is-turn {
             border-top: 5px solid $primary;
@@ -209,8 +217,8 @@
 
     .settings {
         label {
-            display: flex;
-            margin: 0;
+            display:     flex;
+            margin:      0;
             align-items: center;
 
             span {
@@ -218,7 +226,7 @@
             }
 
             input {
-                order: 1;
+                order:        1;
                 margin-right: $spacing-small;
             }
         }

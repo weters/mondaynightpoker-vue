@@ -57,6 +57,8 @@
         <template v-else>
             <loading/>
         </template>
+
+        <dealer-log class="dealer-log" />
     </div>
 </template>
 
@@ -69,10 +71,11 @@
     import Error from "@/components/Error"
     import show_error from "@/mixins/show_error"
     import client from "@/client"
+    import DealerLog from "./DealerLog"
 
     export default {
         name: "PokerTable",
-        components: {Error, Loading, PokerTablePlayerList, Bourre},
+        components: {DealerLog, Error, Loading, PokerTablePlayerList, Bourre},
         mixins: [show_error],
         props: {
             uuid: {
@@ -106,6 +109,11 @@
                 .then(res => this.table = res)
                 .catch(err => this.showError(err))
         },
+        beforeDestroy() {
+            this.ws.close()
+            this.$store.commit('clearWebSocket')
+            this.$store.commit('clearLogs')
+        },
         methods: {
             startBourreGame() {
                 this.ws.send('createGame', 'bourre', null, {ante: parseInt(this.ante, 10)})
@@ -123,10 +131,6 @@
                     })
                     .finally(() => event.target.disabled = false)
             },
-        },
-        beforeDestroy() {
-            this.ws.close()
-            this.$store.commit('clearWebSocket')
         },
     }
 </script>
@@ -206,5 +210,9 @@
 
     form.bourre {
         width: min-content;
+    }
+
+    .dealer-log {
+        margin-top: $spacing;
     }
 </style>

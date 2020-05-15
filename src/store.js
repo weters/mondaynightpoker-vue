@@ -13,8 +13,40 @@ const store = new Vuex.Store({
         game: null,
         clientState: null,
         webSocket: null,
+        logs: [],
     },
     mutations: {
+        addLogs(state, logs) {
+            if (!logs) {
+                return
+            }
+
+            const formattedLogs = logs.map(log => {
+                let players = ''
+                if (log.playerIds.length > 0 && log.playerIds[0] !== 0) {
+                    players = log.playerIds.map(pid => state.clientState[pid].player.displayName).join(', ')
+                }
+
+                const cards = log.cards ? log.cards : []
+
+                const message = log.message.replace(/{}/g, players)
+                return {
+                    ...log,
+                    message,
+                    cards,
+                }
+            })
+
+            state.logs.push(...formattedLogs)
+            const len = state.logs.length
+            const over = len - 25
+            if (over > 0) {
+                state.logs.splice(0, over)
+            }
+        },
+        clearLogs(state) {
+            state.logs = []
+        },
         setWebSocket(state, webSocket) {
             state.webSocket = webSocket
         },

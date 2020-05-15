@@ -6,7 +6,7 @@
                 <span class="suit"><mdi-icon :icon="displaySuit" /></span>
             </span>
         </div>
-        <img :class="{'big-card': bigCard}" :src="image" :alt="card" />
+        <img :class="{'big-card': bigCard}" :src="image" :alt="`${card.rank} of ${card.suit}`" />
     </div>
 </template>
 

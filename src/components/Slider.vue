@@ -1,7 +1,7 @@
 <template>
     <div :class="{ container: true, expand }">
         <div class="slider">
-            <a class="handle" href="#" @click="expand=!expand">
+            <a class="handle" href="#" @click.prevent="expand=!expand">
                 <svg viewBox="0 0 24 24">
                     <path :d="mdiPlus" ref="path"/>
                 </svg>

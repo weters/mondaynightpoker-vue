@@ -103,8 +103,15 @@ class webSocketClient {
             case 'gameEnded':
                 store.commit('clearGame')
                 break
+            case 'logs':
+                store.commit('addLogs', message.data)
+                break
+            case 'allLogs':
+                store.commit('clearLogs')
+                store.commit('addLogs', message.data)
+                break
             default:
-                throw new Error(`could not process message: ${message}`)
+                throw new Error(`could not process message: ${JSON.stringify(message)}`)
         }
     }
 
