@@ -37,9 +37,12 @@
             <form class="bourre inner" v-if="isTableAdmin" @submit.prevent="startBourreGame">
                 <h4>Bourré</h4>
 
-                <label>
+                <label class="ante">
                     <span>Ante</span>
-                    <input type="number" min="25" max="200" step="25" v-model="ante" />
+                    <span>
+                        <input type="number" min="25" max="200" step="25" v-model="ante"/>
+                        <em>¢</em>
+                    </span>
                 </label>
 
                 <div class="buttons">
@@ -48,7 +51,7 @@
             </form>
             <div class="waiting" v-else>
                 <p>Waiting on the table admin to start the game!</p>
-                <loading class="loading" />
+                <loading class="loading"/>
             </div>
         </template>
         <template v-else>
@@ -113,13 +116,13 @@
                 const active = !event.target.checked
 
                 event.target.disabled = true
-                this.ws.send('playerStatus', null, null, { active })
+                this.ws.send('playerStatus', null, null, {active})
                     .catch(err => {
                         event.target.checked = !event.target.checked
                         this.showError(err)
                     })
                     .finally(() => event.target.disabled = false)
-            }
+            },
         },
         beforeDestroy() {
             this.ws.close()
@@ -150,20 +153,21 @@
 
     form.player-state {
         margin-bottom: $spacing;
+
         p.details {
             font-size: 0.8em;
-            margin: 0;
+            margin:    0;
         }
 
         label {
             display:     flex;
             align-items: center;
-            margin: 0;
-            width: auto;
+            margin:      0;
+            width:       auto;
 
             span {
                 white-space: nowrap;
-                order: 2;
+                order:       2;
             }
 
             input {
@@ -182,6 +186,21 @@
 
         .loading {
             display: inline-block;
+        }
+    }
+
+    label.ante {
+        & > span:last-child {
+            display:     flex;
+            align-items: center;
+
+            &::after {
+                content: '';
+            }
+
+            em {
+                font-style: normal;
+            }
         }
     }
 
