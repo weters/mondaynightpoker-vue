@@ -1,5 +1,5 @@
 <template>
-    <div class="poker-table">
+    <div class="poker-table main-box">
         <h2>
             <span class="table-name">{{ tableName }}</span>
             <span class="game" v-if="game">{{ game.game }}</span>
@@ -13,14 +13,14 @@
             <bourre v-if="game.game === 'bourre'"/>
         </template>
         <template v-else-if="clientState">
-            <div class="player-state" v-if="userClientState.isSeated">
+            <form class="player-state inner" v-if="userClientState.isSeated">
                 <label class="sit-out optional">
                     <span>Sit out</span>
                     <input type="checkbox" @change="setPlayerActive"
                            :checked="!userClientState.active"/>
                 </label>
                 <p class="details">If you want to take a break, you can check the "Sit out" box.</p>
-            </div>
+            </form>
 
             <poker-table-player-list class="player-list" :client-state="clientState"/>
 
@@ -32,9 +32,20 @@
                 </div>
             </template>
 
-            <div class="buttons" v-if="isTableAdmin">
-                <button @click="startBourreGame">Start Bourré Game</button>
-            </div>
+            <h3>Pick a Game</h3>
+
+            <form class="bourre inner" v-if="isTableAdmin" @submit.prevent="startBourreGame">
+                <h4>Bourré</h4>
+
+                <label>
+                    <span>Ante</span>
+                    <input type="number" min="25" max="200" step="25" v-model="ante" />
+                </label>
+
+                <div class="buttons">
+                    <button>Start</button>
+                </div>
+            </form>
             <div class="waiting" v-else>
                 <p>Waiting on the table admin to start the game!</p>
                 <loading class="loading" />
@@ -68,6 +79,7 @@
         },
         data() {
             return {
+                ante: '25',
                 table: null,
                 error: null,
                 ws: null,
@@ -93,7 +105,7 @@
         },
         methods: {
             startBourreGame() {
-                this.ws.send('createGame', 'bourre', null, {ante: 25})
+                this.ws.send('createGame', 'bourre', null, {ante: parseInt(this.ante, 10)})
                     .catch(err => this.showError(err))
             },
             setPlayerActive(event) {
@@ -132,22 +144,12 @@
         color:       $red;
     }
 
-    $max-width: 500px;
-
     .player-list {
-        max-width: $max-width;
-        margin-left: auto;
-        margin-right: auto;
         margin-bottom: $spacing;
     }
 
-    div.player-state {
-        border: 1px solid $border-color;
-        padding: $spacing-medium;
-        border-radius: $border-radius;
-        max-width: $max-width;
-        margin: 0 auto $spacing;
-
+    form.player-state {
+        margin-bottom: $spacing;
         p.details {
             font-size: 0.8em;
             margin: 0;
@@ -181,5 +183,9 @@
         .loading {
             display: inline-block;
         }
+    }
+
+    form.bourre {
+        width: min-content;
     }
 </style>

@@ -1,10 +1,10 @@
 <template>
     <div id="body">
-        <site-header />
+        <site-header/>
         <main>
             <router-view/>
         </main>
-        <site-footer />
+        <site-footer/>
     </div>
 </template>
 
@@ -36,22 +36,24 @@
 
     html, body {
         background-color: $background-color;
-        color: $text-color;
-        font-family: $font-text;
-        height: 100%;
+        color:            $text-color;
+        font-family:      $font-text;
+        height:           100%;
     }
 
     #body {
-        display: flex;
+        display:        flex;
         flex-direction: column;
-        height: 100%;
+        height:         100%;
 
         header {
             flex-shrink: 0;
         }
+
         main {
             flex: 1 0 auto;
         }
+
         footer {
             flex-shrink: 0;
         }
@@ -63,7 +65,7 @@
     }
 
     h1 {
-        font-style: italic;
+        font-style:              italic;
         font-variation-settings: 'ital' 1;
     }
 
@@ -80,14 +82,20 @@
     }
 
     form {
-        overflow: hidden;
+        overflow:         hidden;
         background-color: white;
-        border: 1px solid $border-color;
-        border-radius: $border-radius;
-        padding: $spacing;
-        margin: 0 auto;
-        width: min-content;
-        position: relative;
+        border:           1px solid $border-color;
+        border-radius:    $border-radius;
+        padding:          $spacing;
+        margin:           0 auto;
+        width:            min-content;
+        position:         relative;
+
+        &.inner {
+            box-shadow: 0 0 10px rgba(black, 0.1);
+            border:     none;
+            width:      auto;
+        }
 
         h2 {
             white-space: nowrap;
@@ -99,14 +107,14 @@
     }
 
     label {
-        $width: 250px;
-        display: block;
+        $width:        250px;
+        display:       block;
         margin-bottom: $spacing;
-        width: $width;
+        width:         $width;
 
         &:not(.optional) span:not(.container)::after {
             content: '*';
-            color: $error;
+            color:   $error;
 
             @at-root.hide-required & {
                 content: '';
@@ -119,22 +127,22 @@
 
         input:not([type="checkbox"]) {
             background-color: white;
-            border-radius: $border-radius;
-            border: 1px solid $border-color;
-            color: $text-color;
-            font-family: $font-text;
-            font-size: 16px;
-            height: 30px;
-            padding: 2px 8px;
-            width: $width;
+            border-radius:    $border-radius;
+            border:           1px solid $border-color;
+            color:            $text-color;
+            font-family:      $font-text;
+            font-size:        16px;
+            height:           30px;
+            padding:          2px 8px;
+            width:            $width;
 
             &:disabled {
                 background-color: transparent;
             }
 
             &:focus {
-                border: 2px solid $primary;
-                color: $primary;
+                border:  2px solid $primary;
+                color:   $primary;
                 padding: 1px 7px;
             }
 
@@ -145,16 +153,16 @@
     }
 
     button {
-        box-shadow: 2px 2px 2px rgba(black, 0.2), 0 0 4px rgba(black, 0.2);
+        box-shadow:       2px 2px 2px rgba(black, 0.2), 0 0 4px rgba(black, 0.2);
         background-color: $primary;
-        border-width: 0;
-        border-radius: $border-radius;
-        padding: 8px 12px;
-        color: white;
-        font-family: $font-text;
-        font-size: 1em;
-        font-weight: bold;
-        transition: all 250ms;
+        border-width:     0;
+        border-radius:    $border-radius;
+        padding:          8px 12px;
+        color:            white;
+        font-family:      $font-text;
+        font-size:        1em;
+        font-weight:      bold;
+        transition:       all 250ms;
 
         &.global {
             background-color: $secondary;
@@ -162,24 +170,24 @@
 
         &.secondary {
             background-color: transparent;
-            box-shadow: none;
-            color: $primary;
+            box-shadow:       none;
+            color:            $primary;
         }
 
         &:disabled {
             box-shadow: none;
-            opacity: 0.2;
+            opacity:    0.2;
         }
 
         &:active {
             background-color: darken($primary, 5%);
-            box-shadow: none;
+            box-shadow:       none;
         }
     }
 
     div.buttons {
         margin-bottom: $spacing;
-        text-align: center;
+        text-align:    center;
 
         button:not(:first-child) {
             margin-left: $spacing-medium;
@@ -191,7 +199,7 @@
     }
 
     .error-enter, .error-leave-to {
-        opacity: 0;
+        opacity:   0;
         transform: scale(.8);
     }
 
@@ -204,8 +212,8 @@
     }
 
     table.standard {
-        padding: $spacing;
-        border-radius: $border-radius;
+        padding:         $spacing;
+        border-radius:   $border-radius;
         border-collapse: collapse;
 
         th, td {
@@ -238,10 +246,11 @@
     }
 
     div.main-box {
-        border: 1px solid $border-color;
-        border-radius: $border-radius;
-        padding: $spacing;
-        max-width: 800px;
-        margin: 0 auto;
+        background-color: white;
+        border:           1px solid $border-color;
+        border-radius:    $border-radius;
+        padding:          $spacing;
+        max-width:        800px;
+        margin:           0 auto;
     }
 </style>

@@ -2,7 +2,7 @@
     <div class="profile main-box">
         <h2>Manage My Profile</h2>
 
-        <form @submit.prevent="saveDisplayName">
+        <form @submit.prevent="saveDisplayName" class="inner">
             <h3>Display Name</h3>
 
             <transition name="error">
@@ -71,4 +71,5 @@
     div.success {
         color: $primary;
     }
+
 </style>
