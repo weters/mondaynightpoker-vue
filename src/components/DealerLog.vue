@@ -53,9 +53,26 @@
             color: $text-color-light;
             font-size: 0.8em;
             margin-right: $spacing-medium;
+            white-space: nowrap;
+        }
+
+        @media(max-width: 500px) {
+            flex-wrap: wrap;
+
+            .time {
+                flex: 0 0 100%;
+            }
+        }
+
+        .message {
+            flex: 1 1 auto;
+            @media (max-width: 500px) {
+                flex: 1 1 50%;
+            }
         }
 
         .cards {
+            flex: 0 0 auto;
             margin-left: $spacing-medium;
         }
     }

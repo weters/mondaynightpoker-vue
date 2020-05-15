@@ -69,6 +69,7 @@
         border-radius: $border-radius;
         background-color: white;
         padding: 0 2px;
+        white-space: nowrap;
         &.hearts, &.diamonds {
             color: $red;
             svg {
