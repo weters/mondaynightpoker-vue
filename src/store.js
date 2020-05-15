@@ -24,6 +24,13 @@ const store = new Vuex.Store({
         setUser(state, user) {
             state.user = user
         },
+        setUserPlayer(state, player) {
+            if (!state.user) {
+                throw new Error('no user')
+            }
+
+            state.user.player = player
+        },
         clearUser(state) {
             state.user = null
         },

@@ -236,4 +236,12 @@
             }
         }
     }
+
+    div.main-box {
+        border: 1px solid $border-color;
+        border-radius: $border-radius;
+        padding: $spacing;
+        max-width: 800px;
+        margin: 0 auto;
+    }
 </style>

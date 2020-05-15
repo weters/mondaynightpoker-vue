@@ -37,6 +37,13 @@ class Client {
         }, withAuthorization)
     }
 
+    updatePlayer(playerId, { email, displayName }) {
+        return this._post(`/player/${encodeURIComponent(playerId)}`, {
+            email,
+            displayName
+        }, withAuthorization)
+    }
+
     validateJWT(jwt) {
         return this._get(`/player/auth/${jwt}`)
     }

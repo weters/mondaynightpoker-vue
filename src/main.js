@@ -11,6 +11,7 @@ import './auth'
 import JoinTable from "@/components/JoinTable"
 import TableList from "@/components/TableList"
 import relDate from 'relative-date'
+import Profile from "./components/Profile"
 
 Vue.use(VueRouter)
 
@@ -22,6 +23,7 @@ const routes = [
     {path: '/logout', component: LogIn, meta: {protected: false}},
     {path: '/signup', component: SignUp, meta: {protected: false}},
 
+    {path: '/profile', component: Profile },
     {path: '/table', component: TableList },
     {path: '/table/:uuid', component: PokerTable, props: true},
     {path: '/table/:uuid/join', component: JoinTable, props: true},
