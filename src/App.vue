@@ -19,7 +19,7 @@
 </script>
 
 <style lang="scss">
-    @import url('https://fonts.googleapis.com/css2?family=Jost:ital,wght@0,700;1,800&family=Libre+Baskerville:wght@700&family=Source+Sans+Pro:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Source+Sans+Pro:wght@400;700&display=swap&family=Sacramento');
     @import './variables';
 
     * {
@@ -60,13 +60,8 @@
     }
 
     h1, h2, h3, h4, h5, h6 {
-        font-family: $font-header;
+        font-family: $font-text;
         font-weight: 800;
-    }
-
-    h1 {
-        font-style:              italic;
-        font-variation-settings: 'ital' 1;
     }
 
     h1, h2, h3, h4, h5, h6, table, ul, ol, p {

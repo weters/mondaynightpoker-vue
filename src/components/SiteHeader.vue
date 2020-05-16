@@ -48,6 +48,7 @@
         padding: $spacing;
 
         h1 {
+            font-family: 'Sacramento', cursive;
             filter: drop-shadow(2px 1px black) drop-shadow(2px 1px $primary) drop-shadow(2px 1px $secondary);
 
             font-size: 2.4em;
