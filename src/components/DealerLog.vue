@@ -45,6 +45,10 @@
     }
 
     .log {
+        &:nth-child(odd) {
+            background-color: #f3f3f3;
+        }
+
         display: flex;
         align-items: center;
         transition: all 1s;
