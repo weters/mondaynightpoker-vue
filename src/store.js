@@ -82,6 +82,9 @@ const store = new Vuex.Store({
         playerDataById: state => id => state.clientState && state.clientState[id],
         userClientState: (state, getters) => getters.playerDataById(state.user.player.id),
         isTableAdmin: (state, getters) => getters.isSiteAdmin || getters.userClientState.isTableAdmin,
+        canStart: (state, getters) => getters.isTableAdmin || getters.userClientState.canStart,
+        canRestart: (state, getters) => getters.isTableAdmin || getters.userClientState.canRestart,
+        canTerminate: (state, getters) => getters.isTableAdmin || getters.userClientState.canTerminate,
     }
 })
 

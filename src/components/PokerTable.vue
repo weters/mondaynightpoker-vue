@@ -34,7 +34,7 @@
 
             <h3>Pick a Game</h3>
 
-            <form class="bourre inner" v-if="isTableAdmin" @submit.prevent="startBourreGame">
+            <form class="bourre inner" v-if="canStart" @submit.prevent="startBourreGame">
                 <h4>Bourré</h4>
 
                 <label class="ante">
@@ -93,7 +93,7 @@
         },
         computed: {
             ...mapState(['game', 'clientState', 'user']),
-            ...mapGetters(['isTableAdmin', 'userClientState']),
+            ...mapGetters(['canStart', 'userClientState']),
             isSeated() {
                 return this.clientState[this.user.player.id].isSeated
             },

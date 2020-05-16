@@ -24,18 +24,42 @@
                         </span>
                     </div>
                     <div class="admin-options" v-if="isTableAdmin && client.isSeated">
-                        <span class="active" :key="`active-${client.player.id}`">
+                        <span class="active">
                             <label class="optional">
                                 <span>Active</span>
                                 <input type="checkbox" @change="setPlayerActive($event, client)"
                                        :checked="client.active"/>
                             </label>
                         </span>
-                        <span class="admin" :key="`connected-${client.player.id}`" v-if="isTableAdmin">
+                        <span class="admin">
                             <label v-if="client.player.id !== user.player.id" class="optional">
-                                <span>Table Admin</span>
+                                <span>Admin</span>
                                 <input type="checkbox" @change="setTableAdmin($event, client)"
                                        :checked="client.isTableAdmin"/>
+                            </label>
+                            <span v-else></span>
+                        </span>
+                        <span class="start">
+                            <label v-if="client.player.id !== user.player.id" class="optional">
+                                <span>Start</span>
+                                <input type="checkbox" @change="setCanStart($event, client)"
+                                       :checked="client.canStart"/>
+                            </label>
+                            <span v-else></span>
+                        </span>
+                        <span class="restart">
+                            <label v-if="client.player.id !== user.player.id" class="optional">
+                                <span>Restart</span>
+                                <input type="checkbox" @change="setCanRestart($event, client)"
+                                       :checked="client.canRestart"/>
+                            </label>
+                            <span v-else></span>
+                        </span>
+                        <span class="terminate">
+                            <label v-if="client.player.id !== user.player.id" class="optional">
+                                <span>Terminate</span>
+                                <input type="checkbox" @change="setCanTerminate($event, client)"
+                                       :checked="client.canTerminate"/>
                             </label>
                             <span v-else></span>
                         </span>
@@ -89,20 +113,33 @@
             },
             guestClients() {
                 return this.allClients.filter(c => !c.isSeated)
-            }
+            },
         },
         methods: {
-            setTableAdmin(event, client) {
+            setFlag(event, client, key) {
+                const data = {
+                    playerId: client.playerId,
+                }
+                data[key] = event.target.checked
                 event.target.disabled = true
-                this.webSocket.send('tableAdmin', null, null, {
-                        isTableAdmin: event.target.checked,
-                        playerId: client.playerId,
-                    })
+                this.webSocket.send('tableAdmin', null, null, data)
                     .catch(err => {
                         event.target.checked = !event.target.checked
                         this.showError(err)
                     })
                     .finally(() => event.target.disabled = false)
+            },
+            setTableAdmin(event, client) {
+                this.setFlag(event, client, 'isTableAdmin')
+            },
+            setCanStart(event, client) {
+                this.setFlag(event, client, 'canStart')
+            },
+            setCanRestart(event, client) {
+                this.setFlag(event, client, 'canRestart')
+            },
+            setCanTerminate(event, client) {
+                this.setFlag(event, client, 'canTerminate')
             },
             setPlayerActive(event, client) {
                 const checked = event.target.checked
@@ -142,16 +179,17 @@
 
     .players-list {
         margin-bottom: $spacing;
+
         div.connected {
 
             span {
-                display: block;
-                width: 8px;
-                height: 8px;
+                display:          block;
+                width:            8px;
+                height:           8px;
                 background-color: black;
-                border-radius: 8px;
-                vertical-align: middle;
-                margin-right: $spacing-small;
+                border-radius:    8px;
+                vertical-align:   middle;
+                margin-right:     $spacing-small;
 
                 &.connected {
                     background-color: $primary;
@@ -166,6 +204,7 @@
                 }
             }
         }
+
         .player {
             margin-bottom: $spacing-small;
 
@@ -176,14 +215,14 @@
         }
 
         .primary {
-            display: flex;
+            display:     flex;
             align-items: center;
         }
 
         div.status {
             font-size:      0.6em;
             text-transform: uppercase;
-            margin-left: calc(8px + #{$spacing-small});
+            margin-left:    calc(8px + #{$spacing-small});
 
             .yes {
             }
@@ -203,10 +242,13 @@
 
         div.admin-options {
             margin-left: calc(12px + #{$spacing-small});
-            display: flex;
 
-            & > * {
-                flex: 1 0 auto;
+            @media(min-width: 500px) {
+                display: flex;
+
+                & > * {
+                    flex: 1 0 auto;
+                }
             }
 
             label {
@@ -241,7 +283,7 @@
 
     .guests ul {
         list-style: none;
-        margin: 0 0 $spacing;
+        margin:     0 0 $spacing;
 
         li {
             display: inline-block;

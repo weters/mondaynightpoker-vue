@@ -7,7 +7,7 @@
                 <p><label class="optional"><span>Sit out</span><input type="checkbox" v-model="sitOut"
                                                                       :disabled="sitOutLoading"/></label></p>
 
-                <template v-if="isTableAdmin">
+                <template v-if="isTableAdmin || canRestart || canTerminate">
                     <h3>Admin</h3>
 
                     <div class="buttons">
@@ -20,8 +20,8 @@
                             <button @click="terminateGame">Yes, Terminate</button>
                         </template>
                         <template v-else>
-                            <button @click="confirmRestart=true">Restart</button>
-                            <button @click="confirmTerminate=true">Terminate</button>
+                            <button @click="confirmRestart=true" v-if="canRestart">Restart</button>
+                            <button @click="confirmTerminate=true" v-if="canTerminate">Terminate</button>
                         </template>
                     </div>
                 </template>
@@ -82,10 +82,10 @@
                 gameState: 'bourre/gameState',
                 gameData: 'bourre/gameData',
                 userClientState: 'userClientState',
+                isTableAdmin: 'isTableAdmin',
+                canRestart: 'canRestart',
+                canTerminate: 'canTerminate',
             }),
-            isTableAdmin() {
-                return this.userClientState.isTableAdmin
-            },
             roundText() {
                 return this.round === 0 ? 'Play/Fold' : this.round
             },
