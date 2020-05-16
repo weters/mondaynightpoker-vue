@@ -11,8 +11,18 @@
                     <h3>Admin</h3>
 
                     <div class="buttons">
-                        <button @click="newBourreGame">Restart</button>
-                        <button @click="terminateGame">Terminate</button>
+                        <template v-if="confirmRestart">
+                            <button class="secondary" @click="confirmRestart=false">Cancel</button>
+                            <button @click="newBourreGame">Yes, Restart</button>
+                        </template>
+                        <template v-else-if="confirmTerminate">
+                            <button class="secondary" @click="confirmTerminate=false">Cancel</button>
+                            <button @click="terminateGame">Yes, Terminate</button>
+                        </template>
+                        <template v-else>
+                            <button @click="confirmRestart=true">Restart</button>
+                            <button @click="confirmTerminate=true">Terminate</button>
+                        </template>
                     </div>
                 </template>
             </div>
@@ -58,6 +68,8 @@
                 error: null,
                 sitOut: !this.$store.getters.userClientState.active,
                 sitOutLoading: false,
+                confirmRestart: false,
+                confirmTerminate: false,
             }
         },
         computed: {
@@ -118,6 +130,7 @@
             },
             newBourreGame() {
                 this.$store.state.webSocket.send('createGame', 'bourre', null, {ante: this.gameState.ante})
+                    .then(() => this.confirmRestart = false)
                     .catch(err => this.showError(err))
             },
             terminateGame() {
