@@ -18,6 +18,7 @@
 <script>
     import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade} from '@mdi/js'
     import MdiIcon from "./MdiIcon"
+
     export default {
         name: "Welcome",
         components: {MdiIcon},
