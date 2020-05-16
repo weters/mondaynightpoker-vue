@@ -17,12 +17,14 @@
 
             <label class="optional">
                 <span>Display Name</span>
-                <input type="text" autocomplete="off" v-model="displayName" placeholder="Timmy Two Times" pattern="[\p{L}\p{N} ]+" :disabled="loading"/>
+                <input type="text" autocomplete="off" v-model="displayName" placeholder="Timmy Two Times"
+                       pattern="[\p{L}\p{N} ]+" :disabled="loading"/>
             </label>
 
             <label>
                 <span>Email</span>
-                <input type="email" autocomplete="email" v-model="email" placeholder="ihaveanace@email.domain" required :disabled="loading"/>
+                <input type="email" autocomplete="email" v-model="email" placeholder="ihaveanace@email.domain" required
+                       :disabled="loading"/>
             </label>
 
             <label>
@@ -30,12 +32,14 @@
                     <span>Confirm Email</span>
                     <transition name="alert"><mdi-icon :icon="mdiAlertCircle" v-if="emailMismatch"/></transition>
                 </span>
-                <input type="email" autocomplete="email" v-model="confirmEmail" placeholder="ihaveanace@email.domain" required :disabled="loading"/>
+                <input type="email" autocomplete="email" v-model="confirmEmail" placeholder="ihaveanace@email.domain"
+                       required :disabled="loading"/>
             </label>
 
             <label>
                 <span>Password</span>
-                <input type="password" autocomplete="off" v-model="password" placeholder="hunter2" required :disabled="loading"/>
+                <input type="password" autocomplete="off" v-model="password" placeholder="hunter2" required
+                       :disabled="loading"/>
             </label>
 
             <label>
@@ -43,7 +47,8 @@
                     <span>Confirm Password</span>
                     <transition name="alert"><mdi-icon :icon="mdiAlertCircle" v-if="passwordMismatch"/></transition>
                 </span>
-                <input type="password" autocomplete="off" v-model="confirmPassword" placeholder="hunter2" required :disabled="loading"/>
+                <input type="password" autocomplete="off" v-model="confirmPassword" placeholder="hunter2" required
+                       :disabled="loading"/>
             </label>
 
             <div class="buttons">
@@ -51,7 +56,8 @@
             </div>
 
             <div class="log-in">
-                Already have an account? <router-link to="/login">Log in</router-link>
+                Already have an account?
+                <router-link to="/login">Log in</router-link>
             </div>
         </form>
     </div>
@@ -63,6 +69,7 @@
     import client from "@/client"
     import {mdiAlertCircle} from '@mdi/js'
     import MdiIcon from "@/components/MdiIcon"
+    import recaptcha from '@/recaptcha'
 
     export default {
         name: "SignUp",
@@ -87,11 +94,20 @@
                 return this.loading || !this.email || !this.password || this.email !== this.confirmEmail || this.password !== this.confirmPassword
             },
         },
+        mounted() {
+            this.recaptcha = recaptcha()
+        },
+        beforeDestroy() {
+            this.recaptcha
+                .then(r => r.remove())
+        },
         methods: {
             submit() {
                 this.error = null
                 this.loading = true
-                client.signUp(this.displayName, this.email, this.password)
+                this.recaptcha
+                    .then(r => r.execute('signup'))
+                    .then(token => client.signUp(this.displayName, this.email, this.password, token))
                     .then(() => this.success = true)
                     .catch(err => this.error = err)
                     .finally(() => this.loading = false)
@@ -144,26 +160,27 @@
     .alert-enter-active {
         transition: opacity 400ms, transform 200ms;
     }
+
     .alert-leave-active {
         transition: opacity 200ms, transform 400ms;
     }
 
     .alert-enter, .alert-leave-to {
         transform: translateY(100%);
-        opacity: 0;
+        opacity:   0;
     }
 
     form .loading {
         position: absolute;
-        bottom: $spacing-small;
-        right: $spacing-small;
+        bottom:   $spacing-small;
+        right:    $spacing-small;
     }
 
     .log-in {
-        font-size: 0.8em;
-        color: $text-color-light;
-        border-top: 1px solid $border-color;
+        font-size:   0.8em;
+        color:       $text-color-light;
+        border-top:  1px solid $border-color;
         padding-top: $spacing;
-        margin-top: $spacing;
+        margin-top:  $spacing;
     }
 </style>

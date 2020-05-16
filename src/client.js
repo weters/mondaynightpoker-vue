@@ -11,11 +11,12 @@ class Client {
         })
     }
 
-    signUp(displayName, email, password) {
+    signUp(displayName, email, password, token) {
         return this._post(`/player`, {
             displayName,
             email,
-            password
+            password,
+            token
         })
     }
 
