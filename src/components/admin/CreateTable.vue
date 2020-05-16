@@ -2,7 +2,7 @@
     <div>
         <h3>Create a Table</h3>
 
-        <form @submit.prevent="submit">
+        <form @submit.prevent="submit" class="inner">
             <error :message="error" v-if="error"/>
 
             <label>
@@ -47,5 +47,7 @@
 </script>
 
 <style scoped>
-
+    form {
+        width: min-content;
+    }
 </style>

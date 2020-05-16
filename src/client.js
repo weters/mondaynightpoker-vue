@@ -44,6 +44,10 @@ class Client {
         }, withAuthorization)
     }
 
+    getPlayers(start = 0, rows = 100) {
+        return this._get(`/player?start=${encodeURIComponent(start)}&rows=${encodeURIComponent(rows)}`, withAuthorization)
+    }
+
     validateJWT(jwt) {
         return this._get(`/player/auth/${jwt}`)
     }
