@@ -16,11 +16,13 @@
                             <span class="disconnected" v-else></span>
                         </div>
 
-                        <span class="name" :key="`name-${client.player.id}`">{{ client.player.displayName }}</span>
+                        <span class="name" :key="`name-${client.player.id}`">
+                            <span>{{ client.player.displayName }}</span>
+                            <mdi-icon :icon="mdiAlertCircle" v-if="client.active && !client.isConnected" class="alert" />
+                        </span>
 
                         <span class="balance" :key="`balance-${client.player.id}`">
-                            <span v-if="client.isSeated">{{ formatAmount(client.balance) }}</span>
-                            <span v-else class="na">N/A</span>
+                            {{ formatAmount(client.balance) }}
                         </span>
                     </div>
                     <div class="admin-options" v-if="isTableAdmin && client.isSeated">
@@ -82,12 +84,13 @@
     import {mapGetters, mapState} from "vuex"
     import balance from "@/mixins/balance"
     import Error from "@/components/Error"
-    import {mdiCoffee} from '@mdi/js'
+    import {mdiAlertCircle} from '@mdi/js'
+    import MdiIcon from "../MdiIcon"
 
     export default {
         name: "PokerTablePlayerList",
         mixins: [balance],
-        components: {Error},
+        components: {MdiIcon, Error},
         props: {
             clientState: {
                 type: Object,
@@ -97,7 +100,7 @@
         data() {
             const {clientState, user} = this.$store.state
             return {
-                mdiCoffee,
+                mdiAlertCircle,
                 error: null,
                 currentUserActive: clientState[user.player.id].active,
             }
@@ -211,6 +214,15 @@
             &:not(:last-child) {
                 padding-bottom: $spacing-small;
                 border-bottom:  1px solid $border-color;
+            }
+
+            span.name {
+                svg {
+                    fill: $alert;
+                    margin-left: $spacing-small;
+                    width: 16px;
+                    vertical-align: middle;
+                }
             }
         }
 
