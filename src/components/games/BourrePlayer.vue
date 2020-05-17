@@ -14,11 +14,9 @@
                                     :key="`playing-card-${i}`"
                                     :big-card="true"
                             />
-                            <img v-else-if="isUnplayedCard(i)"
-                                 src="../../assets/images/cards/blue_back.png"
-                                 alt="back of card"
-                                 :key="`img-${i}`"
-                            />
+                            <div class="card-back" v-else-if="isUnplayedCard(i)" :key="`card-back-${i}`">
+                                <mdi-icon :icon="mdiCardsPlayingOutline" />
+                            </div>
                             <div v-else class="void" :key="`void-${i}`"></div>
                         </transition>
                     </div>
@@ -40,7 +38,7 @@
     import PlayingCard from "@/components/PlayingCard"
     import balance from '@/mixins/balance'
     import BourreTricksTally from "@/components/games/BourreTricksTally"
-    import {mdiPokerChip} from '@mdi/js'
+    import {mdiPokerChip, mdiCardsPlayingOutline} from '@mdi/js'
     import MdiIcon from "@/components/MdiIcon"
 
     export default {
@@ -60,6 +58,7 @@
         data() {
             return {
                 mdiPokerChip,
+                mdiCardsPlayingOutline,
             }
         },
         computed: {
@@ -119,7 +118,7 @@
                     perspective: 200px;
                     width:       100%;
                     height:      0;
-                    padding-top: calc(1056 / 691 * 100%);
+                    padding-top: calc(3.5 / 2.5 * 100%);
                     position:    relative;
 
                     & > * {
@@ -136,6 +135,20 @@
                         background-color: rgba(black, 0.1);
                         border:           1px solid rgba(black, 0.1);
                         margin:           2px;
+                    }
+
+                    div.card-back {
+                        background: linear-gradient($primary, $secondary);
+                        border-radius: $border-radius;
+
+                        svg {
+                            fill: white;
+                            width: 75%;
+                            position: absolute;
+                            top: 50%;
+                            left: 50%;
+                            transform: translate(-50%, -50%);
+                        }
                     }
                 }
             }

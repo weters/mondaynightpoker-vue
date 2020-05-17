@@ -1,12 +1,14 @@
 <template>
     <div class="playing-card" @click="$emit('click')">
-        <div v-if="bigCard" :class="classes">
-            <span>
-                <span class="rank">{{ displayRank }}</span>
-                <span class="suit"><mdi-icon :icon="displaySuit" /></span>
+        <div :class="classes">
+            <span class="corner">
+                <span class="rank" ref="cornerRank">{{ displayRank }}</span>
+                <span class="suit" ref="cornerSuit"><mdi-icon :icon="displaySuit"/></span>
+            </span>
+            <span class="center">
+                <span class="suit"><mdi-icon :icon="displaySuit"/></span>
             </span>
         </div>
-        <img :class="{'big-card': bigCard}" :src="image" :alt="`${card.rank} of ${card.suit}`" />
     </div>
 </template>
 
@@ -25,10 +27,6 @@
             rank: {
                 type: Number,
                 required: true,
-            },
-            bigCard: {
-                type: Boolean,
-                default: false,
             },
         },
         data() {
@@ -75,24 +73,6 @@
 
                 throw new Error('unknown suit')
             },
-            image() {
-                let suit
-                switch (this.suit) {
-                    case 'clubs':
-                        suit = 'C'
-                        break
-                    case 'diamonds':
-                        suit = 'D'
-                        break
-                    case 'hearts':
-                        suit = 'H'
-                        break
-                    case 'spades':
-                        suit = 'S'
-                        break
-                }
-                return require(`../assets/images/cards/${this.formattedRank}${suit}.png`)
-            },
             formattedRank() {
                 switch (this.rank) {
                     case 11:
@@ -111,34 +91,44 @@
                 return `${this.formattedRank} of ${this.suit}`
             },
         },
+        methods: {
+            sizeCard() {
+                const size = this.$el.clientHeight / 4
+                this.$refs.cornerRank.style.fontSize = `${size}px`
+                this.$refs.cornerRank.style.lineHeight = `${size}px`
+                this.$refs.cornerSuit.style.width = `${size}px`
+                this.$refs.cornerSuit.style.height = `${size}px`
+            },
+        },
+        mounted() {
+            window.addEventListener('resize', this.sizeCard)
+            this.sizeCard()
+        },
+        beforeDestroy() {
+            window.removeEventListener('resize', this.sizeCard)
+        },
     }
 </script>
 
 <style lang="scss" scoped>
     @import '../variables.scss';
-    img {
-        width: 100%;
 
-        &.big-card {
-            @media(max-width: 374px) {
-                display: none;
-            }
-        }
+    .playing-card {
+        position:    relative;
+        height:      0;
+        width:       100px;
+        padding-top: calc(100% * 3.5 / 2.5);
     }
 
     div.big-card {
-        @media(min-width: 375px) {
-            display: none;
-        }
-
         background-color: white;
-        border-radius: $border-radius;
-        border: 1px solid #eee;
-        position: absolute;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: 0;
+        border-radius:    $border-radius;
+        border:           1px solid #eee;
+        position:         absolute;
+        top:              0;
+        right:            0;
+        bottom:           0;
+        left:             0;
 
         &.hearts, &.diamonds {
             color: $red;
@@ -147,21 +137,34 @@
                 fill: $red;
             }
         }
-        span.rank {
-            display: block;
-            font-size: 18px;
-            position: absolute;
-            top: 25%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+
+        .corner {
+            position:       absolute;
+            display:        flex;
+            flex-direction: column;
+            top:            2px;
+            left:           2px;
+            width:          min-content;
+            align-items:    center;
+
+            span.suit {
+                line-height: 40%;
+                height:      100%;
+                width:       100%;
+            }
+
+            span.rank {
+                font-size:   32px;
+                line-height: 28px;
+            }
         }
-        span.suit {
-            display: block;
-            position: absolute;
-            left: 50%;
-            top: 75%;
-            transform: translate(-50%, -50%);
-            width: 18px;
+
+        .center {
+            position:  absolute;
+            top:       45%;
+            right:     45%;
+            transform: translateX(50%);
+            width:     60%;
         }
     }
 </style>
