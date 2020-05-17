@@ -99,4 +99,8 @@
 
 <style lang="scss" scoped>
     @import '../../variables';
+
+    div.buttons {
+        white-space: nowrap;
+    }
 </style>

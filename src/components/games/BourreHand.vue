@@ -69,5 +69,7 @@
 </script>
 
 <style scoped>
-
+    div.buttons {
+        white-space: nowrap;
+    }
 </style>

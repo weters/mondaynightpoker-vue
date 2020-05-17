@@ -173,12 +173,14 @@
         }
 
         @media(min-width: 400px) {
-            & > div {
+            & > div:nth-child(2) {
                 display:     flex;
                 align-items: center;
 
                 & > :first-child {
                     max-width: 500px;
+                    width: 100%;
+                    margin-right: $spacing;
                 }
 
                 & > :nth-child(2) {
