@@ -8,10 +8,10 @@
         <table class="standard">
             <thead>
             <tr>
-                <td>ID</td>
-                <td>Email</td>
-                <td>Display Name</td>
-                <td>Joined</td>
+                <th>ID</th>
+                <th>Email</th>
+                <th>Display Name</th>
+                <th>Joined</th>
             </tr>
             </thead>
             <tbody>
