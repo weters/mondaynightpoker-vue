@@ -23,7 +23,7 @@ const store = new Vuex.Store({
 
             const formattedLogs = logs.map(log => {
                 let players = ''
-                if (log.playerIds.length > 0 && log.playerIds[0] !== 0) {
+                if (log.playerIds && log.playerIds.length > 0 && log.playerIds[0] !== 0) {
                     players = log.playerIds.map(pid => state.clientState[pid].player.displayName).join(', ')
                 }
 
