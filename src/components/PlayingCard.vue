@@ -15,6 +15,7 @@
 <script>
     import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade} from '@mdi/js'
     import MdiIcon from "@/components/MdiIcon"
+    import {mapGetters} from "vuex"
 
     export default {
         name: "PlayingCard",
@@ -38,6 +39,9 @@
             }
         },
         computed: {
+            ...mapGetters({
+                isTurn: 'bourre/isTurn',
+            }),
             classes() {
                 const classes = {
                     'big-card': true,
@@ -99,6 +103,11 @@
                 this.$refs.cornerSuit.style.width = `${size}px`
                 this.$refs.cornerSuit.style.height = `${size}px`
             },
+        },
+        watch: {
+            isTurn() {
+                this.sizeCard()
+            }
         },
         mounted() {
             window.addEventListener('resize', this.sizeCard)
