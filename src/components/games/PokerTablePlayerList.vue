@@ -33,6 +33,13 @@
                                        :checked="client.active"/>
                             </label>
                         </span>
+                        <span class="active">
+                            <label v-if="client.player.id !== user.player.id" class="optional">
+                                <span>Blocked</span>
+                                <input type="checkbox" @change="setPlayerBlocked($event, client)"
+                                       :checked="client.isBlocked"/>
+                            </label>
+                        </span>
                         <span class="admin">
                             <label v-if="client.player.id !== user.player.id" class="optional">
                                 <span>Admin</span>
@@ -131,6 +138,9 @@
                         this.showError(err)
                     })
                     .finally(() => event.target.disabled = false)
+            },
+            setPlayerBlocked(event, client) {
+                this.setFlag(event, client, 'isBlocked')
             },
             setTableAdmin(event, client) {
                 this.setFlag(event, client, 'isTableAdmin')

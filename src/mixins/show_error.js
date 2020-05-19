@@ -2,7 +2,7 @@ export default {
     methods: {
         showError(err) {
             if (this.errorTimeout) {
-                this.clearTimeout(this.errorTimeout)
+                clearTimeout(this.errorTimeout)
             }
 
             this.error = err
