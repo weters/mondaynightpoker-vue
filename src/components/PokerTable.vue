@@ -34,21 +34,49 @@
 
             <h3>Pick a Game</h3>
 
-            <form class="bourre inner" v-if="canStart" @submit.prevent="startBourreGame">
-                <h4>Bourré</h4>
+            <div class="game-selector" v-if="canStart">
+                <form class="bourre inner" @submit.prevent="startBourreGame">
+                    <h4>Bourré</h4>
 
-                <label class="ante">
-                    <span>Ante</span>
-                    <span>
-                        <input type="number" min="25" max="200" step="25" v-model="ante"/>
+                    <label class="ante">
+                        <span>Ante</span>
+                        <span>
+                        <input type="number" min="25" max="200" step="25" v-model="bourre.ante"/>
                         <em>¢</em>
                     </span>
-                </label>
+                    </label>
 
-                <div class="buttons">
-                    <button>Start</button>
-                </div>
-            </form>
+                    <div class="buttons">
+                        <button>Start</button>
+                    </div>
+                </form>
+
+                <form class="pass-the-poop inner" @submit.prevent="startPassThePoopGame">
+                    <h4>Pass the Poop</h4>
+
+                    <label class="ante">
+                        <span>Ante</span>
+                        <span>
+                        <input type="number" min="25" max="200" step="25" v-model="passThePoop.ante"/>
+                        <em>¢</em>
+                    </span>
+                    </label>
+
+                    <label class="edition">
+                        <span>Edition</span>
+                        <select v-model="passThePoop.edition">
+                            <option value="standard">Standard</option>
+                            <option value="diarrhea">Diarrhea</option>
+                            <option value="pairs">Pairs</option>
+                        </select>
+                    </label>
+
+                    <div class="buttons">
+                        <button>Start</button>
+                    </div>
+                </form>
+            </div>
+
             <div class="waiting" v-else>
                 <p>Waiting on the table admin to start the game!</p>
                 <loading class="loading"/>
@@ -58,7 +86,7 @@
             <loading/>
         </template>
 
-        <dealer-log class="dealer-log" />
+        <dealer-log class="dealer-log"/>
     </div>
 </template>
 
@@ -85,7 +113,13 @@
         },
         data() {
             return {
-                ante: '25',
+                bourre: {
+                    ante: '25',
+                },
+                passThePoop: {
+                    ante: '150',
+                    edition: 'standard',
+                },
                 table: null,
                 error: null,
                 ws: null,
@@ -116,7 +150,14 @@
         },
         methods: {
             startBourreGame() {
-                this.ws.send('createGame', 'bourre', null, {ante: parseInt(this.ante, 10)})
+                this.ws.send('createGame', 'bourre', null, {ante: parseInt(this.bourre.ante, 10)})
+                    .catch(err => this.showError(err))
+            },
+            startPassThePoopGame() {
+                this.ws.send('createGame', 'pass-the-poop', null, {
+                        ante: parseInt(this.passThePoop.ante, 10),
+                        edition: this.passThePoop.edition,
+                    })
                     .catch(err => this.showError(err))
             },
             setPlayerActive(event) {
@@ -214,5 +255,9 @@
 
     .dealer-log {
         margin-top: $spacing;
+    }
+
+    .game-selector {
+        display: flex;
     }
 </style>
