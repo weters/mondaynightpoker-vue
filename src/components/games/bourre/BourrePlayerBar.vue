@@ -52,8 +52,8 @@
 </template>
 
 <script>
-    import BourreHand from "@/components/games/BourreHand"
-    import BourreDiscard from "@/components/games/BourreDiscard"
+    import BourreHand from "@/components/games/bourre/BourreHand"
+    import BourreDiscard from "@/components/games/bourre/BourreDiscard"
     import {mapGetters} from "vuex"
     import Error from "@/components/Error"
     import Slider from "@/components/Slider"
@@ -142,7 +142,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../variables';
+    @import '../../../variables';
 
     .player-bar {
         background-color: rgba(darken($background-color, 10%), 0.8);

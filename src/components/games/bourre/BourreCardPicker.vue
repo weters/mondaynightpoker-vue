@@ -87,7 +87,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../variables';
+    @import '../../../variables';
 
     .hand {
         display:               grid;

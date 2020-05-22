@@ -37,7 +37,7 @@
     import {mapGetters} from "vuex"
     import PlayingCard from "@/components/PlayingCard"
     import balance from '@/mixins/balance'
-    import BourreTricksTally from "@/components/games/BourreTricksTally"
+    import BourreTricksTally from "@/components/games/bourre/BourreTricksTally"
     import {mdiPokerChip, mdiCardsPlayingOutline} from '@mdi/js'
     import MdiIcon from "@/components/MdiIcon"
 
@@ -103,7 +103,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../variables.scss';
+    @import '../../../variables.scss';
 
     div.bourre-player {
         max-width: 400px;

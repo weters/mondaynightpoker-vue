@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import BourrePlayer from "@/components/games/BourrePlayer"
+    import BourrePlayer from "@/components/games/bourre/BourrePlayer"
     import {mapGetters} from "vuex"
     export default {
         name: "BourrePlayers",
@@ -43,7 +43,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../variables.scss';
+    @import '../../../variables.scss';
     div.bourre-players {
         $margin: calc(#{$spacing} / -2);
         display: flex;

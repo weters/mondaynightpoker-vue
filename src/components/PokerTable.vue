@@ -92,7 +92,6 @@
 
 <script>
     import webSocketClient from "@/webSocket"
-    import Bourre from "@/components/games/Bourre"
     import {mapGetters, mapState} from "vuex"
     import PokerTablePlayerList from "@/components/games/PokerTablePlayerList"
     import Loading from "@/components/Loading"
@@ -100,6 +99,7 @@
     import show_error from "@/mixins/show_error"
     import client from "@/client"
     import DealerLog from "./DealerLog"
+    import Bourre from '@/components/games/bourre/Bourre'
 
     export default {
         name: "PokerTable",
