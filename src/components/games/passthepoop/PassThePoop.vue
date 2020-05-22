@@ -1,12 +1,21 @@
 <template>
     <div class="pass-the-poop">
-        Game on!
+        {{ game }}
+
+        <player-bar />
     </div>
 </template>
 
 <script>
+    import {mapState} from "vuex"
+    import PlayerBar from "../PlayerBar"
+
     export default {
         name: "PassThePoop",
+        components: {PlayerBar},
+        computed: {
+            ...mapState(['game'])
+        }
     }
 </script>
 
