@@ -11,6 +11,7 @@
 
         <template v-if="game">
             <bourre v-if="game.game === 'bourre'"/>
+            <pass-the-poop v-else-if="game.game === 'pass-the-poop'" />
         </template>
         <template v-else-if="clientState">
             <form class="player-state inner" v-if="userClientState.isSeated">
@@ -100,10 +101,11 @@
     import client from "@/client"
     import DealerLog from "./DealerLog"
     import Bourre from '@/components/games/bourre/Bourre'
+    import PassThePoop from "./games/passthepoop/PassThePoop"
 
     export default {
         name: "PokerTable",
-        components: {DealerLog, Error, Loading, PokerTablePlayerList, Bourre},
+        components: {PassThePoop, DealerLog, Error, Loading, PokerTablePlayerList, Bourre},
         mixins: [show_error],
         props: {
             uuid: {
