@@ -39,7 +39,7 @@ const store = new Vuex.Store({
 
             state.logs.push(...formattedLogs)
             const len = state.logs.length
-            const over = len - 25
+            const over = len - 100
             if (over > 0) {
                 state.logs.splice(0, over)
             }
