@@ -125,28 +125,6 @@
                 transform:   translateY(calc(-100% - 5px));
             }
         }
-
-        ::v-deep div.buttons {
-            margin: $spacing-medium 0;
-        }
-
-        @media(min-width: 400px) {
-            & > div:nth-child(2) {
-                display:     flex;
-                align-items: center;
-
-                & > :first-child {
-                    max-width: 500px;
-                    width: 100%;
-                    margin-right: $spacing;
-                }
-
-                & > :nth-child(2) {
-                    margin-left:   auto;
-                    margin-bottom: 0;
-                }
-            }
-        }
     }
 
     .error {

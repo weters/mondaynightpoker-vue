@@ -1,12 +1,14 @@
 import Vuex from 'vuex'
 import Vue from 'vue'
 import bourre from './store/bourre'
+import passThePoop from "./store/passThePoop"
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
     modules: {
         bourre,
+        passThePoop,
     },
     state: {
         user: null, // { player: Object, jwt: String }

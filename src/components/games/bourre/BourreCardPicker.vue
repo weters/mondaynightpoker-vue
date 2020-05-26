@@ -38,8 +38,6 @@
         data() {
             const selected = {}
             this.value.forEach(val => selected[this.cardId(val)] = true)
-            console.log('selected', selected)
-            console.log('value', this.value)
             return {
                 selected,
             }

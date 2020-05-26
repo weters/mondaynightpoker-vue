@@ -1,0 +1,45 @@
+<template>
+    <div class="ptp-participants">
+        <pass-the-poop-participant
+                v-for="p in participants"
+                :participant="p"
+                :key="p.playerId"
+        />
+    </div>
+</template>
+
+<script>
+    import PassThePoopParticipant from "./PassThePoopParticipant"
+
+    export default {
+        name: "PassThePoopParticipants",
+        components: {PassThePoopParticipant},
+        props: {
+            participants: {
+                type: Array,
+                required: true,
+            },
+        },
+    }
+</script>
+
+<style lang="scss" scoped>
+    @import '../../../variables.scss';
+
+    div.ptp-participants {
+        $margin: calc(#{$spacing} / -2);
+        display: flex;
+        flex-flow: row wrap;
+        margin: $margin;
+        justify-content: center;
+
+        & > * {
+            margin: calc(#{$spacing} / 2);
+            flex: 0 0 calc(50% - #{$spacing});
+
+            @media (min-width: 1000px) {
+                flex: 0 0 calc(25% - #{$spacing});
+            }
+        }
+    }
+</style>
