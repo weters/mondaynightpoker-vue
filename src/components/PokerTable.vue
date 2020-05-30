@@ -11,7 +11,7 @@
 
         <template v-if="game">
             <bourre v-if="game.game === 'bourre'"/>
-            <pass-the-poop v-else-if="game.game === 'pass-the-poop'" />
+            <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
         </template>
         <template v-else-if="clientState">
             <form class="player-state inner" v-if="userClientState.isSeated">
@@ -72,6 +72,15 @@
                         </select>
                     </label>
 
+                    <label class="lives">
+                        <span>Lives</span>
+                        <select v-model="passThePoop.lives">
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </label>
+
                     <div class="buttons">
                         <button>Start</button>
                     </div>
@@ -121,6 +130,7 @@
                 passThePoop: {
                     ante: '150',
                     edition: 'standard',
+                    lives: '3',
                 },
                 table: null,
                 error: null,
@@ -159,6 +169,7 @@
                 this.ws.send('createGame', 'pass-the-poop', null, {
                         ante: parseInt(this.passThePoop.ante, 10),
                         edition: this.passThePoop.edition,
+                        lives: parseInt(this.passThePoop.lives, 10),
                     })
                     .catch(err => this.showError(err))
             },

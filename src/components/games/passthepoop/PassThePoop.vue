@@ -2,26 +2,17 @@
     <div class="pass-the-poop">
         <pass-the-poop-participants :participants="participants"/>
 
-        <player-bar>
+        <player-bar :error="error">
             <div class="bar">
                 <div class="card">
-                    <playing-card :rank="card.rank" :suit="card.suit"/>
+                    <playing-card :rank="card.rank" :suit="card.suit" v-if="card"/>
                 </div>
                 <div class="buttons">
-                    <template v-if="isPlayerTurn">
-                        <template v-if="confirmStay">
-                            <button class="secondary" @click="confirmStay=false">Cancel</button>
-                            <button>Yes, Stay</button>
-                        </template>
-                        <template v-else-if="confirmTrade">
-                            <button class="secondary" @click="confirmTrade=false">Cancel</button>
-                            <button>Yes, Trade</button>
-                        </template>
-                        <template v-else>
-                            <button @click="confirmStay=true">Stay</button>
-                            <button @click="confirmTrade=true">Trade</button>
-                        </template>
-                    </template>
+                    <button
+                            type="button"
+                            v-for="a in availableActions"
+                            :key="a.id"
+                            @click="execute(a.id)">{{a.name}}</button>
                 </div>
             </div>
 
@@ -40,24 +31,28 @@
     import PlayerBar from "../PlayerBar"
     import PlayingCard from "../../PlayingCard"
     import PassThePoopParticipants from "./PassThePoopParticipants"
+    import showError from "../../../mixins/show_error"
 
     export default {
         name: "PassThePoop",
         components: {PassThePoopParticipants, PlayingCard, PlayerBar},
+        mixins: [showError],
         data() {
             return {
+                error: null,
                 confirmStay: false,
                 confirmTrade: false,
             }
         },
         computed: {
-            ...mapState(['game']),
+            ...mapState(['game', 'webSocket']),
             ...mapGetters({
                 card: 'passThePoop/card',
                 gameData: 'passThePoop/gameData',
+                availableActions: 'passThePoop/availableActions',
             }),
             currentTurn() {
-                return this.$store.getters.playerDataById(this.gameData.gameState.currentTurn).player.displayName
+                return this.gameData.gameState.currentTurn && this.$store.getters.playerDataById(this.gameData.gameState.currentTurn).player.displayName
             },
             participants() {
                 return this.gameData.gameState.participants.map(p => {
@@ -66,14 +61,19 @@
                 })
             },
         },
+        mounted() {
+            // FIXME
+            console.log(this.gameData)
+        },
         methods: {
             isPlayerTurn(id) {
                 return this.$store.getters['passThePoop/isPlayerTurn'](id)
             },
-        },
-        mounted() {
-            // FIXME
-            console.log(this.gameData)
+            execute(action) {
+                this.webSocket.send('execute', String(action))
+                    .then(res => console.log(res))
+                    .catch(err => this.showError(err))
+            },
         },
     }
 </script>

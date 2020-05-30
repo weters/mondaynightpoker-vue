@@ -28,13 +28,13 @@
             <slot name="gameInfo"></slot>
         </p>
         <transition name="player-bar-error">
-            <error :message="error" v-if="error" class="error"/>
+            <mnp-error :message="combinedError" v-if="combinedError" class="error"/>
         </transition>
     </div>
 </template>
 
 <script>
-    import Error from "@/components/Error"
+    import MnpError from "@/components/Error"
     import Slider from "@/components/Slider"
     import {mapGetters} from "vuex"
     import balance from "../../mixins/balance"
@@ -42,13 +42,14 @@
     export default {
         name: "PlayerBar",
         mixins: [balance],
-        components: {Slider, Error},
+        components: {Slider, MnpError},
         props: {
             isTurn: Boolean,
+            error: [String, Error],
         },
         data() {
             return {
-                error: null,
+                localError: null,
                 sitOut: !this.$store.getters.userClientState.active,
                 sitOutLoading: false,
                 confirmTerminate: false,
@@ -59,7 +60,10 @@
                 isTableAdmin: 'isTableAdmin',
                 canTerminate: 'canTerminate',
                 userClientState: 'userClientState',
-            })
+            }),
+            combinedError() {
+                return this.localError || this.error
+            }
         },
         mounted() {
             this.$watch(() => this.$refs.bar.offsetHeight, newVal => {
@@ -88,8 +92,8 @@
         },
         methods: {
             showError(err) {
-                this.error = err
-                setTimeout(() => this.error = null, 2000)
+                this.localError = err
+                setTimeout(() => this.localError = null, 2000)
             },
             terminateGame() {
                 this.$store.state.webSocket.send('terminateGame')

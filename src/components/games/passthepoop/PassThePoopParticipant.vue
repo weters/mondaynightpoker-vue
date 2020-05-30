@@ -3,14 +3,13 @@
         <strong class="name">{{ participant.playerData.player.displayName }}</strong>
 
         <div class="lives">
-            <mdi-icon :icon="mdiPokerChip" />
-            <mdi-icon :icon="mdiPokerChip" />
-            <mdi-icon :icon="mdiPokerChip" />
+            <mdi-icon :icon="mdiPokerChip" v-for="i in participant.lives" :key="i" />
         </div>
 
         <div class="card-container">
             <div class="background"></div>
-            <div class="card-back">
+            <playing-card v-if="card" :rank="card.rank" :suit="card.suit" />
+            <div v-else class="card-back">
                 <mdi-icon :icon="mdiCardsPlayingOutline" />
             </div>
         </div>
@@ -24,9 +23,10 @@
 <script>
     import MdiIcon from "../../MdiIcon"
     import {mdiCardsPlayingOutline, mdiPokerChip, mdiTimerSand} from '@mdi/js'
+    import PlayingCard from "../../PlayingCard"
     export default {
         name: "PassThePoopParticipant",
-        components: {MdiIcon},
+        components: {PlayingCard, MdiIcon},
         props: {
             participant: {
                 type: Object,
@@ -41,6 +41,9 @@
             }
         },
         computed: {
+            card() {
+                return this.participant.card
+            },
             isPlayerTurn() {
                 return this.$store.getters['passThePoop/isPlayerTurn'](this.participant.playerId)
             }
