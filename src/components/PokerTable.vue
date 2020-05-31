@@ -1,9 +1,6 @@
 <template>
     <div class="poker-table main-box">
-        <h2>
-            <span class="table-name">{{ tableName }}</span>
-            <span class="game" v-if="game">{{ game.game }}</span>
-        </h2>
+        <h2><span class="table-name">{{ tableName }}</span></h2>
 
         <transition name="error">
             <error :message="error" v-if="error"/>
@@ -191,6 +188,10 @@
 
 <style lang="scss" scoped>
     @import '../variables.scss';
+
+    h2 {
+        margin: 0;
+    }
 
     span.game {
         &::before {

@@ -1,5 +1,6 @@
 <template>
     <div class="pass-the-poop">
+        <h3>Pass the Poop / {{ gameData.gameState.edition }} Edition</h3>
         <pass-the-poop-participants :participants="participants"/>
 
         <player-bar :error="error">

@@ -1,5 +1,6 @@
 <template>
     <div class="bourre">
+        <h3>Bourré</h3>
         <transition name="error">
             <error :message="error" v-if="error"/>
         </transition>
