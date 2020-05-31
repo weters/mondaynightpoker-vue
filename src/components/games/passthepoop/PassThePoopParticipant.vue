@@ -1,6 +1,6 @@
 <template>
-    <div class="ptp-participant">
-        <strong class="name">{{ participant.playerData.player.displayName }}</strong>
+    <div :class="{ 'ptp-participant': true, 'is-connected': isConnected }">
+        <strong class="name">{{ playerData.player.displayName }}</strong>
 
         <transition-group name="lives" class="lives">
             <mdi-icon :icon="mdiPokerChip" v-for="i in participant.lives" :key="i"/>
@@ -36,6 +36,10 @@
                 type: Object,
                 required: true,
             },
+            playerData: {
+                type: Object,
+                required: true,
+            }
         },
         data() {
             return {
@@ -48,6 +52,9 @@
             }
         },
         computed: {
+            isConnected() {
+                return this.playerData.isConnected
+            },
             card() {
                 return this.participant.card
             },
@@ -93,6 +100,13 @@
         max-width:      100px;
         align-items:    center;
 
+        &:not(.is-connected) {
+            strong.name {
+                font-weight: normal;
+                font-style: italic;
+                color: $text-color-light;
+            }
+        }
 
         .lives {
             height:                30px;

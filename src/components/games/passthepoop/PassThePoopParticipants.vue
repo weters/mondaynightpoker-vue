@@ -3,6 +3,7 @@
         <pass-the-poop-participant
                 v-for="p in participants"
                 :participant="p"
+                :player-data="playerDataById(p.playerId)"
                 :key="p.playerId"
         />
     </transition-group>
@@ -20,6 +21,11 @@
                 required: true,
             },
         },
+        methods: {
+            playerDataById(id) {
+                return this.$store.getters.playerDataById(id)
+            }
+        }
     }
 </script>
 

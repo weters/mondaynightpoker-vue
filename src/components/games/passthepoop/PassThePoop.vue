@@ -62,10 +62,7 @@
                 return this.gameData.gameState.currentTurn && this.$store.getters.playerDataById(this.gameData.gameState.currentTurn).player.displayName
             },
             participants() {
-                return this.gameData.gameState.participants.map(p => {
-                    p.playerData = this.$store.getters.playerDataById(p.playerId)
-                    return p
-                })
+                return this.gameData.gameState.participants
             },
         },
         methods: {
