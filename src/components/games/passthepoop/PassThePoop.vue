@@ -3,7 +3,7 @@
         <h3>Pass the Poop / {{ gameData.gameState.edition }} Edition</h3>
         <pass-the-poop-participants :participants="participants"/>
 
-        <player-bar :error="error">
+        <player-bar :error="error" :is-turn="isTurn">
             <div class="bar">
                 <div class="card">
                     <transition name="card" mode="out-in">
@@ -49,12 +49,15 @@
             }
         },
         computed: {
-            ...mapState(['game', 'webSocket']),
+            ...mapState(['game', 'webSocket', 'user']),
             ...mapGetters({
                 card: 'passThePoop/card',
                 gameData: 'passThePoop/gameData',
                 availableActions: 'passThePoop/availableActions',
             }),
+            isTurn() {
+                return this.$store.getters['passThePoop/isPlayerTurn'](this.user.player.id)
+            },
             currentTurn() {
                 return this.gameData.gameState.currentTurn && this.$store.getters.playerDataById(this.gameData.gameState.currentTurn).player.displayName
             },
@@ -65,14 +68,7 @@
                 })
             },
         },
-        mounted() {
-            // FIXME
-            console.log(this.gameData)
-        },
         methods: {
-            isPlayerTurn(id) {
-                return this.$store.getters['passThePoop/isPlayerTurn'](id)
-            },
             execute(action) {
                 this.webSocket.send('execute', String(action))
                     .then(res => console.log(res))
