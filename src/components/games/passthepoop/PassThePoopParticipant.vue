@@ -4,6 +4,7 @@
 
         <transition-group name="lives" class="lives">
             <mdi-icon :icon="mdiPokerChip" v-for="i in participant.lives" :key="i"/>
+            <span class="placeholder" v-if="participant.lives === 0" :key="0"></span>
         </transition-group>
 
         <div class="card-container">
@@ -17,7 +18,7 @@
         </div>
 
         <span class="is-turn">
-            <mdi-icon :icon="mdiCardsOutline" v-if="isPlayerTurn && goingToDeck" />
+            <mdi-icon :icon="mdiCardsOutline" v-if="isPlayerTurn && goingToDeck"/>
             <mdi-icon :icon="mdiTimerSand" v-else-if="isPlayerTurn"/>
         </span>
     </div>
@@ -39,7 +40,7 @@
             playerData: {
                 type: Object,
                 required: true,
-            }
+            },
         },
         data() {
             return {
@@ -100,24 +101,39 @@
         max-width:      100px;
         align-items:    center;
 
+        strong.name {
+            overflow: hidden;
+            display:  block;
+
+            @media(max-width: 500px) {
+                font-size: 10px;
+            }
+        }
+
         &:not(.is-connected) {
             strong.name {
                 font-weight: normal;
-                font-style: italic;
-                color: $text-color-light;
+                font-style:  italic;
+                color:       $text-color-light;
             }
         }
 
         .lives {
-            height:                30px;
             display:               grid;
             grid-template-columns: repeat(3, 1fr);
-            grid-gap:              $spacing-medium;
+            grid-gap:              $spacing-small;
+            margin:                $spacing-small 0;
             width:                 100%;
             align-items:           center;
 
             svg {
                 width: 100%;
+            }
+
+            span.placeholder {
+                width:       100%;
+                padding-top: 100%;
+                height:      0;
             }
         }
 
@@ -160,9 +176,9 @@
         }
 
         span.is-turn {
-            display: inline-block;
-            width:   25px;
-            height:  25px;
+            display:    inline-block;
+            width:      25px;
+            height:     25px;
             margin-top: $spacing-small;
         }
     }

@@ -249,6 +249,7 @@
     }
 
     label.ante {
+        width: 100%;
         & > span:last-child {
             display:     flex;
             align-items: center;
@@ -273,5 +274,21 @@
 
     .game-selector {
         display: flex;
+
+        @media (max-width: 500px) {
+            display: block;
+            form {
+                margin-bottom: $spacing;
+                width: 100%;
+
+                label {
+                    width: 100%;
+                }
+
+                input, select {
+                    width: 100%;
+                }
+            }
+        }
     }
 </style>

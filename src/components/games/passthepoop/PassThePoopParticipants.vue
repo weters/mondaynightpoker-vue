@@ -41,11 +41,7 @@
 
         & > * {
             margin: calc(#{$spacing} / 2);
-            flex:   0 0 calc(50% - #{$spacing});
-
-            @media (min-width: 1000px) {
-                flex: 0 0 calc(25% - #{$spacing});
-            }
+            flex:   0 0 calc(25% - #{$spacing});
         }
     }
 
