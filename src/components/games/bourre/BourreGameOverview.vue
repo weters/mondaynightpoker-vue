@@ -8,7 +8,7 @@
 
 <script>
     import PlayingCard from "@/components/PlayingCard"
-    import BourrePot from "@/components/games/BourrePot"
+    import BourrePot from "@/components/games/bourre/BourrePot"
     import {mapGetters} from "vuex"
     export default {
         name: "BourreGameOverview",
@@ -25,7 +25,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../variables.scss';
+    @import '../../../variables.scss';
     div.bourre-game-overview {
         width: min-content;
         text-align: center;

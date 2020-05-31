@@ -38,8 +38,6 @@
         data() {
             const selected = {}
             this.value.forEach(val => selected[this.cardId(val)] = true)
-            console.log('selected', selected)
-            console.log('value', this.value)
             return {
                 selected,
             }
@@ -87,7 +85,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../variables';
+    @import '../../../variables';
 
     .hand {
         display:               grid;

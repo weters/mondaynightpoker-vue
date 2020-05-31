@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import BourreCardPicker from "@/components/games/BourreCardPicker"
+    import BourreCardPicker from "@/components/games/bourre/BourreCardPicker"
     import {mapGetters} from "vuex"
 
     export default {
@@ -98,7 +98,7 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../variables';
+    @import '../../../variables';
 
     div.buttons {
         white-space: nowrap;

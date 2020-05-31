@@ -1,9 +1,6 @@
 <template>
     <div class="poker-table main-box">
-        <h2>
-            <span class="table-name">{{ tableName }}</span>
-            <span class="game" v-if="game">{{ game.game }}</span>
-        </h2>
+        <h2><span class="table-name">{{ tableName }}</span></h2>
 
         <transition name="error">
             <error :message="error" v-if="error"/>
@@ -11,6 +8,7 @@
 
         <template v-if="game">
             <bourre v-if="game.game === 'bourre'"/>
+            <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
         </template>
         <template v-else-if="clientState">
             <form class="player-state inner" v-if="userClientState.isSeated">
@@ -34,21 +32,58 @@
 
             <h3>Pick a Game</h3>
 
-            <form class="bourre inner" v-if="canStart" @submit.prevent="startBourreGame">
-                <h4>Bourré</h4>
+            <div class="game-selector" v-if="canStart">
+                <form class="bourre inner" @submit.prevent="startBourreGame">
+                    <h4>Bourré</h4>
 
-                <label class="ante">
-                    <span>Ante</span>
-                    <span>
-                        <input type="number" min="25" max="200" step="25" v-model="ante"/>
+                    <label class="ante">
+                        <span>Ante</span>
+                        <span>
+                        <input type="number" min="25" max="200" step="25" v-model="bourre.ante"/>
                         <em>¢</em>
                     </span>
-                </label>
+                    </label>
 
-                <div class="buttons">
-                    <button>Start</button>
-                </div>
-            </form>
+                    <div class="buttons">
+                        <button>Start</button>
+                    </div>
+                </form>
+
+                <form class="pass-the-poop inner" @submit.prevent="startPassThePoopGame">
+                    <h4>Pass the Poop</h4>
+
+                    <label class="ante">
+                        <span>Ante</span>
+                        <span>
+                        <input type="number" min="25" max="200" step="25" v-model="passThePoop.ante"/>
+                        <em>¢</em>
+                    </span>
+                    </label>
+
+                    <label class="edition">
+                        <span>Edition</span>
+                        <select v-model="passThePoop.edition">
+                            <option value="standard">Standard</option>
+                            <option value="diarrhea">Diarrhea</option>
+                            <option value="pairs">Pairs</option>
+                        </select>
+                    </label>
+
+                    <label class="lives">
+                        <span>Lives</span>
+                        <select v-model="passThePoop.lives">
+                            <option value="3">3</option>
+                            <option value="2">2</option>
+                            <option value="1">1</option>
+                        </select>
+                    </label>
+
+                    <div class="buttons">
+                        <button>Start</button>
+                    </div>
+                </form>
+            </div>
+
             <div class="waiting" v-else>
                 <p>Waiting on the table admin to start the game!</p>
                 <loading class="loading"/>
@@ -58,13 +93,12 @@
             <loading/>
         </template>
 
-        <dealer-log class="dealer-log" />
+        <dealer-log class="dealer-log"/>
     </div>
 </template>
 
 <script>
     import webSocketClient from "@/webSocket"
-    import Bourre from "@/components/games/Bourre"
     import {mapGetters, mapState} from "vuex"
     import PokerTablePlayerList from "@/components/games/PokerTablePlayerList"
     import Loading from "@/components/Loading"
@@ -72,10 +106,12 @@
     import show_error from "@/mixins/show_error"
     import client from "@/client"
     import DealerLog from "./DealerLog"
+    import Bourre from '@/components/games/bourre/Bourre'
+    import PassThePoop from "./games/passthepoop/PassThePoop"
 
     export default {
         name: "PokerTable",
-        components: {DealerLog, Error, Loading, PokerTablePlayerList, Bourre},
+        components: {PassThePoop, DealerLog, Error, Loading, PokerTablePlayerList, Bourre},
         mixins: [show_error],
         props: {
             uuid: {
@@ -85,7 +121,14 @@
         },
         data() {
             return {
-                ante: '25',
+                bourre: {
+                    ante: '25',
+                },
+                passThePoop: {
+                    ante: '150',
+                    edition: 'standard',
+                    lives: '3',
+                },
                 table: null,
                 error: null,
                 ws: null,
@@ -116,7 +159,15 @@
         },
         methods: {
             startBourreGame() {
-                this.ws.send('createGame', 'bourre', null, {ante: parseInt(this.ante, 10)})
+                this.ws.send('createGame', 'bourre', null, {ante: parseInt(this.bourre.ante, 10)})
+                    .catch(err => this.showError(err))
+            },
+            startPassThePoopGame() {
+                this.ws.send('createGame', 'pass-the-poop', null, {
+                        ante: parseInt(this.passThePoop.ante, 10),
+                        edition: this.passThePoop.edition,
+                        lives: parseInt(this.passThePoop.lives, 10),
+                    })
                     .catch(err => this.showError(err))
             },
             setPlayerActive(event) {
@@ -137,6 +188,10 @@
 
 <style lang="scss" scoped>
     @import '../variables.scss';
+
+    h2 {
+        margin: 0;
+    }
 
     span.game {
         &::before {
@@ -214,5 +269,9 @@
 
     .dealer-log {
         margin-top: $spacing;
+    }
+
+    .game-selector {
+        display: flex;
     }
 </style>

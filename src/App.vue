@@ -120,7 +120,7 @@
             display: block;
         }
 
-        input:not([type="checkbox"]) {
+        input:not([type="checkbox"]), select {
             background-color: white;
             border-radius:    $border-radius;
             border:           1px solid $border-color;

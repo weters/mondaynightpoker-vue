@@ -1,5 +1,6 @@
 <template>
     <div class="bourre">
+        <h3>Bourré</h3>
         <transition name="error">
             <error :message="error" v-if="error"/>
         </transition>
@@ -14,10 +15,10 @@
 
 <script>
     import {mapGetters} from "vuex"
-    import BourrePlayers from "@/components/games/BourrePlayers"
+    import BourrePlayers from "@/components/games/bourre/BourrePlayers"
     import Error from "@/components/Error"
-    import BourreGameOverview from "@/components/games/BourreGameOverview"
-    import BourrePlayerBar from "@/components/games/BourrePlayerBar"
+    import BourreGameOverview from "@/components/games/bourre/BourreGameOverview"
+    import BourrePlayerBar from "@/components/games/bourre/BourrePlayerBar"
 
     export default {
         name: "Bourre",
