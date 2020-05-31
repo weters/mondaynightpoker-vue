@@ -101,6 +101,10 @@
             grid-gap:              $spacing-medium;
             width:                 100%;
             align-items:           center;
+
+            svg {
+                width: 100%;
+            }
         }
 
         .card-container {
