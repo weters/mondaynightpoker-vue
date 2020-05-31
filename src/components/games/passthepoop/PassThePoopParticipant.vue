@@ -17,14 +17,15 @@
         </div>
 
         <span class="is-turn">
-            <mdi-icon :icon="mdiTimerSand" v-if="isPlayerTurn"/>
+            <mdi-icon :icon="mdiCardsOutline" v-if="isPlayerTurn && goingToDeck" />
+            <mdi-icon :icon="mdiTimerSand" v-else-if="isPlayerTurn"/>
         </span>
     </div>
 </template>
 
 <script>
     import MdiIcon from "../../MdiIcon"
-    import {mdiCardsPlayingOutline, mdiPokerChip, mdiTimerSand} from '@mdi/js'
+    import {mdiCardsPlayingOutline, mdiPokerChip, mdiTimerSand, mdiCardsOutline} from '@mdi/js'
     import PlayingCard from "../../PlayingCard"
 
     export default {
@@ -40,6 +41,7 @@
             return {
                 mdiCardsPlayingOutline,
                 mdiPokerChip,
+                mdiCardsOutline,
                 mdiTimerSand,
                 hideCard: false,
                 cardTransition: 'flip-card',
@@ -52,8 +54,14 @@
             isPlayerTurn() {
                 return this.$store.getters['passThePoop/isPlayerTurn'](this.participant.playerId)
             },
+            lastGameAction() {
+                return this.$store.getters['passThePoop/gameData'].gameState.lastGameAction
+            },
+            goingToDeck() {
+                return this.lastGameAction && this.lastGameAction.gameAction.name === 'Go to Deck'
+            },
             didTradeCard() {
-                const lastGameAction = this.$store.getters['passThePoop/gameData'].gameState.lastGameAction
+                const lastGameAction = this.lastGameAction
                 return lastGameAction &&
                     lastGameAction.gameAction.name === 'Trade' &&
                     lastGameAction.playerId === this.participant.playerId
@@ -136,6 +144,8 @@
         span.is-turn {
             display: inline-block;
             width:   25px;
+            height:  25px;
+            margin-top: $spacing-small;
         }
     }
 
@@ -165,17 +175,17 @@
     }
 
     .lives-leave-active {
-        animation: lose-life 500ms;
+        animation:       lose-life 500ms;
         animation-delay: 1000ms;
     }
 
     @keyframes lose-life {
         from {
-            opacity: 1;
+            opacity:   1;
             transform: none;
         }
         to {
-            opacity: 0;
+            opacity:   0;
             transform: translateY(-100%);
         }
     }

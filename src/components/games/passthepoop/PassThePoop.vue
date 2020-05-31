@@ -5,14 +5,17 @@
         <player-bar :error="error">
             <div class="bar">
                 <div class="card">
-                    <playing-card :rank="card.rank" :suit="card.suit" v-if="card"/>
+                    <transition name="card" mode="out-in">
+                        <playing-card :rank="card.rank" :suit="card.suit" v-if="card" :key="`${card.rank}.${card.suit}`"/>
+                    </transition>
                 </div>
                 <div class="buttons">
                     <button
                             type="button"
                             v-for="a in availableActions"
                             :key="a.id"
-                            @click="execute(a.id)">{{a.name}}</button>
+                            @click="execute(a.id)">{{a.name}}
+                    </button>
                 </div>
             </div>
 
@@ -96,5 +99,14 @@
                 width:       min-content;
             }
         }
+    }
+
+    .card-enter-active, .card-leave-active {
+        transition: all 500ms;
+    }
+
+    .card-enter, .card-leave-to {
+        opacity: 0;
+        transform: translateY(-100%);
     }
 </style>
