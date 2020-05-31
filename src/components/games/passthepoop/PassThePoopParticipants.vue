@@ -1,11 +1,11 @@
 <template>
-    <div class="ptp-participants">
+    <transition-group name="participant" tag="div" class="ptp-participants">
         <pass-the-poop-participant
                 v-for="p in participants"
                 :participant="p"
                 :key="p.playerId"
         />
-    </div>
+    </transition-group>
 </template>
 
 <script>
@@ -27,19 +27,23 @@
     @import '../../../variables.scss';
 
     div.ptp-participants {
-        $margin: calc(#{$spacing} / -2);
-        display: flex;
-        flex-flow: row wrap;
-        margin: $margin;
+        $margin:         calc(#{$spacing} / -2);
+        display:         flex;
+        flex-flow:       row wrap;
+        margin:          $margin;
         justify-content: center;
 
         & > * {
             margin: calc(#{$spacing} / 2);
-            flex: 0 0 calc(50% - #{$spacing});
+            flex:   0 0 calc(50% - #{$spacing});
 
             @media (min-width: 1000px) {
                 flex: 0 0 calc(25% - #{$spacing});
             }
         }
+    }
+
+    .participant-move {
+        transition: transform 1s;
     }
 </style>
