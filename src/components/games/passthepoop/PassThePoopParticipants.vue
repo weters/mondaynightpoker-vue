@@ -48,4 +48,13 @@
     .participant-move {
         transition: transform 1s;
     }
+
+    .participant-leave-active {
+        transition: all 500ms;
+    }
+
+    .participant-leave-to {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
 </style>
