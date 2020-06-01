@@ -10,8 +10,9 @@
         <div class="card-container">
             <div class="background"></div>
             <transition :name="cardTransition" mode="out-in">
-                <playing-card v-if="card" :rank="card.rank" :suit="card.suit" :key="`${card.rank}.${card.suit}`"/>
-                <div v-else-if="!hideCard" class="card-back">
+                <span v-if="hideCard"></span>
+                <playing-card v-else-if="card" :rank="card.rank" :suit="card.suit" :key="`${card.rank}.${card.suit}`"/>
+                <div v-else class="card-back">
                     <mdi-icon :icon="mdiCardsPlayingOutline"/>
                 </div>
             </transition>
@@ -76,6 +77,17 @@
             },
         },
         watch: {
+            'participant.isCardDead': {
+                handler(newVal) {
+                    if (newVal) {
+                        setTimeout(() => {
+                            this.cardTransition = 'trade-card'
+                            this.$nextTick().then(() => this.hideCard = true)
+                        }, 2000)
+                    }
+                },
+                immediate: true,
+            },
             didTradeCard: {
                 handler(trade) {
                     if (trade) {
