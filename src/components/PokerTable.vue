@@ -55,7 +55,7 @@
                     <label class="ante">
                         <span>Ante</span>
                         <span>
-                        <input type="number" min="25" max="200" step="25" v-model="passThePoop.ante"/>
+                        <input type="number" min="25" max="400" step="25" v-model="passThePoop.ante"/>
                         <em>¢</em>
                     </span>
                     </label>
