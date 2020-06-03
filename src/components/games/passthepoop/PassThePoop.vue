@@ -96,12 +96,12 @@
             },
         },
         watch: {
-            'gameData.gameState.participants': {
+            'gameData.gameState.allParticipants': {
                 handler: function (newValue) {
                     const totalLives = this.gameData.gameState.lives
                     const ante = this.gameData.gameState.ante
                     let pot = 0
-                    newValue.forEach(p => pot += (totalLives - p.lives) * ante / totalLives)
+                    Object.values(newValue).forEach(p => pot += (totalLives - p.lives) * ante / totalLives)
                     const oldPot = this.pot
 
                     if (pot !== oldPot) {
