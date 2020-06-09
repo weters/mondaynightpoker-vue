@@ -26,12 +26,18 @@
                 </div>
 
                 <div class="buttons">
-                    <button
-                            type="button"
-                            v-for="a in availableActions"
-                            :key="a.id"
-                            @click="execute(a.id)">{{a.name}}
-                    </button>
+                    <template v-if="confirm">
+                        <button @click="confirm=null" type="button" class="secondary">Cancel</button>
+                        <button @click="execute(confirm)" type="button">Yes, {{confirm.name}}</button>
+                    </template>
+                    <template v-else>
+                        <button
+                                type="button"
+                                v-for="a in availableActions"
+                                :key="a.id"
+                                @click="confirm=a">{{a.name}}
+                        </button>
+                    </template>
                 </div>
             </div>
 
@@ -65,10 +71,9 @@
                 mdiCards,
                 mdiPokerChip,
                 error: null,
-                confirmStay: false,
-                confirmTrade: false,
                 cardsLeftInDeck: 52,
                 pot: 0,
+                confirm: null,
             }
         },
         computed: {
@@ -90,7 +95,7 @@
         },
         methods: {
             execute(action) {
-                this.webSocket.send('execute', String(action))
+                this.webSocket.send('execute', String(action.id))
                     .then(res => console.log(res))
                     .catch(err => this.showError(err))
             },
@@ -132,6 +137,9 @@
                 },
                 immediate: true,
             },
+            availableActions() {
+                this.confirm = null
+            }
         },
     }
 </script>
