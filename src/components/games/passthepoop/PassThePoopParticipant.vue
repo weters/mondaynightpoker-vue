@@ -78,12 +78,14 @@
         },
         watch: {
             'participant.isCardDead': {
-                handler(newVal) {
-                    if (newVal) {
+                handler(isCardDead) {
+                    if (isCardDead) {
                         setTimeout(() => {
                             this.cardTransition = 'trade-card'
                             this.$nextTick().then(() => this.hideCard = true)
                         }, 2000)
+                    } else {
+                        this.hideCard = false
                     }
                 },
                 immediate: true,
