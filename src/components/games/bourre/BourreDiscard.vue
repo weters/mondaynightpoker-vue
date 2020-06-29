@@ -20,7 +20,7 @@
                     </button>
                 </template>
                 <template v-else>
-                    <button class="secondary" @click="confirmFold=true">Fold</button>
+                    <button class="secondary" @click="setConfirmFold">Fold</button>
                     <button @click="confirmPlay=true">
                         <span v-if="Object.keys(selected).length === 0">Keep All</span>
                         <span v-else>Discard Selected</span>
@@ -76,6 +76,14 @@
                     .catch(err => {
                         this.$emit('error', err)
                     })
+            },
+            setConfirmFold() {
+                if (this.selected.length > 0) {
+                    this.$emit('error', 'You cannot fold with cards selected')
+                    return
+                }
+
+                this.confirmFold = true
             },
             fold() {
                 this.error = null
