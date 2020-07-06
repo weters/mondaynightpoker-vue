@@ -9,6 +9,7 @@
         <template v-if="game">
             <bourre v-if="game.game === 'bourre'"/>
             <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
+            <little-l v-else-if="game.game === 'little-l'" />
         </template>
         <template v-else-if="clientState">
             <form class="player-state inner" v-if="userClientState.isSeated">
@@ -82,6 +83,29 @@
                         <button>Start</button>
                     </div>
                 </form>
+
+                <form class="little-l inner" @submit.prevent="startLittleLGame">
+                    <h4>Little L</h4>
+
+                    <label class="ante">
+                        <span>Ante</span>
+                        <span>
+                        <input type="number" min="25" max="400" step="25" v-model="littleL.ante"/>
+                        <em>¢</em>
+                    </span>
+                    </label>
+
+                    <div class="trade-ins">
+                        <span>Trade-ins</span>
+
+                        <label v-for="i in 5" :key="i" class="optional checkbox"><input type="checkbox" :value="i-1"
+                                                                                        v-model="littleL.tradeIns"/><span>{{i-1}}</span></label>
+                    </div>
+
+                    <div class="buttons">
+                        <button>Start</button>
+                    </div>
+                </form>
             </div>
 
             <div class="waiting" v-else>
@@ -108,10 +132,11 @@
     import DealerLog from "./DealerLog"
     import Bourre from '@/components/games/bourre/Bourre'
     import PassThePoop from "./games/passthepoop/PassThePoop"
+    import LittleL from "./games/littlel/LittleL"
 
     export default {
         name: "PokerTable",
-        components: {PassThePoop, DealerLog, Error, Loading, PokerTablePlayerList, Bourre},
+        components: {LittleL, PassThePoop, DealerLog, Error, Loading, PokerTablePlayerList, Bourre},
         mixins: [show_error],
         props: {
             uuid: {
@@ -128,6 +153,10 @@
                     ante: '150',
                     edition: 'standard',
                     lives: '3',
+                },
+                littleL: {
+                    ante: '50',
+                    tradeIns: ['0', '2'],
                 },
                 table: null,
                 error: null,
@@ -169,6 +198,12 @@
                         lives: parseInt(this.passThePoop.lives, 10),
                     })
                     .catch(err => this.showError(err))
+            },
+            startLittleLGame() {
+                this.ws.send('createGame', 'little-l', null, {
+                    ante: parseInt(this.littleL.ante, 10),
+                    tradeIns: this.littleL.tradeIns.map(v => parseInt(v, 10)),
+                })
             },
             setPlayerActive(event) {
                 // the field is to sit out, so we need the opposite
@@ -250,6 +285,7 @@
 
     label.ante {
         width: 100%;
+
         & > span:last-child {
             display:     flex;
             align-items: center;
@@ -272,22 +308,40 @@
         margin-top: $spacing;
     }
 
+    .trade-ins {
+        margin-bottom: $spacing;
+
+        label {
+            margin: 0;
+            width:  auto;
+
+            span {
+                display:        inline-block;
+                margin-left:    $spacing-small;
+                vertical-align: middle;
+            }
+
+            input {
+                display:        inline-block;
+                width:          auto;
+                vertical-align: middle;
+            }
+        }
+    }
+
     .game-selector {
-        display: flex;
+        display: block;
 
-        @media (max-width: 500px) {
-            display: block;
-            form {
-                margin-bottom: $spacing;
+        form {
+            margin-bottom: $spacing;
+            width:         100%;
+
+            label {
                 width: 100%;
+            }
 
-                label {
-                    width: 100%;
-                }
-
-                input, select {
-                    width: 100%;
-                }
+            input[type="text"], select {
+                width: 100%;
             }
         }
     }
