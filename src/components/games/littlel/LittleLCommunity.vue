@@ -1,17 +1,21 @@
 <template>
     <div class="community">
-        <playing-card-container />
-        <playing-card-container />
-        <playing-card-container />
+        <playing-card-container v-for="(card, i) in gameState.community" :key="i" :card="card" />
     </div>
 </template>
 
 <script>
     import PlayingCardContainer from "../../PlayingCardContainer"
+    import {mapGetters} from "vuex"
 
     export default {
         name: "LittleLCommunity",
         components: {PlayingCardContainer},
+        computed: {
+            ...mapGetters({
+                gameState: 'littleL/gameState',
+            })
+        }
     }
 </script>
 

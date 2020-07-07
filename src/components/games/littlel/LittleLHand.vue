@@ -22,7 +22,7 @@
         components: {PlayingCardContainer},
         props: {
             canSelect: Boolean,
-            value: [],
+            value: Array,
         },
         data() {
             return {
