@@ -1,5 +1,5 @@
 <template>
-    <div class="little-l-participant">
+    <div :class="{ 'little-l-participant': true, 'is-action': isAction }">
         <div :class="{cards: true, 'did-fold': participant.didFold}">
             <div v-for="(card, i) in cards" :key="i">
                 <playing-card-container :card="card"/>
@@ -7,9 +7,11 @@
         </div>
 
         <div class="metadata">
-            <strong class="display-name">{{ playerData.player.displayName }}</strong>
-            <span v-if="participant.handRank" class="hand-rank">{{ participant.handRank }}</span>
-            <mdi-icon class="is-action" :icon="mdiPokerChip" v-if="isAction"/>
+            <div class="name-hand">
+                <strong class="display-name">{{ playerData.player.displayName }}</strong>
+                <span v-if="participant.handRank" :class="{'hand-rank': true, 'is-winner': isWinner}">{{ participant.handRank }}</span>
+            </div>
+            <chip-stack :amount="chipStack" class="metadata-chip-stack"/>
         </div>
     </div>
 </template>
@@ -17,22 +19,18 @@
 <script>
     import PlayingCardContainer from "../../PlayingCardContainer"
     import {mapGetters} from "vuex"
-    import MdiIcon from "../../MdiIcon"
-    import {mdiPokerChip} from "@mdi/js"
+    import balance from "../../../mixins/balance"
+    import ChipStack from "../../ChipStack"
 
     export default {
         name: "LittleLParticipant",
-        components: {MdiIcon, PlayingCardContainer},
+        components: {ChipStack, PlayingCardContainer},
+        mixins: [balance],
         props: {
             participant: {
                 type: Object,
                 required: true,
             },
-        },
-        data() {
-            return {
-                mdiPokerChip,
-            }
         },
         computed: {
             ...mapGetters({
@@ -56,32 +54,75 @@
 
                 return this.participant.hand
             },
+            isWinner() {
+                return this.gameState.winners.indexOf(this.participant.playerId) >= 0
+            },
+            chipStack() {
+                if (this.gameState.winners.length > 0) {
+                    return this.isWinner ? this.participant.balance : 0
+                }
+
+                return this.participant.currentBet
+            }
         },
     }
 </script>
 
 <style lang="scss" scoped>
-    div.cards {
-        display: flex;
-        margin:  -5px;
+    @import '../../../variables.scss';
 
-        & > * {
-            flex:   1 1 100px;
-            margin: 5px;
+    div.little-l-participant {
+        border-top:    5px solid transparent;
+        padding-top:   5px;
+        border-radius: $border-radius;
+
+        &.is-action {
+            border-top-color: $yellow;
         }
 
-        &.did-fold {
-            filter: brightness(0);
-            opacity: 0.2;
+        div.cards {
+            display: flex;
+            margin:  -5px;
+
+            & > * {
+                flex:   1 1 100px;
+                margin: 5px;
+            }
+
+            &.did-fold {
+                filter:  brightness(0);
+                opacity: 0.2;
+            }
         }
-    }
 
-    .is-action {
-        display: block;
-        width: 18px;
-    }
+        div.metadata {
+            display:    flex;
+            flex-wrap:  wrap;
+            margin-top: $spacing-medium;
 
-    span.hand-rank {
-        display: block;
+            strong.display-name {
+                font-weight: normal;
+            }
+
+            .hand-rank {
+                display:     block;
+                font-size:   1.2em;
+                color: $text-color-light;
+
+                &.is-winner {
+                    font-weight: bold;
+                    color: black;
+                }
+            }
+
+            .metadata-chip-stack {
+                margin-left: auto;
+
+                @media(max-width: 599px) {
+                    margin-top: $spacing-medium;
+                    flex: 0 0 100%;
+                }
+            }
+        }
     }
 </style>

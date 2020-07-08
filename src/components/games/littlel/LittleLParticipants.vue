@@ -22,18 +22,18 @@
 <style lang="scss" scoped>
     @import '../../../variables';
     .little-l-participants {
-        $margin: calc(#{$spacing} / -2);
+        $margin: calc(#{$spacing} * -1);
         display: flex;
         flex-flow: row wrap;
         margin: $margin;
         justify-content: center;
 
         & > * {
-            margin: calc(#{$spacing} / 2);
-            flex: 0 0 calc(50% - #{$spacing});
+            margin: $spacing;
+            flex: 0 0 calc(50% - #{$spacing} * 2);
 
             @media (min-width: 1000px) {
-                flex: 0 0 calc(25% - #{$spacing});
+                flex: 0 0 calc(25% - #{$spacing} * 2);
             }
         }
     }

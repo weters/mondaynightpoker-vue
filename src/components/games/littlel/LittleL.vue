@@ -1,27 +1,28 @@
 <template>
     <div class="little-l">
-        <h3>Little L</h3>
+        <h3>Little L: Trade {{ tradeIns }}</h3>
 
-        <div class="community">
+        <div class="board">
             <little-l-community/>
-
-            <p><strong>Pot: {{formatAmount(gameState.pot)}}</strong><br/>
-                <strong>Current Bet: {{ formatAmount(gameState.currentBet) }}</strong></p>
+            <chip-stack :amount="gameState.pot" />
         </div>
 
         <little-l-participants/>
 
-        <player-bar :error="error">
+        <player-bar :error="error" :is-turn="hasAction">
             <div class="bar">
                 <little-l-hand :can-select="true" v-model="selectedCards" class="bar-hand"/>
 
                 <div class="buttons">
                     <template v-if="bet">
-                        <label>
-                            <span>Amount</span>
-                            <input type="range" min="25" :max="gameState.pot" v-model="amount"/>
-                            <input type="number" v-model="amount"/>
-                        </label>
+                        <div class="amount">
+                            <label class="optional">
+                                <span>Amount</span>
+                                <input type="range" :min="startingBet" :step="gameState.ante" :max="gameState.pot" v-model="amount"/>
+                            </label>
+
+                            <span class="amount">{{formatAmount(amount)}}</span>
+                        </div>
                         <button class="secondary" type="button" @click="bet=null">Cancel</button>
                         <button type="button" @click="handleBet">Yes, {{ bet.name }}</button>
                     </template>
@@ -32,13 +33,16 @@
                     <template v-else>
                         <button type="button" v-for="action in actions" :key="action.id" @click="handleAction(action)">
                             {{action.name}}
+                            <template v-if="action.id === 'call'">
+                                {{formatAmount(gameState.currentBet - self.currentBet)}}
+                            </template>
                         </button>
                     </template>
                 </div>
             </div>
 
             <template v-slot:gameInfo>
-                Trade: {{ tradeIns }} | {{ self.handRank }}
+                {{ self.handRank }}
             </template>
         </player-bar>
     </div>
@@ -52,10 +56,11 @@
     import balance from "../../../mixins/balance"
     import show_error from "../../../mixins/show_error"
     import LittleLParticipants from "./LittleLParticipants"
+    import ChipStack from "../../ChipStack"
 
     export default {
         name: "LittleL",
-        components: {LittleLParticipants, LittleLHand, PlayerBar, LittleLCommunity},
+        components: {ChipStack, LittleLParticipants, LittleLHand, PlayerBar, LittleLCommunity},
         mixins: [balance, show_error],
         data() {
             return {
@@ -63,7 +68,8 @@
                 selectedCards: [],
                 confirm: null,
                 bet: null,
-                amount: 25,
+                startingBet: 0,
+                amount: 0,
             }
         },
         computed: {
@@ -73,8 +79,17 @@
                 self: 'littleL/self',
                 actions: 'littleL/actions',
             }),
+            hasAction() {
+                return this.gameState.action === this.self.playerId
+            },
             tradeIns() {
-                return this.gameState.tradeIns.join(', ')
+                const tradeIns = this.gameState.tradeIns
+                if (tradeIns.length === 1) {
+                    return tradeIns[0]
+                }
+
+                const firstPart = tradeIns.slice(0, -1).join(', ')
+                return `${firstPart} or ${tradeIns[tradeIns.length-1]}`
             },
         },
         methods: {
@@ -127,6 +142,10 @@
                 this.confirm = null
                 this.bet = null
             },
+            bet() {
+                this.startingBet = this.gameState.currentBet ? this.gameState.currentBet * 2 : this.gameState.ante
+                this.amount = this.startingBet
+            }
         },
     }
 </script>
@@ -135,12 +154,20 @@
     @import '../../../variables';
 
     .bar {
+        div.buttons {
+            margin: 0;
+        }
+
         @media (min-width: 600px) {
             align-items: center;
             display:     flex;
 
             .bar-hand {
                 flex-grow: 1;
+            }
+
+            div.buttons {
+                margin-left: $spacing-medium;
             }
         }
 
@@ -154,12 +181,38 @@
             margin-left: auto;
         }
 
-        div.buttons {
-            margin: 0;
+        div.amount {
+            margin: 0 0 $spacing-medium $spacing-medium;
+            label {
+                margin: 0;
+
+                span {
+                    font-weight: bold;
+                    text-align: left;
+                }
+
+                input[type="range"] {
+                    padding: 0;
+                }
+            }
         }
     }
 
-    div.community {
+    div.board {
+        display: flex;
         margin-bottom: $spacing;
+        align-items: flex-end;
+
+        & > :first-child {
+            flex: 1 0 100px;
+        }
+
+        & > :nth-child(2) {
+            margin-left: $spacing;
+        }
+
+        ::v-deep .amount {
+            font-size: 1.4em;
+        }
     }
 </style>
