@@ -1,13 +1,7 @@
-const formatter = new Intl.NumberFormat('en-US', {
-   style: 'currency',
-   currency: 'USD',
-})
+import { formatAmount} from "../currency"
 
 export default {
     methods: {
-        formatAmount(cents) {
-            const dollars = cents / 100
-            return formatter.format(dollars)
-        }
+        formatAmount,
     }
 }

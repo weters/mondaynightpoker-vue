@@ -11,7 +11,7 @@
 
         <player-bar :error="error" :is-turn="hasAction">
             <div class="bar">
-                <little-l-hand :can-select="true" v-model="selectedCards" class="bar-hand"/>
+                <little-l-hand :can-select="gameState.stage === 0" v-model="selectedCards" class="bar-hand"/>
 
                 <div class="buttons">
                     <template v-if="bet">

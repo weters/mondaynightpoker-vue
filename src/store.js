@@ -3,6 +3,7 @@ import Vue from 'vue'
 import bourre from './store/bourre'
 import passThePoop from "./store/passThePoop"
 import littleL from "./store/littleL"
+import {formatAmount} from "./currency"
 
 Vue.use(Vuex)
 
@@ -33,7 +34,8 @@ const store = new Vuex.Store({
 
                 const cards = log.cards ? log.cards : []
 
-                const message = log.message.replace(/{}/g, players)
+                let message = log.message.replace(/{}/g, players)
+                message = message.replace(/\${(\d+)}/g, (match, cents) => formatAmount(cents))
                 return {
                     ...log,
                     message,
