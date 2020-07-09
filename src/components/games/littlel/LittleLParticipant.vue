@@ -6,7 +6,7 @@
             </div>
         </div>
 
-        <div class="metadata">
+        <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
             <div class="name-hand">
                 <strong class="display-name">{{ playerData.player.displayName }}</strong>
                 <span v-if="participant.handRank" :class="{'hand-rank': true, 'is-winner': isWinner}">{{ participant.handRank }}</span>
@@ -102,6 +102,11 @@
 
             strong.display-name {
                 font-weight: normal;
+            }
+
+            &.disconnected {
+                font-style: italic;
+                color: $text-color-light;
             }
 
             .hand-rank {
