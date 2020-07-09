@@ -18,7 +18,7 @@
                         <div class="amount">
                             <label class="optional">
                                 <span>Amount</span>
-                                <input type="range" :min="startingBet" :step="gameState.ante" :max="gameState.pot" v-model="amount"/>
+                                <input type="range" :min="startingBet" :step="gameState.ante" :max="gameState.maxBet" v-model="amount"/>
                             </label>
 
                             <span class="amount">{{formatAmount(amount)}}</span>
