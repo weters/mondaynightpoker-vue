@@ -1,18 +1,20 @@
 <template>
     <div class="bourre-game-overview">
-        <playing-card class="trump-card" :rank="trumpCard.rank" :suit="trumpCard.suit" v-if="trumpCard"/>
+        <div class="trump-card">
+            <playing-card-container :card="trumpCard" v-if="trumpCard" />
+        </div>
         <bourre-pot />
     </div>
     
 </template>
 
 <script>
-    import PlayingCard from "@/components/PlayingCard"
     import BourrePot from "@/components/games/bourre/BourrePot"
     import {mapGetters} from "vuex"
+    import PlayingCardContainer from "../../PlayingCardContainer"
     export default {
         name: "BourreGameOverview",
-        components: {BourrePot, PlayingCard},
+        components: {PlayingCardContainer, BourrePot},
         computed: {
             ...mapGetters({
                 gameState: 'bourre/gameState',
@@ -27,12 +29,15 @@
 <style lang="scss" scoped>
     @import '../../../variables.scss';
     div.bourre-game-overview {
-        width: min-content;
-        text-align: center;
-        margin: 0 auto $spacing;
-
+        & > * {
+            margin: 0 auto;
+        }
         .trump-card {
-            width: 50px;
+            max-width: 75px;
+        }
+
+        & > :nth-child(2) {
+            margin: $spacing-medium auto $spacing;
         }
     }
 </style>

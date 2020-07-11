@@ -1,24 +1,23 @@
 <template>
-    <div class="bourre-pot">
-        <strong>{{ formatAmount(gameState.pot) }}</strong>
-    </div>
+    <chip-stack :amount="gameState.pot"/>
 </template>
 
 <script>
     import balance from "@/mixins/balance"
     import {mapGetters} from "vuex"
+    import ChipStack from "../../ChipStack"
 
     export default {
         name: "BourrePot",
+        components: {ChipStack},
         mixins: [balance],
         computed: {
             ...mapGetters({
                 gameState: 'bourre/gameState',
             }),
-        }
+        },
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
 </style>
