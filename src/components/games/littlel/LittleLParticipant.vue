@@ -92,29 +92,40 @@
 <style lang="scss" scoped>
     @import '../../../variables.scss';
 
+    $max-width: 599px;
+
     div.little-l-participant {
-        border-top:    5px solid transparent;
-        padding-top:   5px;
+        border: 1px solid transparent;
+        padding:   $spacing-small;
         border-radius: $border-radius;
+        box-shadow: 0 0 5px rgba(black, 0.2);
 
         &.is-action {
-            border-top-color: $yellow;
+            border-color: $yellow;
+            box-shadow: 0 0 5px rgba($yellow, 0.6);
         }
 
         div.cards {
             display: flex;
-            margin:  -5px;
+            margin:  -2px;
 
             & > * {
                 flex:   1 1 100px;
-                margin: 5px;
+                margin: 2px;
+            }
+
+            @media (max-width: $max-width) {
+                margin: -1px;
+                & > * {
+                    margin: 1px;
+                }
             }
         }
 
         div.metadata {
             display:    flex;
             flex-wrap:  wrap;
-            margin-top: $spacing-medium;
+            margin-top: $spacing-small;
 
             strong.display-name {
                 font-weight: normal;
@@ -139,7 +150,7 @@
             .metadata-chip-stack {
                 margin-left: auto;
 
-                @media(max-width: 599px) {
+                @media(max-width: $max-width) {
                     margin-top: $spacing-medium;
                     flex: 0 0 100%;
                 }

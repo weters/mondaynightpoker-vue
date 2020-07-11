@@ -53,6 +53,10 @@ class Client {
         return this._get(`/player/auth/${jwt}`)
     }
 
+    getServerInfo() {
+        return this._get(`/health`)
+    }
+
     _get(path, withAuthorization = false) {
         return this._do(path, {}, withAuthorization)
     }

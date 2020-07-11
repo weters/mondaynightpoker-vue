@@ -36,5 +36,20 @@
                 flex: 0 0 calc(25% - #{$spacing} * 2);
             }
         }
+
+        @media (max-width: 599px) {
+            $margin: $spacing-small;
+            margin: calc(#{$margin} * -1);
+
+            & > * {
+                margin: $margin;
+                flex: 0 0 calc(50% - #{$margin} * 2);
+
+                @media (min-width: 1000px) {
+                    flex: 0 0 calc(25% - #{$margin} * 2);
+                }
+            }
+
+        }
     }
 </style>
