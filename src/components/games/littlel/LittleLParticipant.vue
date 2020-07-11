@@ -2,7 +2,10 @@
     <div :class="{ 'little-l-participant': true, 'is-action': isAction }">
         <div :class="{cards: true, 'did-fold': participant.didFold}">
             <div v-for="(card, i) in cards" :key="i">
-                <playing-card-container :card="card"/>
+                <playing-card-container :card="card"  />
+            </div>
+            <div @click="i++">
+                <playing-card-container :card="i%3===0 ? { rank: 5, suit: 'spades'} : null" :hide-card="i%3===1" />
             </div>
         </div>
 
@@ -32,6 +35,12 @@
                 required: true,
             },
         },
+        data() {
+            return {
+                i: 0,
+                hiddenCards: 0, // cards to hide for a short-time for visual indication of trade-in
+            }
+        },
         computed: {
             ...mapGetters({
                 gameState: 'littleL/gameState',
@@ -47,6 +56,12 @@
                     const hand = []
                     for (let i = 0; i < this.gameState.initialDeal; i++) {
                         hand.push(null)
+                    }
+
+                    console.log(this.hiddenCards)
+                    if (this.hiddenCards > 0) {
+                        console.log("YES", this.hiddenCards)
+                        return this.participant.slice(0, -1 * this.hiddenCards)
                     }
 
                     return hand
@@ -65,6 +80,17 @@
                 return this.participant.currentBet
             }
         },
+        watch: {
+            'participant.traded': {
+                handler(newVal) {
+                    console.log("SETTING HIDDEN CARDS")
+                    this.hiddenCards = newVal
+                    //setTimeout(() => {
+                        //this.hiddenCards = 0
+                    //}, 500)
+                }
+            }
+        }
     }
 </script>
 

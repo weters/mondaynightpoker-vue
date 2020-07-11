@@ -1,8 +1,9 @@
 <template>
     <div class="playing-card-container">
-        <transition name="flip" mode="out-in">
+        {{ transition }}
+        <transition :name="transition" mode="out-in">
             <playing-card :suit="card.suit" :rank="card.rank" :key="`${card.rank}.${card.suit}`" v-if="card"/>
-            <playing-card-back v-else/>
+            <playing-card-back v-else-if="!hideCard" :key="hideCard" />
         </transition>
     </div>
 </template>
@@ -16,7 +17,13 @@
         components: {PlayingCardBack, PlayingCard},
         props: {
             card: Object,
+            hideCard: Boolean
         },
+        computed: {
+            transition() {
+                return this.hideCard ? 'vanish' : 'flip'
+            }
+        }
     }
 </script>
 
@@ -29,6 +36,9 @@
         height:      0;
         padding-top: calc(3.5 / 2.5 * 100%);
         position:    relative;
+        background-color: #eee;
+        border-radius: $border-radius;
+        box-shadow: inset 2px 2px 2px rgba(black, 0.1);
 
         & > * {
             position: absolute;
@@ -61,5 +71,14 @@
 
     .flip-enter {
         transform: rotateY(-90deg);
+    }
+
+    .vanish-enter-active, .vanish-leave-active {
+        transition: all 300ms;
+    }
+
+    .vanish-enter, .vanish-leave-to {
+        transform: translateY(-100%);
+        opacity: 0;
     }
 </style>
