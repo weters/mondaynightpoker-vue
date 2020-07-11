@@ -2,6 +2,10 @@
     <div class="pass-the-poop">
         <h3>Pass the Poop / {{ gameData.gameState.edition }} Edition</h3>
 
+        <div class="pot">
+            <chip-stack :amount="pot" />
+        </div>
+
         <pass-the-poop-participants :participants="participants"/>
 
         <player-bar :error="error" :is-turn="isTurn">
@@ -14,11 +18,6 @@
                 </div>
 
                 <div class="metadata">
-                    <div class="item">
-                        <span class="icon"><mdi-icon :icon="mdiPokerChip"/></span>
-                        <span class="value">{{ formatAmount(pot) }}</span>
-                    </div>
-
                     <div class="item">
                         <span class="icon"><mdi-icon :icon="mdiCards"/></span>
                         <span class="value">{{ cardsLeftInDeck }}</span>
@@ -59,17 +58,17 @@
     import showError from "../../../mixins/show_error"
     import {tween} from 'popmotion'
     import MdiIcon from "../../MdiIcon"
-    import {mdiCards, mdiPokerChip} from "@mdi/js"
+    import {mdiCards} from "@mdi/js"
     import balance from "../../../mixins/balance"
+    import ChipStack from "../../ChipStack"
 
     export default {
         name: "PassThePoop",
-        components: {MdiIcon, PassThePoopParticipants, PlayingCard, PlayerBar},
+        components: {ChipStack, MdiIcon, PassThePoopParticipants, PlayingCard, PlayerBar},
         mixins: [showError, balance],
         data() {
             return {
                 mdiCards,
-                mdiPokerChip,
                 error: null,
                 cardsLeftInDeck: 52,
                 pot: 0,
@@ -116,7 +115,7 @@
                                 to: pot,
                                 duration: 500,
                             }).pipe(Math.round).start(val => {
-                                this.pot = val
+                                this.pot = Math.floor(val / 25) * 25
                             })
                         }, 1000)
                     }
@@ -148,6 +147,13 @@
     @import '../../../variables';
 
     .pass-the-poop {
+        .pot {
+            & > * {
+                margin: 0 auto;
+            }
+
+            margin-bottom: $spacing;
+        }
 
         .card {
             max-width: 100px;
