@@ -1,11 +1,8 @@
 <template>
     <div :class="{ 'little-l-participant': true, 'is-action': isAction }">
-        <div :class="{cards: true, 'did-fold': participant.didFold}">
+        <div class="cards">
             <div v-for="(card, i) in cards" :key="i">
-                <playing-card-container :card="card"  />
-            </div>
-            <div @click="i++">
-                <playing-card-container :card="i%3===0 ? { rank: 5, suit: 'spades'} : null" :hide-card="i%3===1" />
+                <playing-card-container :card="card" :hide-card="participant.didFold || hideCard(i)" />
             </div>
         </div>
 
@@ -58,12 +55,6 @@
                         hand.push(null)
                     }
 
-                    console.log(this.hiddenCards)
-                    if (this.hiddenCards > 0) {
-                        console.log("YES", this.hiddenCards)
-                        return this.participant.slice(0, -1 * this.hiddenCards)
-                    }
-
                     return hand
                 }
 
@@ -80,14 +71,18 @@
                 return this.participant.currentBet
             }
         },
+        methods: {
+            hideCard(index) {
+                return index >= this.cards.length - this.hiddenCards
+            }
+        },
         watch: {
             'participant.traded': {
                 handler(newVal) {
-                    console.log("SETTING HIDDEN CARDS")
                     this.hiddenCards = newVal
-                    //setTimeout(() => {
-                        //this.hiddenCards = 0
-                    //}, 500)
+                    setTimeout(() => {
+                        this.hiddenCards = 0
+                    }, 500)
                 }
             }
         }
@@ -113,11 +108,6 @@
             & > * {
                 flex:   1 1 100px;
                 margin: 5px;
-            }
-
-            &.did-fold {
-                filter:  brightness(0);
-                opacity: 0.2;
             }
         }
 

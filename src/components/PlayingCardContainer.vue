@@ -1,9 +1,9 @@
 <template>
     <div class="playing-card-container">
-        {{ transition }}
         <transition :name="transition" mode="out-in">
             <playing-card :suit="card.suit" :rank="card.rank" :key="`${card.rank}.${card.suit}`" v-if="card"/>
-            <playing-card-back v-else-if="!hideCard" :key="hideCard" />
+            <playing-card-back v-else-if="!hideCard" :key="hideCard"/>
+            <span v-else></span>
         </transition>
     </div>
 </template>
@@ -15,15 +15,26 @@
     export default {
         name: "PlayingCardContainer",
         components: {PlayingCardBack, PlayingCard},
+        data() {
+            return {
+                transition: 'flip',
+            }
+        },
         props: {
             card: Object,
-            hideCard: Boolean
+            hideCard: Boolean,
         },
-        computed: {
-            transition() {
-                return this.hideCard ? 'vanish' : 'flip'
-            }
-        }
+        watch: {
+            card() {
+                this.transition = 'flip'
+            },
+            hideCard(newVal) {
+                this.transition = 'vanish'
+                if (!newVal) {
+                    setTimeout(() => {this.transition = 'flip'}, 500)
+                }
+            },
+        },
     }
 </script>
 
@@ -31,14 +42,14 @@
     @import '../variables.scss';
 
     div.playing-card-container {
-        perspective: 200px;
-        width:       100%;
-        height:      0;
-        padding-top: calc(3.5 / 2.5 * 100%);
-        position:    relative;
+        perspective:      200px;
+        width:            100%;
+        height:           0;
+        padding-top:      calc(3.5 / 2.5 * 100%);
+        position:         relative;
         background-color: #eee;
-        border-radius: $border-radius;
-        box-shadow: inset 2px 2px 2px rgba(black, 0.1);
+        border-radius:    $border-radius;
+        box-shadow:       inset 2px 2px 2px rgba(black, 0.1);
 
         & > * {
             position: absolute;
@@ -78,7 +89,7 @@
     }
 
     .vanish-enter, .vanish-leave-to {
-        transform: translateY(-100%);
-        opacity: 0;
+        transform: translateY(-50%);
+        opacity:   0;
     }
 </style>
