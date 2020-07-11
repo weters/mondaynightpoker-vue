@@ -7,16 +7,7 @@
             <span class="placeholder" v-if="participant.lives === 0" :key="0"></span>
         </transition-group>
 
-        <div class="card-container">
-            <div class="background"></div>
-            <transition :name="cardTransition" mode="out-in">
-                <span v-if="hideCard"></span>
-                <playing-card v-else-if="card" :rank="card.rank" :suit="card.suit" :key="`${card.rank}.${card.suit}`"/>
-                <div v-else class="card-back">
-                    <mdi-icon :icon="mdiCardsPlayingOutline"/>
-                </div>
-            </transition>
-        </div>
+        <playing-card-container :card="card" :hide-card="hideCard" />
 
         <span class="is-turn">
             <mdi-icon :icon="mdiCardsOutline" v-if="isPlayerTurn && goingToDeck"/>
@@ -28,11 +19,11 @@
 <script>
     import MdiIcon from "../../MdiIcon"
     import {mdiCardsPlayingOutline, mdiPokerChip, mdiTimerSand, mdiCardsOutline} from '@mdi/js'
-    import PlayingCard from "../../PlayingCard"
+    import PlayingCardContainer from "../../PlayingCardContainer"
 
     export default {
         name: "PassThePoopParticipant",
-        components: {PlayingCard, MdiIcon},
+        components: {PlayingCardContainer, MdiIcon},
         props: {
             participant: {
                 type: Object,
@@ -79,10 +70,11 @@
         watch: {
             'participant.isCardDead': {
                 handler(isCardDead) {
+                    console.log('isCardDead', isCardDead)
                     if (isCardDead) {
                         setTimeout(() => {
-                            this.cardTransition = 'trade-card'
-                            this.$nextTick().then(() => this.hideCard = true)
+                            console.log("HIDE")
+                            this.hideCard = true
                         }, 2000)
                     } else {
                         this.hideCard = false
@@ -91,14 +83,8 @@
                 immediate: true,
             },
             didTradeCard: {
-                handler(trade) {
-                    if (trade) {
-                        this.cardTransition = 'trade-card'
-                        this.$nextTick().then(() => this.hideCard = trade)
-                    } else {
-                        this.hideCard = trade
-                        this.$nextTick().then(() => this.cardTransition = 'flip-card')
-                    }
+                handler(didTradeCard) {
+                    this.hideCard = didTradeCard
                 },
                 immediate: true,
             },
@@ -151,75 +137,12 @@
             }
         }
 
-        .card-container {
-            padding-top: calc(100% * 3.5 / 2.5);
-            height:      0;
-            position:    relative;
-            width:       100%;
-            perspective: 200px;
-
-            & > * {
-                position: absolute;
-                top:      0;
-                right:    0;
-                bottom:   0;
-                left:     0;
-            }
-
-            .background {
-                border-radius:    $border-radius;
-                box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
-                background-color: rgba(black, 0.1);
-                border:           1px solid rgba(black, 0.1);
-                margin:           2px;
-            }
-
-            div.card-back {
-                background:    linear-gradient($primary, $secondary);
-                border-radius: $border-radius;
-
-                svg {
-                    fill:      white;
-                    width:     75%;
-                    position:  absolute;
-                    top:       50%;
-                    left:      50%;
-                    transform: translate(-50%, -50%);
-                }
-            }
-        }
-
         span.is-turn {
             display:    inline-block;
             width:      25px;
             height:     25px;
             margin-top: $spacing-small;
         }
-    }
-
-    .flip-card-enter-active {
-        transition: all 500ms ease-out;
-    }
-
-    .flip-card-leave-active {
-        transition: all 500ms ease-in;
-    }
-
-    .flip-card-enter {
-        transform: rotate3d(0, 1, 0, 90deg)
-    }
-
-    .flip-card-leave-to {
-        transform: rotate3d(0, 1, 0, -90deg)
-    }
-
-    .trade-card-enter-active, .trade-card-leave-active {
-        transition: all 500ms;
-    }
-
-    .trade-card-enter, .trade-card-leave-to {
-        transform: translateY(-100%);
-        opacity:   0;
     }
 
     .lives-leave-active {
