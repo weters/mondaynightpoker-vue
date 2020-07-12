@@ -11,7 +11,7 @@
 
         <player-bar :error="error" :is-turn="hasAction">
             <div class="bar">
-                <little-l-hand :can-select="gameState.stage === 0" v-model="selectedCards" class="bar-hand"/>
+                <little-l-hand :can-select="gameState.round === 0" v-model="selectedCards" class="bar-hand"/>
 
                 <div class="buttons">
                     <template v-if="bet">
@@ -106,8 +106,8 @@
                     case 'bet':
                         this.bet = action
                         break
-                    case 'next-stage':
-                        this.$store.state.webSocket.send('next-stage')
+                    case 'next-round':
+                        this.$store.state.webSocket.send('next-round')
                             .catch(err => this.showError(err))
                         break
                     default:
