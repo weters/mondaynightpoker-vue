@@ -2,10 +2,6 @@
     <div class="poker-table main-box">
         <h2><span class="table-name">{{ tableName }}</span></h2>
 
-        <transition name="error">
-            <error :message="error" v-if="error"/>
-        </transition>
-
         <template v-if="game">
             <bourre v-if="game.game === 'bourre'"/>
             <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
@@ -126,8 +122,6 @@
     import {mapGetters, mapState} from "vuex"
     import PokerTablePlayerList from "@/components/games/PokerTablePlayerList"
     import Loading from "@/components/Loading"
-    import Error from "@/components/Error"
-    import show_error from "@/mixins/show_error"
     import client from "@/client"
     import DealerLog from "./DealerLog"
     import Bourre from '@/components/games/bourre/Bourre'
@@ -136,8 +130,7 @@
 
     export default {
         name: "PokerTable",
-        components: {LittleL, PassThePoop, DealerLog, Error, Loading, PokerTablePlayerList, Bourre},
-        mixins: [show_error],
+        components: {LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre},
         props: {
             uuid: {
                 type: String,
@@ -187,6 +180,9 @@
             this.$store.commit('clearLogs')
         },
         methods: {
+            showError(err) {
+                this.$store.dispatch('error', err)
+            },
             startBourreGame() {
                 this.ws.send('createGame', 'bourre', null, {ante: parseInt(this.bourre.ante, 10)})
                     .catch(err => this.showError(err))
@@ -204,6 +200,7 @@
                     ante: parseInt(this.littleL.ante, 10),
                     tradeIns: this.littleL.tradeIns.map(v => parseInt(v, 10)),
                 })
+                .catch(err => this.showError(err))
             },
             setPlayerActive(event) {
                 // the field is to sit out, so we need the opposite

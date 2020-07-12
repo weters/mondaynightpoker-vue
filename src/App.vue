@@ -5,16 +5,18 @@
             <router-view/>
         </main>
         <site-footer/>
+        <error-banner />
     </div>
 </template>
 
 <script>
     import SiteHeader from "@/components/SiteHeader"
     import SiteFooter from "@/components/SiteFooter"
+    import ErrorBanner from "./components/ErrorBanner"
 
     export default {
         name: 'App',
-        components: {SiteHeader, SiteFooter},
+        components: {ErrorBanner, SiteHeader, SiteFooter},
     }
 </script>
 

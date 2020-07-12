@@ -19,6 +19,7 @@ const store = new Vuex.Store({
         clientState: null,
         webSocket: null,
         logs: [],
+        error: null,
     },
     mutations: {
         addLogs(state, logs) {
@@ -81,6 +82,18 @@ const store = new Vuex.Store({
         },
         setClientState(state, clientState) {
             state.clientState = clientState
+        },
+        error(state, error) {
+            state.error = error
+        }
+    },
+    actions: {
+        error(context, error) {
+            context.commit('error', error)
+
+            if (error !== null) {
+                setTimeout(() => context.commit('error', null), 2500)
+            }
         }
     },
     getters: {
