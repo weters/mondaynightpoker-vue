@@ -29,7 +29,7 @@
 
     .error {
         border-radius:    $border-radius 0 0 $border-radius;
-        border-left:      5px solid $red;
+        border-left:      3px solid $error;
         background-color: white;
         position:         fixed;
         bottom:           $spacing-medium;
