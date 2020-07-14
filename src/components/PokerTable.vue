@@ -148,7 +148,7 @@
                     lives: '3',
                 },
                 littleL: {
-                    ante: '50',
+                    ante: '25',
                     tradeIns: ['0', '2'],
                 },
                 table: null,
