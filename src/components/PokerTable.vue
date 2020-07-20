@@ -5,7 +5,8 @@
         <template v-if="game">
             <bourre v-if="game.game === 'bourre'"/>
             <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
-            <little-l v-else-if="game.game === 'little-l'" />
+            <little-l v-else-if="game.game === 'little-l'"/>
+            <seven-card v-else-if="game.game === 'seven-card'" />
         </template>
         <template v-else-if="clientState">
             <form class="player-state inner" v-if="userClientState.isSeated">
@@ -102,6 +103,22 @@
                         <button>Start</button>
                     </div>
                 </form>
+
+                <form class="seven-card inner" @submit.prevent="startSevenCardGame">
+                    <h4>Seven Card</h4>
+
+                    <label class="ante">
+                        <span>Ante</span>
+                        <span>
+                        <input type="number" min="25" max="400" step="25" v-model="sevenCard.ante"/>
+                        <em>¢</em>
+                    </span>
+                    </label>
+
+                    <div class="buttons">
+                        <button>Start</button>
+                    </div>
+                </form>
             </div>
 
             <div class="waiting" v-else>
@@ -127,10 +144,11 @@
     import Bourre from '@/components/games/bourre/Bourre'
     import PassThePoop from "./games/passthepoop/PassThePoop"
     import LittleL from "./games/littlel/LittleL"
+    import SevenCard from "./games/sevencard/SevenCard"
 
     export default {
         name: "PokerTable",
-        components: {LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre},
+        components: {SevenCard, LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre},
         props: {
             uuid: {
                 type: String,
@@ -150,6 +168,9 @@
                 littleL: {
                     ante: '25',
                     tradeIns: ['0', '2'],
+                },
+                sevenCard: {
+                    ante: '25',
                 },
                 table: null,
                 error: null,
@@ -197,10 +218,16 @@
             },
             startLittleLGame() {
                 this.ws.send('createGame', 'little-l', null, {
-                    ante: parseInt(this.littleL.ante, 10),
-                    tradeIns: this.littleL.tradeIns.map(v => parseInt(v, 10)),
-                })
-                .catch(err => this.showError(err))
+                        ante: parseInt(this.littleL.ante, 10),
+                        tradeIns: this.littleL.tradeIns.map(v => parseInt(v, 10)),
+                    })
+                    .catch(err => this.showError(err))
+            },
+            startSevenCardGame() {
+                this.ws.send('createGame', 'seven-card', null, {
+                        ante: parseInt(this.sevenCard.ante, 10),
+                    })
+                    .catch(err => this.showError(err))
             },
             setPlayerActive(event) {
                 // the field is to sit out, so we need the opposite
