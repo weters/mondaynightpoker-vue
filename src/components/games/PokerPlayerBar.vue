@@ -47,6 +47,12 @@
     export default {
         name: "PokerPlayerBar",
         components: {PlayerBar},
+        props: {
+            selectedCards: {
+                type: Array,
+                default: () => [],
+            },
+        },
         data() {
             return {
                 error: null,
@@ -64,7 +70,7 @@
             }),
             isTurn() {
                 return this.gameState.currentTurn === this.self.playerId || this.gameState.action === this.self.playerId
-            }
+            },
         },
         methods: {
             handleAction(action) {
@@ -119,7 +125,7 @@
             bet() {
                 this.startingBet = this.gameState.currentBet ? this.gameState.currentBet * 2 : this.gameState.ante
                 this.amount = this.startingBet
-            }
+            },
         },
     }
 </script>
@@ -157,12 +163,13 @@
 
         div.amount {
             margin: 0 0 $spacing-medium $spacing-medium;
+
             label {
                 margin: 0;
 
                 span {
                     font-weight: bold;
-                    text-align: left;
+                    text-align:  left;
                 }
 
                 input[type="range"] {
