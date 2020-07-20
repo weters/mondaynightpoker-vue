@@ -94,6 +94,7 @@
                 const actualLength = this.participant.hand.length
 
                 if (shownLength === actualLength) {
+                    this.hand = this.participant.hand
                     return
                 }
 
