@@ -3,7 +3,7 @@
         <h3>Little L: Trade {{ tradeIns }}</h3>
 
         <div class="board">
-            <little-l-community/>
+           <little-l-community/>
             <chip-stack :amount="gameState.pot" />
         </div>
 

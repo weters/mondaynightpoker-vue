@@ -43,10 +43,12 @@
 <script>
     import PlayerBar from "./PlayerBar"
     import {mapGetters} from "vuex"
+    import balance from "../../mixins/balance"
 
     export default {
         name: "PokerPlayerBar",
         components: {PlayerBar},
+        mixins: [balance],
         props: {
             selectedCards: {
                 type: Array,
