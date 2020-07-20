@@ -1,10 +1,15 @@
 <template>
     <div :class="{'seven-card-participant': true, 'is-turn': isTurn }">
-        <transition-group class="cards" tag="div" name="hand">
-            <div class="card" v-for="(card, i) in participant.hand" :key="i">
+        <transition-group class="cards" tag="div" name="hand" v-if="hand.length > 0">
+            <div class="card" v-for="(card, i) in hand" :key="i">
                 <playing-card-container :card="card"/>
             </div>
         </transition-group>
+        <div class="cards" v-else>
+            <div class="card">
+                <playing-card-container :hide-card="true" />
+            </div>
+        </div>
 
         <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
             <div class="name-hand">
@@ -13,7 +18,9 @@
             </div>
         </div>
 
-        <chip-stack :amount="chipStack" class="participant-chip-stack"/>
+        <div class="chips">
+            <chip-stack :amount="chipStack" />
+        </div>
     </div>
 </template>
 
@@ -31,10 +38,22 @@
                 required: true,
             },
         },
+        data() {
+            return {
+                hand: [],
+                dealDelay: 200,
+            }
+        },
         computed: {
             ...mapGetters({
                 gameState: 'poker/gameState',
             }),
+            order() {
+                return this.gameState.participants.findIndex(p => p.playerId === this.participant.playerId)
+            },
+            numParticipants() {
+                return this.gameState.participants.length
+            },
             playerData() {
                 return this.$store.getters.playerDataById(this.participant.playerId)
             },
@@ -52,6 +71,58 @@
                 return this.participant.currentBet
             }
         },
+        mounted() {
+            if (this.gameState.round <= 1) {
+                if (this.participant.hand) {
+                   this.hand = this.participant.hand.slice(0, 1)
+                }
+
+                this.timeout = setTimeout(this.addCardToHand, 250 + this.order * this.dealDelay)
+            } else {
+                this.hand = this.participant.hand || []
+            }
+        },
+        methods: {
+            addCardToHand() {
+                this.timeout = null
+
+                if (!this.participant.hand) {
+                    return
+                }
+
+                const shownLength = this.hand.length
+                const actualLength = this.participant.hand.length
+
+                if (shownLength === actualLength) {
+                    return
+                }
+
+                this.hand = [...this.participant.hand.slice(0, shownLength+1)]
+                if (shownLength + 1 < actualLength) {
+                    this.timeout = setTimeout(this.addCardToHand, this.numParticipants * this.dealDelay)
+                }
+            }
+        },
+        beforeDestroy() {
+            if (this.timeout) {
+                clearTimeout(this.timeout)
+            }
+        },
+        watch: {
+            'participant.hand': {
+                handler(newHand) {
+                    if (!newHand) {
+                        this.hand = []
+                        return
+                    }
+
+                    if (!this.timeout) {
+                        const addCardToHand = this.addCardToHand.bind(this)
+                        this.timeout = setTimeout(() => addCardToHand(), this.order * this.dealDelay)
+                    }
+                }
+            }
+        }
     }
 </script>
 
@@ -87,10 +158,9 @@
             }
         }
 
-        .participant-chip-stack{
+        .chips {
             margin-left: auto;
             margin-top: $spacing-small;
-            flex: 0 1 100px;
         }
 
         div.metadata {

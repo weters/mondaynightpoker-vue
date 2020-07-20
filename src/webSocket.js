@@ -88,8 +88,6 @@ class webSocketClient {
             return
         }
 
-        console.log(message)
-
         switch (message.key) {
             case 'clientState':
                 store.commit('setClientState', message.data)
