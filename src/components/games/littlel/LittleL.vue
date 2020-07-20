@@ -75,9 +75,9 @@
         computed: {
             ...mapState(['game']),
             ...mapGetters({
-                gameState: 'littleL/gameState',
-                self: 'littleL/self',
-                actions: 'littleL/actions',
+                gameState: 'poker/gameState',
+                self: 'poker/self',
+                actions: 'poker/actions',
             }),
             hasAction() {
                 return this.gameState.action === this.self.playerId

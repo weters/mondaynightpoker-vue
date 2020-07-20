@@ -13,7 +13,7 @@
         components: {LittleLParticipant},
         computed: {
             ...mapGetters({
-                gameState: 'littleL/gameState',
+                gameState: 'poker/gameState',
             })
         }
     }

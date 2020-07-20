@@ -31,7 +31,7 @@
         },
         computed: {
             ...mapGetters({
-                self: 'littleL/self',
+                self: 'poker/self',
             }),
         },
         watch: {

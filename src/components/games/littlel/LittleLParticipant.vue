@@ -40,7 +40,7 @@
         },
         computed: {
             ...mapGetters({
-                gameState: 'littleL/gameState',
+                gameState: 'poker/gameState',
             }),
             isAction() {
                 return this.participant.playerId === this.gameState.action

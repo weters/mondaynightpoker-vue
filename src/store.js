@@ -2,7 +2,7 @@ import Vuex from 'vuex'
 import Vue from 'vue'
 import bourre from './store/bourre'
 import passThePoop from "./store/passThePoop"
-import littleL from "./store/littleL"
+import poker from "./store/poker"
 import {formatAmount} from "./currency"
 
 Vue.use(Vuex)
@@ -11,7 +11,7 @@ const store = new Vuex.Store({
     modules: {
         bourre,
         passThePoop,
-        littleL,
+        poker,
     },
     state: {
         user: null, // { player: Object, jwt: String }

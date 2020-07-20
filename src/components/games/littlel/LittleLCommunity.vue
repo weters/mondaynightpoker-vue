@@ -13,7 +13,7 @@
         components: {PlayingCardContainer},
         computed: {
             ...mapGetters({
-                gameState: 'littleL/gameState',
+                gameState: 'poker/gameState',
             })
         }
     }
