@@ -116,6 +116,7 @@
                     </label>
 
                     <label class="variant">
+                        <span>Variant</span>
                         <select v-model="sevenCard.variant">
                             <option value="stud">Seven-Card Stud</option>
                             <option value="low-card-wild">Low Card Wild</option>
