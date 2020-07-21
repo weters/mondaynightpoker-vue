@@ -120,6 +120,7 @@
                         <select v-model="sevenCard.variant">
                             <option value="stud">Seven-Card Stud</option>
                             <option value="low-card-wild">Low Card Wild</option>
+                            <option value="baseball">Baseball</option>
                         </select>
                     </label>
 
