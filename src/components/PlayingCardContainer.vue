@@ -2,7 +2,7 @@
     <div class="playing-card-container">
         <transition :name="transition" mode="out-in">
             <span v-if="hideCard"></span>
-            <playing-card v-else-if="card" :suit="card.suit" :rank="card.rank" :key="`${card.rank}.${card.suit}`" />
+            <playing-card v-else-if="card" :suit="card.suit" :rank="card.rank" :is-wild="card.isWild" :key="`${card.rank}.${card.suit}`" />
             <playing-card-back v-else />
         </transition>
     </div>

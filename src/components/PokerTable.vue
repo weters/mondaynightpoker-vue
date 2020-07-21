@@ -6,7 +6,7 @@
             <bourre v-if="game.game === 'bourre'"/>
             <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
             <little-l v-else-if="game.game === 'little-l'"/>
-            <seven-card v-else-if="game.game === 'seven-card'" />
+            <seven-card v-else-if="game.game === 'seven-card'"/>
         </template>
         <template v-else-if="clientState">
             <form class="player-state inner" v-if="userClientState.isSeated">
@@ -115,6 +115,13 @@
                     </span>
                     </label>
 
+                    <label class="variant">
+                        <select v-model="sevenCard.variant">
+                            <option value="stud">Seven-Card Stud</option>
+                            <option value="low-card-wild">Low Card Wild</option>
+                        </select>
+                    </label>
+
                     <div class="buttons">
                         <button>Start</button>
                     </div>
@@ -171,6 +178,7 @@
                 },
                 sevenCard: {
                     ante: '25',
+                    variant: 'stud',
                 },
                 table: null,
                 error: null,
@@ -226,6 +234,7 @@
             startSevenCardGame() {
                 this.ws.send('createGame', 'seven-card', null, {
                         ante: parseInt(this.sevenCard.ante, 10),
+                        variant: this.sevenCard.variant,
                     })
                     .catch(err => this.showError(err))
             },

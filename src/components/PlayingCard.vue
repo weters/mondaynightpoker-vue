@@ -8,12 +8,13 @@
             <span class="center">
                 <span class="suit"><mdi-icon :icon="displaySuit"/></span>
             </span>
+            <mdi-icon class="wild" :icon="mdiStarCircleOutline" v-if="isWild" />
         </div>
     </div>
 </template>
 
 <script>
-    import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade} from '@mdi/js'
+    import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStarCircleOutline} from '@mdi/js'
     import MdiIcon from "@/components/MdiIcon"
     import {mapGetters} from "vuex"
 
@@ -29,6 +30,10 @@
                 type: Number,
                 required: true,
             },
+            isWild: {
+                type: Boolean,
+                default: false,
+            }
         },
         data() {
             return {
@@ -36,6 +41,7 @@
                 mdiCardsDiamond,
                 mdiCardsHeart,
                 mdiCardsSpade,
+                mdiStarCircleOutline,
             }
         },
         computed: {
@@ -144,6 +150,10 @@
 
             ::v-deep svg {
                 fill: $red;
+
+                &.wild {
+                    fill: $yellow;
+                }
             }
         }
 
@@ -166,6 +176,14 @@
                 font-size:   32px;
                 line-height: 28px;
             }
+        }
+
+        .wild {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 30%;
+            fill: $yellow;
         }
 
         .center {
