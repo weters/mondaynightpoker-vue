@@ -18,7 +18,7 @@
             <tbody>
             <tr v-for="table in tables" :key="table.uuid">
                 <td><router-link :to="`/table/${table.uuid}`">{{ table.name }}</router-link></td>
-                <td>{{ formatAmount(table.balance) }}</td>
+                <td :class="{balance: true, negative: table.balance < 0 }">{{ formatAmount(table.balance) }}</td>
                 <td>{{ relativeDate(table.created) }}</td>
             </tr>
             </tbody>
@@ -52,6 +52,12 @@
     }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+    @import '../variables';
+    .balance {
+        text-align: right;
+        &.negative {
+            color: $red;
+        }
+    }
 </style>
