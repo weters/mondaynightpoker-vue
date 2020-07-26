@@ -2,8 +2,8 @@
     <div class="player-list">
         <h3>Player List</h3>
 
-        <error :message="error" v-if="error" />
-        <loading v-if="loading" />
+        <error :message="error" v-if="error"/>
+        <loading v-if="loading"/>
 
         <table class="standard">
             <thead>
@@ -52,5 +52,11 @@
 </script>
 
 <style lang="scss" scoped>
-
+    @import '../../variables';
+    @media (max-width: #{$media-small-table-width}) {
+        table.standard td:nth-child(1)::before { content: 'ID' }
+        table.standard td:nth-child(2)::before { content: 'Email' }
+        table.standard td:nth-child(3)::before { content: 'Display Name' }
+        table.standard td:nth-child(4)::before { content: 'Joined' }
+    }
 </style>

@@ -13,8 +13,8 @@
                 <thead>
                 <tr>
                     <th>Name</th>
-                    <th>Balance</th>
                     <th>Created</th>
+                    <th>Balance</th>
                     <th>Graph</th>
                 </tr>
                 </thead>
@@ -23,8 +23,8 @@
                     <td>
                         <router-link :to="`/table/${table.uuid}`">{{ table.name }}</router-link>
                     </td>
-                    <td :class="{balance: true, negative: table.balance < 0 }">{{ formatAmount(table.balance) }}</td>
                     <td>{{ relativeDate(table.created) }}</td>
+                    <td :class="{balance: true, negative: table.balance < 0 }">{{ formatAmount(table.balance) }}</td>
                     <td class="graph"><label><span>Include graph?</span> <input type="checkbox" v-model="graph"
                                                                                 :value="table.uuid"/></label></td>
                 </tr>
@@ -87,16 +87,29 @@
 <style lang="scss" scoped>
     @import '../variables';
 
-    .balance {
-        text-align: right;
+    table.standard {
+        .balance {
+            text-align: right;
 
-        &.negative {
-            color: $red;
+            &.negative {
+                color: $red;
+            }
         }
-    }
 
-    .graph {
-        text-align: center;
+        .graph {
+            text-align: center;
+        }
+
+        @media (max-width: #{$media-small-table-width}) {
+            td:nth-child(1)::before { content: 'Name' }
+            td:nth-child(2)::before { content: 'Created' }
+            td:nth-child(3)::before { content: 'Balance' }
+            td:nth-child(4)::before { content: 'Show in graph' }
+
+            .balance, .graph {
+                text-align: left;
+            }
+        }
     }
 
     table label {

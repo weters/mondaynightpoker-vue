@@ -5,7 +5,7 @@
             <router-view/>
         </main>
         <site-footer/>
-        <error-banner />
+        <error-banner/>
     </div>
 </template>
 
@@ -238,6 +238,43 @@
 
             &.center {
                 text-align: center;
+            }
+        }
+
+        @media (max-width: #{$media-small-table-width}) {
+            padding: 0;
+
+            thead {
+                position: absolute;
+                left:     -99999px;
+            }
+
+            &, tbody, tr, td {
+                display: block;
+                width:   100%;
+            }
+
+            tr:not(:last-child) {
+                border-bottom: 2px solid black;
+
+                td:last-child {
+                    border-bottom: none;
+                }
+            }
+
+            td {
+                position:     relative;
+                text-align:   left;
+                padding-left: 40%;
+                white-space:  nowrap;
+
+                &::before {
+                    color:        $text-color-light;
+                    width:        calc(40% - #{$spacing-medium});
+                    position:     absolute;
+                    left:         0;
+                    padding-left: $spacing-small;
+                }
             }
         }
     }
