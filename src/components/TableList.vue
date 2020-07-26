@@ -11,12 +11,14 @@
             <thead>
             <tr>
                 <th>Name</th>
+                <th>Balance</th>
                 <th>Created</th>
             </tr>
             </thead>
             <tbody>
             <tr v-for="table in tables" :key="table.uuid">
                 <td><router-link :to="`/table/${table.uuid}`">{{ table.name }}</router-link></td>
+                <td>{{ formatAmount(table.balance) }}</td>
                 <td>{{ relativeDate(table.created) }}</td>
             </tr>
             </tbody>
@@ -28,10 +30,12 @@
     import Loading from "@/components/Loading"
     import Error from "@/components/Error"
     import client from "@/client"
+    import balance from "../mixins/balance"
 
     export default {
         name: "TableList",
         components: {Error, Loading},
+        mixins: [balance],
         data() {
             return {
                 loading: true,
