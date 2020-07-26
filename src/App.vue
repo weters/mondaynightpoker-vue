@@ -160,6 +160,7 @@
         font-size:        1em;
         font-weight:      bold;
         transition:       all 250ms;
+        touch-action:     manipulation;
 
         &.global {
             background-color: $secondary;
