@@ -380,4 +380,8 @@
             }
         }
     }
+
+    .poker-table {
+        touch-action: manipulation;
+    }
 </style>
