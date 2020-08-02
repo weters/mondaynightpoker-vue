@@ -1,5 +1,6 @@
 import store from './store'
 import { v4 as uuid } from 'uuid'
+import bus from "./bus"
 
 const baseURL = process.env.VUE_APP_WEBSOCKET_URL || 'ws://localhost:5000'
 
@@ -107,6 +108,13 @@ class webSocketClient {
             case 'allLogs':
                 store.commit('clearLogs')
                 store.commit('addLogs', message.data)
+                break
+            case 'error':
+                bus.$emit('error', message.value)
+                break
+            case 'scheduledGame':
+                store.dispatch('scheduledGame', message.data)
+
                 break
             default:
                 throw new Error(`could not process message: ${JSON.stringify(message)}`)

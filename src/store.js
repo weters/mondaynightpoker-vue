@@ -20,6 +20,7 @@ const store = new Vuex.Store({
         webSocket: null,
         logs: [],
         error: null,
+        scheduledGame: null,
     },
     mutations: {
         addLogs(state, logs) {
@@ -85,7 +86,10 @@ const store = new Vuex.Store({
         },
         error(state, error) {
             state.error = error
-        }
+        },
+        scheduledGame(state, scheduledGame) {
+            state.scheduledGame = scheduledGame
+        },
     },
     actions: {
         error(context, error) {
@@ -94,7 +98,18 @@ const store = new Vuex.Store({
             if (error !== null) {
                 setTimeout(() => context.commit('error', null), 2500)
             }
-        }
+        },
+        scheduledGame(context, scheduledGame) {
+            context.commit('scheduledGame', scheduledGame)
+
+            if (scheduledGame) {
+                setTimeout(() => {
+                    if (!context.state.scheduledGame || context.state.scheduledGame.start === scheduledGame.start) {
+                        context.commit('scheduledGame', null)
+                    }
+                }, new Date(scheduledGame.start) - new Date())
+            }
+        },
     },
     getters: {
         isSiteAdmin: state => state.user && state.user.player && state.user.player.isSiteAdmin,
@@ -104,7 +119,7 @@ const store = new Vuex.Store({
         canStart: (state, getters) => getters.isTableAdmin || getters.userClientState.canStart,
         canRestart: (state, getters) => getters.isTableAdmin || getters.userClientState.canRestart,
         canTerminate: (state, getters) => getters.isTableAdmin || getters.userClientState.canTerminate,
-    }
+    },
 })
 
 export default store
