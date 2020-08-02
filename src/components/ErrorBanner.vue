@@ -36,6 +36,7 @@
         right:            $spacing-medium;
         box-shadow:       0 2px 4px rgba(black, 0.1);
         min-width:        150px;
+        z-index:          1000;
 
         p {
             &::before {

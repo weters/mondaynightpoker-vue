@@ -411,7 +411,7 @@
         position:            fixed;
         bottom:              0;
         left:                0;
-        z-index:             100;
+        z-index:             10;
         max-width:           500px;
         border:              1px solid $primary;
         border-left-width:   0;
@@ -427,10 +427,11 @@
     }
 
     .scheduled-game-enter-active, .scheduled-game-leave-active {
-        transition: all 400ms;
+        transition: all 200ms ease-in;
     }
 
     .scheduled-game-enter, .scheduled-game-leave-to {
+        opacity: 0;
         transform: translateY(100%);
     }
 </style>
