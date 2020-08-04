@@ -134,6 +134,7 @@
                             <option value="stud">Seven-Card Stud</option>
                             <option value="low-card-wild">Low Card Wild</option>
                             <option value="baseball">Baseball</option>
+                            <option value="follow-the-queen">Follow the Queen</option>
                         </select>
                     </label>
 
