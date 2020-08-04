@@ -44,10 +44,9 @@
                 gameState: 'poker/gameState',
             }),
             tradeIns() {
-                const tradeIns = this.gameState.tradeIns
-                if (tradeIns.length === 1) {
-                    return tradeIns[0]
-                }
+                const tradeIns = Object.keys(this.gameState.tradeIns)
+                tradeIns.sort()
+
 
                 const firstPart = tradeIns.slice(0, -1).join(', ')
                 return `${firstPart} or ${tradeIns[tradeIns.length-1]}`
