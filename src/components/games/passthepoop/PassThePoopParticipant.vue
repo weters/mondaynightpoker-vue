@@ -7,7 +7,12 @@
             <span class="placeholder" v-if="participant.lives === 0" :key="0"></span>
         </transition-group>
 
-        <playing-card-container :card="card" :hide-card="hideCard" />
+        <div class="ptp-card-container">
+            <playing-card-container class="ptp-card" :card="card" :hide-card="hideCard"/>
+            <transition name="block">
+                <span class="block-chip" v-if="participant.hasBlock"></span>
+            </transition>
+        </div>
 
         <span class="is-turn">
             <mdi-icon :icon="mdiCardsOutline" v-if="isPlayerTurn && goingToDeck"/>
@@ -143,6 +148,26 @@
             height:     25px;
             margin-top: $spacing-small;
         }
+
+        div.ptp-card-container {
+            position: relative;
+            width:    100%;
+
+            .block-chip {
+                position:         absolute;
+                top:              5px;
+                right:            5px;
+                width:            19px;
+                height:           19px;
+                background-color: $red;
+                border-radius:    50%;
+                border:           2px dotted white;
+                box-shadow:       2px 1px rgba(black, 0.3);
+
+                fill:             $red;
+                outline:          white 3px;
+            }
+        }
     }
 
     .lives-leave-active {
@@ -159,5 +184,14 @@
             opacity:   0;
             transform: translateY(-100%);
         }
+    }
+
+    .block-leave-active {
+        transition: 1000ms all;
+    }
+
+    .block-leave-to {
+        transform: translateY(-200%);
+        opacity:   0;
     }
 </style>

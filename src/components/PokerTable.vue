@@ -89,6 +89,19 @@
                         </select>
                     </label>
 
+                    <label class="allow-blocks">
+                        <span>Allow Blocks</span>
+
+                        <label>
+                            <input type="radio" name="allowBlocks" value="no" v-model="passThePoop.allowBlocks" />
+                            <span>No</span>
+                        </label>
+                        <label>
+                            <input type="radio" name="allowBlocks" value="yes" v-model="passThePoop.allowBlocks" />
+                            <span>Yes</span>
+                        </label>
+                    </label>
+
                     <div class="buttons">
                         <button>Start</button>
                     </div>
@@ -189,6 +202,7 @@
                     ante: '150',
                     edition: 'standard',
                     lives: '3',
+                    allowBlocks: 'no',
                 },
                 littleL: {
                     ante: '25',
@@ -249,6 +263,7 @@
                         ante: parseInt(this.passThePoop.ante, 10),
                         edition: this.passThePoop.edition,
                         lives: parseInt(this.passThePoop.lives, 10),
+                        allowBlocks: this.passThePoop.allowBlocks === 'yes',
                     })
                     .catch(err => this.showError(err))
             },
@@ -402,6 +417,30 @@
 
             input[type="text"], select {
                 width: 100%;
+            }
+
+            label.allow-blocks {
+                label {
+                    width: auto;
+                    margin: 0;
+                    padding: 0;
+                    display: flex;
+                    align-items: center;
+
+                    span {
+                        padding: 0 0 0 5px;
+                        margin: 0;
+                        display: inline;
+
+                        &::after {
+                            content: '';
+                        }
+                    }
+                }
+
+                input {
+                    width: auto;
+                }
             }
         }
     }
