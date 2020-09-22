@@ -95,7 +95,7 @@
         methods: {
             execute(action) {
                 this.webSocket.send('execute', String(action.id))
-                    .then(res => console.log(res))
+                    .then(() => {})
                     .catch(err => this.showError(err))
             },
         },

@@ -66,9 +66,6 @@
                                 const value = context.dataset.data[index]
                                 return value < 0 ? 'red' : 'black'
                             },
-                            function() {
-                                console.log('shit')
-                            },
                         }],
                         labels: this.labels,
                     },

@@ -122,6 +122,14 @@
                     })
                     .finally(() => this.sitOutLoading = false)
             },
+            isTurn: {
+                immediate: true,
+                handler(isTurn) {
+                    if (isTurn) {
+                        new Audio(require('@/assets/ding.mp3')).play()
+                    }
+                }
+            }
         },
         methods: {
             showError(err) {

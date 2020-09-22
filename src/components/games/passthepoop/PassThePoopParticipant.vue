@@ -75,7 +75,6 @@
         watch: {
             'participant.isCardDead': {
                 handler(isCardDead) {
-                    console.log('isCardDead', isCardDead)
                     if (isCardDead) {
                         setTimeout(() => {
                             console.log("HIDE")

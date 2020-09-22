@@ -23,7 +23,6 @@
             }
         },
         mounted() {
-            console.log('ref', this.$refs.path)
             this.animate(0)
         },
         beforeDestroy() {
@@ -31,7 +30,6 @@
         },
         methods: {
             animate(index) {
-                console.log('start animate')
                 const fromShape = suitOrder[index]
                 const fromColor = index === 0 || index === 3 ? '#000' : '#e53935'
                 index = (index + 1) % suitOrder.length
