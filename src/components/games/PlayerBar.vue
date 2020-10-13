@@ -38,6 +38,7 @@ import MnpError from "@/components/Error"
 import Slider from "@/components/Slider"
 import {mapGetters} from "vuex"
 import balance from "../../mixins/balance"
+import audioplayer from "@/audioplayer"
 
 export default {
     name: "PlayerBar",
@@ -93,7 +94,9 @@ export default {
             immediate: true,
             handler(isTurn) {
                 if (isTurn) {
-                    new Audio(require('@/assets/ding.mp3')).play()
+                    audioplayer.queueDing()
+                } else {
+                    audioplayer.cancelDing()
                 }
             }
         },
