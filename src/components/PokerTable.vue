@@ -118,11 +118,28 @@
                     </span>
                     </label>
 
+                    <div class="initial-deal">
+                        <span>Initial deal</span>
+
+                        <label class="optional radio">
+                            <input type="radio" v-model="littleL.initialDeal" value="3"/>
+                            <span>3</span>
+                        </label>
+
+                        <label class="optional radio">
+                            <input type="radio" v-model="littleL.initialDeal" value="4"/>
+                            <span>4</span>
+                        </label>
+                    </div>
+
                     <div class="trade-ins">
                         <span>Trade-ins</span>
 
-                        <label v-for="i in 5" :key="i" class="optional checkbox"><input type="checkbox" :value="i-1"
-                                                                                        v-model="littleL.tradeIns"/><span>{{
+                        <label v-for="i in 5" :key="i" class="optional checkbox"><input type="checkbox"
+                                                                                        :value="i-1"
+                                                                                        v-model="littleL.tradeIns"
+                                                                                        :disabled="i - 1 > parseInt(littleL.initialDeal, 10)"
+                        /><span>{{
                                 i - 1
                             }}</span></label>
                     </div>
@@ -210,6 +227,7 @@ export default {
             littleL: {
                 ante: '25',
                 tradeIns: ['0', '2'],
+                initialDeal: '4',
             },
             sevenCard: {
                 ante: '25',
@@ -274,6 +292,7 @@ export default {
             this.ws.send('createGame', 'little-l', null, {
                     ante: parseInt(this.littleL.ante, 10),
                     tradeIns: this.littleL.tradeIns.map(v => parseInt(v, 10)),
+                    initialDeal: parseInt(this.littleL.initialDeal, 10),
                 })
                 .catch(err => this.showError(err))
         },
@@ -294,6 +313,13 @@ export default {
                     this.showError(err)
                 })
                 .finally(() => event.target.disabled = false)
+        },
+    },
+    watch: {
+        'littleL.initialDeal': function (newVal) {
+            const initialDeal = parseInt(newVal, 10)
+            const tradeIns = this.littleL.tradeIns.filter(val => parseInt(val, 10) <= initialDeal)
+            this.littleL.tradeIns = tradeIns
         },
     },
 }
@@ -390,7 +416,7 @@ form.bourre {
     margin-top: $spacing;
 }
 
-.trade-ins {
+.initial-deal, .trade-ins {
     margin-bottom: $spacing;
 
     label {
