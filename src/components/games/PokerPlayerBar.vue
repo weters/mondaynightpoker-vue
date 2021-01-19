@@ -23,8 +23,20 @@
                     <button class="secondary" type="button" @click="confirm=null">Cancel</button>
                     <button type="button" @click="handleConfirm">Yes, {{ confirm.name }}</button>
                 </template>
+                <template v-else-if="confirmFuture">
+                    <button class="secondary" type="button" @click="confirmFuture=null">Cancel</button>
+                    <button class="future-action" type="button" @click="handleConfirmFuture">Yes, {{ confirmFuture.name }}</button>
+                </template>
                 <template v-else>
                     <button type="button" v-for="action in actions" :key="action.id" @click="handleAction(action)">
+                        {{ action.name }}
+                        <template v-if="action.id === 'call'">
+                            {{ formatAmount(gameState.currentBet - self.currentBet) }}
+                        </template>
+                    </button>
+
+                    <button :class="{'future-action': true, pending: futureAction && futureAction.id === action.id }" type="button" v-for="action in futureActions" :key="action.id"
+                            @click="handleFutureAction(action)">
                         {{ action.name }}
                         <template v-if="action.id === 'call'">
                             {{ formatAmount(gameState.currentBet - self.currentBet) }}
@@ -44,11 +56,12 @@
 import PlayerBar from "./PlayerBar"
 import {mapGetters} from "vuex"
 import balance from "../../mixins/balance"
+import show_error from "@/mixins/show_error"
 
 export default {
     name: "PokerPlayerBar",
     components: {PlayerBar},
-    mixins: [balance],
+    mixins: [balance, show_error],
     props: {
         selectedCards: {
             type: Array,
@@ -62,6 +75,8 @@ export default {
             bet: null,
             startingBet: 0,
             amount: 0,
+            confirmFuture: null,
+            futureAction: null,
         }
     },
     computed: {
@@ -69,6 +84,7 @@ export default {
             self: 'poker/self',
             gameState: 'poker/gameState',
             actions: 'poker/actions',
+            futureActions: 'poker/futureActions',
         }),
         isTurn() {
             return this.gameState.currentTurn === this.self.playerId || this.gameState.action === this.self.playerId
@@ -96,6 +112,25 @@ export default {
                     throw new Error(`unknown action: ${action.id}`)
             }
         },
+        handleFutureAction(action) {
+            if (this.futureAction && this.futureAction.id === action.id) {
+                this.futureAction = null
+                return
+            }
+
+            this.futureAction = null
+
+            switch (action.id) {
+                case 'trade':
+                case 'check':
+                case 'call':
+                case 'fold':
+                    this.confirmFuture = action
+                    break
+                default:
+                    throw new Error(`unknown future action: ${action.id}`)
+            }
+        },
         handleBet() {
             const amount = parseInt(this.amount, 10)
             this.$store.state.webSocket.send(this.bet.id, null, null, {
@@ -118,15 +153,40 @@ export default {
                     break
             }
         },
+        handleConfirmFuture() {
+            this.futureAction = this.confirmFuture
+            this.confirmFuture = null
+        },
     },
     watch: {
         actions() {
             this.confirm = null
+            this.confirmFuture = null
             this.bet = null
+        },
+        'gameState.round': function() {
+            this.confirm = null
+            this.confirmFuture = null
+            this.futureAction = null
         },
         bet() {
             this.startingBet = this.gameState.currentBet ? this.gameState.currentBet * 2 : this.gameState.ante
             this.amount = this.startingBet
+        },
+        isTurn(isTurn) {
+            if (isTurn && this.futureAction) {
+                if (Array.isArray(this.actions)) {
+                    for (let action of this.actions) {
+                        if (action.id === this.futureAction.id) {
+                            this.confirm = this.futureAction
+                            this.futureAction = null
+                            this.handleConfirm()
+
+                            break;
+                        }
+                    }
+                }
+            }
         },
     },
 }
@@ -138,6 +198,14 @@ export default {
 .bar {
     div.buttons {
         margin: 0;
+    }
+
+    button.future-action {
+        background-color: #888;
+
+        &.pending {
+            box-shadow: 0 0 5px 2px $yellow;
+        }
     }
 
     @media (min-width: 600px) {
