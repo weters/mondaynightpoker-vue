@@ -14,5 +14,7 @@ export default {
         isTradeInRound: (state, getters) => getters.gameState.round === 0,
         isRoundOver: (state, getters) => getters.gameState.isRoundOver,
         isGameOver: (state, getters) => getters.gameState.isGameOver,
+
+        getCurrentPlayer: (state, getters) => (playerId) => getters.gameState.players.find(p => p.playerId === playerId),
     },
 }

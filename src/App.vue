@@ -6,6 +6,7 @@
         </main>
         <site-footer/>
         <error-banner/>
+        <dev-tools v-if="!production" />
     </div>
 </template>
 
@@ -13,10 +14,16 @@
     import SiteHeader from "@/components/SiteHeader"
     import SiteFooter from "@/components/SiteFooter"
     import ErrorBanner from "./components/ErrorBanner"
+    import DevTools from "@/components/DevTools"
 
     export default {
         name: 'App',
-        components: {ErrorBanner, SiteHeader, SiteFooter},
+        components: {DevTools, ErrorBanner, SiteHeader, SiteFooter},
+        computed: {
+            production() {
+                return process.env.NODE_ENV === 'production'
+            }
+        }
     }
 </script>
 
