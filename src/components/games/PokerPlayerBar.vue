@@ -86,6 +86,9 @@ export default {
             actions: 'poker/actions',
             futureActions: 'poker/futureActions',
         }),
+        currentBet() {
+            return this.gameState.currentBet
+        },
         isTurn() {
             return this.gameState.currentTurn === this.self.playerId || this.gameState.action === this.self.playerId
         },
@@ -121,9 +124,10 @@ export default {
             this.futureAction = null
 
             switch (action.id) {
-                case 'trade':
-                case 'check':
                 case 'call':
+                    action.currentBet = this.currentBet
+                case 'trade': // eslint-disable-line
+                case 'check':
                 case 'fold':
                     this.confirmFuture = action
                     break
@@ -157,6 +161,18 @@ export default {
             this.futureAction = this.confirmFuture
             this.confirmFuture = null
         },
+        isFutureActionValid(action) {
+            console.log(this.futureAction.id, action.id)
+            if (this.futureAction.id !== action.id) {
+                return false
+            }
+
+            if (this.futureAction.id === 'call') {
+                return this.futureAction.currentBet === this.currentBet
+            }
+
+            return true
+        },
     },
     watch: {
         actions() {
@@ -177,7 +193,7 @@ export default {
             if (isTurn && this.futureAction) {
                 if (Array.isArray(this.actions)) {
                     for (let action of this.actions) {
-                        if (action.id === this.futureAction.id) {
+                        if (this.isFutureActionValid(action)) {
                             this.confirm = this.futureAction
                             this.futureAction = null
                             this.handleConfirm()
