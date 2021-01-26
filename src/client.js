@@ -45,8 +45,15 @@ class Client {
         }, withAuthorization)
     }
 
-    getPlayers(start = 0, rows = 100) {
-        return this._get(`/player?start=${encodeURIComponent(start)}&rows=${encodeURIComponent(rows)}`, withAuthorization)
+    getPlayers(search = "", start = 0, rows = 100) {
+        return this._get(`/player?start=${encodeURIComponent(start)}&rows=${encodeURIComponent(rows)}&search=${encodeURIComponent(search)}`, withAuthorization)
+    }
+
+    changePassword(playerId, password) {
+        return this._post(`/admin/player/${encodeURIComponent(playerId)}`, {
+            key: "password",
+            value: password,
+        }, withAuthorization)
     }
 
     validateJWT(jwt) {
