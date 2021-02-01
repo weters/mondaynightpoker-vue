@@ -182,7 +182,7 @@
                     <label class="ante">
                         <span>Ante</span>
                         <span>
-                        <input type="number" min="25" max="100" step="25" v-model="sevenCard.ante"/>
+                        <input type="number" min="25" max="100" step="25" v-model="aceyDeucey.ante"/>
                         <em>¢</em>
                     </span>
                     </label>
