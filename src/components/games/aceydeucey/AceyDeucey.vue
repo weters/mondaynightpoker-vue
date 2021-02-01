@@ -6,7 +6,7 @@
 
         <acey-deucey-player-list :participants="gameState.participants"/>
 
-        <player-bar :error="error">
+        <player-bar :error="error" :is-turn="isTurn">
             <div class="acey-deucey-player-bar">
                 <div class="amount" v-if="confirm && confirm.name.toLowerCase() === 'bet'">
                     <label class="optional">
@@ -62,6 +62,9 @@ export default {
             gameState: 'aceyDeucey/gameState',
             actions: 'aceyDeucey/actions',
         }),
+        isTurn() {
+            return this.gameState.currentTurn === this.$store.state.user.player.id
+        },
         round() {
             return this.gameState.round
         },
