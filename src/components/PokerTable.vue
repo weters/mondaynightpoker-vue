@@ -7,6 +7,7 @@
             <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
             <little-l v-else-if="game.game === 'little-l'"/>
             <seven-card v-else-if="game.game === 'seven-card'"/>
+            <acey-deucey v-else-if="game.game === 'acey-deucey'"/>
         </template>
         <template v-else-if="clientState">
             <transition name="scheduled-game">
@@ -174,6 +175,22 @@
                         <button>Start</button>
                     </div>
                 </form>
+
+                <form class="acey-deucey inner" @submit.prevent="startAceyDeucey">
+                    <h4>Acey Deucey</h4>
+
+                    <label class="ante">
+                        <span>Ante</span>
+                        <span>
+                        <input type="number" min="25" max="100" step="25" v-model="sevenCard.ante"/>
+                        <em>¢</em>
+                    </span>
+                    </label>
+
+                    <div class="buttons">
+                        <button>Start</button>
+                    </div>
+                </form>
             </div>
 
             <div class="waiting" v-else>
@@ -202,11 +219,14 @@ import LittleL from "./games/littlel/LittleL"
 import SevenCard from "./games/sevencard/SevenCard"
 import bus from "../bus"
 import ScheduledGame from "./ScheduledGame"
-import audioplayer from "@/audioplayer" //eslint-disable-line
+import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey" //eslint-disable-line
 
 export default {
     name: "PokerTable",
-    components: {ScheduledGame, SevenCard, LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre},
+    components: {
+        AceyDeucey,
+        ScheduledGame, SevenCard, LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre,
+    },
     props: {
         uuid: {
             type: String,
@@ -232,6 +252,9 @@ export default {
             sevenCard: {
                 ante: '25',
                 variant: 'stud',
+            },
+            aceyDeucey: {
+                ante: '25',
             },
             table: null,
             error: null,
@@ -300,6 +323,12 @@ export default {
             this.ws.send('createGame', 'seven-card', null, {
                     ante: parseInt(this.sevenCard.ante, 10),
                     variant: this.sevenCard.variant,
+                })
+                .catch(err => this.showError(err))
+        },
+        startAceyDeucey() {
+            this.ws.send('createGame', 'acey-deucey', null, {
+                    ante: parseInt(this.aceyDeucey.ante, 10),
                 })
                 .catch(err => this.showError(err))
         },

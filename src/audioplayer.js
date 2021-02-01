@@ -32,6 +32,11 @@ class AudioPlayer {
             this.dingTimeout = null
         }
     }
+
+    playPost() {
+        this.audio.src = require('@/assets/post.mp3')
+        this.audio.play()
+    }
 }
 
 export default new AudioPlayer()

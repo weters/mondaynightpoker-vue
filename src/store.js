@@ -4,6 +4,7 @@ import bourre from './store/bourre'
 import passThePoop from "./store/passThePoop"
 import poker from "./store/poker"
 import {formatAmount} from "./currency"
+import aceyDeucey from "@/store/aceyDeucey"
 
 Vue.use(Vuex)
 
@@ -12,6 +13,7 @@ const store = new Vuex.Store({
         bourre,
         passThePoop,
         poker,
+        aceyDeucey,
     },
     state: {
         user: null, // { player: Object, jwt: String }
@@ -37,7 +39,7 @@ const store = new Vuex.Store({
                 const cards = log.cards ? log.cards : []
 
                 let message = log.message.replace(/{}/g, players)
-                message = message.replace(/\${(\d+)}/g, (match, cents) => formatAmount(cents))
+                message = message.replace(/\${(-?\d+)}/g, (match, cents) => formatAmount(cents))
                 return {
                     ...log,
                     message,
