@@ -1,6 +1,7 @@
 import store from './store'
 import { v4 as uuid } from 'uuid'
 import bus from "./bus"
+import {formatAmount} from "@/currency"
 
 const baseURL = process.env.VUE_APP_WEBSOCKET_URL || 'ws://localhost:5000'
 
@@ -81,7 +82,12 @@ class webSocketClient {
             delete(this.context[message.context])
 
             if (message.key === 'error') {
-                reject(new Error(message.value))
+                let err = message.value
+                if (typeof err === 'string') {
+                    err = err.replace(/\$\{(-?\d+)\}/g, (match, cents) => formatAmount(cents))
+                }
+
+                reject(new Error(err))
                 return
             }
 
