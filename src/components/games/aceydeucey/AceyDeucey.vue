@@ -11,7 +11,7 @@
                 <div class="amount" v-if="confirm && confirm.name.toLowerCase() === 'bet'">
                     <label class="optional">
                         <span>Amount</span>
-                        <input type="range" min="25" step="25" :max="gameState.round.pot" v-model="amount"/>
+                        <input type="range" min="25" step="25" :max="maxBet" v-model="amount"/>
                     </label>
 
                     <chip-stack :amount="parseInt(amount, 10)"/>
@@ -68,6 +68,9 @@ export default {
         round() {
             return this.gameState.round
         },
+        maxBet() {
+            return this.gameState.maxBet
+        }
     },
     methods: {
         executeAction(action) {
