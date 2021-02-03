@@ -45,152 +45,7 @@
             <h3>Pick a Game</h3>
 
             <div class="game-selector" v-if="canStart">
-                <form class="bourre inner" @submit.prevent="startBourreGame">
-                    <h4>Bourré</h4>
-
-                    <label class="ante">
-                        <span>Ante</span>
-                        <span>
-                        <input type="number" min="25" max="200" step="25" v-model="bourre.ante"/>
-                        <em>¢</em>
-                    </span>
-                    </label>
-
-                    <div class="buttons">
-                        <button>Start</button>
-                    </div>
-                </form>
-
-                <form class="pass-the-poop inner" @submit.prevent="startPassThePoopGame">
-                    <h4>Pass the Poop</h4>
-
-                    <label class="ante">
-                        <span>Ante</span>
-                        <span>
-                        <input type="number" min="25" max="400" step="25" v-model="passThePoop.ante"/>
-                        <em>¢</em>
-                    </span>
-                    </label>
-
-                    <label class="edition">
-                        <span>Edition</span>
-                        <select v-model="passThePoop.edition">
-                            <option value="standard">Standard</option>
-                            <option value="diarrhea">Diarrhea</option>
-                            <option value="pairs">Pairs</option>
-                        </select>
-                    </label>
-
-                    <label class="lives">
-                        <span>Lives</span>
-                        <select v-model="passThePoop.lives">
-                            <option value="3">3</option>
-                            <option value="2">2</option>
-                            <option value="1">1</option>
-                        </select>
-                    </label>
-
-                    <label class="allow-blocks">
-                        <span>Allow Blocks</span>
-
-                        <label>
-                            <input type="radio" name="allowBlocks" value="no" v-model="passThePoop.allowBlocks"/>
-                            <span>No</span>
-                        </label>
-                        <label>
-                            <input type="radio" name="allowBlocks" value="yes" v-model="passThePoop.allowBlocks"/>
-                            <span>Yes</span>
-                        </label>
-                    </label>
-
-                    <div class="buttons">
-                        <button>Start</button>
-                    </div>
-                </form>
-
-                <form class="little-l inner" @submit.prevent="startLittleLGame">
-                    <h4>Little L</h4>
-
-                    <label class="ante">
-                        <span>Ante</span>
-                        <span>
-                        <input type="number" min="25" max="400" step="25" v-model="littleL.ante"/>
-                        <em>¢</em>
-                    </span>
-                    </label>
-
-                    <div class="initial-deal">
-                        <span>Initial deal</span>
-
-                        <label class="optional radio">
-                            <input type="radio" v-model="littleL.initialDeal" value="3"/>
-                            <span>3</span>
-                        </label>
-
-                        <label class="optional radio">
-                            <input type="radio" v-model="littleL.initialDeal" value="4"/>
-                            <span>4</span>
-                        </label>
-                    </div>
-
-                    <div class="trade-ins">
-                        <span>Trade-ins</span>
-
-                        <label v-for="i in 5" :key="i" class="optional checkbox"><input type="checkbox"
-                                                                                        :value="i-1"
-                                                                                        v-model="littleL.tradeIns"
-                                                                                        :disabled="i - 1 > parseInt(littleL.initialDeal, 10)"
-                        /><span>{{
-                                i - 1
-                            }}</span></label>
-                    </div>
-
-                    <div class="buttons">
-                        <button>Start</button>
-                    </div>
-                </form>
-
-                <form class="seven-card inner" @submit.prevent="startSevenCardGame">
-                    <h4>Seven Card</h4>
-
-                    <label class="ante">
-                        <span>Ante</span>
-                        <span>
-                        <input type="number" min="25" max="400" step="25" v-model="sevenCard.ante"/>
-                        <em>¢</em>
-                    </span>
-                    </label>
-
-                    <label class="variant">
-                        <span>Variant</span>
-                        <select v-model="sevenCard.variant">
-                            <option value="stud">Seven-Card Stud</option>
-                            <option value="low-card-wild">Low Card Wild</option>
-                            <option value="baseball">Baseball</option>
-                            <option value="follow-the-queen">Follow the Queen</option>
-                        </select>
-                    </label>
-
-                    <div class="buttons">
-                        <button>Start</button>
-                    </div>
-                </form>
-
-                <form class="acey-deucey inner" @submit.prevent="startAceyDeucey">
-                    <h4>Acey Deucey</h4>
-
-                    <label class="ante">
-                        <span>Ante</span>
-                        <span>
-                        <input type="number" min="25" max="100" step="25" v-model="aceyDeucey.ante"/>
-                        <em>¢</em>
-                    </span>
-                    </label>
-
-                    <div class="buttons">
-                        <button>Start</button>
-                    </div>
-                </form>
+                <game-selector />
             </div>
 
             <div class="waiting" v-else>
@@ -219,11 +74,14 @@ import LittleL from "./games/littlel/LittleL"
 import SevenCard from "./games/sevencard/SevenCard"
 import bus from "../bus"
 import ScheduledGame from "./ScheduledGame"
-import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey" //eslint-disable-line
+import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey"
+
+import GameSelector from "@/components/gameselector/GameSelector" //eslint-disable-line
 
 export default {
     name: "PokerTable",
     components: {
+        GameSelector,
         AceyDeucey,
         ScheduledGame, SevenCard, LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre,
     },
@@ -235,27 +93,6 @@ export default {
     },
     data() {
         return {
-            bourre: {
-                ante: '25',
-            },
-            passThePoop: {
-                ante: '150',
-                edition: 'standard',
-                lives: '3',
-                allowBlocks: 'no',
-            },
-            littleL: {
-                ante: '25',
-                tradeIns: ['0', '2'],
-                initialDeal: '4',
-            },
-            sevenCard: {
-                ante: '25',
-                variant: 'stud',
-            },
-            aceyDeucey: {
-                ante: '25',
-            },
             table: null,
             error: null,
             ws: null,
@@ -296,40 +133,6 @@ export default {
         },
         cancelGame() {
             this.ws.send('cancelGame')
-                .catch(err => this.showError(err))
-        },
-        startBourreGame() {
-            this.ws.send('createGame', 'bourre', null, {ante: parseInt(this.bourre.ante, 10)})
-                .catch(err => this.showError(err))
-        },
-        startPassThePoopGame() {
-            this.ws.send('createGame', 'pass-the-poop', null, {
-                    ante: parseInt(this.passThePoop.ante, 10),
-                    edition: this.passThePoop.edition,
-                    lives: parseInt(this.passThePoop.lives, 10),
-                    allowBlocks: this.passThePoop.allowBlocks === 'yes',
-                })
-                .catch(err => this.showError(err))
-        },
-        startLittleLGame() {
-            this.ws.send('createGame', 'little-l', null, {
-                    ante: parseInt(this.littleL.ante, 10),
-                    tradeIns: this.littleL.tradeIns.map(v => parseInt(v, 10)),
-                    initialDeal: parseInt(this.littleL.initialDeal, 10),
-                })
-                .catch(err => this.showError(err))
-        },
-        startSevenCardGame() {
-            this.ws.send('createGame', 'seven-card', null, {
-                    ante: parseInt(this.sevenCard.ante, 10),
-                    variant: this.sevenCard.variant,
-                })
-                .catch(err => this.showError(err))
-        },
-        startAceyDeucey() {
-            this.ws.send('createGame', 'acey-deucey', null, {
-                    ante: parseInt(this.aceyDeucey.ante, 10),
-                })
                 .catch(err => this.showError(err))
         },
         setPlayerActive(event) {
@@ -462,47 +265,6 @@ form.bourre {
             display:        inline-block;
             width:          auto;
             vertical-align: middle;
-        }
-    }
-}
-
-.game-selector {
-    display: block;
-
-    form {
-        margin-bottom: $spacing;
-        width:         100%;
-
-        label {
-            width: 100%;
-        }
-
-        input[type="text"], select {
-            width: 100%;
-        }
-
-        label.allow-blocks {
-            label {
-                width:       auto;
-                margin:      0;
-                padding:     0;
-                display:     flex;
-                align-items: center;
-
-                span {
-                    padding: 0 0 0 5px;
-                    margin:  0;
-                    display: inline;
-
-                    &::after {
-                        content: '';
-                    }
-                }
-            }
-
-            input {
-                width: auto;
-            }
         }
     }
 }
