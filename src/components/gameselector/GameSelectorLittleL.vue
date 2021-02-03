@@ -56,7 +56,7 @@ export default {
                 opts: {
                     ante: this.ante,
                     tradeIns: this.tradeIns.map(v => parseInt(v, 10)),
-                    initialDeal: this.parseInt(this.initialDeal, 10),
+                    initialDeal: parseInt(this.initialDeal, 10),
                 },
             })
         },
