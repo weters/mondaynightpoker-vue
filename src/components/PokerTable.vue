@@ -42,16 +42,7 @@
                 </div>
             </template>
 
-            <h3>Pick a Game</h3>
-
-            <div class="game-selector" v-if="canStart">
-                <game-selector />
-            </div>
-
-            <div class="waiting" v-else>
-                <p>Waiting on the table admin to start the game!</p>
-                <loading class="loading"/>
-            </div>
+            <game-selector />
         </template>
         <template v-else>
             <loading/>
