@@ -2,10 +2,6 @@
     <div class="table-list main-box">
         <error :message="error" v-if="error"/>
 
-        <h2>My Tables</h2>
-
-        <p>These are a list of tables that you have joined.</p>
-
         <loading v-if="loading"/>
 
         <div class="columns">

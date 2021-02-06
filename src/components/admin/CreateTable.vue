@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <h3>Create a Table</h3>
+    <div class="create-table main-box">
+        <h2>Create a Table</h2>
 
-        <form @submit.prevent="submit" class="inner">
+        <form @submit.prevent="submit" >
             <error :message="error" v-if="error"/>
 
             <label>

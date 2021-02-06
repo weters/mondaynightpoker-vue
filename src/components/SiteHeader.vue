@@ -5,7 +5,7 @@
         <ul>
             <li v-if="isSiteAdmin"><router-link to="/admin">Admin</router-link></li>
             <template v-if="user">
-                <li><router-link to="/table">My Tables</router-link></li>
+                <li><router-link to="/my-tables">My Tables</router-link></li>
                 <li><router-link to="/profile">My Profile</router-link></li>
                 <li><router-link to="/logout">Log Out</router-link></li>
             </template>
