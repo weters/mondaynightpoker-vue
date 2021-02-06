@@ -4,6 +4,18 @@
 
         <game-selector-ante :min="25" :max="100" :value="ante"/>
 
+        <div class="options">
+            <label class="optional checkbox">
+                <input type="checkbox" v-model="allowPass" />
+                <span>Allow Passing</span>
+            </label>
+
+            <label class="optional checkbox">
+                <input type="checkbox" v-model="continuousShoe" />
+                <span>Chaos Mode (Continuous Shoe)</span>
+            </label>
+        </div>
+
         <div class="buttons">
             <button>Start</button>
         </div>
@@ -19,6 +31,8 @@ export default {
     data() {
         return {
             ante: 25,
+            continuousShoe: false,
+            allowPass: false,
         }
     },
     methods: {
@@ -27,6 +41,8 @@ export default {
                 game: 'acey-deucey',
                 opts: {
                     ante: this.ante,
+                    continuousShoe: this.continuousShoe,
+                    allowPass: this.allowPass,
                 },
             })
         },
@@ -34,6 +50,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+@import '../../variables.scss';
 
+div.buttons {
+    margin: $spacing 0 0;
+}
 </style>
