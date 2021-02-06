@@ -30,7 +30,6 @@
                     </button>
                 </template>
             </div>
-            <button class="global" v-if="isRoundOver" @click="replaceDiscards">Trade Cards</button>
         </div>
     </div>
 </template>
@@ -77,11 +76,6 @@ export default {
         },
     },
     methods: {
-        replaceDiscards() {
-            this.$store.state.webSocket.send('replaceDiscards')
-                .then(res => console.log('replaceDiscards', res))
-                .catch(err => this.error = err)
-        },
         discard() {
             if (!this.isTurn) {
                 this.pending = 'Discard'

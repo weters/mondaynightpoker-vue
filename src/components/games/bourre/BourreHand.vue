@@ -9,8 +9,6 @@
 
         <div class="buttons">
             <button v-if="isTurn" :disabled="selected.length === 0" @click="playCard">Play Card</button>
-            <button v-if="isRoundOver" class="global" @click="endRound">End Round</button>
-            <button v-if="isGameOver" class="global" @click="done">Done</button>
         </div>
     </div>
 </template>
@@ -53,16 +51,6 @@
                     .catch(err => {
                         this.$emit('error', err)
                     })
-            },
-            endRound() {
-                this.$store.state.webSocket.send('nextRound')
-                    .then(res => console.log('nextRound', res))
-                    .catch(err => this.error = err)
-            },
-            done() {
-                this.$store.state.webSocket.send('done')
-                    .then(res => console.log('done', res))
-                    .catch(err => this.error = err)
             },
         },
     }
