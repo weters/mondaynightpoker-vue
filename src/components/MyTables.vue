@@ -2,7 +2,7 @@
     <div class="main-box my-tables">
         <h2>My Tables</h2>
 
-        <p><a href="/table/create">Create a Table</a></p>
+        <p><router-link to="/table/create">Create a Table</router-link></p>
 
         <table-list />
     </div>

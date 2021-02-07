@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="submit" class="hide-required">
+    <form @submit.prevent="submit" class="hide-required min">
 
         <h2>Log In</h2>
 
@@ -23,8 +23,9 @@
             <button type="submit" :disabled="submitDisabled">Log In</button>
         </div>
 
-        <div class="no-account">
-            Don't have an account? <router-link to="/signup">Sign up</router-link>
+        <div class="help">
+            <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
+            <p>Forgot password? <router-link to="/forgot-password">Reset your password</router-link></p>
         </div>
     </form>
 </template>
@@ -78,11 +79,24 @@
         right:    $spacing-small;
     }
 
-    div.no-account {
+    div.help {
         font-size: 0.8em;
         border-top: 1px solid $border-color;
         color: $text-color-light;
         padding-top: $spacing;
+        margin-top: $spacing;
+
+        p {
+            margin: 0;
+        }
+
+        p:not(:first-child) {
+            margin-top: $spacing-medium;
+        }
+    }
+
+    div.forgot-password {
+        font-size: 0.8em;
         margin-top: $spacing;
     }
 </style>

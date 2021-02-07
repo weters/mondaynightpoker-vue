@@ -92,8 +92,11 @@
         border-radius:    $border-radius;
         padding:          $spacing;
         margin:           0 auto;
-        width:            min-content;
         position:         relative;
+
+        &.min {
+            width: min-content;
+        }
 
         &.inner {
             box-shadow: 0 0 10px rgba(black, 0.1);

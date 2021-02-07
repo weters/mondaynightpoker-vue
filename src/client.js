@@ -56,6 +56,22 @@ class Client {
         }, withAuthorization)
     }
 
+    checkResetPasswordToken(token) {
+        return this._get(`/player/reset-password/${encodeURIComponent(token)}`)
+    }
+
+    requestPasswordReset(email) {
+        return this._post(`/player/reset-password-request`, {
+            email,
+        })
+    }
+
+    resetPassword(email, password, token) {
+        return this._post(`/player/reset-password/${encodeURIComponent(token)}`, {
+            email, password
+        })
+    }
+
     validateJWT(jwt) {
         return this._get(`/player/auth/${jwt}`)
     }

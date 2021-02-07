@@ -13,6 +13,8 @@ import relDate from 'relative-date'
 import Profile from "./components/Profile"
 import MyTables from "@/components/MyTables"
 import CreateTable from "@/components/admin/CreateTable"
+import ForgotPassword from "@/components/ForgotPassword"
+import ResetPassword from "@/components/ResetPassword"
 
 Vue.use(VueRouter)
 
@@ -23,6 +25,8 @@ const routes = [
     {path: '/login', component: LogIn, meta: {protected: false}},
     {path: '/logout', component: LogIn, meta: {protected: false}},
     {path: '/signup', component: SignUp, meta: {protected: false}},
+    {path: '/forgot-password', component: ForgotPassword, meta: {protected: false}},
+    {path: '/reset-password/:token', component: ResetPassword, props: true, meta: {protected: false}},
 
     {path: '/profile', component: Profile },
     {path: '/my-tables', component: MyTables },
