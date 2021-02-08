@@ -1,5 +1,9 @@
 # mondaynightpoker-vue
 
+This is the front-end application for Monday Night Poker. The back-end repo is [github.com/weters/mondaynightpoker-server](https://github.com/weters/mondaynightpoker-server).
+
+For information on the architecture, see the [architecture](https://github.com/weters/mondaynightpoker-server/blob/master/architecture.md) document in the [github.com/weters/mondaynightpoker-server](https://github.com/weters/mondaynightpoker-server) repo.
+
 ## Project setup
 ```
 npm install
