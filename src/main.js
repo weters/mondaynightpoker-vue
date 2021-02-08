@@ -15,6 +15,7 @@ import MyTables from "@/components/MyTables"
 import CreateTable from "@/components/admin/CreateTable"
 import ForgotPassword from "@/components/ForgotPassword"
 import ResetPassword from "@/components/ResetPassword"
+import VerifyAccount from "@/components/VerifyAccount"
 
 Vue.use(VueRouter)
 
@@ -25,6 +26,7 @@ const routes = [
     {path: '/login', component: LogIn, meta: {protected: false}},
     {path: '/logout', component: LogIn, meta: {protected: false}},
     {path: '/signup', component: SignUp, meta: {protected: false}},
+    {path: '/verify-account/:token', component: VerifyAccount, props: true, meta: {protected: false}},
     {path: '/forgot-password', component: ForgotPassword, meta: {protected: false}},
     {path: '/reset-password/:token', component: ResetPassword, props: true, meta: {protected: false}},
 

@@ -72,6 +72,10 @@ class Client {
         })
     }
 
+    verifyAccount(token) {
+        return this._post(`/player/verify/${encodeURIComponent(token)}`)
+    }
+
     validateJWT(jwt) {
         return this._get(`/player/auth/${jwt}`)
     }

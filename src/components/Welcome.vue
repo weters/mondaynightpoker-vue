@@ -1,5 +1,5 @@
 <template>
-    <div class="welcome">
+    <div class="welcome main-box">
         <h2>Socially distant poker with your friends</h2>
 
         <p>Do you miss hanging out with your friends and slinging some cards around? Monday Night Poker lets you play your favorite dealer's choice poker games online and for free!</p>
@@ -36,12 +36,7 @@
 <style lang="scss" scoped>
     @import '../variables.scss';
     div.welcome {
-        background-color: white;
-        padding: $spacing;
-        border: 1px solid $border-color;
-        border-radius: $border-radius;
-        margin: 0 auto;
-        max-width: 800px;
+        max-width: 650px;
 
         p svg {
             width: 24px;
