@@ -25,28 +25,10 @@
         },
         computed: {
             vueVersionUrl() {
-                return this.githubUrl('https://github.com/weters/mondaynightpoker-vue', this.version)
+                return 'https://github.com/weters/mondaynightpoker-vue'
             },
             serverVersionUrl() {
-                return this.githubUrl('https://github.com/weters/mondaynightpoker-server', this.serverVersion)
-            },
-        },
-        methods: {
-            githubUrl(base, version) {
-                if (!version) {
-                    return base
-                }
-
-                let match = version.match(/^(v\d+\.\d+\.\d+)(?:-\d+-g([a-f0-9]+))?/)
-                if (!match) {
-                    return base
-                }
-
-                if (match[2]) {
-                    return `${base}/commit/${match[2]}`
-                }
-
-                return `${base}/releases/tag/${match[1]}`
+                return 'https://github.com/weters/mondaynightpoker-server'
             },
         },
         mounted() {
