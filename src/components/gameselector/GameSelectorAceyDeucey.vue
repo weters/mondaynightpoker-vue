@@ -1,5 +1,5 @@
 <template>
-    <form class="inner" @submit.prevent="submit">
+    <form class="inner hide-required" @submit.prevent="submit">
         <h4>Acey Deucey</h4>
 
         <game-selector-ante :min="25" :max="100" :value="ante"/>

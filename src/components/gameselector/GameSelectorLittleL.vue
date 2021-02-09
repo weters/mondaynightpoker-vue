@@ -1,5 +1,5 @@
 <template>
-    <form class="little-l inner" @submit.prevent="submit">
+    <form class="little-l inner hide-required" @submit.prevent="submit">
         <h4>Little L</h4>
 
         <game-selector-ante :min="25" :max="200" :step="25" v-model="ante"/>

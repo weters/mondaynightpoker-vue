@@ -1,5 +1,5 @@
 <template>
-    <form class="pass-the-poop inner" @submit.prevent="submit">
+    <form class="pass-the-poop inner hide-required" @submit.prevent="submit">
         <h4>Pass the Poop</h4>
 
         <game-selector-ante :min="25" :max="400" :step="25" v-model="ante"/>

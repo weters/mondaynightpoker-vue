@@ -1,5 +1,5 @@
 <template>
-    <form class="bourre inner" @submit.prevent="submit">
+    <form class="bourre inner hide-required" @submit.prevent="submit">
         <h4>Bourré</h4>
 
         <game-selector-ante :min="25" :max="200" :step="25" v-model="ante"/>

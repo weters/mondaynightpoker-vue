@@ -1,5 +1,5 @@
 <template>
-    <form class="seven-card inner" @submit.prevent="submit">
+    <form class="seven-card inner hide-required" @submit.prevent="submit">
         <h4>Seven Card</h4>
 
         <game-selector-ante :min="25" :max="400" v-model="ante"/>
