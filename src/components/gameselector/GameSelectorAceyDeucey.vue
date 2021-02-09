@@ -2,7 +2,7 @@
     <form class="inner hide-required" @submit.prevent="submit">
         <h4>Acey Deucey</h4>
 
-        <game-selector-ante :min="25" :max="100" :value="ante"/>
+        <game-selector-ante :min="25" :max="100" v-model="ante"/>
 
         <div class="options">
             <label class="optional checkbox">
