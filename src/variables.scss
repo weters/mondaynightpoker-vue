@@ -48,3 +48,28 @@ $page-width-max-width: 1000px;
     }
 }
 
+@mixin inline-label {
+    display:        block;
+    font-size:      16px;
+    color:          #aaa;
+    position:       absolute;
+    top:            15px;
+    left:           15px;
+
+    transition:     all 100ms;
+    z-index:        2;
+    pointer-events: none;
+}
+
+@mixin inline-label-with-value {
+    span.label {
+        font-size: 10px;
+        top:       6px;
+        left:      6px;
+    }
+
+    input, select {
+        padding-top:    19px;
+        padding-bottom: 9px;
+    }
+}

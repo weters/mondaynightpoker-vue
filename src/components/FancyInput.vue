@@ -1,5 +1,5 @@
 <template>
-    <label :class="{ 'fancy-input': true, 'with-value': inputValue, 'required': required && !hideRequired, invalid, unit}">
+    <label :class="{ 'fancy-input': true, 'with-value': inputValue || isFocused, 'required': required && !hideRequired, invalid, unit}">
         <span class="label">{{ label }}</span>
         <span class="unit" v-if="unit">{{ unit }}</span>
         <input :type="type"
@@ -13,6 +13,8 @@
                v-model="inputValue"
                @input="$emit('input', $event.target.value)"
                @invalid="isInvalid"
+               @focus="isFocused=true"
+               @blur="isFocused=false"
         />
         <transition name="alert">
             <mdi-icon :icon="mdiAlertCircle" v-if="showAlert"/>
@@ -52,6 +54,7 @@ export default {
         return {
             mdiAlertCircle,
             inputValue: this.value,
+            isFocused: false,
             invalid: false,
         }
     },
@@ -92,16 +95,7 @@ label.fancy-input {
     }
 
     span.label {
-        display:        block;
-        font-size:      16px;
-        color:          #aaa;
-        position:       absolute;
-        top:            15px;
-        left:           15px;
-
-        transition:     all 100ms;
-        z-index:        2;
-        pointer-events: none;
+        @include inline-label;
     }
 
     &.invalid input {
@@ -118,16 +112,7 @@ label.fancy-input {
     }
 
     &.with-value {
-        span.label {
-            font-size: 10px;
-            top:       6px;
-            left:      6px;
-        }
-
-        input {
-            padding-top:    19px;
-            padding-bottom: 9px;
-        }
+        @include inline-label-with-value;
     }
 
     input {

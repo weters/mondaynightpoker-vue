@@ -125,6 +125,7 @@ div.poker-table-player {
         strong {
             font-weight: normal;
             margin:      0 $spacing 0 $spacing-small;
+            white-space: nowrap;
 
             @at-root #{$parent}:not(.connected) strong {
                 color:      $border-color;
@@ -135,6 +136,7 @@ div.poker-table-player {
         span.balance {
             color:       $green;
             margin-left: auto;
+            white-space: nowrap;
 
             &.negative {
                 color: $orange;
@@ -148,7 +150,7 @@ div.poker-table-player {
     }
 
     div.edit-player {
-        border-left: 1px solid $dark-green;
+        border-left: 1px solid $border-color;
         padding-left: $spacing;
         margin-left: 5px;
         .toggle {

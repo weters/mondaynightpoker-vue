@@ -4,23 +4,21 @@
 
         <fancy-input label="Ante" type="number" :min="25" :max="400" :step="25" v-model="ante" unit="¢" />
 
-        <label class="edition">
-            <span>Edition</span>
-            <select v-model="edition">
-                <option value="standard">Standard</option>
-                <option value="diarrhea">Diarrhea</option>
-                <option value="pairs">Pairs</option>
-            </select>
-        </label>
+        <fancy-select label="Edition"
+                      v-model="edition"
+                      :options="[
+            [ 'standard', 'Standard' ],
+            [ 'diarrhea', 'Diarrhea' ],
+            [ 'pairs', 'Pairs' ],
+        ]" />
 
-        <label class="lives">
-            <span>Lives</span>
-            <select v-model="lives">
-                <option value="3">3</option>
-                <option value="2">2</option>
-                <option value="1">1</option>
-            </select>
-        </label>
+        <fancy-select label="Lives"
+                      v-model="lives"
+                      :options="[
+            [ '3', '3' ],
+            [ '2', '2' ],
+            [ '1', '1' ],
+        ]" />
 
         <toggle label="Allow Blocks" v-model="allowBlocks" />
 
@@ -33,15 +31,16 @@
 <script>
 import FancyInput from "@/components/FancyInput"
 import Toggle from "@/components/Toggle"
+import FancySelect from "@/components/FancySelect"
 
 export default {
     name: "GameSelectorPassThePoop",
-    components: {Toggle, FancyInput},
+    components: {FancySelect, Toggle, FancyInput},
     data() {
         return {
             ante: '150',
             edition: 'standard',
-            lives: '3',
+            lives: '2',
             allowBlocks: false,
         }
     },
