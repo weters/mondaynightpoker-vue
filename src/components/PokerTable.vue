@@ -1,54 +1,50 @@
 <template>
-    <div class="poker-table main-box">
-        <h2><span class="table-name">{{ tableName }}</span></h2>
+    <div class="poker-table big-content">
+        <div>
+            <h2><span class="table-name">{{ tableName }}</span></h2>
 
-        <template v-if="game">
-            <bourre v-if="game.game === 'bourre'"/>
-            <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
-            <little-l v-else-if="game.game === 'little-l'"/>
-            <seven-card v-else-if="game.game === 'seven-card'"/>
-            <acey-deucey v-else-if="game.game === 'acey-deucey'"/>
-        </template>
-        <template v-else-if="clientState">
-            <transition name="scheduled-game">
-                <scheduled-game
-                    v-if="scheduledGame"
-                    class="pt-scheduled-game"
-                    :info="scheduledGame"
-                    :can-start="canStart"
-                    :is-player-active="userClientState.active"
-                    @setPlayerActive="setPlayerActive"
-                    @cancel="cancelGame"
-                />
-            </transition>
-
-            <form class="player-state inner" v-if="userClientState.isSeated">
-                <label class="play optional">
-                    <span>Play</span>
-                    <input type="checkbox"
-                           @change="setPlayerActive"
-                           :checked="userClientState.active"/>
-                </label>
-                <p class="details">If you want to take a break, uncheck the "Play" box.</p>
-            </form>
-
-            <poker-table-player-list class="player-list" :client-state="clientState"/>
-
-            <template v-if="!isSeated">
-                <p class="guest">You are currently a guest.</p>
-
+            <div class="guest" v-if="!isSeated">
                 <div class="buttons">
                     <button @click="$router.push(`/table/${uuid}/join`)">Join Table</button>
                 </div>
+            </div>
+
+            <template v-if="game">
+                <bourre v-if="game.game === 'bourre'"/>
+                <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
+                <little-l v-else-if="game.game === 'little-l'"/>
+                <seven-card v-else-if="game.game === 'seven-card'"/>
+                <acey-deucey v-else-if="game.game === 'acey-deucey'"/>
+            </template>
+            <template v-else-if="clientState">
+                <transition name="scheduled-game">
+                    <scheduled-game
+                        v-if="scheduledGame"
+                        class="pt-scheduled-game"
+                        :info="scheduledGame"
+                        :can-start="canStart"
+                        :is-player-active="userClientState.active"
+                        @setPlayerActive="setPlayerActive"
+                        @cancel="cancelGame"
+                    />
+                </transition>
+
+                <form class="player-state" v-if="userClientState.isSeated">
+                    <toggle :checked="userClientState.active" label="Deal me in!" :disabled="playButtonDisabled" @change="setPlayerActive" />
+                    <p class="details">If you want to sit out, uncheck "Deal me in!"</p>
+                </form>
+
+                <poker-table-player-list :client-state="clientState"/>
+
+
+                <game-selector/>
+            </template>
+            <template v-else>
+                <loading/>
             </template>
 
-            <game-selector />
-        </template>
-        <template v-else>
-            <loading/>
-        </template>
-
-        <dealer-log class="dealer-log"/>
+            <dealer-log class="dealer-log"/>
+        </div>
     </div>
 </template>
 
@@ -67,11 +63,13 @@ import bus from "../bus"
 import ScheduledGame from "./ScheduledGame"
 import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey"
 
-import GameSelector from "@/components/gameselector/GameSelector" //eslint-disable-line
+import GameSelector from "@/components/gameselector/GameSelector"
+import Toggle from "@/components/Toggle"
 
 export default {
     name: "PokerTable",
     components: {
+        Toggle,
         GameSelector,
         AceyDeucey,
         ScheduledGame, SevenCard, LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre,
@@ -87,13 +85,14 @@ export default {
             table: null,
             error: null,
             ws: null,
+            playButtonDisabled: false,
         }
     },
     computed: {
         ...mapState(['game', 'clientState', 'user', 'scheduledGame']),
         ...mapGetters(['canStart', 'userClientState']),
         isSeated() {
-            return this.clientState[this.user.player.id].isSeated
+            return this.clientState && this.clientState[this.user.player.id].isSeated
         },
         tableName() {
             return this.table && this.table.name
@@ -126,16 +125,13 @@ export default {
             this.ws.send('cancelGame')
                 .catch(err => this.showError(err))
         },
-        setPlayerActive(event) {
-            const active = event.target.checked
-
-            event.target.disabled = true
+        setPlayerActive(active) {
+            this.playButtonDisabled = true
             this.ws.send('playerStatus', null, null, {active})
                 .catch(err => {
-                    event.target.checked = !event.target.checked
                     this.showError(err)
                 })
-                .finally(() => event.target.disabled = false)
+                .finally(() => this.playButtonDisabled = false)
         },
     },
     watch: {
@@ -151,29 +147,26 @@ export default {
 <style lang="scss" scoped>
 @import '../variables.scss';
 
-h2 {
-    margin: 0;
-}
-
 span.game {
     &::before {
         content: ' / ';
     }
 }
 
-p.guest {
-    margin-top:  $spacing;
-    font-weight: bold;
-    text-align:  center;
-    color:       $red;
+div.guest {
+    margin-bottom: $spacing;
+
+    div.buttons {
+        text-align: left;
+    }
 }
 
-.player-list {
+.poker-table-player-list {
     margin-bottom: $spacing;
 }
 
 form.player-state {
-    margin-bottom: $spacing;
+    margin: $spacing 0;
 
     p.details {
         font-size: 0.8em;

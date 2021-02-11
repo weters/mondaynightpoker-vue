@@ -1,12 +1,16 @@
 <template>
-    <div>
+    <div class="poker-table-player-list">
         <h3>Players</h3>
 
         <transition name="error">
             <error :message="error" v-if="error"/>
         </transition>
 
-        <div class="players-list">
+        <div class="player-list">
+            <poker-table-player v-for="client in clients" :player="client" :key="client.player.id" />
+        </div>
+
+        <!--div class="players-list">
             <template v-for="client in clients">
                 <div class="player" :key="client.player.id">
                     <div class="primary">
@@ -75,7 +79,7 @@
                     </div>
                 </div>
             </template>
-        </div>
+        </div-->
 
         <div class="guests" v-if="guestClients.length > 0">
             <h4>Guests</h4>
@@ -91,13 +95,12 @@
     import {mapGetters, mapState} from "vuex"
     import balance from "@/mixins/balance"
     import Error from "@/components/Error"
-    import {mdiAlertCircle} from '@mdi/js'
-    import MdiIcon from "../MdiIcon"
+    import PokerTablePlayer from "@/components/PokerTablePlayer"
 
     export default {
         name: "PokerTablePlayerList",
         mixins: [balance],
-        components: {MdiIcon, Error},
+        components: {PokerTablePlayer, Error},
         props: {
             clientState: {
                 type: Object,
@@ -107,7 +110,6 @@
         data() {
             const {clientState, user} = this.$store.state
             return {
-                mdiAlertCircle,
                 error: null,
                 currentUserActive: clientState[user.player.id].active,
             }
@@ -190,129 +192,15 @@
 <style lang="scss" scoped>
     @import '../../variables';
 
-    .players-list {
-        margin-bottom: $spacing;
+    div.player-list {
+        width: min-content;
 
-        div.connected {
-
-            span {
-                display:          block;
-                width:            8px;
-                height:           8px;
-                background-color: black;
-                border-radius:    8px;
-                vertical-align:   middle;
-                margin-right:     $spacing-small;
-
-                &.connected {
-                    background-color: $primary;
-                }
-
-                &.sitting-out {
-                    background-color: $red;
-                }
-
-                &.disconnected {
-                    background-color: $border-color;
-                }
-            }
-        }
-
-        .player {
-            margin-bottom: $spacing-small;
-
-            &:not(:last-child) {
-                padding-bottom: $spacing-small;
-                border-bottom:  1px solid $border-color;
-            }
-
-            span.name {
-                svg {
-                    fill: $alert;
-                    margin-left: $spacing-small;
-                    width: 16px;
-                    vertical-align: middle;
-                }
-            }
-        }
-
-        .primary {
-            display:     flex;
-            align-items: center;
-        }
-
-        div.status {
-            font-size:      0.6em;
-            text-transform: uppercase;
-            margin-left:    calc(8px + #{$spacing-small});
-
-            .yes {
-            }
-
-            .no {
-                color: $text-color-light;
-            }
-
-            span.sitting-out {
-                font-weight: bold;
-            }
-
-            span.guest {
-                color: $text-color-light;
-            }
-        }
-
-        div.admin-options {
-            margin-left: calc(12px + #{$spacing-small});
-
-            @media(min-width: 500px) {
-                display: flex;
-
-                & > * {
-                    flex: 1 0 auto;
-                }
-            }
-
-            label {
-                width: auto;
-            }
-        }
-
-        span.balance {
-            margin-left: auto;
+        .poker-table-player {
+            margin-bottom: $spacing-medium;
         }
     }
 
-    span.na {
-        color: $text-color-light;
-    }
-
-    label {
-        display:     flex;
-        align-items: center;
-        margin:      0;
-
-        span {
-            order: 2;
-        }
-
-        input {
-            order:        1;
-            display:      inline;
-            margin-right: $spacing-small;
-        }
-    }
-
-    .guests ul {
-        list-style: none;
-        margin:     0 0 $spacing;
-
-        li {
-            display: inline-block;
-
-            &:not(:first-child)::before {
-                content: ', ';
-            }
-        }
+    .guests {
+        margin-top: $spacing;
     }
 </style>

@@ -1,7 +1,7 @@
 <template>
-    <div class="reset-password">
-        <form @submit.prevent="submit" class="min hide-required">
-            <h2>Reset Your Password</h2>
+    <div class="reset-password small-content">
+        <form @submit.prevent="submit">
+            <h2>Reset your password</h2>
 
             <div class="password-changed" v-if="passwordChanged">
                 <p>You have successfully changed your password. You may now proceed to <router-link to="/login">log in</router-link>.</p>
@@ -16,10 +16,7 @@
 
                 <p>Please enter the information below to finish resetting your password.</p>
 
-                <label>
-                    <span>Email Address</span>
-                    <input type="text" placeholder="Email Address" autocomplete="email" required v-model="email"/>
-                </label>
+                <fancy-input type="text" label="Email Address" autocomplete="email" required hide-required v-model="email" />
 
                 <input-with-confirm type="password" label="Password" autocomplete="off" placeholder="hunter2"
                                     v-model="password"/>
@@ -39,10 +36,11 @@ import InputWithConfirm from "@/components/InputWithConfirm"
 import Loading from "@/components/Loading"
 import Error from "@/components/Error"
 import client from "@/client"
+import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "ResetPassword",
-    components: {Error, Loading, InputWithConfirm},
+    components: {FancyInput, Error, Loading, InputWithConfirm},
     props: {
         token: {
             type: String,
@@ -88,11 +86,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div.reset-password {
-    form {
-        & > div {
-            width: 250px;
-        }
-    }
-}
 </style>

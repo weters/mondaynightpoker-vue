@@ -2,7 +2,7 @@
     <form class="seven-card inner hide-required" @submit.prevent="submit">
         <h4>Seven Card</h4>
 
-        <game-selector-ante :min="25" :max="400" v-model="ante"/>
+        <fancy-input label="Ante" type="number" :min="25" :max="400" :step="25" v-model="ante" unit="¢" />
 
         <label class="variant">
             <span>Variant</span>
@@ -21,14 +21,14 @@
 </template>
 
 <script>
-import GameSelectorAnte from "@/components/gameselector/GameSelectorAnte"
+import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "GameSelectorSevenCard",
-    components: {GameSelectorAnte},
+    components: {FancyInput},
     data() {
         return {
-            ante: 25,
+            ante: '25',
             variant: 'stud',
         }
     },
@@ -37,7 +37,7 @@ export default {
             this.$emit('submit', {
                 game: 'seven-card',
                 opts: {
-                    ante: this.ante,
+                    ante: parseInt(this.ante, 10),
                     variant: this.variant,
                 },
             })

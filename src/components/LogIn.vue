@@ -1,102 +1,102 @@
 <template>
-    <form @submit.prevent="submit" class="hide-required min">
+    <div class="log-in small-content hide-required">
+        <form @submit.prevent="submit">
 
-        <h2>Log In</h2>
+            <h2>Log in to Monday Night Poker</h2>
 
-        <loading v-if="loading" />
+            <loading v-if="loading"/>
 
-        <transition name="error">
-            <error :message="error" v-if="error"/>
-        </transition>
+            <transition name="error">
+                <error :message="error" v-if="error"/>
+            </transition>
 
-        <label>
-            <span>Email Address</span>
-            <input type="text" placeholder="Email Address" autocomplete="email" required v-model="email"/>
-        </label>
+            <fancy-input type="text" label="Email Address" autocomplete="email" required hide-required v-model="email" />
+            <fancy-input type="password" label="Password" autocomplete="current-password" required hide-required v-model="password" />
 
-        <label>
-            <span>Password</span>
-            <input type="password" placeholder="Password" autocomplete="current-password" required v-model="password"/>
-        </label>
+            <div class="buttons">
+                <button type="submit" :disabled="submitDisabled">Log In</button>
+            </div>
 
-        <div class="buttons">
-            <button type="submit" :disabled="submitDisabled">Log In</button>
-        </div>
-
-        <div class="help">
-            <p>Don't have an account? <router-link to="/signup">Sign up</router-link></p>
-            <p>Forgot password? <router-link to="/forgot-password">Reset your password</router-link></p>
-        </div>
-    </form>
+            <div class="help">
+                <p>Don't have an account?
+                    <router-link to="/signup">Sign up</router-link>
+                </p>
+                <p>Forgot password?
+                    <router-link to="/forgot-password">Reset your password</router-link>
+                </p>
+            </div>
+        </form>
+    </div>
 </template>
 
 <script>
-    import client from "@/client"
-    import Loading from "@/components/Loading"
-    import Error from "@/components/Error"
+import client from "@/client"
+import Loading from "@/components/Loading"
+import Error from "@/components/Error"
+import FancyInput from "@/components/FancyInput"
 
-    export default {
-        name: "LogIn",
-        components: {Error, Loading},
-        data() {
-            return {
-                email: null,
-                password: null,
-                loading: false,
-                error: null,
-            }
+export default {
+    name: "LogIn",
+    components: {FancyInput, Error, Loading},
+    data() {
+        return {
+            email: null,
+            password: null,
+            loading: false,
+            error: null,
+        }
+    },
+    mounted() {
+        this.$store.commit('clearUser')
+    },
+    computed: {
+        submitDisabled() {
+            return this.loading
         },
-        mounted() {
-            this.$store.commit('clearUser')
+    },
+    methods: {
+        submit() {
+            this.error = null
+            this.loading = true
+            client.logIn(this.email, this.password)
+                .then(res => {
+                    this.$store.commit('setUser', res)
+                    this.$router.push('/my-tables')
+                })
+                .catch(err => this.error = err)
+                .finally(() => this.loading = false)
         },
-        computed: {
-            submitDisabled() {
-                return this.loading || !this.email || !this.password
-            },
-        },
-        methods: {
-            submit() {
-                this.error = null
-                this.loading = true
-                client.logIn(this.email, this.password)
-                    .then(res => {
-                        this.$store.commit('setUser', res)
-                        this.$router.push('/')
-                    })
-                    .catch(err => this.error = err)
-                    .finally(() => this.loading = false)
-            },
-        },
-    }
+    },
+}
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables';
+@import '../variables';
 
-    form .loading {
-        position: absolute;
-        bottom:   $spacing-small;
-        right:    $spacing-small;
+form .loading {
+    position: absolute;
+    bottom:   $spacing-small;
+    right:    $spacing-small;
+}
+
+div.help {
+    font-size:   0.8em;
+    border-top:  1px solid $border-color;
+    color:       $text-color-light;
+    padding-top: $spacing;
+    margin-top:  $spacing;
+
+    p {
+        margin: 0;
     }
 
-    div.help {
-        font-size: 0.8em;
-        border-top: 1px solid $border-color;
-        color: $text-color-light;
-        padding-top: $spacing;
-        margin-top: $spacing;
-
-        p {
-            margin: 0;
-        }
-
-        p:not(:first-child) {
-            margin-top: $spacing-medium;
-        }
+    p:not(:first-child) {
+        margin-top: $spacing-medium;
     }
+}
 
-    div.forgot-password {
-        font-size: 0.8em;
-        margin-top: $spacing;
-    }
+div.forgot-password {
+    font-size:  0.8em;
+    margin-top: $spacing;
+}
 </style>

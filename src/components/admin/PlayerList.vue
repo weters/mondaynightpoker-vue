@@ -9,10 +9,7 @@
         <loading class="pl-loading" v-if="loading"/>
 
         <form @submit.prevent="" class="search">
-           <label>
-               <span>Search</span>
-               <input type="text" name="search" v-model="search" />
-           </label>
+            <fancy-input type="text" label="Player Search" v-model="search" autocomplete="off" />
         </form>
 
         <table class="standard">
@@ -43,10 +40,11 @@
     import Error from "../Error"
     import Loading from "../Loading"
     import EditPlayer from "@/components/admin/EditPlayer"
+    import FancyInput from "@/components/FancyInput"
 
     export default {
         name: "PlayerList",
-        components: {EditPlayer, Loading, Error},
+        components: {FancyInput, EditPlayer, Loading, Error},
         data() {
             return {
                 loading: false,

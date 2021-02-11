@@ -1,102 +1,107 @@
 <template>
     <header>
-        <h1><router-link to="/"><mdi-icon :icon="mdiCardsPlayingOutline" /><span>Monday Night Poker</span></router-link></h1>
+        <div>
+            <h1>
+                <router-link to="/"><span>Monday Night Poker</span></router-link>
+            </h1>
 
-        <ul>
-            <li v-if="isSiteAdmin"><router-link to="/admin">Admin</router-link></li>
-            <template v-if="user">
-                <li><router-link to="/my-tables">My Tables</router-link></li>
-                <li><router-link to="/profile">My Profile</router-link></li>
-                <li><router-link to="/logout">Log Out</router-link></li>
-            </template>
-            <template v-else>
-                <li><router-link to="/signup">Sign Up</router-link></li>
-                <li><router-link to="/login">Log In</router-link></li>
-            </template>
-        </ul>
+            <ul>
+                <li v-if="isSiteAdmin">
+                    <router-link to="/admin">Admin</router-link>
+                </li>
+                <template v-if="user">
+                    <li>
+                        <router-link to="/my-tables">My Tables</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/profile">My Profile</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/logout">Log Out</router-link>
+                    </li>
+                </template>
+                <template v-else>
+                    <li>
+                        <router-link to="/signup">Sign Up</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/login">Log In</router-link>
+                    </li>
+                </template>
+            </ul>
+        </div>
     </header>
 </template>
 
 <script>
-    import {mapGetters, mapState} from "vuex"
-    import MdiIcon from "@/components/MdiIcon"
-    import { mdiCardsPlayingOutline } from '@mdi/js'
+import {mapGetters, mapState} from "vuex"
 
-    export default {
-        name: "MondayNightPokerHeader",
-        components: {MdiIcon},
-        data() {
-            return { mdiCardsPlayingOutline }
-        },
-        computed: {
-            ...mapState(['user']),
-            ...mapGetters(['isSiteAdmin']),
-        },
-    }
+export default {
+    name: "MondayNightPokerHeader",
+    computed: {
+        ...mapState(['user']),
+        ...mapGetters(['isSiteAdmin']),
+    },
+}
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables';
-    header {
-        background-color: #171717;
-        color: white;
-        position: relative;
-        @media (min-width: 800px) {
-            display: flex;
-        }
+@import '../variables';
+
+header {
+    background-color: #011f26;
+    color:            white;
+    height:           74px;
+
+    $max-width: 650px;
+
+    @media (max-width: #{$max-width}) {
+        height: auto;
+    }
+
+    & > div {
+        display:     flex;
         align-items: center;
-        padding: $spacing;
+        @include page-width;
+
+        @media (max-width: #{$max-width}) {
+            display: block;
+        }
+
+        a {
+            color:           white;
+            text-decoration: none;
+        }
 
         h1 {
-            font-family: 'Sacramento', cursive;
-            filter: drop-shadow(2px 1px black) drop-shadow(2px 1px $primary) drop-shadow(2px 1px $secondary);
-
-            font-size: 2.4em;
-            margin: 0;
-
-            svg {
-                height: 1.0em;
-                vertical-align: middle;
-                fill: white;
-            }
-
-            @media (max-width: 800px) {
-                font-size: 1.4em;
-                margin-bottom: $spacing-medium;
-            }
-
-            span {
-                &::before {
-                    content: ' ';
-                }
-                vertical-align: middle;
-            }
-
-            a {
-                color: white;
-                text-decoration: none;
-            }
+            font-family: gioviale, sans-serif;
+            line-height: 74px;
+            height:      74px;
+            margin:      0;
+            padding:     0;
         }
 
         ul {
-            list-style: none;
-            margin: 0 0 0 auto;
-            text-align: center;
+            list-style:  none;
+            margin:      0 0 0 auto;
+            padding:     0;
+            display:     flex;
+            font-weight: bold;
+
+            @media (max-width: #{$max-width}) {
+                margin: 0 0 $spacing;
+
+                justify-content: center;
+            }
+
             li {
-                display: inline-block;
-                margin-left: $spacing-medium;
+                font-size:   0.9em;
 
-                &:first-child {
-                    margin-left: 0;
-                }
-
-                a {
-                    color: white;
-                    display: block;
-                    font-weight: bold;
-                    text-decoration: none;
+                &:not(:first-child) {
+                    margin-left: $spacing;
                 }
             }
         }
     }
+}
 </style>

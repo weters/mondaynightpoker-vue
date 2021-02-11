@@ -1,0 +1,163 @@
+<template>
+    <label :class="{ 'fancy-input': true, 'with-value': inputValue, 'required': required && !hideRequired, invalid, unit}">
+        <span class="label">{{ label }}</span>
+        <span class="unit" v-if="unit">{{ unit }}</span>
+        <input :type="type"
+               :pattern="pattern"
+               :disabled="disabled"
+               :autocomplete="autocomplete"
+               :required="required"
+               :min="min"
+               :max="max"
+               :step="step"
+               v-model="inputValue"
+               @input="$emit('input', $event.target.value)"
+               @invalid="isInvalid"
+        />
+        <transition name="alert">
+            <mdi-icon :icon="mdiAlertCircle" v-if="showAlert"/>
+        </transition>
+    </label>
+</template>
+
+<script>
+import {mdiAlertCircle} from "@mdi/js"
+import MdiIcon from "@/components/MdiIcon"
+
+export default {
+    name: "FancyInput",
+    components: {MdiIcon},
+    props: {
+        label: {
+            type: String,
+            required: true,
+        },
+        type: {
+            type: String,
+            default: 'text',
+        },
+        autocomplete: String,
+        pattern: String,
+        disabled: Boolean,
+        showAlert: Boolean,
+        required: Boolean,
+        value: String,
+        hideRequired: Boolean,
+        min: Number,
+        max: Number,
+        step: Number,
+        unit: String,
+    },
+    data() {
+        return {
+            mdiAlertCircle,
+            inputValue: this.value,
+            invalid: false,
+        }
+    },
+    methods: {
+        isInvalid() {
+            this.invalid = true
+        },
+    },
+    watch: {
+        inputValue() {
+            this.invalid = false
+        },
+    },
+}
+</script>
+
+<style lang="scss" scoped>
+@import '../variables.scss';
+
+label.fancy-input {
+    position: relative;
+
+    &.unit {
+        margin-left: 2em;
+    }
+
+    span.unit {
+        position: absolute;
+        left: -2em;
+        top: 0;
+        padding: 14px 0;
+        width: 2em;
+        background-color: $gray;
+        color: $green;
+        text-align: center;
+        border: 1px solid $border-color;
+        border-right-width: 0;
+    }
+
+    span.label {
+        display:        block;
+        font-size:      16px;
+        color:          #aaa;
+        position:       absolute;
+        top:            15px;
+        left:           15px;
+
+        transition:     all 100ms;
+        z-index:        2;
+        pointer-events: none;
+    }
+
+    &.invalid input {
+        border-color: $red;
+        position:     relative;
+        z-index:      1;
+    }
+
+    &.required {
+        span.label::after {
+            content: '*';
+            color:   $orange;
+        }
+    }
+
+    &.with-value {
+        span.label {
+            font-size: 10px;
+            top:       6px;
+            left:      6px;
+        }
+
+        input {
+            padding-top:    19px;
+            padding-bottom: 9px;
+        }
+    }
+
+    input {
+        input::after {
+            content: '$';
+        }
+    }
+
+    ::v-deep svg {
+        width:       1em;
+        height:      1em;
+        margin-left: $spacing-small;
+        fill:        $orange;
+        position:    absolute;
+        top:         50%;
+        right:       14px;
+        transform:   translateY(-50%);
+    }
+
+    .alert-enter-active {
+        transition: opacity 400ms, transform 200ms;
+    }
+
+    .alert-leave-active {
+        transition: opacity 200ms, transform 400ms;
+    }
+
+    .alert-enter, .alert-leave-to {
+        transform: translateY(100%);
+        opacity:   0;
+    }
+}
+</style>

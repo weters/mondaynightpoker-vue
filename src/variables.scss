@@ -1,26 +1,51 @@
-$background-color: #f8f8f8;
+$background-color: #f2f2f2;
 $red: #e53935;
 $yellow: #FBC02D;
 $black: #222;;
 $card-font: 'Libre Baskerville', serif;
 
-$text-color: #171717;
+$text-color: #011F26;
 $text-color-light: #999;
 
-$font-header: 'Jost', sans-serif;
-$font-text: 'Source Sans Pro', sans-serif;
+$font-text: gesta, sans-serif;
 
-$spacing: 20px;
+$spacing: 24px;
 $spacing-medium: 12px;
 $spacing-small: 4px;
 
-$border-color: #ddd;
+$border-color: #ccc;
 $border-radius: 4px;
 
-$primary: #00695C;
-$secondary: #303F9F;
-$error: #f44336;
+$dark-green: #011F26;
+$green: #0F4C59;
+$peach: #F2A679;
+$orange: #F26E50;
+$gray: #F2F2F2;
+
+$primary: $green;
+$secondary: $dark-green;
+$error: $orange;
 $alert: #FFC107;
+
+// radio and checkboxes
+$control-width: 40px;
+$control-size: 20px;
 
 $media-small-table-width: 600px;
 $mobile-max: 600px;
+
+$page-width-max-width: 1000px;
+
+@mixin page-width {
+    max-width: 85vw;
+    margin-left: auto;
+    margin-right: auto;
+
+    @media (max-width: #{$page-width-max-width}) {
+        max-width: 100%;
+        padding-left: $spacing;
+        padding-right: $spacing;
+        width: 100%;
+    }
+}
+

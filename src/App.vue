@@ -28,6 +28,7 @@
 </script>
 
 <style lang="scss">
+    @import url("https://use.typekit.net/ukr2lpr.css");
     @import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Source+Sans+Pro:wght@400;700&display=swap&family=Sacramento');
     @import './variables';
 
@@ -70,11 +71,22 @@
 
     h1, h2, h3, h4, h5, h6 {
         font-family: $font-text;
-        font-weight: 800;
+        font-weight: bold;
     }
+
 
     h1, h2, h3, h4, h5, h6, table, ul, ol, p {
         margin-bottom: $spacing;
+    }
+
+    h2 {
+        font-size: 2em;
+    }
+
+    h3 {
+        border-bottom: 1px solid $dark-green;
+        font-weight: normal;
+        font-size: 1.6em;
     }
 
     ul, ol {
@@ -82,123 +94,32 @@
     }
 
     main {
-        padding: $spacing;
-    }
+        & > .small-content {
+            background: linear-gradient(#011F26, #011F26 120px, $background-color 121px);
+            overflow: auto;
 
-    form {
-        overflow:         hidden;
-        background-color: white;
-        border:           1px solid $border-color;
-        border-radius:    $border-radius;
-        padding:          $spacing;
-        margin:           0 auto;
-        position:         relative;
-
-        &.min {
-            width: min-content;
-        }
-
-        &.inner {
-            box-shadow: 0 0 10px rgba(black, 0.1);
-            border:     none;
-            width:      auto;
-        }
-
-        h2 {
-            white-space: nowrap;
-        }
-
-        & > div.buttons:last-child {
-            margin-bottom: 0;
-        }
-    }
-
-    label {
-        $width:        250px;
-        display:       block;
-        margin-bottom: $spacing;
-        width:         $width;
-
-        &:not(.optional) span:not(.container)::after {
-            content: '*';
-            color:   $error;
-
-            @at-root.hide-required & {
-                content: '';
+            & > * {
+                background-color: white;
+                max-width: 600px;
+                padding: $spacing;
+                margin: $spacing auto 0;
             }
         }
 
-        & > span {
-            display: block;
-        }
+        & > .big-content {
+            background: linear-gradient(#011F26, #011F26 120px, $background-color 121px);
+            overflow: auto;
 
-        input:not([type="checkbox"]):not([type="radio"]), select {
-            background-color: white;
-            border-radius:    $border-radius;
-            border:           1px solid $border-color;
-            color:            $text-color;
-            font-family:      $font-text;
-            font-size:        16px;
-            height:           30px;
-            padding:          2px 8px;
-            width:            $width;
+            & > * {
+                @include page-width;
+                background-color: white;
+                padding: $spacing;
+                margin-top: $spacing;
 
-            &:disabled {
-                background-color: transparent;
+                @media (max-width: #{$page-width-max-width}) {
+                    margin-top: 0;
+                }
             }
-
-            &:focus {
-                border:  2px solid $primary;
-                color:   $primary;
-                padding: 1px 7px;
-            }
-
-            &::placeholder {
-                color: #ccc;
-            }
-        }
-    }
-
-    button {
-        box-shadow:       2px 2px 2px rgba(black, 0.2), 0 0 4px rgba(black, 0.2);
-        background-color: $primary;
-        border-width:     0;
-        border-radius:    $border-radius;
-        padding:          8px 12px;
-        color:            white;
-        font-family:      $font-text;
-        font-size:        1em;
-        font-weight:      bold;
-        transition:       all 250ms;
-        touch-action:     manipulation;
-
-        &.global {
-            background-color: $secondary;
-        }
-
-        &.secondary {
-            background-color: transparent;
-            box-shadow:       none;
-            color:            $primary;
-        }
-
-        &:disabled {
-            box-shadow: none;
-            opacity:    0.2;
-        }
-
-        &:active {
-            background-color: darken($primary, 5%);
-            box-shadow:       none;
-        }
-    }
-
-    div.buttons {
-        margin-bottom: $spacing;
-        text-align:    center;
-
-        button:not(:first-child) {
-            margin-left: $spacing-medium;
         }
     }
 
@@ -212,7 +133,7 @@
     }
 
     a {
-        color: $primary;
+        color: $orange;
 
         &:visited {
             color: $text-color;
@@ -220,81 +141,122 @@
     }
 
     table.standard {
-        padding:         $spacing;
-        border-radius:   $border-radius;
         border-collapse: collapse;
 
         th, td {
-            padding: 4px 12px;
+            border-bottom: 1px solid $border-color;
         }
 
-        th {
-            border-bottom: 2px solid $border-color;
-        }
-
-        tbody tr:nth-child(odd) {
-            background-color: darken($background-color, 3%);
+        thead th {
+            padding: 12px 4px;
+            border-bottom-color: $dark-green;
         }
 
         td {
-            border-bottom: 1px solid $border-color;
+            padding: 4px;
+        }
 
-            &.boolean {
-                text-align: center;
-            }
+        tr:nth-child(even) {
+            background-color: $gray;
+        }
+    }
 
-            &.number {
-                text-align: right;
-            }
+    @mixin button {
+        padding: 7px 14px;
+        font-weight: bold;
+        background-color: $orange;
+        text-decoration: none;
+        border-radius: 4px;
+        color: white;
+        font-size: 1.0em;
 
-            &.center {
-                text-align: center;
+        &:active {
+            background-color: darken($orange, 10%);
+        }
+
+        &:disabled {
+            opacity: 0.1;
+        }
+    }
+
+    a.button {
+        display: inline-block;
+        @include button;
+    }
+
+    button:not(.icon) {
+        @include button;
+        border-width: 0;
+
+        &.secondary {
+            background-color: transparent;
+            color: $orange;
+        }
+    }
+
+    button.icon {
+        border: none;
+        padding: 0;
+        background-color: transparent;
+
+        path {
+            fill: $orange;
+        }
+
+        &:active path {
+            fill: darken($orange, 10%);
+        }
+    }
+
+    label {
+        display: block;
+        margin-bottom: $spacing;
+
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding: 14px;
+            font-size: 16px;
+            font-family: $font-text;
+            border: 1px solid $border-color;
+            border-radius: 0;
+            background-color: #fff;
+            background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiB2aWV3Qm94PSIwIDAgNDAwIDMwMCIgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiPjxkZWZzPjxwYXRoIGQ9Ik0yMDAgMjk5LjE2TDQwMCAwTDAgMEwyMDAgMjk5LjE2WiIgaWQ9ImRzOUpFd3NLIj48L3BhdGg+PC9kZWZzPjxnPjxnPjxnPjx1c2UgeGxpbms6aHJlZj0iI2RzOUpFd3NLIiBvcGFjaXR5PSIxIiBmaWxsPSIjY2NjY2NjIiBmaWxsLW9wYWNpdHk9IjEiPjwvdXNlPjwvZz48L2c+PC9nPjwvc3ZnPg==');
+            background-repeat: no-repeat;
+            background-position: right .7em center;
+            background-size: .65em;
+            color: $green;
+
+            &::-ms-expand {
+                display: none;
             }
         }
 
-        @media (max-width: #{$media-small-table-width}) {
-            padding: 0;
+        input[type="text"], input[type="password"], input[type="number"] {
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
 
-            thead {
-                position: absolute;
-                left:     -99999px;
-            }
+            border: 1px solid $border-color;
+            border-radius: 0;
+            color: $green;
+            font-family: $font-text;
+            font-size: 16px;
+            padding: 14px;
+            width: 100%;
 
-            &, tbody, tr, td {
-                display: block;
-                width:   100%;
-            }
-
-            tr:not(:last-child) {
-                border-bottom: 2px solid black;
-
-                td:last-child {
-                    border-bottom: none;
-                }
-            }
-
-            td {
-                position:     relative;
-                text-align:   left;
-                padding-left: 40%;
-                white-space:  nowrap;
-
-                &::before {
-                    color:        $text-color-light;
-                    width:        calc(40% - #{$spacing-medium});
-                    position:     absolute;
-                    left:         0;
-                    padding-left: $spacing-small;
-                }
+            &::placeholder {
+                color: #aaaaaa;
             }
         }
     }
 
-    div.main-box {
-        background-color: white;
-        border:           1px solid $border-color;
-        border-radius:    $border-radius;
-        padding:          $spacing;
-        margin:           0 auto;
+    div.buttons {
+        text-align: right;
+
+        & button:not(:first-child) {
+            margin-left: $spacing-medium;
+        }
     }
 </style>
