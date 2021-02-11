@@ -50,9 +50,10 @@ export default {
 
         &:checked + span.checkbox {
             background-color: $peach;
+            border-color: $peach;
 
             &::before {
-                left: $control-width - $control-size;
+                left: $control-width - $control-size -1px;
             }
         }
     }
@@ -68,9 +69,10 @@ export default {
         width:            $control-width;
         height:           $control-size;
         border-radius:    1000px;
-        background-color: $gray;
+        background-color: rgba(black, 0.05);
         position:         relative;
-        transition:       background-color 150ms;
+        transition:       all 150ms;
+        border:           1px solid $border-color;
 
         &::before {
             display:          block;
@@ -78,12 +80,11 @@ export default {
             width:            $control-size;
             height:           $control-size;
             position:         absolute;
-            top:              0;
-            left:             0;
+            top:              -1px;
+            left:             -1px;
             border-radius:    9999px;
             background-color: $orange;
             transition:       left 150ms;
-            box-shadow:       1px 1px 3px rgba(black, 0.4);
         }
     }
 
