@@ -109,8 +109,6 @@ form .loading {
 
 div.sign-up {
     div.success {
-        width: 250px;
-
         p:last-child {
             margin: 0;
         }

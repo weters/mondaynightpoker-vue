@@ -1,5 +1,5 @@
 <template>
-    <div class="table-list main-box">
+    <div class="table-list">
         <error :message="error" v-if="error"/>
 
         <loading v-if="loading"/>
