@@ -29,7 +29,6 @@ export default {
 
 <style lang="scss">
 @import url("https://use.typekit.net/ukr2lpr.css");
-@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:wght@700&family=Source+Sans+Pro:wght@400;700&display=swap&family=Sacramento');
 @import './variables';
 
 * {
