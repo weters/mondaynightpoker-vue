@@ -31,10 +31,7 @@
                 <th>Password</th>
                 <td v-if="changePassword">
                     <form @submit.prevent="submitPassword">
-                        <label>
-                            <span>Password</span>
-                            <input type="text" name="password" v-model="password" />
-                        </label>
+                        <fancy-input label="Password" type="text" v-model="password" autocomplete="off" />
                         <div class="buttons">
                             <button type="button" class="secondary" @click="changePassword=false">Cancel</button>
                             <button type="submit">Change</button>
@@ -53,10 +50,11 @@
 import client from "@/client"
 import show_error from "@/mixins/show_error"
 import Error from "@/components/Error"
+import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "EditPlayer",
-    components: {Error},
+    components: {FancyInput, Error},
     mixins: [show_error],
     props: {
         player: {

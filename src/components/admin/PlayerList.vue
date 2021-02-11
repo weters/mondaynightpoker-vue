@@ -4,7 +4,7 @@
 
         <error :message="error" v-if="error"/>
 
-        <EditPlayer :player=editPlayer v-if="editPlayer" @close="editPlayer=null" />
+        <edit-player :player=editPlayer v-if="editPlayer" @close="editPlayer=null" />
 
         <loading class="pl-loading" v-if="loading"/>
 

@@ -4,16 +4,16 @@
             <player-status :connected="connected" :seated="seated"/>
             <strong class="display-name">{{ displayName }}</strong>
             <span :class="{ balance: true, negative: balance < 0 }">{{ formatAmount(balance) }}</span>
-            <button type="button" class="icon" @click="editTapped">
+            <button type="button" class="icon" @click="editTapped" v-if="canAdmin" :disabled="userClientState.playerId === this.player.playerId">
                 <mdi-icon :icon="mdiAccountEdit"/>
             </button>
         </div>
         <div class="edit-player" v-if="showMenu">
-            <toggle label="Seated" :checked="seated" @change="setPlayerActive"/>
-            <toggle label="Start" :checked="player.canStart" @change="setFlag($event, 'canStart')" v-if="!isSiteAdmin" />
-            <toggle label="Terminate" :checked="player.canTerminate" @change="setFlag($event, 'canTerminate')"  v-if="!isSiteAdmin" />
-            <toggle label="Admin" :checked="player.isTableAdmin" @change="setFlag($event, 'isTableAdmin')" v-if="!isSiteAdmin" />
-            <toggle label="Block" :checked="player.isBlocked" @change="setFlag($event, 'isBlocked')" v-if="!isSiteAdmin" />
+            <toggle label="Seated" v-model="isSeated" @change="setPlayerActive"/>
+            <toggle label="Start" v-model="canStart" @change="setFlag($event, 'canStart')" v-if="!isSiteAdmin" />
+            <toggle label="Terminate" v-model="canTerminate" @change="setFlag($event, 'canTerminate')"  v-if="!isSiteAdmin" />
+            <toggle label="Admin" v-model="isTableAdmin" @change="setFlag($event, 'isTableAdmin')" v-if="!isSiteAdmin" />
+            <toggle label="Block" v-model="isBlocked" @change="setFlag($event, 'isBlocked')" v-if="!isSiteAdmin" />
         </div>
     </div>
 </template>
@@ -25,7 +25,7 @@ import MdiIcon from "@/components/MdiIcon"
 import {mdiAccountEdit} from "@mdi/js"
 import bus from "@/bus"
 import Toggle from "@/components/Toggle"
-import {mapState} from "vuex"
+import {mapGetters, mapState} from "vuex"
 
 export default {
     name: "PokerTablePlayer",
@@ -41,10 +41,19 @@ export default {
         return {
             mdiAccountEdit,
             showMenu: false,
+            isSeated: this.player.active,
+            canStart: this.player.canStart,
+            canTerminate: this.player.canTerminate,
+            isTableAdmin: this.player.isTableAdmin,
+            isBlocked: this.player.isBlocked,
         }
     },
     computed: {
         ...mapState(['webSocket']),
+        ...mapGetters(['userClientState']),
+        canAdmin() {
+            return this.userClientState.isTableAdmin || this.userClientState.player.isSiteAdmin
+        },
         isSiteAdmin() {
             return this.player.player.isSiteAdmin
         },
@@ -79,7 +88,10 @@ export default {
             }
             data[flag] = value
             this.webSocket.send('tableAdmin', null, null, data)
-                .catch(err => this.dispatch('error', err))
+                .catch(err => {
+                    this[flag] = !value
+                    this.$store.dispatch('error', err)
+                })
         },
         setPlayerActive(active) {
             const payload = {
@@ -88,7 +100,10 @@ export default {
             }
 
             this.webSocket.send('playerStatus', null, null, payload)
-                .catch(err => this.$store.dispatch('error', err))
+                .catch(err => {
+                    this.isSeated = !active
+                    this.$store.dispatch('error', err)
+                })
         }
     },
 }

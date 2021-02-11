@@ -237,6 +237,14 @@ button.icon {
     &:active path {
         fill: darken($orange, 10%);
     }
+
+    &:disabled, &:disabled:active {
+        opacity: 0.2;
+
+        & path {
+            fill: $orange;
+        }
+    }
 }
 
 label {
