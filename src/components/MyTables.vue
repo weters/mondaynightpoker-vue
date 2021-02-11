@@ -4,7 +4,7 @@
             <h2>My Tables</h2>
 
             <p>
-                <router-link to="/table/create">Create a Table</router-link>
+                <router-link to="/table/create" class="button">Create a Table</router-link>
             </p>
 
             <table-list/>

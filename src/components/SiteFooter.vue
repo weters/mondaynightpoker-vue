@@ -48,6 +48,7 @@
         display:   flex;
         font-size: 0.8em;
         padding:   $spacing 0;
+        margin-top: 100px;
 
         @include page-width;
 

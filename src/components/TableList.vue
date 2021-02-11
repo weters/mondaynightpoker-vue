@@ -21,8 +21,8 @@
                     </td>
                     <td>{{ relativeDate(table.created) }}</td>
                     <td :class="{balance: true, negative: table.balance < 0 }">{{ formatAmount(table.balance) }}</td>
-                    <td class="graph"><label><span>Include graph?</span> <input type="checkbox" v-model="graph"
-                                                                                :value="table.uuid"/></label></td>
+                    <td class="graph">
+                        <toggle v-model="graph" :value="table.uuid" /></td>
                 </tr>
                 </tbody>
             </table>
@@ -38,10 +38,11 @@
     import client from "@/client"
     import balance from "../mixins/balance"
     import TableGraph from "./TableGraph"
+    import Toggle from "@/components/Toggle"
 
     export default {
         name: "TableList",
-        components: {TableGraph, Error, Loading},
+        components: {Toggle, TableGraph, Error, Loading},
         mixins: [balance],
         data() {
             return {
@@ -96,14 +97,22 @@
             text-align: center;
         }
 
+        .toggle {
+            justify-content: center;
+        }
+
         @media (max-width: #{$media-small-table-width}) {
             td:nth-child(1)::before { content: 'Name' }
             td:nth-child(2)::before { content: 'Created' }
             td:nth-child(3)::before { content: 'Balance' }
-            td:nth-child(4)::before { content: 'Show in graph' }
+            td:nth-child(4)::before { content: 'Graph' }
 
             .balance, .graph {
                 text-align: left;
+            }
+
+            .toggle {
+                justify-content: flex-start;
             }
         }
     }
