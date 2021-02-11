@@ -1,7 +1,7 @@
 <template>
-    <div class="sign-up">
+    <div class="sign-up small-content">
         <form @submit.prevent="submit" class="min">
-            <h2>Create an Account</h2>
+            <h2>Create an account</h2>
 
             <div v-if="success" class="success">
                 <p>Welcome to <strong>Monday Night Poker</strong>.</p>
@@ -17,16 +17,12 @@
                     <error :message="error" v-if="error"/>
                 </transition>
 
-                <label class="optional">
-                    <span>Display Name</span>
-                    <input type="text" autocomplete="off" v-model="displayName" placeholder="Timmy Two Times"
-                           pattern="[\p{L}\p{N} ]+" :disabled="loading"/>
-                </label>
+                <fancy-input label="Display Name" type="text" autocomplete="off" v-model="displayName" pattern="[\p{L}\p{N} ]+" :disabled="loading" />
 
                 <input-with-confirm label="Email" autocomplete="email" v-model="email"
-                                    placeholder="i.have.an.ace@email.domain" :disabled="loading"/>
+                                    placeholder="Email" :disabled="loading"/>
                 <input-with-confirm label="Password" type="password" autocomplete="off" v-model="password"
-                                    placeholder="hunter2" :disabled="loading"/>
+                                    placeholder="Password" :disabled="loading"/>
 
                 <div class="buttons">
                     <button type="submit" :disabled="submitDisabled">Sign Up</button>
@@ -47,10 +43,11 @@ import Error from "@/components/Error"
 import client from "@/client"
 import recaptcha from '@/recaptcha'
 import InputWithConfirm from "@/components/InputWithConfirm"
+import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "SignUp",
-    components: {InputWithConfirm, Error, Loading},
+    components: {FancyInput, InputWithConfirm, Error, Loading},
     data() {
         return {
             error: null,
@@ -69,7 +66,7 @@ export default {
     },
     computed: {
         submitDisabled() {
-            return this.loading || !this.email.primary || !this.password.primary || this.email.primary !== this.email.confirm || this.password.primary !== this.password.confirm
+            return this.loading
         },
     },
     mounted() {
@@ -96,7 +93,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../variables";
-
 form .loading {
     position: absolute;
     bottom:   $spacing-small;

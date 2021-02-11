@@ -1,7 +1,7 @@
 <template>
-    <div class="forgot-password">
-        <form @submit.prevent="submit" class="min hide-required">
-            <h2>Reset Your Password</h2>
+    <div class="forgot-password small-content">
+        <form @submit.prevent="submit">
+            <h2>Reset your password</h2>
 
             <div v-if="success" class="success">
                 <p>If you have an account, you will receive an email with further instructions to reset your password.
@@ -12,10 +12,9 @@
                     <error :message="error" v-if="error"/>
                 </transition>
 
-                <label>
-                    <span>Email Address</span>
-                    <input type="text" placeholder="Email Address" autocomplete="email" required v-model="email"/>
-                </label>
+                <p>Please supply your email address. We'll provide instructions for resetting your passsword to that address.</p>
+
+                <fancy-input type="text" label="Email Address" autocomplete="email" required hide-required v-model="email" />
 
                 <div class="buttons">
                     <loading v-if="loading" />
@@ -31,10 +30,11 @@
 import Error from "@/components/Error"
 import Loading from "@/components/Loading"
 import client from "@/client"
+import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "ForgotPassword",
-    components: {Loading, Error},
+    components: {FancyInput, Loading, Error},
     data() {
         return {
             loading: false,
@@ -72,10 +72,6 @@ div.forgot-password {
             bottom: 0;
             right: 0;
         }
-    }
-
-    div.success {
-        width: 250px;
     }
 }
 </style>

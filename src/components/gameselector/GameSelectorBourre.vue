@@ -2,7 +2,7 @@
     <form class="bourre inner hide-required" @submit.prevent="submit">
         <h4>Bourré</h4>
 
-        <game-selector-ante :min="25" :max="200" :step="25" v-model="ante"/>
+        <fancy-input label="Ante" type="number" :min="25" :max="200" :step="25" v-model="ante" unit="¢" />
 
         <div class="buttons">
             <button>Start</button>
@@ -11,14 +11,14 @@
 </template>
 
 <script>
-import GameSelectorAnte from "@/components/gameselector/GameSelectorAnte"
+import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "GameSelectorBourre",
-    components: {GameSelectorAnte},
+    components: {FancyInput},
     data() {
         return {
-            ante: 25,
+            ante: '25',
         }
     },
     methods: {
@@ -26,7 +26,7 @@ export default {
             this.$emit('submit', {
                 game: 'bourre',
                 opts: {
-                    ante: this.ante,
+                    ante: parseInt(this.ante, 10),
                 },
             })
         },

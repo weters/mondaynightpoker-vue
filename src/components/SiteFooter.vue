@@ -47,9 +47,9 @@
         color:     $text-color-light;
         display:   flex;
         font-size: 0.8em;
-        padding:   $spacing;
-        margin:    0 auto;
-        max-width: 800px;
+        padding:   $spacing 0;
+
+        @include page-width;
 
         & > :nth-child(2) {
             margin-left: auto;

@@ -1,27 +1,30 @@
 <template>
-    <div class="admin main-box">
-        <h2>Admin</h2>
+    <div class="admin big-content">
+        <div>
+            <h2>Admin</h2>
 
-        <div class="tools">
-            <player-list/>
+            <div class="tools">
+                <player-list/>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
-    import PlayerList from "./admin/PlayerList"
+import PlayerList from "./admin/PlayerList"
 
-    export default {
-        name: "Admin",
-        components: {PlayerList},
-    }
+export default {
+    name: "Admin",
+    components: {PlayerList},
+}
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables.scss';
-    div.tools {
-        & > *:not(:last-child) {
-            margin-bottom: $spacing;
-        }
+@import '../variables.scss';
+
+div.tools {
+    & > *:not(:last-child) {
+        margin-bottom: $spacing;
     }
+}
 </style>

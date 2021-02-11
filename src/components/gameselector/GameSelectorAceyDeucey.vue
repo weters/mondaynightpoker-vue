@@ -2,18 +2,11 @@
     <form class="inner hide-required" @submit.prevent="submit">
         <h4>Acey Deucey</h4>
 
-        <game-selector-ante :min="25" :max="100" v-model="ante"/>
+        <fancy-input label="Ante" type="number" :min="25" :max="100" :step="25" v-model="ante" unit="¢" />
 
         <div class="options">
-            <label class="optional checkbox">
-                <input type="checkbox" v-model="allowPass" />
-                <span>Allow Passing</span>
-            </label>
-
-            <label class="optional checkbox">
-                <input type="checkbox" v-model="continuousShoe" />
-                <span>Chaos Mode (Continuous Shoe)</span>
-            </label>
+            <toggle v-model="allowPass" label="Allow Passing" />
+            <toggle v-model="continuousShoe" label="Continuous Shoe" />
         </div>
 
         <div class="buttons">
@@ -23,14 +16,15 @@
 </template>
 
 <script>
-import GameSelectorAnte from "@/components/gameselector/GameSelectorAnte"
+import Toggle from "@/components/Toggle"
+import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "GameSelectorAceyDeucey",
-    components: {GameSelectorAnte},
+    components: {FancyInput, Toggle},
     data() {
         return {
-            ante: 25,
+            ante: '25',
             continuousShoe: false,
             allowPass: false,
         }
@@ -40,7 +34,7 @@ export default {
             this.$emit('submit', {
                 game: 'acey-deucey',
                 opts: {
-                    ante: this.ante,
+                    ante: parseInt(this.ante, 10),
                     continuousShoe: this.continuousShoe,
                     allowPass: this.allowPass,
                 },

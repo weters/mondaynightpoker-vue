@@ -1,39 +1,31 @@
 <template>
     <div class="input-with-confirm">
-        <label>
-            <span>{{ label }}</span>
-            <input :type="type"
-                   :autocomplete="autocomplete"
-                   :placeholder="placeholder"
-                   :disabled="disabled"
-                   required
-                   v-model="primary"
-            />
-        </label>
+        <fancy-input :type="type"
+                     :autocomplete="autocomplete"
+                     :disabled="disabled"
+                     :label="label"
+                     v-model="primary"
+                     :required="true"
+                     />
 
-        <label>
-            <span class="container">
-                <span>Confirm {{ label }}</span>
-                <transition name="alert"><mdi-icon :icon="mdiAlertCircle" v-if="mismatch"/></transition>
-            </span>
-            <input :type="type"
-                   :autocomplete="autocomplete"
-                   :placeholder="placeholder"
-                   :disabled="disabled"
-                   required
-                   v-model="confirm"
-            />
-        </label>
+        <fancy-input :type="type"
+                     :autocomplete="autocomplete"
+                     :disabled="disabled"
+                     :label="`Confirm ${label}`"
+                     :show-alert="mismatch"
+                     v-model="confirm"
+                     :required="true"
+        />
     </div>
 </template>
 
 <script>
 import {mdiAlertCircle} from "@mdi/js"
-import MdiIcon from "@/components/MdiIcon"
+import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "InputWithConfirm",
-    components: {MdiIcon},
+    components: {FancyInput},
     props: {
         label: {
             type: String,
@@ -91,29 +83,8 @@ export default {
 @import '../variables';
 
 label {
-    & > span > span {
-        vertical-align: middle;
+    &:first-child {
+        margin-bottom: -1px;
     }
-
-    ::v-deep svg {
-        vertical-align: middle;
-        width:          1em;
-        height:         1em;
-        margin-left:    $spacing-small;
-        fill:           $alert;
-    }
-}
-
-.alert-enter-active {
-    transition: opacity 400ms, transform 200ms;
-}
-
-.alert-leave-active {
-    transition: opacity 200ms, transform 400ms;
-}
-
-.alert-enter, .alert-leave-to {
-    transform: translateY(100%);
-    opacity:   0;
 }
 </style>
