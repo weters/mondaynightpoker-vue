@@ -67,7 +67,7 @@ export default {
 
 .welcome {
     .hero {
-        background:      url(../assets/poker_smoke.jpeg) center;
+        background:      url(../assets/poker_smoke.jpeg) no-repeat fixed center -100px;
         background-size: cover;
         min-height:      475px;
         position:        relative;
