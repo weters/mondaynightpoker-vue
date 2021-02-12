@@ -61,7 +61,9 @@ export default {
             client.logIn(this.email, this.password)
                 .then(res => {
                     this.$store.commit('setUser', res)
-                    this.$router.push('/my-tables')
+
+                    const redirect = this.$route.query.redirect || '/my-tables'
+                    this.$router.push(redirect)
                 })
                 .catch(err => this.error = err)
                 .finally(() => this.loading = false)

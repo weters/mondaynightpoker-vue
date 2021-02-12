@@ -58,7 +58,8 @@ router.beforeEach((to, from, next) => {
     }
 
     if (!store.state.user) {
-        next('/login')
+        const redirect = document.location.pathname + document.location.search
+        next('/login?redirect=' + encodeURIComponent(redirect))
         return
     }
 
