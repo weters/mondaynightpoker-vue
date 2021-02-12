@@ -1,5 +1,6 @@
 <template>
-    <label :class="{ 'fancy-input': true, 'with-value': inputValue || isFocused, 'required': required && !hideRequired, invalid, unit}">
+    <label
+        :class="{ 'fancy-input': true, 'with-value': inputValue || isFocused || isAutoFilled, 'required': required && !hideRequired, invalid, unit}">
         <span class="label">{{ label }}</span>
         <span class="unit" v-if="unit">{{ unit }}</span>
         <input :type="type"
@@ -10,6 +11,7 @@
                :min="min"
                :max="max"
                :step="step"
+               ref="input"
                v-model="inputValue"
                @input="$emit('input', $event.target.value)"
                @invalid="isInvalid"
@@ -55,10 +57,25 @@ export default {
             mdiAlertCircle,
             inputValue: this.value,
             isFocused: false,
+            isAutoFilled: false,
             invalid: false,
         }
     },
+    mounted() {
+        this.$refs.input.addEventListener('animationstart', this.animationStart, { passive: true })
+    },
+    beforeDestroy() {
+        this.$refs.input.removeEventListener('animationstart', this.animationStart)
+    },
     methods: {
+        // hack to determine if Google has autofilled the field
+        animationStart({ animationName }) {
+            if (animationName.match(/^onAutoFillStart/)) {
+                this.isAutoFilled = true
+            } else if (animationName.match(/^onAutoFillCancel/)) {
+                this.isAutoFilled = false
+            }
+        },
         isInvalid() {
             this.invalid = true
         },
@@ -82,15 +99,15 @@ label.fancy-input {
     }
 
     span.unit {
-        position: absolute;
-        left: -2em;
-        top: 0;
-        padding: 14px 0;
-        width: 2em;
-        background-color: $gray;
-        color: $green;
-        text-align: center;
-        border: 1px solid $border-color;
+        position:           absolute;
+        left:               -2em;
+        top:                0;
+        padding:            14px 0;
+        width:              2em;
+        background-color:   $gray;
+        color:              $green;
+        text-align:         center;
+        border:             1px solid $border-color;
         border-right-width: 0;
     }
 
@@ -118,6 +135,17 @@ label.fancy-input {
     input {
         input::after {
             content: '$';
+        }
+
+        /* hack to determine if Google has autofilled the field */
+        @keyframes onAutoFillStart {  from {}  to {}}
+        @keyframes onAutoFillCancel {  from {}  to {}}
+
+        &:-webkit-autofill {
+            animation-name: onAutoFillStart;
+        }
+        &:not(:-webkit-autofill) {
+            animation-name: onAutoFillCancel;
         }
     }
 

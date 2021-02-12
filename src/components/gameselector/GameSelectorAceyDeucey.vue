@@ -1,5 +1,5 @@
 <template>
-    <form class="inner hide-required" @submit.prevent="submit">
+    <form class="game-selector-acey-deucey" @submit.prevent="submit">
         <h4>Acey Deucey</h4>
 
         <fancy-input label="Ante" type="number" :min="25" :max="100" :step="25" v-model="ante" unit="¢" />

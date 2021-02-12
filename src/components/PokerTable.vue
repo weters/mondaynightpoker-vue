@@ -36,8 +36,7 @@
 
                 <poker-table-player-list :client-state="clientState"/>
 
-                <p>To invite players, share this page's link.<br />
-                <button @click="copy">Copy Link</button></p>
+                <p><button @click="copy">Copy Invite Link</button></p>
 
                 <game-selector/>
             </template>
