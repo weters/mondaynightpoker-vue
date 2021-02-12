@@ -15,6 +15,7 @@ import PlayerList from "./admin/PlayerList"
 
 export default {
     name: "Admin",
+    title: 'Admin',
     components: {PlayerList},
 }
 </script>

@@ -40,6 +40,7 @@ import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "ResetPassword",
+    title: 'Reset Password',
     components: {FancyInput, Error, Loading, InputWithConfirm},
     props: {
         token: {

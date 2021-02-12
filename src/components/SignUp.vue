@@ -47,6 +47,7 @@ import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "SignUp",
+    title: 'Sign Up',
     components: {FancyInput, InputWithConfirm, Error, Loading},
     data() {
         return {

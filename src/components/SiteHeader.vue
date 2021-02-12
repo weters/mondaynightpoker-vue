@@ -6,15 +6,12 @@
             </h1>
 
             <ul>
-                <li v-if="isSiteAdmin">
-                    <router-link to="/admin">Admin</router-link>
-                </li>
                 <template v-if="user">
                     <li>
                         <router-link to="/my-tables">My Tables</router-link>
                     </li>
                     <li>
-                        <router-link to="/profile">My Profile</router-link>
+                        <router-link to="/my-profile">My Profile</router-link>
                     </li>
                     <li>
                         <router-link to="/logout">Log Out</router-link>
@@ -34,13 +31,12 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex"
+import {mapState} from "vuex"
 
 export default {
     name: "MondayNightPokerHeader",
     computed: {
         ...mapState(['user']),
-        ...mapGetters(['isSiteAdmin']),
     },
 }
 </script>

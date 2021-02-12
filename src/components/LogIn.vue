@@ -37,6 +37,7 @@ import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "LogIn",
+    title: 'Log In',
     components: {FancyInput, Error, Loading},
     data() {
         return {

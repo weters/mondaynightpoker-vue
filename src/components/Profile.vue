@@ -38,6 +38,7 @@ import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "Profile",
+    title: 'My Profile',
     components: {FancyInput, Error, Loading},
     data() {
         return {

@@ -83,6 +83,7 @@ export default {
     },
     data() {
         return {
+            fuck: 'you',
             table: null,
             error: null,
             ws: null,
@@ -142,6 +143,11 @@ export default {
         },
     },
     watch: {
+        table(table) {
+            if (table) {
+                this.setTitle(this.tableName)
+            }
+        },
         'littleL.initialDeal': function (newVal) {
             const initialDeal = parseInt(newVal, 10)
             const tradeIns = this.littleL.tradeIns.filter(val => parseInt(val, 10) <= initialDeal)

@@ -30,7 +30,7 @@ const routes = [
     {path: '/forgot-password', component: ForgotPassword, meta: {protected: false}},
     {path: '/reset-password/:token', component: ResetPassword, props: true, meta: {protected: false}},
 
-    {path: '/profile', component: Profile },
+    {path: '/my-profile', component: Profile },
     {path: '/my-tables', component: MyTables },
     {path: '/table/create', component: CreateTable },
     {path: '/table/:uuid', component: PokerTable, props: true},
@@ -68,7 +68,17 @@ router.beforeEach((to, from, next) => {
 
 Vue.mixin({
     methods: {
-        relativeDate: date => relDate(new Date(date))
+        relativeDate: date => relDate(new Date(date)),
+        setTitle(title) {
+            document.title = title === 'Monday Night Poker' ? 'Monday Night Poker' : `${ title } | Monday Night Poker`
+        },
+    },
+    beforeMount() {
+        const title = this.$options.title
+        if (title) {
+            let pageTitle = typeof title === 'function' ? title.call(this) : title
+            this.setTitle(pageTitle)
+        }
     }
 })
 

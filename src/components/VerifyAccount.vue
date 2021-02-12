@@ -19,6 +19,7 @@ import Loading from "@/components/Loading"
 
 export default {
     name: "VerifyAccount",
+    title: 'Verify Account',
     components: {Loading},
     props: {
         token: {

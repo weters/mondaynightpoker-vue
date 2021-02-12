@@ -17,6 +17,7 @@ import TableList from "@/components/TableList"
 
 export default {
     name: "MyTables",
+    title: 'My Tables',
     components: {TableList},
 }
 </script>

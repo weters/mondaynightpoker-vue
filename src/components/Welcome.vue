@@ -59,6 +59,7 @@
 <script>
 export default {
     name: "Welcome",
+    title: 'Monday Night Poker',
 }
 </script>
 

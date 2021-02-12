@@ -34,6 +34,7 @@ import FancyInput from "@/components/FancyInput"
 
 export default {
     name: "ForgotPassword",
+    title: 'Reset Password',
     components: {FancyInput, Loading, Error},
     data() {
         return {
