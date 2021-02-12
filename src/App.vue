@@ -6,6 +6,7 @@
         </main>
         <site-footer/>
         <error-banner/>
+        <notification-banner />
         <dev-tools v-if="!production"/>
     </div>
 </template>
@@ -15,10 +16,11 @@ import SiteHeader from "@/components/SiteHeader"
 import SiteFooter from "@/components/SiteFooter"
 import ErrorBanner from "./components/ErrorBanner"
 import DevTools from "@/components/DevTools"
+import NotificationBanner from "@/components/NotificationBanner"
 
 export default {
     name: 'App',
-    components: {DevTools, ErrorBanner, SiteHeader, SiteFooter},
+    components: {NotificationBanner, DevTools, ErrorBanner, SiteHeader, SiteFooter},
     computed: {
         production() {
             return process.env.NODE_ENV === 'production'

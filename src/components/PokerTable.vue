@@ -36,6 +36,8 @@
 
                 <poker-table-player-list :client-state="clientState"/>
 
+                <p>To invite players, share this page's link.<br />
+                <button @click="copy">Copy Link</button></p>
 
                 <game-selector/>
             </template>
@@ -115,6 +117,12 @@ export default {
         this.$store.commit('clearLogs')
     },
     methods: {
+        copy() {
+            const url = document.location.toString()
+            navigator.clipboard.writeText(url)
+                .then(() => this.$store.dispatch('notification', 'Link has been copied'))
+                .catch(() => console.log('Could not copy URL to the clipboard'))
+        },
         listenForError(err) {
             this.showError(err)
         },
@@ -170,7 +178,7 @@ form.player-state {
 
     p.details {
         font-size: 0.8em;
-        margin:    0;
+        margin:    $spacing-medium 0 0;
     }
 
     label {

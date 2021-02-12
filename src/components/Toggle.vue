@@ -53,6 +53,7 @@ export default {
             border-color: $peach;
 
             &::before {
+                background-color: $orange;
                 left: $control-width - $control-size -1px;
             }
         }
@@ -83,7 +84,7 @@ export default {
             top:              -1px;
             left:             -1px;
             border-radius:    9999px;
-            background-color: $orange;
+            background-color: $border-color;
             transition:       left 150ms;
         }
     }

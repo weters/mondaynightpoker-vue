@@ -8,6 +8,8 @@ import aceyDeucey from "@/store/aceyDeucey"
 
 Vue.use(Vuex)
 
+let errorTimeout, notificationTimeout
+
 const store = new Vuex.Store({
     modules: {
         bourre,
@@ -22,6 +24,7 @@ const store = new Vuex.Store({
         webSocket: null,
         logs: [],
         error: null,
+        notification: null,
         scheduledGame: null,
     },
     mutations: {
@@ -89,6 +92,9 @@ const store = new Vuex.Store({
         error(state, error) {
             state.error = error
         },
+        notification(state, notification) {
+            state.notification = notification
+        },
         scheduledGame(state, scheduledGame) {
             state.scheduledGame = scheduledGame
         },
@@ -97,8 +103,25 @@ const store = new Vuex.Store({
         error(context, error) {
             context.commit('error', error)
 
+            if (errorTimeout) {
+                clearTimeout(errorTimeout)
+                errorTimeout = null
+            }
+
             if (error !== null) {
-                setTimeout(() => context.commit('error', null), 2500)
+                errorTimeout = setTimeout(() => context.commit('error', null), 2500)
+            }
+        },
+        notification(context, notification) {
+            context.commit('notification', notification)
+
+            if (notificationTimeout) {
+                clearTimeout(notificationTimeout)
+                notificationTimeout = null
+            }
+
+            if (notification !== null) {
+                notificationTimeout = setTimeout(() => context.commit('notification', null), 2500)
             }
         },
         scheduledGame(context, scheduledGame) {

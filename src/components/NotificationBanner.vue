@@ -1,7 +1,7 @@
 <template>
-    <transition name="slide-error">
-        <div class="error" v-if="errorMessage">
-            <p>{{ errorMessage }}</p>
+    <transition name="slide-notification">
+        <div class="notification" v-if="notification">
+            <p>{{ notification }}</p>
         </div>
     </transition>
 </template>
@@ -10,16 +10,9 @@
 import {mapState} from "vuex"
 
 export default {
-    name: "ErrorBanner",
+    name: "NotificationBanner",
     computed: {
-        ...mapState(['error']),
-        errorMessage() {
-            if (!this.error) {
-                return
-            }
-
-            return typeof (this.error) === 'object' && this.error.message ? this.error.message : this.error
-        },
+        ...mapState(['notification']),
     },
 }
 </script>
@@ -27,9 +20,9 @@ export default {
 <style lang="scss" scoped>
 @import '../variables';
 
-.error {
+.notification {
     border-radius:    $border-radius 0 0 $border-radius;
-    border-left:      3px solid $error;
+    border-left:      3px solid $green;
     background-color: white;
     position:         fixed;
     bottom:           $spacing-medium;
@@ -40,11 +33,11 @@ export default {
 
     p {
         &::before {
-            content:     'ERROR';
+            content:     'NOTIFICATION';
+            color:       $green;
             font-weight: bold;
             font-size:   0.7em;
             display:     block;
-            color:       $error;
         }
 
         margin:  0;
@@ -52,11 +45,11 @@ export default {
     }
 }
 
-.slide-error-enter-active, .slide-error-leave-active {
+.slide-notification-enter-active, .slide-notification-leave-active {
     transition: all 300ms;
 }
 
-.slide-error-enter, .slide-error-leave-to {
+.slide-notification-enter, .slide-notification-leave-to {
     transform: translateX(100%);
 }
 </style>
