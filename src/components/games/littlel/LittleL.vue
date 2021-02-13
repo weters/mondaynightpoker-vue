@@ -1,6 +1,6 @@
 <template>
     <div class="little-l">
-        <h3>Little L: Trade {{ tradeIns }}</h3>
+        <h3>{{ gameState.name }}</h3>
 
         <div class="board">
            <little-l-community/>

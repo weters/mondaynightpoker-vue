@@ -1,6 +1,6 @@
 <template>
     <div class="acey-deucey">
-        <h3>Acey Deucey</h3>
+        <h3>{{ gameState.name }}</h3>
 
         <acey-deucey-round :round="round"/>
 
