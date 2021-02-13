@@ -225,6 +225,10 @@ button:not(.icon) {
         background-color: transparent;
         color:            $orange;
     }
+
+    &.destructive {
+        background-color: $red;
+    }
 }
 
 button.icon {
@@ -299,5 +303,10 @@ div.buttons {
     & button:not(:first-child) {
         margin-left: $spacing-medium;
     }
+}
+
+p.note {
+    color: $text-color-light;
+    font-size: 0.7em;
 }
 </style>

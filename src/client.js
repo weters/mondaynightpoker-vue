@@ -84,8 +84,18 @@ class Client {
         return this._get(`/health`)
     }
 
+    deleteAccount(playerId) {
+        return this._delete(`/player/${encodeURIComponent(playerId)}`, true)
+    }
+
     _get(path, withAuthorization = false) {
         return this._do(path, {}, withAuthorization)
+    }
+
+    _delete(path, withAuthorization = false) {
+        return this._do(path, {
+            method: 'DELETE',
+        }, withAuthorization)
     }
 
     _post(path, payload, withAuthorization = false) {

@@ -18,6 +18,7 @@
                 <th>ID</th>
                 <th>Email</th>
                 <th>Display Name</th>
+                <th>Status</th>
                 <th>Joined</th>
                 <th>Actions</th>
             </tr>
@@ -27,6 +28,7 @@
                 <td>{{ player.id }}</td>
                 <td>{{ player.email }}</td>
                 <td>{{ player.displayName }}</td>
+                <td>{{ player.status }}</td>
                 <td>{{ new Date(player.created).toLocaleString() }}</td>
                 <td><button type="button" @click="editPlayer=player">Edit</button></td>
             </tr>
