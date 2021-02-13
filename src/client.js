@@ -88,6 +88,10 @@ class Client {
         return this._delete(`/player/${encodeURIComponent(playerId)}`, true)
     }
 
+    getTables(start, rows) {
+        return this._get(`/admin/table` + this._query({ start, rows }), true)
+    }
+
     _get(path, withAuthorization = false) {
         return this._do(path, {}, withAuthorization)
     }

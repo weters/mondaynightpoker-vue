@@ -4,7 +4,7 @@ import App from './App.vue'
 import Welcome from "@/components/Welcome"
 import store from './store'
 import LogIn from "@/components/LogIn"
-import Admin from "@/components/Admin"
+import Admin from "@/components/admin/Admin"
 import SignUp from "@/components/SignUp"
 import PokerTable from "@/components/PokerTable"
 import './auth'
@@ -16,6 +16,8 @@ import CreateTable from "@/components/admin/CreateTable"
 import ForgotPassword from "@/components/ForgotPassword"
 import ResetPassword from "@/components/ResetPassword"
 import VerifyAccount from "@/components/VerifyAccount"
+import AdminPlayers from "@/components/admin/AdminPlayers"
+import AdminTables from "@/components/admin/AdminTables"
 
 Vue.use(VueRouter)
 
@@ -37,6 +39,8 @@ const routes = [
     {path: '/table/:uuid/join', component: JoinTable, props: true},
 
     {path: '/admin', component: Admin, meta: {adminOnly: true}},
+    {path: '/admin/players', component: AdminPlayers, meta: {adminOnly: true}},
+    {path: '/admin/tables', component: AdminTables, meta: {adminOnly: true}},
 ]
 
 const router = new VueRouter({
