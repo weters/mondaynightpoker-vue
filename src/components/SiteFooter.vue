@@ -48,6 +48,7 @@ export default {
 footer {
     color: $text-color-light;
     font-size: 0.8em;
+    margin-top: $spacing * 4;
     padding: $spacing 0;
 
     a {
@@ -86,6 +87,14 @@ footer {
             order: 3;
             flex: 0 0 100%;
             margin-top: $spacing-medium;
+        }
+
+        @media (max-width: #{$mobile-max}) {
+            display: block;
+
+            ul.links {
+                margin-bottom: $spacing-medium;
+            }
         }
     }
 }

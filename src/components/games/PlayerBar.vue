@@ -3,8 +3,8 @@
         <slider>
             <div class="settings">
                 <p>Table balance: {{ formatAmount(userClientState.balance) }}</p>
-                <p><label class="optional"><span>Sit out</span><input type="checkbox" v-model="sitOut"
-                                                                      :disabled="sitOutLoading"/></label></p>
+
+                <p><toggle label="Deal me in!" v-model="dealMeIn" :disabled="dealMeInLoading" /></p>
 
                 <template v-if="isTableAdmin || canTerminate">
                     <h3>Admin</h3>
@@ -39,11 +39,12 @@ import Slider from "@/components/Slider"
 import {mapGetters} from "vuex"
 import balance from "../../mixins/balance"
 import audioplayer from "@/audioplayer"
+import Toggle from "@/components/Toggle"
 
 export default {
     name: "PlayerBar",
     mixins: [balance],
-    components: {Slider, MnpError},
+    components: {Toggle, Slider, MnpError},
     props: {
         isTurn: Boolean,
         error: [String, Error],
@@ -51,8 +52,8 @@ export default {
     data() {
         return {
             localError: null,
-            sitOut: !this.$store.getters.userClientState.active,
-            sitOutLoading: false,
+            dealMeIn: this.$store.getters.userClientState.active,
+            dealMeInLoading: false,
             confirmTerminate: false,
         }
     },
@@ -77,18 +78,18 @@ export default {
         }, 100)
     },
     watch: {
-        sitOut(sitOut) {
-            if (this.sitOutLoading) {
+        dealMeIn(active) {
+            if (this.dealMeInLoading) {
                 return
             }
 
-            this.sitOutLoading = true
-            this.$store.state.webSocket.send('playerStatus', null, null, {active: !sitOut})
+            this.dealMeInLoading = true
+            this.$store.state.webSocket.send('playerStatus', null, null, {active})
                 .catch(err => {
-                    this.sitOut = !sitOut
+                    this.dealMeIn = !active
                     this.showError(err)
                 })
-                .finally(() => this.sitOutLoading = false)
+                .finally(() => this.dealMeInLoading = false)
         },
         isTurn: {
             immediate: true,

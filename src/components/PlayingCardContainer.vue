@@ -49,7 +49,6 @@
         position:         relative;
         background-color: #eee;
         border-radius:    $border-radius;
-        box-shadow:       inset 2px 2px 2px rgba(black, 0.1);
 
         & > * {
             position: absolute;

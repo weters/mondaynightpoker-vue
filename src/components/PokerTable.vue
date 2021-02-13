@@ -106,7 +106,10 @@ export default {
 
         client.getTableByUUID(this.uuid)
             .then(res => this.table = res)
-            .catch(err => this.showError(err))
+            .catch(err => {
+                this.showError(err)
+                this.$router.push('/my-tables')
+            })
 
         bus.$on('error', this.listenForError)
     },

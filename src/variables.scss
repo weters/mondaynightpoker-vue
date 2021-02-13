@@ -73,3 +73,8 @@ $page-width-max-width: 1000px;
         padding-bottom: 9px;
     }
 }
+
+@mixin current-turn {
+    border-color: $orange;
+    box-shadow: 0 0 4px $orange;
+}

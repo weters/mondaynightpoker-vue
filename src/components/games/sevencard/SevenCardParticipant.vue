@@ -133,16 +133,13 @@
     $max-width: 599px;
 
     div.seven-card-participant {
-        border-radius: $border-radius;
-        box-shadow: 0 0 5px rgba(black, 0.2);
-        border: 1px solid transparent;
+        border: 1px solid $border-color;
         padding:   $spacing-small;
         display: flex;
         flex-wrap: wrap;
 
         &.is-turn {
-            border-color: $yellow;
-            box-shadow: 0 0 5px rgba($yellow, 0.6);
+            @include current-turn;
         }
 
         div.cards {

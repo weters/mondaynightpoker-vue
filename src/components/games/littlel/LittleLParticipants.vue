@@ -22,34 +22,8 @@
 <style lang="scss" scoped>
     @import '../../../variables';
     .little-l-participants {
-        $margin: calc(#{$spacing} * -1);
-        display: flex;
-        flex-flow: row wrap;
-        margin: $margin;
-        justify-content: center;
-
-        & > * {
-            margin: $spacing;
-            flex: 0 0 calc(50% - #{$spacing} * 2);
-
-            @media (min-width: 1000px) {
-                flex: 0 0 calc(25% - #{$spacing} * 2);
-            }
-        }
-
-        @media (max-width: 599px) {
-            $margin: $spacing-small;
-            margin: calc(#{$margin} * -1);
-
-            & > * {
-                margin: $margin;
-                flex: 0 0 calc(50% - #{$margin} * 2);
-
-                @media (min-width: 1000px) {
-                    flex: 0 0 calc(25% - #{$margin} * 2);
-                }
-            }
-
-        }
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-gap: $spacing;
     }
 </style>

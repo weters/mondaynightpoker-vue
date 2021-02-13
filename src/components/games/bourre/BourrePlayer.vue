@@ -1,229 +1,219 @@
 <template>
-    <div class="bourre-player">
+    <div :class="{ 'bourre-player': true, 'is-turn': isCurrentTurn }">
         <div class="hand">
             <div class="cards">
                 <template v-for="i in 5">
-                    <div class="card-container" :key="i">
-                        <div class="background"></div>
-                        <transition :name="transitionName" mode="out-in">
-                            <playing-card
-                                    v-if="isPlayedCard(i)"
-                                    class="played-card"
-                                    :suit="playedCard.suit"
-                                    :rank="playedCard.rank"
-                                    :key="`playing-card-${i}`"
-                                    :big-card="true"
-                            />
-                            <div class="card-back" v-else-if="isUnplayedCard(i)" :key="`card-back-${i}`">
-                                <mdi-icon :icon="mdiCardsPlayingOutline" />
-                            </div>
-                            <div v-else class="void" :key="`void-${i}`"></div>
-                        </transition>
-                    </div>
+                    <playing-card-container
+                        :hide-card="hideCard(i)"
+                        :card="playingCard(i)"
+                        :key="`playing-card-${i}`"
+                    />
                 </template>
             </div>
         </div>
 
         <div :class="{ metadata: true, disconnected: !playerData.isConnected }">
-            <span class="name">{{ playerData.player.displayName}}</span>
+            <span class="name">{{ playerData.player.displayName }}</span>
             <span class="balance">{{ formatAmount(player.balance) }}</span>
             <bourre-tricks-tally class="tricks" :tricks="player.tricksWon"/>
-            <mdi-icon class="poker-chip" :icon="mdiPokerChip" v-if="isCurrentTurn" />
         </div>
     </div>
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
-    import PlayingCard from "@/components/PlayingCard"
-    import balance from '@/mixins/balance'
-    import BourreTricksTally from "@/components/games/bourre/BourreTricksTally"
-    import {mdiPokerChip, mdiCardsPlayingOutline} from '@mdi/js'
-    import MdiIcon from "@/components/MdiIcon"
+import {mapGetters} from "vuex"
+import balance from '@/mixins/balance'
+import BourreTricksTally from "@/components/games/bourre/BourreTricksTally"
+import {mdiCardsPlayingOutline} from '@mdi/js'
+import PlayingCardContainer from "@/components/PlayingCardContainer"
 
-    export default {
-        name: "BourrePlayer",
-        components: {MdiIcon, BourreTricksTally, PlayingCard},
-        mixins: [balance],
-        props: {
-            player: {
-                type: Object,
-                required: true,
-            },
-            playerData: {
-                type: Object,
-                required: true,
-            },
+export default {
+    name: "BourrePlayer",
+    components: {PlayingCardContainer, BourreTricksTally},
+    mixins: [balance],
+    props: {
+        player: {
+            type: Object,
+            required: true,
         },
-        data() {
-            return {
-                mdiPokerChip,
-                mdiCardsPlayingOutline,
+        playerData: {
+            type: Object,
+            required: true,
+        },
+    },
+    data() {
+        return {
+            mdiCardsPlayingOutline,
+        }
+    },
+    computed: {
+        ...mapGetters({
+            isTradeInRound: 'bourre/isTradeInRound',
+            gameState: 'bourre/gameState',
+        }),
+        transitionName() {
+            return this.isTradeInRound ? 'trade-in' : 'game'
+        },
+        playedCard() {
+            return this.gameState.playedCards[this.player.playerId]
+        },
+        folded() {
+            return this.player.folded
+        },
+        isCurrentTurn() {
+            return this.gameState.currentTurn === this.player.playerId
+        },
+    },
+    methods: {
+        hideCard(index) {
+            return !this.isPlayedCard(index) && !this.isUnplayedCard(index)
+        },
+        playingCard(index) {
+            return this.isPlayedCard(index) ? this.playedCard : null
+        },
+        isUnplayedCard(index) {
+            if (this.player.folded) {
+                return false
             }
-        },
-        computed: {
-            ...mapGetters({
-                isTradeInRound: 'bourre/isTradeInRound',
-                gameState: 'bourre/gameState',
-            }),
-            transitionName() {
-                return this.isTradeInRound ? 'trade-in' : 'game'
-            },
-            playedCard() {
-                return this.gameState.playedCards[this.player.playerId]
-            },
-            folded() {
-                return this.player.folded
-            },
-            isCurrentTurn() {
-                return this.gameState.currentTurn === this.player.playerId
+
+            if (this.isTradeInRound) {
+                return index <= 5 - this.player.cardsDiscarded
             }
+
+            return index <= this.player.cardsInHand
         },
-        methods: {
-            isUnplayedCard(index) {
-                if (this.player.folded) {
-                    return false
-                }
+        isPlayedCard(index) {
+            if (this.player.folded || this.isTradeInRound) {
+                return false
+            }
 
-                if (this.isTradeInRound) {
-                    return index <= 5 - this.player.cardsDiscarded
-                }
-
-                return index <= this.player.cardsInHand
-            },
-            isPlayedCard(index) {
-                if (this.player.folded || this.isTradeInRound) {
-                    return false
-                }
-
-                return this.playedCard && index === this.player.cardsInHand + 1
-            },
+            return this.playedCard && index === this.player.cardsInHand + 1
         },
-    }
+    },
+}
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables.scss';
+@import '../../../variables.scss';
 
-    div.bourre-player {
-        max-width: 400px;
+div.bourre-player {
+    border: 1px solid $border-color;
+    padding: $spacing-medium;
+    max-width: 400px;
 
-        .hand {
-            .cards {
-                display:               grid;
-                grid-template-columns: repeat(5, 1fr);
-                grid-gap:              2px;
+    &.is-turn {
+        @include current-turn;
+    }
 
-                .card-container {
-                    perspective: 200px;
-                    width:       100%;
-                    height:      0;
-                    padding-top: calc(3.5 / 2.5 * 100%);
-                    position:    relative;
+    .hand {
+        .cards {
+            display:               grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-gap:              2px;
 
-                    & > * {
-                        position: absolute;
-                        top:      0;
-                        right:    0;
-                        bottom:   0;
-                        left:     0;
-                    }
+            .card-container {
+                perspective: 200px;
+                width:       100%;
+                height:      0;
+                padding-top: calc(3.5 / 2.5 * 100%);
+                position:    relative;
 
-                    .background {
-                        border-radius:    $border-radius;
-                        box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
-                        background-color: rgba(black, 0.1);
-                        border:           1px solid rgba(black, 0.1);
-                        margin:           2px;
-                    }
+                & > * {
+                    position: absolute;
+                    top:      0;
+                    right:    0;
+                    bottom:   0;
+                    left:     0;
+                }
 
-                    div.card-back {
-                        background: linear-gradient($primary, $secondary);
-                        border-radius: $border-radius;
+                .background {
+                    border-radius:    $border-radius;
+                    box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
+                    background-color: rgba(black, 0.1);
+                    border:           1px solid rgba(black, 0.1);
+                    margin:           2px;
+                }
 
-                        svg {
-                            fill: white;
-                            width: 75%;
-                            position: absolute;
-                            top: 50%;
-                            left: 50%;
-                            transform: translate(-50%, -50%);
-                        }
+                div.card-back {
+                    background:    linear-gradient($primary, $secondary);
+                    border-radius: $border-radius;
+
+                    svg {
+                        fill:      white;
+                        width:     75%;
+                        position:  absolute;
+                        top:       50%;
+                        left:      50%;
+                        transform: translate(-50%, -50%);
                     }
                 }
             }
-
-            img {
-                width: 100%;
-            }
-
-            .folded {
-                background-color: $background-color;
-                overflow:         hidden;
-                width:            100%;
-                height:           0;
-                padding-top:      calc(1056 / 691 * 100%);
-                border-radius:    $border-radius;
-            }
-
-            .playing-card {
-                width:       100%;
-                margin-left: 2px;
-            }
         }
 
-        .metadata {
-            display:               grid;
-            grid-template-columns: 1fr auto;
-            justify-items:         start;
-            align-items:           center;
+        img {
+            width: 100%;
+        }
 
-            .name {
-                font-weight: bold;
-            }
+        .folded {
+            background-color: $background-color;
+            overflow:         hidden;
+            width:            100%;
+            height:           0;
+            padding-top:      calc(1056 / 691 * 100%);
+            border-radius:    $border-radius;
+        }
 
-            &.disconnected .name {
-                color: $text-color-light;
-                font-weight: normal;
-                font-style: italic;
-            }
-
-            .tricks {
-                grid-column-start: 2;
-                grid-row-start:    1;
-            }
-
-            .poker-chip {
-                grid-column-start: 2;
-                grid-row-start: 2;
-                width: 14px;
-                justify-self: end;
-                align-self: center;
-                vertical-align: middle;
-            }
+        .playing-card {
+            width:       100%;
+            margin-left: 2px;
         }
     }
 
-    .trade-in-leave-active, .trade-in-enter-active {
-        transition: all 1s;
-    }
+    .metadata {
+        display:               grid;
+        grid-template-columns: 1fr auto;
+        justify-items:         start;
+        align-items:           center;
 
-    .trade-in-leave-to, .trade-in-enter {
-        transform: translateY(-100%);
-        opacity: 0;
-    }
+        .name {
+            font-weight: bold;
+        }
 
-    .game-leave-active {
-        transition: all 500ms ease-in;
-    }
-    .game-enter-active {
-        transition: all 500ms ease-out;
-    }
+        &.disconnected .name {
+            color:       $text-color-light;
+            font-weight: normal;
+            font-style:  italic;
+        }
 
-    .game-leave-to {
-        transform: rotate3d(0, 1, 0, -90deg)
+        .tricks {
+            grid-column-start: 2;
+            grid-row-start:    1;
+        }
     }
-    .game-enter {
-        transform: rotate3d(0, 1, 0, 90deg)
-    }
+}
+
+.trade-in-leave-active, .trade-in-enter-active {
+    transition: all 1s;
+}
+
+.trade-in-leave-to, .trade-in-enter {
+    transform: translateY(-100%);
+    opacity:   0;
+}
+
+.game-leave-active {
+    transition: all 500ms ease-in;
+}
+
+.game-enter-active {
+    transition: all 500ms ease-out;
+}
+
+.game-leave-to {
+    transform: rotate3d(0, 1, 0, -90deg)
+}
+
+.game-enter {
+    transform: rotate3d(0, 1, 0, 90deg)
+}
 </style>

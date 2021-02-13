@@ -117,13 +117,12 @@ export default {
 
 div.acey-deucey-game {
     border:                1px solid $border-color;
-    border-radius:         $border-radius;
     display:               grid;
     grid-template-columns: 1fr 1fr;
     padding:               $spacing-medium;
 
     &.is-active {
-        box-shadow: 0 0 5px 2px rgba($yellow, 0.25);
+        box-shadow: 0 0 5px 2px rgba($orange, 0.25);
     }
 
     &:not(.is-active) {

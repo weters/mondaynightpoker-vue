@@ -95,14 +95,12 @@
     $max-width: 599px;
 
     div.little-l-participant {
-        border: 1px solid transparent;
-        padding:   $spacing-small;
-        border-radius: $border-radius;
-        box-shadow: 0 0 5px rgba(black, 0.2);
+        border: 1px solid $border-color;
+        padding:   $spacing-medium;
 
         &.is-action {
-            border-color: $yellow;
-            box-shadow: 0 0 5px rgba($yellow, 0.6);
+            border-color: $orange;
+            box-shadow: 0 0 5px $orange;
         }
 
         div.cards {
