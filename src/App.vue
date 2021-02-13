@@ -102,7 +102,7 @@ main {
         & > * {
             background-color: white;
             max-width:        600px;
-            padding:          $spacing;
+            padding:          $spacing $spacing $spacing * 4;
             margin:           $spacing auto 0;
         }
     }
@@ -114,7 +114,7 @@ main {
         & > * {
             @include page-width;
             background-color: white;
-            padding:          $spacing;
+            padding:          $spacing $spacing $spacing * 4;
             margin-top:       $spacing;
 
             @media (max-width: #{$page-width-max-width}) {

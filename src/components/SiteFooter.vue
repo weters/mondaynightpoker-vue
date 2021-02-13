@@ -2,7 +2,7 @@
     <footer>
         <div>
             <ul class="links">
-                <li><router-link to="/admin" v-if="$store.getters.isSiteAdmin">Admin</router-link></li>
+                <li v-if="$store.getters.isSiteAdmin"><router-link to="/admin">Admin</router-link></li>
                 <li><a href="https://github.com/weters/mondaynightpoker-server">Source Code</a></li>
             </ul>
             <p class="copyright">&copy; 2021 Thomas Peters</p>
@@ -48,7 +48,6 @@ export default {
 footer {
     color: $text-color-light;
     font-size: 0.8em;
-    margin-top: $spacing * 4;
     padding: $spacing 0;
 
     a {
