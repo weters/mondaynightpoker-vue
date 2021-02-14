@@ -5,10 +5,10 @@
         <div class="games" v-if="canStart">
             <game-selector-acey-deucey @submit="startGame"/>
             <game-selector-bourre @submit="startGame"/>
+            <game-selector-texas-hold-em @submit="startGame" />
             <game-selector-little-l @submit="startGame"/>
             <game-selector-pass-the-poop @submit="startGame"/>
             <game-selector-seven-card @submit="startGame"/>
-            <game-selector-texas-hold-em @submit="startGame" />
         </div>
         <div class="waiting" v-else>
             <p>Waiting on the table admin to start the game!</p>
