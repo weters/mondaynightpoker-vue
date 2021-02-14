@@ -15,6 +15,7 @@
                 <little-l v-else-if="game.game === 'little-l'"/>
                 <seven-card v-else-if="game.game === 'seven-card'"/>
                 <acey-deucey v-else-if="game.game === 'acey-deucey'"/>
+                <texas-hold-em v-else-if="game.game === 'texas-hold-em'" />
             </template>
             <template v-else-if="clientState">
                 <transition name="scheduled-game">
@@ -66,10 +67,12 @@ import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey"
 
 import GameSelector from "@/components/gameselector/GameSelector"
 import Toggle from "@/components/Toggle"
+import TexasHoldEm from "@/components/games/texasholdem/TexasHoldEm"
 
 export default {
     name: "PokerTable",
     components: {
+        TexasHoldEm,
         Toggle,
         GameSelector,
         AceyDeucey,

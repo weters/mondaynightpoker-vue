@@ -4,7 +4,7 @@
 
         <div class="content">
             <div class="info">
-                <p class="game"><strong>{{ info.name }}</strong> starts in <strong>{{ t }}</strong></p>
+                <p class="game"><strong>{{ replaceTokens(info.name) }}</strong> starts in <strong>{{ t }}</strong></p>
                 <p class="ante">{{ formatAmount(info.ante) }}</p>
                 <p class="started-by">{{ player }}</p>
             </div>

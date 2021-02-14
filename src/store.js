@@ -5,6 +5,7 @@ import passThePoop from "./store/passThePoop"
 import poker from "./store/poker"
 import {formatAmount} from "./currency"
 import aceyDeucey from "@/store/aceyDeucey"
+import texasHoldEm from "@/store/texasHoldEm"
 
 Vue.use(Vuex)
 
@@ -16,6 +17,7 @@ const store = new Vuex.Store({
         passThePoop,
         poker,
         aceyDeucey,
+        texasHoldEm,
     },
     state: {
         user: null, // { player: Object, jwt: String }

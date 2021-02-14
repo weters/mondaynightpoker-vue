@@ -8,6 +8,7 @@
             <game-selector-little-l @submit="startGame"/>
             <game-selector-pass-the-poop @submit="startGame"/>
             <game-selector-seven-card @submit="startGame"/>
+            <game-selector-texas-hold-em @submit="startGame" />
         </div>
         <div class="waiting" v-else>
             <p>Waiting on the table admin to start the game!</p>
@@ -24,10 +25,12 @@ import GameSelectorPassThePoop from "@/components/gameselector/GameSelectorPassT
 import GameSelectorBourre from "@/components/gameselector/GameSelectorBourre"
 import {mapGetters} from "vuex"
 import Loading from "@/components/Loading"
+import GameSelectorTexasHoldEm from "@/components/gameselector/GameSelectorTexasHoldEm"
 
 export default {
     name: "GameSelector",
     components: {
+        GameSelectorTexasHoldEm,
         Loading,
         GameSelectorBourre,
         GameSelectorPassThePoop,

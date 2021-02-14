@@ -18,6 +18,7 @@ import ResetPassword from "@/components/ResetPassword"
 import VerifyAccount from "@/components/VerifyAccount"
 import AdminPlayers from "@/components/admin/AdminPlayers"
 import AdminTables from "@/components/admin/AdminTables"
+import {formatAmount} from "@/currency"
 
 Vue.use(VueRouter)
 
@@ -76,6 +77,9 @@ Vue.mixin({
         setTitle(title) {
             document.title = title === 'Monday Night Poker' ? 'Monday Night Poker' : `${ title } | Monday Night Poker`
         },
+        replaceTokens(string) {
+            return string.replace(/\${(-?\d+)}/g, (match, cents) => formatAmount(cents))
+        }
     },
     beforeMount() {
         const title = this.$options.title
