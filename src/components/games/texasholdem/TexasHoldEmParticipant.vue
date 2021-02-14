@@ -118,12 +118,12 @@ div.texas-hold-em-participant {
         display:    flex;
         margin-top: $spacing-medium;
         position:   relative;
+        flex-wrap:  wrap;
 
         p.last-action {
+            order:            3;
+            flex:             0 0 100%;
             margin:           0;
-            position:         absolute;
-            bottom:           0;
-            left:             0;
             background-color: $peach;
             padding:          2px 4px;
             font-weight:      bold;
@@ -135,9 +135,9 @@ div.texas-hold-em-participant {
         }
 
         span.balance {
-            color: $text-color-light;
+            color:     $text-color-light;
             font-size: 0.7em;
-            display: block;
+            display:   block;
         }
     }
 }
