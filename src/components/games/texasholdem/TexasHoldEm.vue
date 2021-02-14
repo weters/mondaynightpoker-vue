@@ -16,11 +16,11 @@
                     <playing-card-container :card="cards[0]" v-if="cards"/>
                     <playing-card-container :card="cards[1]" v-if="cards"/>
                 </div>
-                <div class="buttons" v-if="!loading">
+                <div class="buttons" v-if="!hideButtons">
                     <template v-if="confirm">
                         <button type="button" class="secondary" @click="confirm = null">Cancel
                         </button>
-                        <button type="button" @click="executeAction(confirm)" :disabled="loading">
+                        <button type="button" @click="executeAction(confirm)">
                             <span>Yes, {{ confirm.name }}</span>
                             <span v-if="confirm.amount">{{ formatAmount(confirm.amount) }}</span>
                         </button>
@@ -58,7 +58,7 @@ export default {
     data() {
         return {
             confirm: null,
-            loading: false,
+            hideButtons: false,
             animatedPot: 0,
         }
     },
@@ -81,16 +81,21 @@ export default {
     },
     methods: {
         executeAction(action) {
-            this.loading = true
+            this.hideButtons = true
             this.webSocket.send(action.name)
-                .catch(err => this.$store.dispatch('error', err))
+                .catch(err => {
+                    this.hideButtons = false
+                    this.$store.dispatch('error', err)
+                })
                 .finally(() => {
-                    this.loading = false
                     this.confirm = null
                 })
         },
     },
     watch: {
+        actions() {
+            this.hideButtons = false
+        },
         pot: {
             immediate: true,
             handler(pot, oldPot) {
@@ -101,9 +106,9 @@ export default {
                 })
                     .pipe(Math.round)
                     .start(val => this.animatedPot = val)
-            }
-        }
-    }
+            },
+        },
+    },
 }
 </script>
 

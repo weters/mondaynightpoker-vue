@@ -30,16 +30,16 @@ export default {
 
 div.texas-hold-em-participants {
     & > div.container {
-        display:   flex;
-        flex-wrap: wrap;
-        margin:    -1 * $spacing-medium 0 0 -1 * $spacing-medium;
-        justify-content: center;
+        display: grid;
+        grid-template-columns: repeat(10, 1fr);
+        grid-gap: $spacing-small;
 
-        & > * {
-            flex:      1 0 150px;
+        @media(max-width: 1200px) {
+            grid-template-columns: repeat(5, 1fr);
+        }
 
-            max-width: 300px;
-            margin:    $spacing-medium 0 0 $spacing-medium;
+        @media (max-width: 500px) {
+            grid-template-columns: repeat(4, 1fr);
         }
     }
 }

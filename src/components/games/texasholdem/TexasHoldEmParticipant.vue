@@ -1,20 +1,19 @@
 <template>
     <div :class="classes">
-        <div class="hand">
-            <div class="cards">
-                <playing-card-container :card="card(0)" :hide-card="participant.folded"/>
-                <playing-card-container :card="card(1)" :hide-card="participant.folded"/>
-            </div>
-
-            <p class="hand" v-if="participant.hand">{{ participant.hand }}</p>
+        <div class="cards">
+            <playing-card-container :card="card(0)" :hide-card="participant.folded"/>
+            <playing-card-container :card="card(1)" :hide-card="participant.folded"/>
         </div>
-        <div class="meta">
-            <p class="name">{{ playerData.player.displayName }} <span
-                class="balance">{{ formatAmount(participant.balance) }}</span></p>
 
-            <p class="last-action" v-if="lastAction">{{ lastAction }}</p>
+        <span class="name">{{ playerData.player.displayName }}</span>
+        <span class="balance">{{ formatAmount(participant.balance) }}</span>
 
-            <chip-stack :amount="participant.winnings || participant.bet" class="chip-stack"/>
+        <chip-stack :amount="participant.winnings || participant.bet" class="chip-stack"/>
+
+        <div class="info">
+            <span class="hand" v-if="participant.hand">{{ participant.hand }}</span>
+            <span class="last-action" v-else-if="lastAction">{{ lastAction }}</span>
+            <span class="void" v-else></span>
         </div>
     </div>
 </template>
@@ -75,70 +74,69 @@ export default {
 @import '../../../variables.scss';
 
 div.texas-hold-em-participant {
-    $root:   &;
-    border:  1px solid $border-color;
-    padding: $spacing-medium;
+    $root:          &;
+    border:         1px solid $border-color;
+    padding:        $spacing-small;
+    display:        flex;
+    flex-direction: column;
 
     &.current-turn {
         @include current-turn;
     }
 
-    div.hand {
-        position: relative;
+    div.cards {
+        display:               grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap:              2px;
+    }
 
-        div.cards {
-            display:               grid;
-            grid-template-columns: 1fr 1fr;
-            grid-gap:              2px;
+    span.balance {
+        display:   block;
+        margin:    0;
+        color:     $text-color-light;
+        font-size: 0.7em;
+    }
+
+    .chip-stack {
+        margin-top: auto;
+        padding:    $spacing-small 0;
+        align-self: center;
+    }
+
+    .info {
+        & > span {
+            font-size: 0.8em;
+            padding: 4px;
         }
 
-        p.hand {
+        .last-action {
+            background-color: $peach;
+            display:          block;
+        }
+
+        .hand {
+            display:          block;
             color:            white;
             background-color: rgba(black, 0.75);
-            padding:          4px;
-            position:         absolute;
             margin:           0;
-            bottom:           $spacing-small;
-            right:            0;
 
-            @at-root #{$root}.won div.hand p.hand {
-                font-weight: bold;
-                color:       $peach;
+            @at-root #{$root}.won .info .hand {
+                color:            white;
+                background-color: $green;
             }
 
-            @at-root #{$root}.lost div.hand p.hand {
-                color:      rgba(white, 0.5);
-                font-size:  0.8em;
-                font-style: italic;
+            @at-root #{$root}.lost .info .hand {
+                background-color: $dark-green;
+                color:            rgba(white, 0.5);
+            }
+        }
+
+        .void {
+            &::after {
+                content: '\00a0';
             }
         }
     }
 
-    div.meta {
-        display:    flex;
-        margin-top: $spacing-medium;
-        position:   relative;
-        flex-wrap:  wrap;
-
-        p.last-action {
-            order:            3;
-            flex:             0 0 100%;
-            margin:           0;
-            background-color: $peach;
-            padding:          2px 4px;
-            font-weight:      bold;
-            text-transform:   uppercase;
-        }
-
-        .chip-stack {
-            margin-left: auto;
-        }
-
-        span.balance {
-            color:     $text-color-light;
-            font-size: 0.7em;
-            display:   block;
-        }
-    }
 }
 </style>
