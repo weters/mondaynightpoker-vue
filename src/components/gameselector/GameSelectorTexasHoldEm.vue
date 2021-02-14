@@ -2,9 +2,10 @@
     <form class="game-selector-texas-hold-em" @submit.prevent="submit">
         <h4>Limit Texas Hold'Em</h4>
 
-        <fancy-input label="Ante" type="number" :min="25" :max="50" :step="25" v-model="ante" unit="¢" />
+        <fancy-input label="Ante" type="number" :min="0" :max="50" :step="25" v-model="ante" unit="¢" />
 
         <fancy-select label="Limits" v-model="lowLimit" :options="[
+            [ '25', '25¢/50¢' ],
             [ '50', '50¢/$1' ],
             [ '100', '$1/$2' ],
         ]" />
@@ -24,7 +25,7 @@ export default {
     data() {
         return {
             ante: '25',
-            lowLimit: '100',
+            lowLimit: '50',
         }
     },
     methods: {
