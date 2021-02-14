@@ -5,7 +5,7 @@
         <texas-hold-em-community class="community"/>
 
         <div class="pot">
-            <chip-stack :amount="pot"/>
+            <chip-stack :amount="animatedPot"/>
         </div>
 
         <texas-hold-em-participants :participants="gameState.participants"/>
@@ -49,6 +49,7 @@ import TexasHoldEmCommunity from "@/components/games/texasholdem/TexasHoldEmComm
 import PlayingCardContainer from "@/components/PlayingCardContainer"
 import TexasHoldEmParticipants from "@/components/games/texasholdem/TexasHoldEmParticipants"
 import ChipStack from "@/components/ChipStack"
+import {tween} from "popmotion"
 
 export default {
     name: "TexasHoldEm",
@@ -58,6 +59,7 @@ export default {
         return {
             confirm: null,
             loading: false,
+            animatedPot: 0,
         }
     },
     computed: {
@@ -88,6 +90,20 @@ export default {
                 })
         },
     },
+    watch: {
+        pot: {
+            immediate: true,
+            handler(pot, oldPot) {
+                tween({
+                    from: oldPot,
+                    to: pot,
+                    duration: 500,
+                })
+                    .pipe(Math.round)
+                    .start(val => this.animatedPot = val)
+            }
+        }
+    }
 }
 </script>
 
