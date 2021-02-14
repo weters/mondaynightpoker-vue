@@ -136,17 +136,9 @@ div.texas-hold-em-participant {
 
         span.balance {
             color: $text-color-light;
-
-            &::before {
-                content: '(';
-            }
-
-            &::after {
-                content: ')';
-            }
+            font-size: 0.7em;
+            display: block;
         }
-
-
     }
 }
 </style>
