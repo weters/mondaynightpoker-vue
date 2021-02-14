@@ -111,9 +111,8 @@ export default {
 
             div.hand {
                 display:               grid;
-                grid-template-columns: 1fr 1fr;
+                grid-template-columns: repeat(2, minmax(50px, 100px));
                 grid-gap:              $spacing-medium;
-                flex:                  0 1 150px;
             }
 
             div.buttons {
@@ -123,6 +122,14 @@ export default {
                     span:not(:last-child) {
                         margin-right: $spacing-small;
                     }
+                }
+            }
+
+            @media(max-width: $mobile-max) {
+                display: block;
+
+                div.buttons {
+                    margin-top: $spacing-medium;
                 }
             }
         }
