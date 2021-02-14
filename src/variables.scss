@@ -42,7 +42,7 @@ $page-width-max-width: 1000px;
 
     @media (max-width: #{$page-width-max-width}) {
         max-width: 100%;
-        padding-left: $spacing;
+        padding-left: $spacing-medium;
         padding-right: $spacing;
         width: 100%;
     }

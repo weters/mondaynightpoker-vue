@@ -109,6 +109,7 @@ main {
 
     & > .big-content {
         background: linear-gradient(#011f26, #011f26 120px, $background-color 121px);
+        padding-bottom: $spacing * 4;
         overflow:   auto;
 
         & > * {
