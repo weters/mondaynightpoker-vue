@@ -55,6 +55,7 @@ export default {
                 'current-turn': this.participant.playerId === this.$store.getters["texasHoldEm/gameState"].currentTurn,
                 won: this.participant.result === 'won',
                 lost: this.participant.result === 'lost',
+                'is-connected': this.playerData.isConnected,
             }
         },
     },
@@ -82,6 +83,13 @@ div.texas-hold-em-participant {
 
     &.current-turn {
         @include current-turn;
+    }
+
+    &:not(.is-connected) {
+        span.name {
+            font-style: italic;
+            color: $text-color-light;
+        }
     }
 
     div.cards {
