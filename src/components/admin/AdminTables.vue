@@ -43,6 +43,7 @@ import AdminPagination from "@/components/admin/AdminPagination"
 
 export default {
     name: "AdminTables",
+    title: 'Admin/Tables',
     components: {AdminPagination, Error, Loading, AdminHeader},
     data() {
         return {
