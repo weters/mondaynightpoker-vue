@@ -10,7 +10,7 @@
 
         <texas-hold-em-participants :participants="gameState.participants"/>
 
-        <player-bar :is-turn="gameState.currentTurn === activeParticipant.playerId">
+        <player-bar :is-turn="isTurn">
             <div>
                 <div class="hand">
                     <playing-card-container :card="cards[0]" v-if="cards"/>
@@ -56,11 +56,14 @@ export default {
             gameState: 'texasHoldEm/gameState',
             activeParticipant: 'texasHoldEm/activeParticipant',
         }),
+        isTurn() {
+            return this.activeParticipant && this.gameState.currentTurn == this.activeParticipant.playerId
+        },
         handRank() {
-            return this.activeParticipant.hand
+            return this.activeParticipant && this.activeParticipant.hand
         },
         cards() {
-            return this.activeParticipant.cards
+            return this.activeParticipant && this.activeParticipant.cards
         },
         pot() {
             return this.gameState.pot
