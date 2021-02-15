@@ -48,8 +48,8 @@ div.playing-card-back {
 
     & > span.image {
         background-color: $orange;
-        background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, darken($orange, 6%) 5px, darken($orange, 6%) 6px),
-                          repeating-linear-gradient(135deg, transparent, transparent 4px, darken($orange, 6%) 5px, darken($orange, 6%) 6px);
+        background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, darken($orange, 6%) 4px, darken($orange, 6%) 5px),
+                          repeating-linear-gradient(135deg, transparent, transparent 4px, darken($orange, 6%) 4px, darken($orange, 6%) 5px);
         border-radius:    2px;
         content:          '';
         display:          block;
