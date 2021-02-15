@@ -16,22 +16,7 @@
                     <playing-card-container :card="cards[0]" v-if="cards"/>
                     <playing-card-container :card="cards[1]" v-if="cards"/>
                 </div>
-                <div class="buttons" v-if="!hideButtons">
-                    <template v-if="confirm">
-                        <button type="button" class="secondary" @click="confirm = null">Cancel
-                        </button>
-                        <button type="button" @click="executeAction(confirm)">
-                            <span>Yes, {{ confirm.name }}</span>
-                            <span v-if="confirm.amount">{{ formatAmount(confirm.amount) }}</span>
-                        </button>
-                    </template>
-                    <template v-else>
-                        <button type="button" v-for="action in actions" :key="action.id" @click="confirm = action">
-                            <span>{{ action.name }}</span>
-                            <span v-if="action.amount">{{ formatAmount(action.amount) }}</span>
-                        </button>
-                    </template>
-                </div>
+                <texas-hold-em-actions />
             </div>
 
             <template v-slot:gameInfo>
@@ -50,10 +35,13 @@ import PlayingCardContainer from "@/components/PlayingCardContainer"
 import TexasHoldEmParticipants from "@/components/games/texasholdem/TexasHoldEmParticipants"
 import ChipStack from "@/components/ChipStack"
 import {tween} from "popmotion"
+import TexasHoldEmActions from "@/components/games/texasholdem/TexasHoldEmActions"
 
 export default {
     name: "TexasHoldEm",
-    components: {ChipStack, TexasHoldEmParticipants, PlayingCardContainer, TexasHoldEmCommunity, PlayerBar},
+    components: {
+        TexasHoldEmActions,
+        ChipStack, TexasHoldEmParticipants, PlayingCardContainer, TexasHoldEmCommunity, PlayerBar},
     mixins: [balance],
     data() {
         return {
@@ -65,7 +53,6 @@ export default {
     computed: {
         ...mapState(['webSocket']),
         ...mapGetters({
-            actions: 'texasHoldEm/actions',
             gameState: 'texasHoldEm/gameState',
             activeParticipant: 'texasHoldEm/activeParticipant',
         }),
@@ -79,23 +66,7 @@ export default {
             return this.gameState.pot
         },
     },
-    methods: {
-        executeAction(action) {
-            this.hideButtons = true
-            this.webSocket.send(action.name)
-                .catch(err => {
-                    this.hideButtons = false
-                    this.$store.dispatch('error', err)
-                })
-                .finally(() => {
-                    this.confirm = null
-                })
-        },
-    },
     watch: {
-        actions() {
-            this.hideButtons = false
-        },
         pot: {
             immediate: true,
             handler(pot, oldPot) {
@@ -136,20 +107,14 @@ export default {
                 grid-gap:              $spacing-medium;
             }
 
-            div.buttons {
+            & > div:last-child {
                 margin-left: auto;
-
-                button {
-                    span:not(:last-child) {
-                        margin-right: $spacing-small;
-                    }
-                }
             }
 
             @media(max-width: $mobile-max) {
                 display: block;
 
-                div.buttons {
+                & > div:last-child {
                     margin-top: $spacing-medium;
                 }
             }
