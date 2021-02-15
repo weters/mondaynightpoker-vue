@@ -35,5 +35,14 @@ export default {
         span {
             text-align: center;
         }
+
+        span.icon {
+            height: 26px;
+            flex: 0 1 26px; /* I hate having to do this, but firefox is ignore parent sizes with flex and svg */
+            svg {
+                height: 100%;
+                width: auto;
+            }
+        }
     }
 </style>
