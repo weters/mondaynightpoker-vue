@@ -21,35 +21,32 @@
                 <li class="game">
                     <h3>Acey Deucey</h3>
 
-                    <p>Two cards are dealt face up. You must bet on the chance that the third card falls between the two
-                        cards. Be careful, posting will cost you double!</p>
+                    <p>Two cards are dealt face up. You must bet on the chance that the next card lands in the middle.
+                        Be careful, posting will cost you double!</p>
                 </li>
                 <li class="game">
                     <h3>Bourré</h3>
 
                     <p>This trick-taking game requires you to play a better card than the previous one. Most tricks take
-                        the
-                        pot, whereas players without any tricks must match the pot!</p>
+                        the pot; players without any tricks must match the pot!</p>
                 </li>
                 <li class="game">
                     <h3>Limit Texas Hold'em</h3>
 
-                    <p>The most popular poker game in the world. You each get two cards dealt face down and everyone
+                    <p>The most popular poker game in the world. You each get two cards dealt face-down and everyone
                     shared five cards on the board. Best five-card hand wins.</p>
                 </li>
                 <li class="game">
                     <h3>Little L</h3>
 
                     <p>Three-card poker with three more community cards making an L shape. Players can use any single
-                        card,
-                        or any two connected cards. Best three-card hand wins!</p>
+                        card, or any two connected cards. Best three-card hand wins!</p>
                 </li>
                 <li class="game">
                     <h3>Pass the Poop</h3>
 
                     <p>Don’t get stuck with the low card, or you lose a life. Last player standing wins the pot! There’s
-                        two
-                        additional variants to keep things spicy.</p>
+                        two additional variants to keep things spicy.</p>
                 </li>
                 <li class="game">
                     <h3>Seven Card</h3>
