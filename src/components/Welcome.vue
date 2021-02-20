@@ -15,6 +15,8 @@
         </div>
 
         <div class="games">
+            <p>Monday Night Poker is a free, online site for playing card games with your friends. This project was started by a bored <a href="https://tompeters.me/">developer</a> during the pandemic who wanted to continue his Monday night tradition of playing card games with his friends. Not only is it 100% free, it's also <a href="https://github.com/weters/mondaynightpoker-server/">open-sourced</a> using the MIT License.</p>
+
             <h2>Dealer's Choice Poker Games</h2>
 
             <ul class="game-list">
