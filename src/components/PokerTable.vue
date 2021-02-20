@@ -66,7 +66,7 @@ import ScheduledGame from "./ScheduledGame"
 import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey"
 
 import GameSelector from "@/components/gameselector/GameSelector"
-import Toggle from "@/components/Toggle"
+import Toggle from "@/components/formelements/Toggle"
 import TexasHoldEm from "@/components/games/texasholdem/TexasHoldEm"
 
 export default {

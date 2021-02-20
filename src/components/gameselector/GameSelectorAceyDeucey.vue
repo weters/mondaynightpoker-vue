@@ -16,8 +16,8 @@
 </template>
 
 <script>
-import Toggle from "@/components/Toggle"
-import FancyInput from "@/components/FancyInput"
+import Toggle from "@/components/formelements/Toggle"
+import FancyInput from "@/components/formelements/FancyInput"
 
 export default {
     name: "GameSelectorAceyDeucey",

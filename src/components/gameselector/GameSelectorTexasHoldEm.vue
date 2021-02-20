@@ -17,8 +17,8 @@
 </template>
 
 <script>
-import FancyInput from "@/components/FancyInput"
-import FancySelect from "@/components/FancySelect"
+import FancyInput from "@/components/formelements/FancyInput"
+import FancySelect from "@/components/formelements/FancySelect"
 export default {
     name: "GameSelectorTexasHoldEm",
     components: {FancySelect, FancyInput},

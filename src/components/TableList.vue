@@ -39,7 +39,7 @@ import Error from "@/components/Error"
 import client from "@/client"
 import balance from "../mixins/balance"
 import TableGraph from "./TableGraph"
-import Toggle from "@/components/Toggle"
+import Toggle from "@/components/formelements/Toggle"
 
 export default {
     name: "TableList",

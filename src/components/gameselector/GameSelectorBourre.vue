@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import FancyInput from "@/components/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput"
 
 export default {
     name: "GameSelectorBourre",

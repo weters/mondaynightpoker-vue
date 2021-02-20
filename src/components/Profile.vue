@@ -80,8 +80,8 @@
 import client from "../client"
 import Loading from "./Loading"
 import Error from "./Error"
-import FancyInput from "@/components/FancyInput"
-import InputWithConfirm from "@/components/InputWithConfirm"
+import FancyInput from "@/components/formelements/FancyInput"
+import InputWithConfirm from "@/components/formelements/InputWithConfirm"
 
 export default {
     name: "Profile",

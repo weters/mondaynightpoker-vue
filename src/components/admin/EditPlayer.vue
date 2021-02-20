@@ -50,7 +50,7 @@
 import client from "@/client"
 import show_error from "@/mixins/show_error"
 import Error from "@/components/Error"
-import FancyInput from "@/components/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput"
 
 export default {
     name: "EditPlayer",

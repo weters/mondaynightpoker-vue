@@ -48,7 +48,7 @@ import client from "../../client"
 import Error from "../Error"
 import Loading from "../Loading"
 import EditPlayer from "@/components/admin/EditPlayer"
-import FancyInput from "@/components/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput"
 import AdminHeader from "@/components/admin/AdminHeader"
 
 export default {

@@ -30,7 +30,7 @@
 import Error from "@/components/Error"
 import Loading from "@/components/Loading"
 import client from "@/client"
-import FancyInput from "@/components/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput"
 
 export default {
     name: "ForgotPassword",

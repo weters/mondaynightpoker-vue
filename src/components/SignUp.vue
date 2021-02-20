@@ -42,8 +42,8 @@ import Loading from "@/components/Loading"
 import Error from "@/components/Error"
 import client from "@/client"
 import recaptcha from '@/recaptcha'
-import InputWithConfirm from "@/components/InputWithConfirm"
-import FancyInput from "@/components/FancyInput"
+import InputWithConfirm from "@/components/formelements/InputWithConfirm"
+import FancyInput from "@/components/formelements/FancyInput"
 
 export default {
     name: "SignUp",

@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import FancyInput from "@/components/FancyInput"
-import Toggle from "@/components/Toggle"
-import RadioButton from "@/components/RadioButton"
+import FancyInput from "@/components/formelements/FancyInput"
+import Toggle from "@/components/formelements/Toggle"
+import RadioButton from "@/components/formelements/RadioButton"
 
 export default {
     name: "GameSelectorLittleL",

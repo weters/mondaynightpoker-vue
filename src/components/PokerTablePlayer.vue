@@ -24,7 +24,7 @@ import balance from "@/mixins/balance"
 import MdiIcon from "@/components/MdiIcon"
 import {mdiAccountEdit} from "@mdi/js"
 import bus from "@/bus"
-import Toggle from "@/components/Toggle"
+import Toggle from "@/components/formelements/Toggle"
 import {mapGetters, mapState} from "vuex"
 
 export default {

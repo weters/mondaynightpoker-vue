@@ -23,7 +23,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
+@import '../../variables';
 .radio-button {
     display: flex;
     align-items: center;

@@ -39,7 +39,7 @@ import Slider from "@/components/Slider"
 import {mapGetters} from "vuex"
 import balance from "../../mixins/balance"
 import audioplayer from "@/audioplayer"
-import Toggle from "@/components/Toggle"
+import Toggle from "@/components/formelements/Toggle"
 
 export default {
     name: "PlayerBar",

@@ -21,7 +21,7 @@
 
 <script>
 import {mdiAlertCircle} from "@mdi/js"
-import FancyInput from "@/components/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput"
 
 export default {
     name: "InputWithConfirm",
@@ -88,7 +88,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
+@import '../../variables';
 
 label {
     &:first-child {

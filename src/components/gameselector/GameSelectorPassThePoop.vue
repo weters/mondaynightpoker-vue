@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import FancyInput from "@/components/FancyInput"
-import Toggle from "@/components/Toggle"
-import FancySelect from "@/components/FancySelect"
+import FancyInput from "@/components/formelements/FancyInput"
+import Toggle from "@/components/formelements/Toggle"
+import FancySelect from "@/components/formelements/FancySelect"
 
 export default {
     name: "GameSelectorPassThePoop",

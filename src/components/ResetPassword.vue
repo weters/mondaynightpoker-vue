@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import InputWithConfirm from "@/components/InputWithConfirm"
+import InputWithConfirm from "@/components/formelements/InputWithConfirm"
 import Loading from "@/components/Loading"
 import Error from "@/components/Error"
 import client from "@/client"
-import FancyInput from "@/components/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput"
 
 export default {
     name: "ResetPassword",

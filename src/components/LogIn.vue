@@ -33,7 +33,7 @@
 import client from "@/client"
 import Loading from "@/components/Loading"
 import Error from "@/components/Error"
-import FancyInput from "@/components/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput"
 
 export default {
     name: "LogIn",
