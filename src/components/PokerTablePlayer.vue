@@ -9,11 +9,11 @@
             </button>
         </div>
         <div class="edit-player" v-if="showMenu">
-            <toggle label="Seated" v-model="isSeated" @change="setPlayerActive"/>
-            <toggle label="Start" v-model="canStart" @change="setFlag($event, 'canStart')" v-if="!isSiteAdmin" />
-            <toggle label="Terminate" v-model="canTerminate" @change="setFlag($event, 'canTerminate')"  v-if="!isSiteAdmin" />
-            <toggle label="Admin" v-model="isTableAdmin" @change="setFlag($event, 'isTableAdmin')" v-if="!isSiteAdmin" />
-            <toggle label="Block" v-model="isBlocked" @change="setFlag($event, 'isBlocked')" v-if="!isSiteAdmin" />
+            <toggle label="Playing" v-model="isSeated" @change="setPlayerActive"/>
+            <toggle label="Can Start" v-model="canStart" @change="setFlag($event, 'canStart')" v-if="!isSiteAdmin" />
+            <toggle label="Can Terminate" v-model="canTerminate" @change="setFlag($event, 'canTerminate')"  v-if="!isSiteAdmin" />
+            <toggle label="Is Admin" v-model="isTableAdmin" @change="setFlag($event, 'isTableAdmin')" v-if="!isSiteAdmin" />
+            <toggle label="Is Blocked" v-model="isBlocked" @change="setFlag($event, 'isBlocked')" v-if="!isSiteAdmin" />
         </div>
     </div>
 </template>
