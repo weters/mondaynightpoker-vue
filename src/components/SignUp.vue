@@ -80,7 +80,19 @@ export default {
     methods: {
         submit() {
             this.error = null
+
+            if (this.email.primary !== this.email.confirm) {
+                this.error = 'Email does not match'
+                return
+            }
+
+            if (this.password.primary !== this.password.confirm) {
+                this.error = 'Passwords do not match'
+                return
+            }
+
             this.loading = true
+
             this.recaptcha
                 .then(r => r.execute('signup'))
                 .then(token => client.signUp(this.displayName, this.email.primary, this.password.primary, token))

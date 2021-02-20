@@ -84,6 +84,9 @@ export default {
         inputValue() {
             this.invalid = false
         },
+        value(newValue) {
+            this.inputValue = newValue
+        }
     },
 }
 </script>

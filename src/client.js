@@ -38,10 +38,12 @@ class Client {
         }, withAuthorization)
     }
 
-    updatePlayer(playerId, { email, displayName }) {
+    updatePlayer(playerId, { email, displayName, newPassword, oldPassword }) {
         return this._post(`/player/${encodeURIComponent(playerId)}`, {
             email,
-            displayName
+            displayName,
+            newPassword,
+            oldPassword,
         }, withAuthorization)
     }
 

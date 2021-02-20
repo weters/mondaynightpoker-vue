@@ -44,6 +44,10 @@ export default {
             default: 'on',
         },
         disabled: Boolean,
+        value: {
+            type: Object,
+            required: true,
+        }
     },
     data() {
         return {
@@ -67,6 +71,10 @@ export default {
             this.emit()
             this.mismatch = this.primary !== newValue
         },
+        value(newValue) {
+            this.primary = newValue.primary
+            this.confirm = newValue.confirm
+        }
     },
     methods: {
         emit() {

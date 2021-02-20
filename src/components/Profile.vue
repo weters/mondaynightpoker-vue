@@ -4,7 +4,7 @@
             <h2>Manage my profile</h2>
 
             <form @submit.prevent="saveDisplayName" class="inner">
-                <h3>Display Name</h3>
+                <h3>Change your display name</h3>
 
                 <transition name="error">
                     <error :message="error" v-if="error"/>
@@ -22,6 +22,26 @@
 
                 <div class="buttons">
                     <button :disabled="loading">Save Changes</button>
+                </div>
+            </form>
+
+            <form @submit.prevent="changePassword" class="inner">
+                <h3>Change password</h3>
+
+                <transition name="error">
+                    <error :message="password.error" v-if="password.error"/>
+                </transition>
+
+                <div class="success" v-if="password.success">
+                    <p>Your password has been updated.</p>
+                </div>
+
+                <fancy-input type="password" label="Old Password" v-model="password.old" required :disabled="loading" />
+
+                <input-with-confirm label="New Password" autocomplete="off" type="password" v-model="password.new" />
+
+                <div class="buttons">
+                    <button :disabled="!password.new.primary || password.new.primary !== password.new.confirm">Change Password</button>
                 </div>
             </form>
 
@@ -61,11 +81,12 @@ import client from "../client"
 import Loading from "./Loading"
 import Error from "./Error"
 import FancyInput from "@/components/FancyInput"
+import InputWithConfirm from "@/components/InputWithConfirm"
 
 export default {
     name: "Profile",
     title: 'My Profile',
-    components: {FancyInput, Error, Loading},
+    components: {InputWithConfirm, FancyInput, Error, Loading},
     data() {
         return {
             displayName: this.$store.state.user.player.displayName,
@@ -75,23 +96,50 @@ export default {
 
             confirmDelete: false,
             deleteConfirmEmail: '',
+
+            password: {
+                error: '',
+                success: false,
+                old: '',
+                new: {}
+            }
         }
     },
     methods: {
+        playerUpdated() {
+            client.validateJWT(this.$store.state.user.jwt)
+                .then(player => this.$store.commit('setUserPlayer', player))
+                .catch(err => this.error = err)
+        },
         saveDisplayName() {
+            this.loading = true
             this.error = null
             client.updatePlayer(this.$store.state.user.player.id, {
                     displayName: this.displayName,
                 })
                 .then(() => {
                     this.success = true
-
-                    client.validateJWT(this.$store.state.user.jwt)
-                        .then(player => this.$store.commit('setUserPlayer', player))
-                        .catch(err => this.error = err)
+                    this.playerUpdated()
                 })
                 .catch(err => this.error = err)
                 .finally(() => this.loading = false)
+        },
+        changePassword() {
+            this.loading = true
+            this.password.error = null
+            client.updatePlayer(this.$store.state.user.player.id, {
+                oldPassword: this.password.old,
+                newPassword: this.password.new.primary,
+            })
+            .then(() => {
+                this.password.success = true
+                this.password.new = {}
+                this.password.old = ''
+                this.playerUpdated()
+                document.activeElement.blur()
+            })
+            .catch(err => this.password.error = err)
+            .finally(() => this.loading = false)
         },
         deleteAccount() {
             client.deleteAccount(this.$store.state.user.player.id)
