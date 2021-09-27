@@ -5,8 +5,13 @@
         <fancy-input label="Ante" type="number" :min="25" :max="100" :step="25" v-model="ante" unit="¢" />
 
         <div class="options">
-            <toggle v-model="allowPass" label="Allow Passing" />
-            <toggle v-model="continuousShoe" label="Continuous Shoe" />
+            <fancy-select label="Edition"
+                          v-model="gameType"
+                          :options="[
+            [ 'standard', 'Standard' ],
+            [ 'continuous shoe', 'Continuous Shoe' ],
+            [ 'chaos', 'Chaos' ],
+        ]" />
         </div>
 
         <div class="buttons">
@@ -16,17 +21,17 @@
 </template>
 
 <script>
-import Toggle from "@/components/formelements/Toggle"
 import FancyInput from "@/components/formelements/FancyInput"
+import FancySelect from "@/components/formelements/FancySelect"
 
 export default {
     name: "GameSelectorAceyDeucey",
-    components: {FancyInput, Toggle},
+    components: {FancySelect, FancyInput},
     data() {
         return {
             ante: '25',
-            continuousShoe: false,
             allowPass: false,
+            gameType: 'continuous shoe',
         }
     },
     methods: {
@@ -35,7 +40,7 @@ export default {
                 game: 'acey-deucey',
                 opts: {
                     ante: parseInt(this.ante, 10),
-                    continuousShoe: this.continuousShoe,
+                    gameType: this.gameType,
                     allowPass: this.allowPass,
                 },
             })
