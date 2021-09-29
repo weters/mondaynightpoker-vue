@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStarCircleOutline} from '@mdi/js'
+import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStar, mdiStarCircleOutline} from '@mdi/js'
     import MdiIcon from "@/components/MdiIcon"
     import {mapGetters} from "vuex"
 
@@ -42,6 +42,7 @@
                 mdiCardsHeart,
                 mdiCardsSpade,
                 mdiStarCircleOutline,
+                mdiStar,
             }
         },
         computed: {
@@ -79,6 +80,8 @@
                         return mdiCardsHeart
                     case 'spades':
                         return mdiCardsSpade
+                    case 'stars':
+                        return mdiStar
                 }
 
                 throw new Error('unknown suit')
@@ -150,6 +153,18 @@
 
             ::v-deep svg {
                 fill: $red;
+
+                &.wild {
+                    fill: $yellow;
+                }
+            }
+        }
+
+        &.stars {
+            color: $light-green;
+
+            ::v-deep svg {
+                fill: $light-green;
 
                 &.wild {
                     fill: $yellow;

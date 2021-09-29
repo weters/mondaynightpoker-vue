@@ -4,6 +4,8 @@
 
         <fancy-input label="Ante" type="number" :min="25" :max="200" :step="25" v-model="ante" unit="¢" />
 
+        <toggle label="Five Suits" v-model="fiveSuit" />
+
         <div class="buttons">
             <button>Start</button>
         </div>
@@ -12,13 +14,15 @@
 
 <script>
 import FancyInput from "@/components/formelements/FancyInput"
+import Toggle from "@/components/formelements/Toggle"
 
 export default {
     name: "GameSelectorBourre",
-    components: {FancyInput},
+    components: {Toggle, FancyInput},
     data() {
         return {
-            ante: '25',
+            ante: '50',
+            fiveSuit: false,
         }
     },
     methods: {
@@ -27,6 +31,7 @@ export default {
                 game: 'bourre',
                 opts: {
                     ante: parseInt(this.ante, 10),
+                    fiveSuit: this.fiveSuit,
                 },
             })
         },
