@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid'
 import bus from "./bus"
 import {formatAmount} from "@/currency"
 
-const baseURL = process.env.VUE_APP_WEBSOCKET_URL || 'ws://localhost:5000'
+const baseURL = process.env.VUE_APP_WEBSOCKET_URL || 'ws://localhost:5080'
 
 class webSocketClient {
     constructor(tableUUID) {

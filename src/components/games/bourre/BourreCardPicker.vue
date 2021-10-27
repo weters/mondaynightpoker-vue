@@ -3,7 +3,7 @@
         <playing-card
                 v-for="card in sortedHand"
                 :key="cardId(card)"
-                :class="{ card: true, selected: selected[cardId(card)] }"
+                :class="{ card: true, selected: selected[cardId(card)], 'cannot-play': !canPlayCard(card) }"
                 :rank="card.rank"
                 :suit="card.suit"
                 @click="cardClicked(card)"
@@ -45,6 +45,7 @@
         computed: {
             ...mapGetters({
                 hand: 'bourre/hand',
+                canPlayCard: 'bourre/canPlayCard',
             }),
             sortedHand() {
                 return [...this.hand].sort((a, b) => {
@@ -65,6 +66,10 @@
         methods: {
             cardClicked(card) {
                 if (!this.canSelect) {
+                    return
+                }
+
+                if (!this.canPlayCard(card)) {
                     return
                 }
 
@@ -94,6 +99,10 @@
 
         .card {
             display: inline-block;
+
+            &.cannot-play {
+                opacity: 0.3;
+            }
 
             &.selected {
                 filter: invert(100%);

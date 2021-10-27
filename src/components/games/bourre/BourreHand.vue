@@ -33,6 +33,7 @@
         },
         computed: {
             ...mapGetters({
+                validMoves: 'bourre/validMoves',
                 round: 'bourre/round',
                 isTurn: 'bourre/isTurn',
                 isRoundOver: 'bourre/isRoundOver',
@@ -43,6 +44,17 @@
             round() {
                 this.selected = []
             },
+            isTurn: {
+                immediate: true,
+                handler(isTurn) {
+                    if (isTurn) {
+                        if (this.validMoves.length === 1) {
+                            this.selected = [...this.validMoves]
+                            setTimeout(() => this.playCard(), 500)
+                        }
+                    }
+                }
+            }
         },
         methods: {
             playCard() {

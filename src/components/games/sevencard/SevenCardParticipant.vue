@@ -1,7 +1,7 @@
 <template>
     <div :class="{'seven-card-participant': true, 'is-turn': isTurn }">
         <transition-group class="cards" tag="div" name="hand" v-if="hand.length > 0">
-            <div class="card" v-for="(card, i) in hand" :key="i">
+            <div class="card" v-for="card in hand" :key="`${card.rank}.${card.suit}`">
                 <playing-card-container :card="card"/>
             </div>
         </transition-group>
