@@ -58,6 +58,12 @@ class Client {
         }, withAuthorization)
     }
 
+    setTableDeleted(tableUuid, deleted) {
+        return this._post(`/admin/table/${encodeURIComponent(tableUuid)}`, {
+            deleted,
+        }, withAuthorization)
+    }
+
     checkResetPasswordToken(token) {
         return this._get(`/player/reset-password/${encodeURIComponent(token)}`)
     }

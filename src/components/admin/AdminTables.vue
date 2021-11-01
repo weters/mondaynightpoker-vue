@@ -12,6 +12,7 @@
                         <th>Name</th>
                         <th>Created By</th>
                         <th>Created</th>
+                        <th>Deleted</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -21,6 +22,9 @@
                         </td>
                         <td>{{ table.playerEmail }}</td>
                         <td>{{ relativeDate(table.created) }}</td>
+                        <td>
+                            <toggle :checked="table.deleted" @change="toggled(table, $event)" :disabled="updating"/>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -40,11 +44,12 @@ import client from "@/client"
 import Loading from "@/components/Loading"
 import Error from "@/components/Error"
 import AdminPagination from "@/components/admin/AdminPagination"
+import Toggle from "@/components/formelements/Toggle"
 
 export default {
     name: "AdminTables",
     title: 'Admin/Tables',
-    components: {AdminPagination, Error, Loading, AdminHeader},
+    components: {Toggle, AdminPagination, Error, Loading, AdminHeader},
     data() {
         return {
             tables: null,
@@ -52,6 +57,7 @@ export default {
             rows: 25,
             count: 0,
             loading: false,
+            updating: false,
             error: null,
         }
     },
@@ -68,6 +74,16 @@ export default {
                 })
                 .catch(err => this.error = err)
                 .finally(() => this.loading = false)
+        },
+        toggled(table, value) {
+            this.updating = true
+            client.setTableDeleted(table.uuid, value)
+                .then(() => {})
+                .catch(err => {
+                    this.error = err
+                    this.fetch()
+                })
+                .finally(() => this.updating = false)
         },
     },
     watch: {

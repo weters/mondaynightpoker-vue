@@ -50,11 +50,11 @@ export default {
 
         &:checked + span.checkbox {
             background-color: $peach;
-            border-color: $peach;
+            border-color:     $peach;
 
             &::before {
                 background-color: $orange;
-                left: $control-width - $control-size -1px;
+                left:             $control-width - $control-size - 1px;
             }
         }
     }
