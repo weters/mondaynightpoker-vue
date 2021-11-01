@@ -22,7 +22,7 @@
                         </td>
                         <td>{{ table.playerEmail }}</td>
                         <td>{{ relativeDate(table.created) }}</td>
-                        <td>
+                        <td class="deleted">
                             <toggle :checked="table.deleted" @change="toggled(table, $event)" :disabled="updating"/>
                         </td>
                     </tr>
@@ -98,6 +98,14 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+table.standard {
+    td.deleted {
+        text-align: center;
+    }
+    label {
+        display: inline-flex;
+        margin: 0;
+    }
+}
 </style>
