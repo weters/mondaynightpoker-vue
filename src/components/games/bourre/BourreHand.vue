@@ -29,6 +29,7 @@
         data() {
             return {
                 selected: [],
+                timeout: null,
             }
         },
         computed: {
@@ -48,9 +49,19 @@
                 immediate: true,
                 handler(isTurn) {
                     if (isTurn) {
+                        if (this.timeout) {
+                            clearTimeout(this.timeout)
+                            this.timeout = null
+                        }
+
                         if (this.validMoves.length === 1) {
                             this.selected = [...this.validMoves]
-                            setTimeout(() => this.playCard(), 500)
+                            let timeoutDuration = 500
+                            if (this.$store.getters["bourre/hand"].length > 1) {
+                                timeoutDuration = 4000 + Math.floor(Math.random() * 2000)
+                            }
+
+                            this.timeout = setTimeout(() => this.playCard(), timeoutDuration)
                         }
                     }
                 }
@@ -58,6 +69,11 @@
         },
         methods: {
             playCard() {
+                if (this.timeout) {
+                    clearTimeout(this.timeout)
+                    this.timeout = null
+                }
+
                 this.$store.state.webSocket.send('playCard', null, this.selected)
                     .then(res => console.log(res))
                     .catch(err => {
