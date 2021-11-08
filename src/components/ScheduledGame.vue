@@ -9,10 +9,7 @@
                 <p class="started-by">{{ player }}</p>
             </div>
 
-            <label class="optional">
-                <span>Deal me in</span>
-                <input type="checkbox" :checked="isPlayerActive" @change="$emit('setPlayerActive', $event)"/>
-            </label>
+            <toggle :checked="isPlayerActive" @change="$emit('setPlayerActive', $event)" label="Deal me in!" />
 
             <div class="buttons">
                 <button type="button" @click="$emit('cancel')" class="secondary" v-if="canStart">Cancel</button>
@@ -23,9 +20,11 @@
 
 <script>
     import balance from "../mixins/balance"
+    import Toggle from "@/components/formelements/Toggle"
 
     export default {
         name: "ScheduledGame",
+        components: {Toggle},
         mixins: [balance],
         props: {
             info: {
