@@ -7,11 +7,18 @@
         </div>
 
         <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
-            <div class="name-hand">
-                <strong class="display-name">{{ playerData.player.displayName }}</strong>
-                <span v-if="participant.handRank" :class="{'hand-rank': true, 'is-winner': isWinner}">{{ participant.handRank }}</span>
+            <div class="participant">
+                <div class="name-hand">
+                    <strong class="display-name">{{ playerData.player.displayName }}</strong>
+                    <span v-if="participant.handRank" :class="{'hand-rank': true, 'is-winner': isWinner}">{{ participant.handRank }}</span>
+                </div>
+                <div class="chips">
+                    {{ formatAmount(participant.balance) }}
+                </div>
             </div>
-            <chip-stack :amount="chipStack" class="metadata-chip-stack"/>
+            <div class="bet">
+                <chip-stack :amount="chipStack" class="metadata-chip-stack"/>
+            </div>
         </div>
     </div>
 </template>
@@ -21,6 +28,7 @@
     import {mapGetters} from "vuex"
     import balance from "../../../mixins/balance"
     import ChipStack from "../../ChipStack"
+    import {formatAmount} from "@/currency"
 
     export default {
         name: "LittleLParticipant",
@@ -72,6 +80,7 @@
             }
         },
         methods: {
+            formatAmount,
             hideCard(index) {
                 return index >= this.cards.length - this.hiddenCards
             }
@@ -121,37 +130,41 @@
         }
 
         div.metadata {
-            display:    flex;
-            flex-wrap:  wrap;
             margin-top: $spacing-small;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
 
             strong.display-name {
-                font-weight: normal;
             }
 
             &.disconnected {
-                font-style: italic;
-                color: $text-color-light;
-            }
-
-            .hand-rank {
-                display:     block;
-                font-size:   1.2em;
-                color: $text-color-light;
-
-                &.is-winner {
-                    font-weight: bold;
-                    color: black;
+                strong.display-name {
+                    font-weight: normal;
+                    font-style: italic;
+                    color: $text-color-light;
                 }
             }
 
-            .metadata-chip-stack {
+            .participant {
+                .name-hand {
+                    .hand-rank {
+                        display:     block;
+                        font-size:   1.2em;
+                        color: $text-color-light;
+
+                        &.is-winner {
+                            font-weight: bold;
+                            color: black;
+                        }
+                    }
+                }
+
+                .chips {
+                }
+            }
+
+            .bet {
                 margin-left: auto;
-
-                @media(max-width: $max-width) {
-                    margin-top: $spacing-medium;
-                    flex: 0 0 100%;
-                }
             }
         }
     }

@@ -10,11 +10,15 @@
                     <div class="amount">
                         <label class="optional">
                             <span>Amount</span>
-                            <input type="range" :min="startingBet" :step="gameState.ante" :max="gameState.maxBet"
+                            <input type="range" :min="startingBet" :step="gameState.ante" :max="max"
                                    v-model="amount"/>
                         </label>
 
-                        <span class="amount">{{ formatAmount(amount) }}</span>
+                        <span class="amount">{{
+                                amount >= self.balance ? "All in"
+                                    : amount > gameState.maxBet ? formatAmount(gameState.maxBet)
+                                    : formatAmount(amount)
+                            }}</span>
                     </div>
                     <button class="secondary" type="button" @click="bet=null">Cancel</button>
                     <button type="button" @click="handleBet">Yes, {{ bet.name }}</button>
@@ -92,6 +96,11 @@ export default {
         isTurn() {
             return this.gameState.currentTurn === this.self.playerId || this.gameState.action === this.self.playerId
         },
+        max() {
+            const diff = this.gameState.maxBet - this.startingBet
+            const offset = this.gameState.ante * Math.ceil(diff / this.gameState.ante)
+            return this.startingBet + offset
+        }
     },
     methods: {
         handleAction(action) {
@@ -136,7 +145,13 @@ export default {
             }
         },
         handleBet() {
-            const amount = parseInt(this.amount, 10)
+            let amount = parseInt(this.amount, 10)
+            if (amount > this.self.balance) {
+                amount = this.self.balance
+            } else if (amount > this.gameState.maxBet) {
+                amount = this.gameState.maxBet
+            }
+
             this.$store.state.webSocket.send(this.bet.id, null, null, {
                     amount,
                 })
@@ -186,7 +201,7 @@ export default {
             this.futureAction = null
         },
         bet() {
-            this.startingBet = this.gameState.currentBet ? this.gameState.currentBet * 2 : this.gameState.ante
+            this.startingBet = this.gameState.minBet
             this.amount = this.startingBet
         },
         isTurn(isTurn) {
