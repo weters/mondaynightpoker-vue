@@ -10,11 +10,15 @@
                     <div class="amount">
                         <label class="optional">
                             <span>Amount</span>
-                            <input type="range" :min="startingBet" :step="gameState.ante" :max="gameState.maxBet"
+                            <input type="range" :min="startingBet" :step="25" :max="this.gameState.maxBet"
                                    v-model="amount"/>
                         </label>
 
-                        <span class="amount">{{ formatAmount(amount) }}</span>
+                        <span class="amount">{{
+                                amount >= this.allInAmount ? "All-in"
+                                    : amount > gameState.maxBet ? formatAmount(gameState.maxBet)
+                                    : formatAmount(amount)
+                            }}</span>
                     </div>
                     <button class="secondary" type="button" @click="bet=null">Cancel</button>
                     <button type="button" @click="handleBet">Yes, {{ bet.name }}</button>
@@ -29,17 +33,21 @@
                 </template>
                 <template v-else>
                     <button type="button" v-for="action in actions" :key="action.id" @click="handleAction(action)">
-                        {{ action.name }}
                         <template v-if="action.id === 'call'">
-                            {{ formatAmount(gameState.currentBet - self.currentBet) }}
+                            {{ callAction(action) }}
+                        </template>
+                        <template v-else>
+                            {{ action.name }}
                         </template>
                     </button>
 
                     <button :class="{'future-action': true, pending: futureAction && futureAction.id === action.id }" type="button" v-for="action in futureActions" :key="action.id"
                             @click="handleFutureAction(action)">
-                        {{ action.name }}
                         <template v-if="action.id === 'call'">
-                            {{ formatAmount(gameState.currentBet - self.currentBet) }}
+                            {{ callAction(action) }}
+                        </template>
+                        <template v-else>
+                            {{ action.name }}
                         </template>
                     </button>
                 </template>
@@ -92,16 +100,39 @@ export default {
         isTurn() {
             return this.gameState.currentTurn === this.self.playerId || this.gameState.action === this.self.playerId
         },
+        amountToCall() {
+            return this.gameState.currentBet - this.self.currentBet
+        },
+        allInAmount() {
+            return this.self.balance + this.self.currentBet
+        }
     },
     methods: {
+        callAction(action) {
+            if (this.amountToCall >= this.self.balance) {
+                return `All-in ${this.formatAmount(this.self.balance)}`
+            }
+
+            return `${action.name} ${this.formatAmount(this.amountToCall)}`
+        },
         handleAction(action) {
             switch (action.id) {
                 case 'trade':
                 case 'check':
-                case 'call':
                 case 'end-game':
                 case 'fold':
                     this.confirm = action
+                    break
+                case 'call':
+                    if (this.amountToCall > this.self.balance) {
+                        this.confirm = {
+                            ...action,
+                            name: 'All-in'
+                        }
+                    } else {
+                        this.confirm = action
+                    }
+
                     break
                 case 'raise':
                 case 'bet':
@@ -136,7 +167,13 @@ export default {
             }
         },
         handleBet() {
-            const amount = parseInt(this.amount, 10)
+            let amount = parseInt(this.amount, 10)
+            if (amount > this.allInAmount) {
+                amount = this.allInAmount
+            } else if (amount > this.gameState.maxBet) {
+                amount = this.gameState.maxBet
+            }
+
             this.$store.state.webSocket.send(this.bet.id, null, null, {
                     amount,
                 })
@@ -186,7 +223,7 @@ export default {
             this.futureAction = null
         },
         bet() {
-            this.startingBet = this.gameState.currentBet ? this.gameState.currentBet * 2 : this.gameState.ante
+            this.startingBet = this.gameState.minBet
             this.amount = this.startingBet
         },
         isTurn(isTurn) {
