@@ -69,11 +69,11 @@
                 return this.participant.hand
             },
             isWinner() {
-                return this.gameState.winners.indexOf(this.participant.playerId) >= 0
+                return this.gameState.winners && Object.prototype.hasOwnProperty.call(this.gameState.winners, this.participant.playerId)
             },
             chipStack() {
-                if (this.gameState.winners.length > 0) {
-                    return this.isWinner ? this.participant.balance : 0
+                if (this.gameState.winners) {
+                    return this.gameState.winners[this.participant.playerId] || 0
                 }
 
                 return this.participant.currentBet
