@@ -1,13 +1,14 @@
 <template>
     <form class="game-selector-texas-hold-em" @submit.prevent="submit">
-        <h4>Limit Texas Hold'Em</h4>
+        <h4>Pot-Limit Texas Hold'Em</h4>
 
         <fancy-input label="Ante" type="number" :min="0" :max="50" :step="25" v-model="ante" unit="¢" />
 
-        <fancy-select label="Limits" v-model="lowLimit" :options="[
-            [ '25', '25¢/50¢' ],
-            [ '50', '50¢/$1' ],
-            [ '100', '$1/$2' ],
+        <fancy-select label="Blinds" v-model="blinds" :options="[
+            [ '0-0', '0¢/0¢' ],
+            [ '25-25', '25¢/25¢' ],
+            [ '25-50', '25¢/50¢' ],
+            [ '50-100', '50¢/$1' ],
         ]" />
 
         <div class="buttons">
@@ -25,16 +26,18 @@ export default {
     data() {
         return {
             ante: '25',
-            lowLimit: '50',
+            blinds: '25-50',
         }
     },
     methods: {
         submit() {
+            const [smallBlind, bigBlind] = this.blinds.split(/-/)
             this.$emit('submit', {
                 game: 'texas-hold-em',
                 opts: {
                     ante: parseInt(this.ante, 10),
-                    lowLimit: parseInt(this.lowLimit, 10),
+                    smallBlind: parseInt(smallBlind, 10),
+                    bigBlind: parseInt(bigBlind, 10),
                 }
             })
         },

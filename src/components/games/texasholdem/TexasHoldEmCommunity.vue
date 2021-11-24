@@ -12,7 +12,7 @@ export default {
     components: {PlayingCardContainer},
     computed: {
         community() {
-            return this.$store.getters["texasHoldEm/gameState"].community
+            return this.$store.getters["poker/pokerState"].community
         },
     },
     methods: {

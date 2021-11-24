@@ -33,10 +33,10 @@
                         the pot; players without any tricks must match the pot!</p>
                 </li>
                 <li class="game">
-                    <h3>Limit Texas Hold'em</h3>
+                    <h3>Pot-Limit Texas Hold'em</h3>
 
                     <p>The most popular poker game in the world. You each get two cards dealt face-down and everyone
-                    shared five cards on the board. Best five-card hand wins.</p>
+                    shares five cards on the board. Best five-card hand wins.</p>
                 </li>
                 <li class="game">
                     <h3>Little L</h3>

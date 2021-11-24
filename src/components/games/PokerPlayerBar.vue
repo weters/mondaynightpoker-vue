@@ -10,13 +10,13 @@
                     <div class="amount">
                         <label class="optional">
                             <span>Amount</span>
-                            <input type="range" :min="startingBet" :step="25" :max="this.gameState.maxBet"
+                            <input type="range" :min="startingBet" :step="25" :max="maxBet"
                                    v-model="amount"/>
                         </label>
 
                         <span class="amount">{{
                                 amount >= this.allInAmount ? "All-in"
-                                    : amount > gameState.maxBet ? formatAmount(gameState.maxBet)
+                                    : amount > maxBet ? formatAmount(maxBet)
                                     : formatAmount(amount)
                             }}</span>
                     </div>
@@ -91,17 +91,18 @@ export default {
         ...mapGetters({
             self: 'poker/self',
             gameState: 'poker/gameState',
+            pokerState: 'poker/pokerState',
             actions: 'poker/actions',
             futureActions: 'poker/futureActions',
         }),
-        currentBet() {
-            return this.gameState.currentBet
+        maxBet() {
+            return Math.min(this.pokerState.maxBet, this.self.balance)
         },
         isTurn() {
             return this.gameState.currentTurn === this.self.playerId || this.gameState.action === this.self.playerId
         },
         amountToCall() {
-            return this.gameState.currentBet - this.self.currentBet
+            return this.pokerState.currentBet - this.self.currentBet
         },
         allInAmount() {
             return this.self.balance + this.self.currentBet
@@ -170,8 +171,8 @@ export default {
             let amount = parseInt(this.amount, 10)
             if (amount > this.allInAmount) {
                 amount = this.allInAmount
-            } else if (amount > this.gameState.maxBet) {
-                amount = this.gameState.maxBet
+            } else if (amount > this.maxBet) {
+                amount = this.maxBet
             }
 
             this.$store.state.webSocket.send(this.bet.id, null, null, {
@@ -223,7 +224,7 @@ export default {
             this.futureAction = null
         },
         bet() {
-            this.startingBet = this.gameState.minBet
+            this.startingBet = this.pokerState.minBet
             this.amount = this.startingBet
         },
         isTurn(isTurn) {

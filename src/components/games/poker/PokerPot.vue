@@ -1,5 +1,5 @@
 <template>
-    <div class="little-l-pot">
+    <div class="poker-pot">
         <div v-if="totalPots > 1" class="pot-details">
             <strong>
                 <template v-if="index===0">Main Pot</template>
@@ -18,7 +18,7 @@
 import ChipStack from "@/components/ChipStack"
 
 export default {
-    name: "LittleLPot",
+    name: "PokerPot",
     components: {ChipStack},
     props: {
         pot: { // amount:int, allInParticipants:[int]
@@ -45,7 +45,7 @@ export default {
 <style lang="scss" scoped>
 @import '../../../variables';
 
-.little-l-pot {
+.poker-pot {
     background-color: $gray;
     padding: $spacing-medium;
     border-radius: $border-radius;
