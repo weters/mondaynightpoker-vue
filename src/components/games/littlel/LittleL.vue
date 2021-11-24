@@ -5,15 +5,7 @@
         <div class="board">
             <little-l-community/>
 
-            <div class="pots">
-                <little-l-pot
-                    v-for="(pot, i) in gameState.pots"
-                    :key="i"
-                    :pot="pot"
-                    :index="i"
-                    :total-pots="gameState.pots.length"
-                />
-            </div>
+            <poker-pots />
         </div>
 
         <little-l-participants/>
@@ -32,11 +24,11 @@ import balance from "../../../mixins/balance"
 import show_error from "../../../mixins/show_error"
 import LittleLParticipants from "./LittleLParticipants"
 import PokerPlayerBar from "../PokerPlayerBar"
-import LittleLPot from "@/components/games/littlel/LittleLPot"
+import PokerPots from "@/components/games/poker/PokerPots"
 
 export default {
     name: "LittleL",
-    components: {LittleLPot, PokerPlayerBar, LittleLParticipants, LittleLHand, LittleLCommunity},
+    components: {PokerPots, PokerPlayerBar, LittleLParticipants, LittleLHand, LittleLCommunity},
     mixins: [balance, show_error],
     data() {
         return {
@@ -51,6 +43,7 @@ export default {
         ...mapState(['game']),
         ...mapGetters({
             gameState: 'poker/gameState',
+            pokerState: 'poker/pokerState',
         }),
         tradeIns() {
             const tradeIns = Object.keys(this.gameState.tradeIns)
@@ -82,14 +75,6 @@ div.board {
 
     ::v-deep .amount {
         font-size: 1.4em;
-    }
-
-    .pots {
-        display: flex;
-        gap: $spacing-medium;
-        @media (max-width: #{$mobile-max}) {
-            flex-direction: column;
-        }
     }
 
     @media (max-width: #{$mobile-max}) {

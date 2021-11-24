@@ -1,6 +1,6 @@
 <template>
     <div class="community">
-        <playing-card-container v-for="(card, i) in gameState.community" :key="i" :card="card" />
+        <playing-card-container v-for="(card, i) in pokerState.community" :key="i" :card="card" />
     </div>
 </template>
 
@@ -13,7 +13,7 @@
         components: {PlayingCardContainer},
         computed: {
             ...mapGetters({
-                gameState: 'poker/gameState',
+                pokerState: 'poker/pokerState',
             })
         }
     }

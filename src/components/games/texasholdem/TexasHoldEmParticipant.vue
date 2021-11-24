@@ -8,7 +8,7 @@
         <span class="name">{{ playerData.player.displayName }}</span>
         <span class="balance">{{ formatAmount(participant.balance) }}</span>
 
-        <chip-stack :amount="participant.winnings || participant.bet" class="chip-stack"/>
+        <chip-stack :amount="participant.winnings || participant.currentBet" class="chip-stack"/>
 
         <div class="info">
             <span class="hand" v-if="participant.hand">{{ participant.hand }}</span>

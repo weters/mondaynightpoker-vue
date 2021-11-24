@@ -4,83 +4,46 @@
 
         <texas-hold-em-community class="community"/>
 
-        <div class="pot">
-            <chip-stack :amount="animatedPot"/>
-        </div>
+        <poker-pots />
 
         <texas-hold-em-participants :participants="gameState.participants"/>
 
-        <player-bar :is-turn="isTurn">
-            <div>
-                <div class="hand">
-                    <playing-card-container :card="cards[0]" v-if="cards"/>
-                    <playing-card-container :card="cards[1]" v-if="cards"/>
-                </div>
-                <texas-hold-em-actions />
+        <poker-player-bar>
+            <div class="hand">
+                <playing-card-container :card="cards[0]" v-if="cards"/>
+                <playing-card-container :card="cards[1]" v-if="cards"/>
             </div>
-
-            <template v-slot:gameInfo>
-                {{ handRank }}
-            </template>
-        </player-bar>
+        </poker-player-bar>
     </div>
 </template>
 
 <script>
-import PlayerBar from "@/components/games/PlayerBar"
-import {mapGetters, mapState} from "vuex"
-import balance from "@/mixins/balance"
+import {mapGetters} from "vuex"
 import TexasHoldEmCommunity from "@/components/games/texasholdem/TexasHoldEmCommunity"
 import PlayingCardContainer from "@/components/PlayingCardContainer"
 import TexasHoldEmParticipants from "@/components/games/texasholdem/TexasHoldEmParticipants"
-import ChipStack from "@/components/ChipStack"
-import {tween} from "popmotion"
-import TexasHoldEmActions from "@/components/games/texasholdem/TexasHoldEmActions"
+import PokerPlayerBar from "@/components/games/PokerPlayerBar"
+import PokerPots from "@/components/games/poker/PokerPots"
 
 export default {
     name: "TexasHoldEm",
     components: {
-        TexasHoldEmActions,
-        ChipStack, TexasHoldEmParticipants, PlayingCardContainer, TexasHoldEmCommunity, PlayerBar},
-    mixins: [balance],
+        PokerPots,
+        PokerPlayerBar,
+        TexasHoldEmParticipants, PlayingCardContainer, TexasHoldEmCommunity},
     data() {
         return {
             confirm: null,
             hideButtons: false,
-            animatedPot: 0,
         }
     },
     computed: {
-        ...mapState(['webSocket']),
         ...mapGetters({
             gameState: 'texasHoldEm/gameState',
             activeParticipant: 'texasHoldEm/activeParticipant',
         }),
-        isTurn() {
-            return this.activeParticipant && this.gameState.currentTurn == this.activeParticipant.playerId
-        },
-        handRank() {
-            return this.activeParticipant && this.activeParticipant.hand
-        },
         cards() {
             return this.activeParticipant && this.activeParticipant.cards
-        },
-        pot() {
-            return this.gameState.pot
-        },
-    },
-    watch: {
-        pot: {
-            immediate: true,
-            handler(pot, oldPot) {
-                tween({
-                    from: oldPot,
-                    to: pot,
-                    duration: 500,
-                })
-                    .pipe(Math.round)
-                    .start(val => this.animatedPot = val)
-            },
         },
     },
 }
