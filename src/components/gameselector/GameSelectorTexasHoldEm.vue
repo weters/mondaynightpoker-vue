@@ -1,6 +1,6 @@
 <template>
     <form class="game-selector-texas-hold-em" @submit.prevent="submit">
-        <h4>Limit Texas Hold'Em</h4>
+        <h4>Pot-Limit Texas Hold'Em</h4>
 
         <fancy-input label="Ante" type="number" :min="0" :max="50" :step="25" v-model="ante" unit="¢" />
 

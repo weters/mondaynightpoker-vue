@@ -6,12 +6,12 @@
         </div>
 
         <span class="name">{{ playerData.player.displayName }}</span>
-        <span class="balance">{{ formatAmount(participant.balance) }}</span>
+        <span class="balance">{{ participant.balance > 0 ? formatAmount(participant.balance) : '(All-in)' }}</span>
 
         <chip-stack :amount="participant.winnings || participant.currentBet" class="chip-stack"/>
 
         <div class="info">
-            <span class="hand" v-if="participant.hand">{{ participant.hand }}</span>
+            <span class="hand" v-if="participant.handRank">{{ participant.handRank }}</span>
             <span class="last-action" v-else-if="lastAction">{{ lastAction }}</span>
             <span class="void" v-else></span>
         </div>

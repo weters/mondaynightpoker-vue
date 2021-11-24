@@ -29,6 +29,7 @@ export default {
 
 .poker-pots {
     display: flex;
+    flex-wrap: wrap;
     gap:     $spacing-medium;
     @media (max-width: #{$mobile-max}) {
         flex-direction: column;

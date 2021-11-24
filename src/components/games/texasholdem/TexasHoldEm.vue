@@ -2,11 +2,11 @@
     <div class="texas-hold-em">
         <h3>{{ replaceTokens(gameState.name) }}</h3>
 
-        <texas-hold-em-community class="community"/>
+        <poker-pots class="the-poker-pots"/>
 
-        <poker-pots />
+        <texas-hold-em-community class="the-community"/>
 
-        <texas-hold-em-participants :participants="gameState.participants"/>
+        <texas-hold-em-participants class="the-participants" :participants="gameState.participants"/>
 
         <poker-player-bar>
             <div class="hand">
@@ -30,7 +30,8 @@ export default {
     components: {
         PokerPots,
         PokerPlayerBar,
-        TexasHoldEmParticipants, PlayingCardContainer, TexasHoldEmCommunity},
+        TexasHoldEmParticipants, PlayingCardContainer, TexasHoldEmCommunity,
+    },
     data() {
         return {
             confirm: null,
@@ -53,13 +54,19 @@ export default {
 @import '../../../variables';
 
 .texas-hold-em {
-    .community {
+    .the-community {
         max-width: 500px;
         margin:    0 auto $spacing-medium;
     }
 
-    div.pot > * {
-        margin: 0 auto $spacing;
+    .the-poker-pots {
+        margin-bottom:   $spacing-medium;
+        justify-content: center;
+        flex-direction:  row;
+    }
+
+    .the-participants {
+        margin-top: $spacing;
     }
 
     .player-bar {
