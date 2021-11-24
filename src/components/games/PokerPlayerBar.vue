@@ -10,13 +10,13 @@
                     <div class="amount">
                         <label class="optional">
                             <span>Amount</span>
-                            <input type="range" :min="startingBet" :step="25" :max="this.gameState.maxBet"
+                            <input type="range" :min="startingBet" :step="25" :max="self.maxBet"
                                    v-model="amount"/>
                         </label>
 
                         <span class="amount">{{
                                 amount >= this.allInAmount ? "All-in"
-                                    : amount > gameState.maxBet ? formatAmount(gameState.maxBet)
+                                    : amount > self.maxBet ? formatAmount(self.maxBet)
                                     : formatAmount(amount)
                             }}</span>
                     </div>
@@ -223,7 +223,7 @@ export default {
             this.futureAction = null
         },
         bet() {
-            this.startingBet = this.gameState.minBet
+            this.startingBet = this.self.minBet
             this.amount = this.startingBet
         },
         isTurn(isTurn) {
