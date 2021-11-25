@@ -1,8 +1,9 @@
 <template>
     <div :class="classes">
-        <div class="cards">
+        <div :class="`cards cards-${numHoleCards}`">
             <playing-card-container :card="card(0)" :hide-card="participant.folded"/>
             <playing-card-container :card="card(1)" :hide-card="participant.folded"/>
+            <playing-card-container :card="card(1)" :hide-card="participant.folded" v-if="numHoleCards === 3"/>
         </div>
 
         <span class="name">{{ playerData.player.displayName }}</span>
@@ -34,6 +35,9 @@ export default {
         },
     },
     computed: {
+        numHoleCards() {
+            return this.$store.getters["poker/gameState"].variant.holeCards
+        },
         lastAction() {
             const lastAction = this.$store.getters["texasHoldEm/gameState"].lastAction
             if (!lastAction) {
@@ -96,6 +100,10 @@ div.texas-hold-em-participant {
         display:               grid;
         grid-template-columns: 1fr 1fr;
         grid-gap:              2px;
+
+        &.cards-3 {
+            grid-template-columns: repeat(3, 1fr);
+        }
     }
 
     span.balance {

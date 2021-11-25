@@ -9,9 +9,10 @@
         <texas-hold-em-participants class="the-participants" :participants="gameState.participants"/>
 
         <poker-player-bar>
-            <div class="hand">
+            <div :class="`hand hand-${numHoleCards}`">
                 <playing-card-container :card="cards[0]" v-if="cards"/>
                 <playing-card-container :card="cards[1]" v-if="cards"/>
+                <playing-card-container :card="cards[2]" v-if="cards && numHoleCards === 3" />
             </div>
         </poker-player-bar>
     </div>
@@ -46,6 +47,9 @@ export default {
         cards() {
             return this.activeParticipant && this.activeParticipant.cards
         },
+        numHoleCards() {
+            return this.gameState.variant.holeCards
+        }
     },
 }
 </script>
@@ -78,6 +82,10 @@ export default {
                 display:               grid;
                 grid-template-columns: repeat(2, minmax(50px, 100px));
                 grid-gap:              $spacing-medium;
+
+                &.hand-3 {
+                    grid-template-columns: repeat(3, minmax(50px, 100px));
+                }
             }
 
             & > div:last-child {

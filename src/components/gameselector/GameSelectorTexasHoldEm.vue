@@ -1,15 +1,22 @@
 <template>
     <form class="game-selector-texas-hold-em" @submit.prevent="submit">
-        <h4>Pot-Limit Texas Hold'Em</h4>
+        <h4>Texas Hold'Em</h4>
 
-        <fancy-input label="Ante" type="number" :min="0" :max="50" :step="25" v-model="ante" unit="¢" />
+        <fancy-input label="Ante" type="number" :min="0" :max="50" :step="25" v-model="ante" unit="¢"/>
 
         <fancy-select label="Blinds" v-model="blinds" :options="[
             [ '0-0', '0¢/0¢' ],
             [ '25-25', '25¢/25¢' ],
             [ '25-50', '25¢/50¢' ],
             [ '50-100', '50¢/$1' ],
-        ]" />
+        ]"/>
+
+        <fancy-select label="Variant"
+                      v-model="variant"
+                      :options="[
+                              [ 'standard', 'Standard' ],
+                              [ 'lazy-pineapple', 'Lazy Pineapple' ],
+            ]"/>
 
         <div class="buttons">
             <button type="submit">Start</button>
@@ -20,6 +27,7 @@
 <script>
 import FancyInput from "@/components/formelements/FancyInput"
 import FancySelect from "@/components/formelements/FancySelect"
+
 export default {
     name: "GameSelectorTexasHoldEm",
     components: {FancySelect, FancyInput},
@@ -27,6 +35,7 @@ export default {
         return {
             ante: '25',
             blinds: '25-50',
+            variant: 'standard',
         }
     },
     methods: {
@@ -38,7 +47,8 @@ export default {
                     ante: parseInt(this.ante, 10),
                     smallBlind: parseInt(smallBlind, 10),
                     bigBlind: parseInt(bigBlind, 10),
-                }
+                    variant: this.variant,
+                },
             })
         },
     },
