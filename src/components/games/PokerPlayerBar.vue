@@ -17,7 +17,7 @@
                         <span class="amount">{{
                                 amount >= this.allInAmount ? "All-in"
                                     : amount > maxBet ? formatAmount(maxBet)
-                                    : formatAmount(amount)
+                                        : formatAmount(amount)
                             }}</span>
                     </div>
                     <button class="secondary" type="button" @click="bet=null">Cancel</button>
@@ -29,7 +29,10 @@
                 </template>
                 <template v-else-if="confirmFuture">
                     <button class="secondary" type="button" @click="confirmFuture=null">Cancel</button>
-                    <button class="future-action" type="button" @click="handleConfirmFuture">Yes, {{ confirmFuture.name }}</button>
+                    <button class="future-action" type="button" @click="handleConfirmFuture">Yes, {{
+                            confirmFuture.name
+                        }}
+                    </button>
                 </template>
                 <template v-else>
                     <button type="button" v-for="action in actions" :key="action.id" @click="handleAction(action)">
@@ -41,7 +44,8 @@
                         </template>
                     </button>
 
-                    <button :class="{'future-action': true, pending: futureAction && futureAction.id === action.id }" type="button" v-for="action in futureActions" :key="action.id"
+                    <button :class="{'future-action': true, pending: futureAction && futureAction.id === action.id }"
+                            type="button" v-for="action in futureActions" :key="action.id"
                             @click="handleFutureAction(action)">
                         <template v-if="action.id === 'call'">
                             {{ callAction(action) }}
@@ -106,7 +110,7 @@ export default {
         },
         allInAmount() {
             return this.self.balance + this.self.currentBet
-        }
+        },
     },
     methods: {
         callAction(action) {
@@ -118,6 +122,7 @@ export default {
         },
         handleAction(action) {
             switch (action.id) {
+                case 'discard':
                 case 'trade':
                 case 'check':
                 case 'end-game':
@@ -128,7 +133,7 @@ export default {
                     if (this.amountToCall > this.self.balance) {
                         this.confirm = {
                             ...action,
-                            name: 'All-in'
+                            name: 'All-in',
                         }
                     } else {
                         this.confirm = action
@@ -159,6 +164,7 @@ export default {
                 case 'call':
                     action.currentBet = this.currentBet
                 case 'trade': // eslint-disable-line
+                case 'discard':
                 case 'check':
                 case 'fold':
                     this.confirmFuture = action
@@ -182,6 +188,7 @@ export default {
         },
         handleConfirm() {
             switch (this.confirm.id) {
+                case 'discard':
                 case 'trade':
                     this.$store.state.webSocket.send(this.confirm.id, null, this.selectedCards)
                         .catch(err => this.showError(err))
@@ -218,7 +225,7 @@ export default {
             this.confirmFuture = null
             this.bet = null
         },
-        'gameState.round': function() {
+        'gameState.round': function () {
             this.confirm = null
             this.confirmFuture = null
             this.futureAction = null
@@ -236,7 +243,7 @@ export default {
                             this.futureAction = null
                             this.handleConfirm()
 
-                            break;
+                            break
                         }
                     }
                 }

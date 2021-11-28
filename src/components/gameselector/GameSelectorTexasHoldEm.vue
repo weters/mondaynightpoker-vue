@@ -15,6 +15,7 @@
                       v-model="variant"
                       :options="[
                               [ 'standard', 'Standard' ],
+                              [ 'pineapple', 'Pineapple' ],
                               [ 'lazy-pineapple', 'Lazy Pineapple' ],
             ]"/>
 

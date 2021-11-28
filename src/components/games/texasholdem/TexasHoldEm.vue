@@ -8,11 +8,16 @@
 
         <texas-hold-em-participants class="the-participants" :participants="gameState.participants"/>
 
-        <poker-player-bar>
+        <poker-player-bar :selected-cards="selectedCards">
             <div :class="`hand hand-${numHoleCards}`">
-                <playing-card-container :card="cards[0]" v-if="cards"/>
-                <playing-card-container :card="cards[1]" v-if="cards"/>
-                <playing-card-container :card="cards[2]" v-if="cards && numHoleCards === 3" />
+                <template v-for="i in numHoleCards">
+                    <texas-hold-em-hole-card
+                        :key="`${cards[i-1].rank}.${cards[i-1].suit}`"
+                        :card="cards[i-1]"
+                        v-if="cards && cards.length >= i" :selected="selected === i-1"
+                        @selected="updateSelected(i-1, $event)"
+                    />
+                </template>
             </div>
         </poker-player-bar>
     </div>
@@ -21,22 +26,25 @@
 <script>
 import {mapGetters} from "vuex"
 import TexasHoldEmCommunity from "@/components/games/texasholdem/TexasHoldEmCommunity"
-import PlayingCardContainer from "@/components/PlayingCardContainer"
 import TexasHoldEmParticipants from "@/components/games/texasholdem/TexasHoldEmParticipants"
 import PokerPlayerBar from "@/components/games/PokerPlayerBar"
 import PokerPots from "@/components/games/poker/PokerPots"
+import TexasHoldEmHoleCard from "@/components/games/texasholdem/TexasHoldEmHoleCard"
 
 export default {
     name: "TexasHoldEm",
     components: {
+        TexasHoldEmHoleCard,
         PokerPots,
         PokerPlayerBar,
-        TexasHoldEmParticipants, PlayingCardContainer, TexasHoldEmCommunity,
+        TexasHoldEmParticipants,
+        TexasHoldEmCommunity,
     },
     data() {
         return {
             confirm: null,
             hideButtons: false,
+            selected: null,
         }
     },
     computed: {
@@ -49,8 +57,48 @@ export default {
         },
         numHoleCards() {
             return this.gameState.variant.holeCards
+        },
+        selectedCards() {
+            if (this.selected === null) {
+                return
+            }
+
+            return [this.cards[this.selected]]
+        },
+        canDiscard() {
+            const actions = this.$store.getters["poker/actions"] || []
+            const futureActions = this.$store.getters["poker/futureActions"] || []
+
+            return [
+                ...actions,
+                ...futureActions,
+            ].findIndex(action => action.id === 'discard') >= 0
         }
     },
+    methods: {
+        updateSelected(card, isSelected) {
+            if (!this.canDiscard) {
+                return
+            }
+
+            if (!isSelected) {
+                this.selected = null
+                return
+            }
+
+            this.selected = card
+        }
+    },
+    watch: {
+        canDiscard: {
+            handler(canDiscard) {
+                if (!canDiscard) {
+                    this.selected = null
+                }
+            },
+            immediate: true,
+        }
+    }
 }
 </script>
 

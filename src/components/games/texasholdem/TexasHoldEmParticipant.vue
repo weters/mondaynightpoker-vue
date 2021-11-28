@@ -1,9 +1,13 @@
 <template>
     <div :class="classes">
         <div :class="`cards cards-${numHoleCards}`">
-            <playing-card-container :card="card(0)" :hide-card="participant.folded"/>
-            <playing-card-container :card="card(1)" :hide-card="participant.folded"/>
-            <playing-card-container :card="card(1)" :hide-card="participant.folded" v-if="numHoleCards === 3"/>
+            <template v-for="(_, i) in numHoleCards">
+                <playing-card-container
+                    :key="i"
+                    :card="card(i)"
+                    :hide-card="participant.folded || card(i) === undefined"
+                />
+            </template>
         </div>
 
         <span class="name">{{ playerData.player.displayName }}</span>
@@ -16,6 +20,11 @@
             <span class="last-action" v-else-if="lastAction">{{ lastAction }}</span>
             <span class="void" v-else></span>
         </div>
+
+        <dealer-button
+            class="them-dealer-button"
+            v-if="participant.playerId === $store.getters['poker/gameState'].dealer"
+        />
     </div>
 </template>
 
@@ -23,10 +32,11 @@
 import PlayingCardContainer from "@/components/PlayingCardContainer"
 import balance from "@/mixins/balance"
 import ChipStack from "@/components/ChipStack"
+import DealerButton from "@/components/games/poker/DealerButton"
 
 export default {
     name: "TexasHoldEmParticipant",
-    components: {ChipStack, PlayingCardContainer},
+    components: {DealerButton, ChipStack, PlayingCardContainer},
     mixins: [balance],
     props: {
         participant: {
@@ -65,11 +75,11 @@ export default {
     },
     methods: {
         card(index) {
-            if (this.participant.cards) {
+            if (index < this.participant.cards.length) {
                 return this.participant.cards[index]
             }
 
-            return null
+            return undefined
         },
     },
 }
@@ -84,6 +94,7 @@ div.texas-hold-em-participant {
     padding:        $spacing-small;
     display:        flex;
     flex-direction: column;
+    position:       relative;
 
     &.current-turn {
         @include current-turn;
@@ -92,7 +103,7 @@ div.texas-hold-em-participant {
     &:not(.is-connected) {
         span.name {
             font-style: italic;
-            color: $text-color-light;
+            color:      $text-color-light;
         }
     }
 
@@ -122,7 +133,7 @@ div.texas-hold-em-participant {
     .info {
         & > span {
             font-size: 0.8em;
-            padding: 4px;
+            padding:   4px;
         }
 
         .last-action {
@@ -154,5 +165,10 @@ div.texas-hold-em-participant {
         }
     }
 
+    .them-dealer-button {
+        position: absolute;
+        bottom:   $spacing-small;
+        right:    $spacing-small;
+    }
 }
 </style>
