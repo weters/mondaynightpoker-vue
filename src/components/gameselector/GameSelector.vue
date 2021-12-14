@@ -5,21 +5,19 @@
         <div class="games" v-if="canStart">
             <game-selector-acey-deucey @submit="startGame"/>
             <game-selector-bourre @submit="startGame"/>
-            <game-selector-texas-hold-em @submit="startGame" />
+            <game-selector-texas-hold-em @submit="startGame"/>
             <game-selector-little-l @submit="startGame"/>
             <game-selector-pass-the-poop @submit="startGame"/>
-            <game-selector-seven-card @submit="startGame"/>
         </div>
         <div class="waiting" v-else>
             <p>Waiting on the table admin to start the game!</p>
-            <loading />
+            <loading/>
         </div>
     </div>
 </template>
 
 <script>
 import GameSelectorAceyDeucey from "@/components/gameselector/GameSelectorAceyDeucey"
-import GameSelectorSevenCard from "@/components/gameselector/GameSelectorSevenCard"
 import GameSelectorLittleL from "@/components/gameselector/GameSelectorLittleL"
 import GameSelectorPassThePoop from "@/components/gameselector/GameSelectorPassThePoop"
 import GameSelectorBourre from "@/components/gameselector/GameSelectorBourre"
@@ -35,7 +33,6 @@ export default {
         GameSelectorBourre,
         GameSelectorPassThePoop,
         GameSelectorLittleL,
-        GameSelectorSevenCard,
         GameSelectorAceyDeucey,
     },
     computed: {
