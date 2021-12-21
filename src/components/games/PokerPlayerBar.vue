@@ -162,7 +162,7 @@ export default {
 
             switch (action.id) {
                 case 'call':
-                    action.currentBet = this.currentBet
+                    action.currentBet = this.pokerState.currentBet
                 case 'trade': // eslint-disable-line
                 case 'discard':
                 case 'check':
@@ -207,13 +207,12 @@ export default {
             this.confirmFuture = null
         },
         isFutureActionValid(action) {
-            console.log(this.futureAction.id, action.id)
             if (this.futureAction.id !== action.id) {
                 return false
             }
 
             if (this.futureAction.id === 'call') {
-                return this.futureAction.currentBet === this.currentBet
+                return this.futureAction.currentBet === this.pokerState.currentBet
             }
 
             return true
@@ -240,13 +239,14 @@ export default {
                     for (let action of this.actions) {
                         if (this.isFutureActionValid(action)) {
                             this.confirm = this.futureAction
-                            this.futureAction = null
                             this.handleConfirm()
 
                             break
                         }
                     }
                 }
+
+                this.futureAction = null
             }
         },
     },
