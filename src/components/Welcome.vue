@@ -1,21 +1,24 @@
 <template>
     <div class="welcome">
         <div class="hero">
+            <div class="hero-overlay"></div>
             <div class="text">
-                <p class="slug">Socially distant poker with your friends</p>
+                <p class="slug">Online dealer's choice poker</p>
 
-                <p>Do you miss handing out with your friends and slinging cards around?</p>
+                <p>Can't make it to the poker table? Bring the table to you.</p>
 
-                <p>Monday Night Poker lets you play your favorite dealer’s choice card games with your friends!</p>
+                <p>Monday Night Poker lets you play your favorite dealer's choice card games with your friends online!</p>
 
                 <p class="sign-up">
-                    <router-link to="/signup" class="button">Sign Up</router-link>
+                    <router-link to="/signup" class="button hero-button">Sign Up</router-link>
                 </p>
             </div>
         </div>
 
         <div class="games">
-            <p>Monday Night Poker is a free, online site for playing card games with your friends. This project was started by a bored <a href="https://tompeters.me/">developer</a> during the pandemic who wanted to continue his Monday night tradition of playing card games with his friends. Not only is it 100% free, it's also <a href="https://github.com/weters/mondaynightpoker-server/">open-sourced</a> using the MIT License.</p>
+            <div class="intro-card">
+                <p>Monday Night Poker is a free, online site for playing card games with your friends. This project was started by a <a href="https://tompeters.me/">developer</a> who wanted to continue his Monday night tradition of playing card games with his friends. Not only is it 100% free, it's also <a href="https://github.com/weters/mondaynightpoker-server/">open-sourced</a> using the MIT License.</p>
+            </div>
 
             <h2>Dealer's Choice Poker Games</h2>
 
@@ -47,7 +50,7 @@
                 <li class="game">
                     <h3>Pass the Poop</h3>
 
-                    <p>Don’t get stuck with the low card, or you lose a life. Last player standing wins the pot! There’s
+                    <p>Don't get stuck with the low card, or you lose a life. Last player standing wins the pot! There's
                         two additional variants to keep things spicy.</p>
                 </li>
                 <li class="game">
@@ -79,58 +82,143 @@ export default {
         position:        relative;
         overflow:        auto;
 
+        .hero-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 100%);
+            pointer-events: none;
+        }
+
         .text {
-            p.slug {
-                font-size:   1.2em;
-                font-weight: bold;
+            $width: 450px;
+
+            @include card;
+            box-shadow: $shadow-lg;
+            padding: $spacing * 1.5;
+            max-width: $width;
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            transform: translateY(-50%);
+            margin: 0 $spacing 0 0;
+            z-index: 1;
+
+            p {
+                line-height: 1.6;
+                color: $text-color;
             }
 
-            $width:           450px;
-
-            background-color: white;
-            padding:          $spacing;
-
-            /*
-            width:     calc(100% - #{$spacing} * 2);
-            position:  static;
-            transform: none;
-            margin:    $spacing * 2 $spacing;
-             */
-
-            max-width:        $width;
-            position:         absolute;
-            left:             50%;
-            top:              45%;
-            transform:        translateY(-50%);
-            margin:           0 $spacing 0 0;
+            p.slug {
+                font-size: 1.4em;
+                font-weight: bold;
+                color: $primary;
+                margin-bottom: $spacing;
+            }
 
             @media(max-width: calc(600px + 2 * #{$spacing})) {
-                left:   auto;
-                right:  $spacing;
+                left: auto;
+                right: $spacing;
                 margin: 0 0 0 $spacing;
             }
 
             p.sign-up {
-                margin:     0;
+                margin: $spacing-medium 0 0 0;
                 text-align: right;
+            }
+
+            .hero-button {
+                box-shadow: $shadow-md;
+                transition: transform $transition-fast, box-shadow $transition-fast;
+
+                &:hover {
+                    transform: translateY(-2px);
+                    box-shadow: $shadow-hover;
+                }
             }
         }
     }
 
     .games {
         @include page-width;
-        margin-top: $spacing;
+        margin-top: $spacing * 1.5;
+        padding-bottom: $spacing * 1.5;
+
+        .intro-card {
+            @include card;
+            padding: $spacing;
+            margin-bottom: $spacing * 1.5;
+
+            p {
+                margin: 0;
+                line-height: 1.7;
+                color: $text-color;
+
+                a {
+                    color: $primary;
+                    text-decoration: none;
+                    font-weight: 500;
+
+                    &:hover {
+                        color: $orange;
+                        text-decoration: underline;
+                    }
+                }
+            }
+        }
+
+        h2 {
+            color: $text-color;
+            margin-bottom: $spacing;
+            position: relative;
+            display: inline-block;
+
+            &::after {
+                content: '';
+                position: absolute;
+                bottom: -4px;
+                left: 0;
+                width: 60px;
+                height: 3px;
+                background: $orange;
+                border-radius: 2px;
+            }
+        }
 
         .game-list {
-            list-style:            none;
-            margin:                0;
-            padding:               0;
-            display:               grid;
-            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-            grid-gap:              $spacing;
+            list-style: none;
+            margin: $spacing 0 0 0;
+            padding: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            grid-gap: $spacing;
 
             @media (max-width: 399px) {
                 display: block;
+
+                .game {
+                    margin-bottom: $spacing;
+                }
+            }
+
+            .game {
+                @include card;
+                @include card-hover;
+                padding: $spacing;
+
+                h3 {
+                    margin: 0 0 $spacing-medium 0;
+                    color: $primary;
+                    font-size: 1.1em;
+                }
+
+                p {
+                    margin: 0;
+                    line-height: 1.6;
+                    color: $text-color;
+                }
             }
         }
     }
