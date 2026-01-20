@@ -1,5 +1,7 @@
 <template>
-    <Bar :data="chartData" :options="chartOptions" />
+    <div class="table-graph">
+        <Bar :data="chartData" :options="chartOptions" />
+    </div>
 </template>
 
 <script>
@@ -93,5 +95,7 @@ export default {
 </script>
 
 <style scoped>
-
+.table-graph {
+    min-width: 0;
+}
 </style>
