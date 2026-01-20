@@ -2,19 +2,17 @@
     <div class="dealer-log">
         <h3>History</h3>
 
-        <transition name="expand">
-            <div class="container">
-                <transition-group name="log" tag="div">
-                    <div v-for="log in logs" :key="log.uuid" class="log">
-                        <div class="time">{{ new Date(log.time).toLocaleTimeString() }}</div>
-                        <div class="message">{{ log.message }}</div>
-                        <div class="cards">
-                            <text-playing-card class="card" :card="card" v-for="(card, i) in log.cards" :key="i" />
-                        </div>
+        <div class="container">
+            <transition-group name="log" tag="div">
+                <div v-for="log in logs" :key="log.uuid" class="log">
+                    <div class="time">{{ new Date(log.time).toLocaleTimeString() }}</div>
+                    <div class="message">{{ log.message }}</div>
+                    <div class="cards">
+                        <text-playing-card class="card" :card="card" v-for="(card, i) in log.cards" :key="i" />
                     </div>
-                </transition-group>
-            </div>
-        </transition>
+                </div>
+            </transition-group>
+        </div>
     </div>
 </template>
 
