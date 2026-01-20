@@ -1,50 +1,107 @@
-name: Build
+name: CI/CD
+
 on:
+  pull_request:
+    branches: [master]
   push:
     branches: [master]
+    tags: ['v*']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 env:
-  IMAGE: docker.pkg.github.com/weters/mondaynightpoker-vue/mondaynightpoker-vue
+  NODE_VERSION: '20'
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
 jobs:
-  ci:
-    name: 'CI/CD'
+  test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+      - run: npm ci
+      - name: Lint
+        run: npm run lint
+      - name: Build
+        run: npm run build
 
-    - name: Fetch Tags
-      run: git fetch --tags
+  build:
+    needs: test
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    outputs:
+      version: ${{ steps.version.outputs.version }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: version
+        run: |
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            echo "version=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=$(git describe --always)" >> $GITHUB_OUTPUT
+          fi
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=sha
+            type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: version=${{ steps.version.outputs.version }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
-    - name: Set Version
-      run: echo "VERSION=$(git describe --always)" >> $GITHUB_ENV
-
-    - name: Docker Log In
-      run:  echo "${{ secrets.GITHUB_TOKEN }}" | docker login docker.pkg.github.com -u ${{ github.actor }} --password-stdin
-
-    - name: Docker Build
-      run: |
-        docker build \
-          --build-arg version=$VERSION \
-          -t $IMAGE:$VERSION \
-          .
-        docker tag $IMAGE:$VERSION $IMAGE:latest
-
-    - name: Docker Push
-      run: |
-        docker push $IMAGE:$VERSION
-        docker push $IMAGE:latest
-
-    - name: Kubernetes Deploy
-      uses: actions-hub/kubectl@master
-      env:
-        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      with:
-        args: set image deploy mondaynightpoker-vue mondaynightpoker-vue=${{ env.IMAGE }}:${{ env.VERSION }} --record
-
-    - name: Kubernetes Rollout Status
-      uses: actions-hub/kubectl@master
-      env:
-        KUBE_CONFIG: ${{ secrets.KUBE_CONFIG }}
-      with:
-        args: rollout status deploy mondaynightpoker-vue
+  deploy:
+    needs: build
+    if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: version
+        run: |
+          if [[ "${{ github.ref_type }}" == "tag" ]]; then
+            TAG_NAME=${{ github.ref_name }}
+            echo "version=${TAG_NAME#v}" >> $GITHUB_OUTPUT
+          else
+            echo "version=$(git describe --always)" >> $GITHUB_OUTPUT
+          fi
+      - uses: azure/setup-kubectl@v4
+      - name: Configure kubectl
+        run: |
+          mkdir -p ~/.kube
+          echo "${{ secrets.KUBE_CONFIG }}" | base64 -d > ~/.kube/config
+          chmod 600 ~/.kube/config
+      - name: Deploy
+        run: |
+          kubectl set image deployment/mondaynightpoker-vue \
+            mondaynightpoker-vue=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
+          kubectl rollout status deployment/mondaynightpoker-vue --timeout=300s
