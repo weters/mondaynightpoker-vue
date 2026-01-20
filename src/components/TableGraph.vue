@@ -11,13 +11,14 @@ import {
     Legend,
     BarElement,
     LineElement,
+    LineController,
     PointElement,
     CategoryScale,
     LinearScale,
 } from 'chart.js'
 import balance from "../mixins/balance"
 
-ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, PointElement, CategoryScale, LinearScale)
+ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, LineController, PointElement, CategoryScale, LinearScale)
 
 export default {
     name: "TableGraph",
