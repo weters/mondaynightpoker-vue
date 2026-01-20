@@ -19,6 +19,9 @@ export default defineConfig({
   },
   server: {
     port: 8080,
+    cors: false,
+    host: 'localhost',
+    strictPort: true,
   },
   build: {
     sourcemap: false,
