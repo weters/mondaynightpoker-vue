@@ -114,47 +114,114 @@ export default {
 
 div.poker-table-player {
     $parent: &;
+    padding: $spacing-medium;
+    border-radius: $border-radius-small;
+    transition: background-color $transition-fast;
+
+    &:hover {
+        background-color: rgba($primary, 0.03);
+    }
+
+    &:not(:last-child) {
+        border-bottom: 1px solid rgba($border-color, 0.5);
+        padding-bottom: $spacing-medium;
+    }
+
+    &.connected.seated {
+        .player-status-indicator {
+            background: $light-green;
+        }
+    }
+
+    &:not(.connected) {
+        opacity: 0.6;
+    }
+
+    &:not(.seated) {
+        .display-name {
+            text-decoration: line-through;
+            opacity: 0.7;
+        }
+    }
+
     div.player-data {
         display:     flex;
         align-items: center;
+        gap: $spacing-small;
 
         &:not(:last-child) {
             margin-bottom: $spacing-medium;
         }
 
-        strong {
-            font-weight: normal;
-            margin:      0 $spacing 0 $spacing-small;
+        strong.display-name {
+            font-weight: 500;
+            margin-right: auto;
             white-space: nowrap;
+            color: $text-color;
 
-            @at-root #{$parent}:not(.connected) strong {
-                color:      $border-color;
+            @at-root #{$parent}:not(.connected) strong.display-name {
+                color:      $text-color-light;
                 font-style: italic;
             }
         }
 
         span.balance {
-            color:       $green;
-            margin-left: auto;
+            font-weight: 600;
+            font-size: 0.95em;
+            color:       $primary;
             white-space: nowrap;
+            padding: $spacing-small $spacing-medium;
+            background: rgba($primary, 0.08);
+            border-radius: $border-radius-small;
 
             &.negative {
-                color: $orange;
+                color: $error;
+                background: rgba($error, 0.08);
             }
         }
 
-        .mdi-icon {
-            margin-left: $spacing-medium;
-            width:       $control-size;
+        button.icon {
+            margin-left: $spacing-small;
+            padding: $spacing-small;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: $border-radius-small;
+            color: $text-color-light;
+            cursor: pointer;
+            transition: all $transition-fast;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            &:hover:not(:disabled) {
+                background: $gray;
+                color: $primary;
+                border-color: $border-color;
+            }
+
+            &:disabled {
+                opacity: 0.3;
+                cursor: not-allowed;
+            }
+
+            .mdi-icon {
+                width: 18px;
+                height: 18px;
+            }
         }
     }
 
     div.edit-player {
-        border-left: 1px solid $border-color;
-        padding-left: $spacing;
-        margin-left: 5px;
+        margin-top: $spacing-medium;
+        padding: $spacing-medium;
+        background: $gray;
+        border-radius: $border-radius-small;
+        display: flex;
+        flex-wrap: wrap;
+        gap: $spacing-medium $spacing;
+
         .toggle {
-            margin-bottom: $spacing-medium;
+            margin-bottom: 0;
         }
     }
 }

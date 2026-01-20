@@ -15,39 +15,28 @@ export default {
 <style lang="scss" scoped>
 @import '../variables.scss';
 
-$size: 12px;
-$dot-size: $size - 4px;
+$size: 10px;
 span.player-status {
     display:          inline-block;
     width:            $size;
     height:           $size;
     border-radius:    $size;
-    background-color: transparent;
-    border:           1px solid $dark-green;
-    position: relative;
+    background-color: $border-color;
+    flex-shrink: 0;
+    transition: all $transition-fast;
 
-    &:not(.connected) {
-        border-color: $border-color;
+    &.connected {
+        background-color: $text-color-light;
     }
 
-    &::after {
-        width: $dot-size;
-        height: $dot-size;
-        border-radius: $dot-size;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        content: '';
-        display: block;
-    }
-
-    &.seated::after {
+    &.seated {
         background-color: $orange;
+        box-shadow: 0 0 0 2px rgba($orange, 0.2);
     }
 
-    &.connected.seated::after {
-        background-color: $green;
+    &.connected.seated {
+        background-color: $light-green;
+        box-shadow: 0 0 0 2px rgba($light-green, 0.2);
     }
 }
 </style>

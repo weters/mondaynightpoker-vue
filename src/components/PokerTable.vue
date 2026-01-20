@@ -1,7 +1,13 @@
 <template>
     <div class="poker-table big-content">
         <div>
-            <h2><span class="table-name">{{ tableName }}</span></h2>
+            <div class="table-header">
+                <h2><span class="table-name">{{ tableName }}</span></h2>
+                <button @click="copy" class="invite-button" v-if="table">
+                    <mdi-icon :icon="mdiContentCopy"/>
+                    <span>Copy Invite Link</span>
+                </button>
+            </div>
 
             <div class="guest" v-if="!isSeated">
                 <div class="buttons">
@@ -46,10 +52,6 @@
 
                 <poker-table-player-list :client-state="clientState"/>
 
-                <p>
-                    <button @click="copy">Copy Invite Link</button>
-                </p>
-
                 <game-selector/>
             </template>
             <template v-else>
@@ -80,10 +82,13 @@ import GameSelector from "@/components/gameselector/GameSelector"
 import Toggle from "@/components/formelements/Toggle"
 import TexasHoldEm from "@/components/games/texasholdem/TexasHoldEm"
 import TableStakes from "@/components/TableStakes"
+import MdiIcon from "@/components/MdiIcon"
+import {mdiContentCopy} from "@mdi/js"
 
 export default {
     name: "PokerTable",
     components: {
+        MdiIcon,
         TableStakes,
         TexasHoldEm,
         Toggle,
@@ -99,7 +104,7 @@ export default {
     },
     data() {
         return {
-            fuck: 'you',
+            mdiContentCopy,
             table: null,
             error: null,
             ws: null,
@@ -167,11 +172,6 @@ export default {
                 this.setTitle(this.tableName)
             }
         },
-        'littleL.initialDeal': function (newVal) {
-            const initialDeal = parseInt(newVal, 10)
-            const tradeIns = this.littleL.tradeIns.filter(val => parseInt(val, 10) <= initialDeal)
-            this.littleL.tradeIns = tradeIns
-        },
     },
 }
 </script>
@@ -181,6 +181,55 @@ export default {
 
 .poker-table {
 
+    .table-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $spacing + $spacing-medium;
+        padding-bottom: $spacing;
+        border-bottom: 1px solid $border-color;
+
+        h2 {
+            margin: 0;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: $secondary;
+
+            .table-name {
+                background: linear-gradient(135deg, $primary, $secondary);
+                -webkit-background-clip: text;
+                -webkit-text-fill-color: transparent;
+                background-clip: text;
+            }
+        }
+
+        .invite-button {
+            display: flex;
+            align-items: center;
+            gap: $spacing-small;
+            padding: $spacing-medium $spacing;
+            background: white;
+            border: 1px solid $border-color;
+            border-radius: $border-radius;
+            color: $primary;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all $transition-fast;
+
+            &:hover {
+                background: $primary;
+                color: white;
+                border-color: $primary;
+                box-shadow: $shadow-md;
+            }
+
+            .mdi-icon {
+                width: 1.1em;
+                height: 1.1em;
+            }
+        }
+    }
+
     span.game {
         &::before {
             content: ' / ';
@@ -188,10 +237,18 @@ export default {
     }
 
     div.guest {
+        @include card;
+        padding: $spacing;
         margin-bottom: $spacing;
+        text-align: center;
 
         div.buttons {
-            text-align: left;
+            text-align: center;
+
+            button {
+                padding: $spacing-medium $spacing;
+                font-size: 1rem;
+            }
         }
     }
 
@@ -200,11 +257,13 @@ export default {
     }
 
     form.player-state {
-        margin: $spacing 0;
+        @include card;
+        padding: $spacing;
 
         p.details {
-            font-size: 0.8em;
-            margin:    $spacing-medium 0 0;
+            font-size: 0.85em;
+            color: $text-color-light;
+            margin: $spacing-medium 0 0;
         }
 
         label {
@@ -231,9 +290,12 @@ export default {
 
     div.waiting {
         text-align: center;
+        @include card;
+        padding: $spacing * 2;
 
         p {
-            margin: 0;
+            margin: 0 0 $spacing-medium;
+            color: $text-color-light;
         }
 
         .loading {
@@ -263,7 +325,7 @@ export default {
     }
 
     .dealer-log {
-        margin-top: $spacing;
+        margin-top: $spacing * 1.5;
     }
 
     .initial-deal, .trade-ins {
@@ -288,8 +350,8 @@ export default {
     }
 
     .pt-scheduled-game {
-        border-radius:       0 $border-radius 0 0;
-        box-shadow:          0 0 10px rgba($primary, 0.4);
+        border-radius:       0 $border-radius-large 0 0;
+        box-shadow:          $shadow-lg;
         position:            fixed;
         bottom:              0;
         left:                0;
@@ -302,7 +364,7 @@ export default {
         @media (max-width: $mobile-max) {
             left:              $spacing + $spacing-medium;
             right:             $spacing + $spacing-medium;
-            border-radius:     $border-radius $border-radius 0 0;
+            border-radius:     $border-radius-large $border-radius-large 0 0;
             max-width:         none;
             border-left-width: 1px;
         }
@@ -318,10 +380,20 @@ export default {
     }
 
     div.player-settings {
+        margin-bottom: $spacing * 1.5;
+
+        h3 {
+            @include section-header;
+        }
+
         .columns {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            grid-gap: $spacing;
+            gap: $spacing;
+
+            @media (max-width: $mobile-max) {
+                grid-template-columns: 1fr;
+            }
         }
     }
 }

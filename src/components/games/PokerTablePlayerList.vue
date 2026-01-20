@@ -10,77 +10,6 @@
             <poker-table-player v-for="client in clients" :player="client" :key="client.player.id" />
         </div>
 
-        <!--div class="players-list">
-            <template v-for="client in clients">
-                <div class="player" :key="client.player.id">
-                    <div class="primary">
-                        <div class="connected">
-                            <span class="connected" v-if="client.active && client.isConnected"></span>
-                            <span class="sitting-out" v-else-if="client.isConnected"></span>
-                            <span class="disconnected" v-else></span>
-                        </div>
-
-                        <span class="name" :key="`name-${client.player.id}`">
-                            <span>{{ client.player.displayName }}</span>
-                            <mdi-icon :icon="mdiAlertCircle" v-if="client.active && !client.isConnected" class="alert" />
-                        </span>
-
-                        <span class="balance" :key="`balance-${client.player.id}`">
-                            {{ formatAmount(client.balance) }}
-                        </span>
-                    </div>
-                    <div class="admin-options" v-if="isTableAdmin && client.isSeated">
-                        <span class="active">
-                            <label class="optional">
-                                <span>Active</span>
-                                <input type="checkbox" @change="setPlayerActive($event, client)"
-                                       :checked="client.active"/>
-                            </label>
-                        </span>
-                        <span class="active">
-                            <label v-if="client.player.id !== user.player.id" class="optional">
-                                <span>Blocked</span>
-                                <input type="checkbox" @change="setPlayerBlocked($event, client)"
-                                       :checked="client.isBlocked"/>
-                            </label>
-                        </span>
-                        <span class="admin">
-                            <label v-if="client.player.id !== user.player.id" class="optional">
-                                <span>Admin</span>
-                                <input type="checkbox" @change="setTableAdmin($event, client)"
-                                       :checked="client.isTableAdmin"/>
-                            </label>
-                            <span v-else></span>
-                        </span>
-                        <span class="start">
-                            <label v-if="client.player.id !== user.player.id" class="optional">
-                                <span>Start</span>
-                                <input type="checkbox" @change="setCanStart($event, client)"
-                                       :checked="client.canStart"/>
-                            </label>
-                            <span v-else></span>
-                        </span>
-                        <span class="restart">
-                            <label v-if="client.player.id !== user.player.id" class="optional">
-                                <span>Restart</span>
-                                <input type="checkbox" @change="setCanRestart($event, client)"
-                                       :checked="client.canRestart"/>
-                            </label>
-                            <span v-else></span>
-                        </span>
-                        <span class="terminate">
-                            <label v-if="client.player.id !== user.player.id" class="optional">
-                                <span>Terminate</span>
-                                <input type="checkbox" @change="setCanTerminate($event, client)"
-                                       :checked="client.canTerminate"/>
-                            </label>
-                            <span v-else></span>
-                        </span>
-                    </div>
-                </div>
-            </template>
-        </div-->
-
         <div class="guests" v-if="guestClients.length > 0">
             <h4>Guests</h4>
 
@@ -192,15 +121,48 @@
 <style lang="scss" scoped>
     @import '../../variables';
 
-    div.player-list {
-        width: min-content;
+    .poker-table-player-list {
+        h3 {
+            @include section-header;
+        }
+    }
 
-        .poker-table-player {
-            margin-bottom: $spacing-medium;
+    div.player-list {
+        @include card;
+        padding: $spacing;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-medium;
+
+        .poker-table-player:last-child {
+            margin-bottom: 0;
         }
     }
 
     .guests {
         margin-top: $spacing;
+
+        h4 {
+            @include section-header;
+            font-size: 0.7rem;
+        }
+
+        ul {
+            @include card;
+            padding: $spacing-medium $spacing;
+            margin: 0;
+            list-style: none;
+            display: flex;
+            flex-wrap: wrap;
+            gap: $spacing-small $spacing;
+
+            li {
+                color: $text-color-light;
+                font-size: 0.9em;
+                padding: $spacing-small $spacing-medium;
+                background: $gray;
+                border-radius: $border-radius-small;
+            }
+        }
     }
 </style>

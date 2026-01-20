@@ -1,7 +1,7 @@
 $background-color: #f2f2f2;
 $red: #e53935;
 $yellow: #FBC02D;
-$black: #222;;
+$black: #222;
 $card-font: gesta, serif;
 
 $text-color: #011F26;
@@ -13,8 +13,10 @@ $spacing: 24px;
 $spacing-medium: 12px;
 $spacing-small: 4px;
 
-$border-color: #ccc;
-$border-radius: 4px;
+$border-color: #e0e0e0;
+$border-radius: 8px;
+$border-radius-small: 4px;
+$border-radius-large: 12px;
 
 $dark-green: #011F26;
 $green: #0F4C59;
@@ -26,6 +28,16 @@ $light-green: #4CAF50;
 $primary: $green;
 $secondary: $dark-green;
 $error: $orange;
+
+// Shadows for depth
+$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
+$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
+$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
+$shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.15);
+
+// Transitions
+$transition-fast: 150ms ease;
+$transition-normal: 250ms ease;
 
 // radio and checkboxes
 $control-width: 40px;
@@ -78,4 +90,29 @@ $page-width-max-width: 1000px;
 @mixin current-turn {
     border-color: $orange;
     box-shadow: 0 0 4px $orange;
+}
+
+@mixin card {
+    background: white;
+    border-radius: $border-radius;
+    box-shadow: $shadow-sm;
+    border: 1px solid $border-color;
+}
+
+@mixin card-hover {
+    transition: box-shadow $transition-fast, transform $transition-fast;
+
+    &:hover {
+        box-shadow: $shadow-hover;
+        transform: translateY(-2px);
+    }
+}
+
+@mixin section-header {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: $text-color-light;
+    margin-bottom: $spacing-medium;
 }

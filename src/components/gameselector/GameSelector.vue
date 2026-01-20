@@ -56,17 +56,46 @@ export default {
 @import '../../variables.scss';
 
 div.game-selector {
+    h3 {
+        @include section-header;
+    }
+
     div.games {
         display:               grid;
-        grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
-        grid-gap:              $spacing;
+        grid-template-columns: repeat( auto-fit, minmax(280px, 1fr) );
+        gap:                   $spacing;
 
         ::v-deep form {
+            @include card;
+            @include card-hover;
             width: 100%;
+            padding: $spacing;
+
+            h4 {
+                margin: 0 0 $spacing-medium;
+                font-size: 1.1rem;
+                font-weight: 600;
+                color: $secondary;
+                padding-bottom: $spacing-medium;
+                border-bottom: 1px solid $border-color;
+            }
+
+            .buttons {
+                margin-top: $spacing;
+                padding-top: $spacing-medium;
+                border-top: 1px solid $border-color;
+
+                button[type="submit"] {
+                    width: 100%;
+                    padding: $spacing-medium;
+                    font-weight: 500;
+                }
+            }
         }
 
         ::v-deep label {
             width: auto;
+            margin-bottom: $spacing-medium;
 
             input:not([type="checkbox"]):not([type="radio"]),
             select {
@@ -76,12 +105,27 @@ div.game-selector {
             &.radio, &.checkbox {
                 align-items: center;
                 display:     flex;
-                margin:      0;
+                margin:      0 0 $spacing-small;
 
                 input {
                     margin-right: $spacing-small;
                 }
             }
+        }
+    }
+
+    div.waiting {
+        @include card;
+        padding: $spacing * 2;
+        text-align: center;
+
+        p {
+            color: $text-color-light;
+            margin: 0 0 $spacing;
+        }
+
+        .loading {
+            display: inline-block;
         }
     }
 }

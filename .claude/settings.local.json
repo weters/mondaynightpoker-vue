@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(npm run lint:*)",
-      "Bash(docker build:*)"
+      "Bash(docker build:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }
