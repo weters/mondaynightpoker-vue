@@ -6,6 +6,7 @@
             <game-selector-acey-deucey @submit="startGame"/>
             <game-selector-bourre @submit="startGame"/>
             <game-selector-texas-hold-em @submit="startGame"/>
+            <game-selector-seven-card @submit="startGame"/>
             <game-selector-little-l @submit="startGame"/>
             <game-selector-pass-the-poop @submit="startGame"/>
         </div>
@@ -21,6 +22,7 @@ import GameSelectorAceyDeucey from "@/components/gameselector/GameSelectorAceyDe
 import GameSelectorLittleL from "@/components/gameselector/GameSelectorLittleL"
 import GameSelectorPassThePoop from "@/components/gameselector/GameSelectorPassThePoop"
 import GameSelectorBourre from "@/components/gameselector/GameSelectorBourre"
+import GameSelectorSevenCard from "@/components/gameselector/GameSelectorSevenCard"
 import {mapGetters} from "vuex"
 import Loading from "@/components/Loading"
 import GameSelectorTexasHoldEm from "@/components/gameselector/GameSelectorTexasHoldEm"
@@ -34,6 +36,7 @@ export default {
         GameSelectorPassThePoop,
         GameSelectorLittleL,
         GameSelectorAceyDeucey,
+        GameSelectorSevenCard,
     },
     computed: {
         ...mapGetters(['canStart']),

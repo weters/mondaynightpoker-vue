@@ -14,13 +14,20 @@
         <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
             <div class="name-hand">
                 <strong class="display-name">{{ playerData.player.displayName }}</strong>
+                <span class="balance">{{ participant.balance > 0 ? formatAmount(participant.balance) : '(All-in)' }}</span>
                 <span v-if="participant.handRank" :class="{'hand-rank': true, 'is-winner': isWinner}">{{ participant.handRank }}</span>
+                <span v-else-if="lastAction" class="last-action">{{ lastAction }}</span>
             </div>
         </div>
 
         <div class="chips">
             <chip-stack :amount="chipStack" />
         </div>
+
+        <dealer-button
+            class="dealer-button"
+            v-if="participant.playerId === gameState.dealerId"
+        />
     </div>
 </template>
 
@@ -28,10 +35,13 @@
     import PlayingCardContainer from "../../PlayingCardContainer"
     import {mapGetters} from "vuex"
     import ChipStack from "../../ChipStack"
+    import DealerButton from "../poker/DealerButton"
+    import balance from "@/mixins/balance"
 
     export default {
         name: "SevenCardParticipant",
-        components: {ChipStack, PlayingCardContainer},
+        components: {DealerButton, ChipStack, PlayingCardContainer},
+        mixins: [balance],
         props: {
             participant: {
                 type: Object,
@@ -61,11 +71,23 @@
                 return this.gameState.currentTurn === this.participant.playerId
             },
             isWinner() {
-                return this.gameState.winners && this.gameState.winners.indexOf(this.participant.playerId) >= 0
+                return this.gameState.winners && Object.prototype.hasOwnProperty.call(
+                    this.gameState.winners, this.participant.playerId
+                )
+            },
+            lastAction() {
+                const lastAction = this.gameState.lastAction
+                if (!lastAction) {
+                    return ''
+                }
+                if (lastAction.playerId === this.participant.playerId) {
+                    return lastAction.action.name
+                }
+                return ''
             },
             chipStack() {
                 if (this.gameState.winners) {
-                    return this.isWinner ? this.participant.balance : 0
+                    return this.isWinner ? this.gameState.winners[this.participant.playerId] : 0
                 }
 
                 return this.participant.currentBet
@@ -137,9 +159,16 @@
         padding:   $spacing-small;
         display: flex;
         flex-wrap: wrap;
+        position: relative;
 
         &.is-turn {
             @include current-turn;
+        }
+
+        .dealer-button {
+            position: absolute;
+            top: $spacing-small;
+            right: $spacing-small;
         }
 
         div.cards {
@@ -171,6 +200,13 @@
                 font-weight: normal;
             }
 
+            span.balance {
+                display: block;
+                margin: 0;
+                color: $text-color-light;
+                font-size: 0.7em;
+            }
+
             &.disconnected {
                 font-style: italic;
                 color: $text-color-light;
@@ -185,6 +221,13 @@
                     font-weight: bold;
                     color: black;
                 }
+            }
+
+            .last-action {
+                display: block;
+                font-size: 0.9em;
+                color: $text-color-light;
+                font-style: italic;
             }
         }
     }
