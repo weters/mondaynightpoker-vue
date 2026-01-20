@@ -1,4 +1,4 @@
-const siteKey = process.env.VUE_APP_SITE_KEY
+const siteKey = import.meta.env.VITE_SITE_KEY
 const baseURL = 'https://www.google.com/recaptcha/api.js?render='
 
 function execute(action) {
@@ -16,7 +16,7 @@ function execute(action) {
 }
 
 if (!siteKey) {
-    throw new Error('VUE_APP_SITE_KEY not provided')
+    throw new Error('VITE_SITE_KEY not provided')
 }
 
 export default () => new Promise((resolve, reject) => {

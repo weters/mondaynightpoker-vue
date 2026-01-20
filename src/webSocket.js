@@ -3,7 +3,7 @@ import { v4 as uuid } from 'uuid'
 import bus from "./bus"
 import {formatAmount} from "@/currency"
 
-const baseURL = process.env.VUE_APP_WEBSOCKET_URL || 'ws://localhost:5080'
+const baseURL = import.meta.env.VITE_WEBSOCKET_URL || 'ws://localhost:5080'
 
 class webSocketClient {
     constructor(tableUUID) {
@@ -116,7 +116,7 @@ class webSocketClient {
                 store.commit('addLogs', message.data)
                 break
             case 'error':
-                bus.$emit('error', message.value)
+                bus.emit('error', message.value)
                 break
             case 'scheduledGame':
                 store.dispatch('scheduledGame', message.data)

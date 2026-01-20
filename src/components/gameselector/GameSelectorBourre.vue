@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import FancyInput from "@/components/formelements/FancyInput"
-import Toggle from "@/components/formelements/Toggle"
+import FancyInput from "@/components/formelements/FancyInput.vue"
+import Toggle from "@/components/formelements/Toggle.vue"
 
 export default {
     name: "GameSelectorBourre",

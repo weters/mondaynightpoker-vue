@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import PlayingCard from "@/components/PlayingCard"
+    import PlayingCard from "@/components/PlayingCard.vue"
     import card from '@/mixins/card'
     import {mapGetters} from "vuex"
 

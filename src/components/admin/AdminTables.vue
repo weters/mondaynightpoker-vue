@@ -39,12 +39,12 @@
 </template>
 
 <script>
-import AdminHeader from "@/components/admin/AdminHeader"
+import AdminHeader from "@/components/admin/AdminHeader.vue"
 import client from "@/client"
-import Loading from "@/components/Loading"
-import Error from "@/components/Error"
-import AdminPagination from "@/components/admin/AdminPagination"
-import Toggle from "@/components/formelements/Toggle"
+import Loading from "@/components/Loading.vue"
+import Error from "@/components/Error.vue"
+import AdminPagination from "@/components/admin/AdminPagination.vue"
+import Toggle from "@/components/formelements/Toggle.vue"
 
 export default {
     name: "AdminTables",

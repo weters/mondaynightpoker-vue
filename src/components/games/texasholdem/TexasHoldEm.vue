@@ -10,9 +10,8 @@
 
         <poker-player-bar :selected-cards="selectedCards">
             <div :class="`hand hand-${numHoleCards}`">
-                <template v-for="i in numHoleCards">
+                <template v-for="i in numHoleCards" :key="i">
                     <texas-hold-em-hole-card
-                        :key="`${cards[i-1].rank}.${cards[i-1].suit}`"
                         :card="cards[i-1]"
                         v-if="cards && cards.length >= i" :selected="selected === i-1"
                         @selected="updateSelected(i-1, $event)"
@@ -25,11 +24,11 @@
 
 <script>
 import {mapGetters} from "vuex"
-import TexasHoldEmCommunity from "@/components/games/texasholdem/TexasHoldEmCommunity"
-import TexasHoldEmParticipants from "@/components/games/texasholdem/TexasHoldEmParticipants"
-import PokerPlayerBar from "@/components/games/PokerPlayerBar"
-import PokerPots from "@/components/games/poker/PokerPots"
-import TexasHoldEmHoleCard from "@/components/games/texasholdem/TexasHoldEmHoleCard"
+import TexasHoldEmCommunity from "@/components/games/texasholdem/TexasHoldEmCommunity.vue"
+import TexasHoldEmParticipants from "@/components/games/texasholdem/TexasHoldEmParticipants.vue"
+import PokerPlayerBar from "@/components/games/PokerPlayerBar.vue"
+import PokerPots from "@/components/games/poker/PokerPots.vue"
+import TexasHoldEmHoleCard from "@/components/games/texasholdem/TexasHoldEmHoleCard.vue"
 
 export default {
     name: "TexasHoldEm",

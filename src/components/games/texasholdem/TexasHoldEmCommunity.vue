@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import PlayingCardContainer from "@/components/PlayingCardContainer"
+import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 
 export default {
     name: "TexasHoldEmCommunity",

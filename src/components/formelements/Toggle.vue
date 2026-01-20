@@ -1,8 +1,8 @@
 <template>
     <label :class="{ toggle: true, disabled }">
         <span class="label" v-if="label">{{ label }}</span>
-        <input type="checkbox" :checked="Array.isArray(checked) ? checked.includes(value) : checked" @change="changed"
-               @input="$emit('input', $event)" :disabled="disabled"/>
+        <input type="checkbox" :checked="Array.isArray(modelValue) ? modelValue.includes(value) : modelValue" @change="changed"
+               :disabled="disabled"/>
         <span class="checkbox"></span>
     </label>
 </template>
@@ -10,28 +10,25 @@
 <script>
 export default {
     name: "Toggle",
-    model: {
-        event: 'change',
-        prop: 'checked',
-    },
     props: {
-        checked: [Boolean, Array],
+        modelValue: [Boolean, Array],
         value: String,
         label: String,
         disabled: Boolean,
     },
+    emits: ['update:modelValue'],
     methods: {
         changed(event) {
-            if (Array.isArray(this.checked)) {
+            if (Array.isArray(this.modelValue)) {
                 if (event.target.checked) {
-                    const newValue = [...this.checked]
+                    const newValue = [...this.modelValue]
                     newValue.push(this.value)
-                    this.$emit('change', newValue)
+                    this.$emit('update:modelValue', newValue)
                 } else {
-                    this.$emit('change', this.checked.filter(f => f !== this.value))
+                    this.$emit('update:modelValue', this.modelValue.filter(f => f !== this.value))
                 }
             } else {
-                this.$emit('change', event.target.checked)
+                this.$emit('update:modelValue', event.target.checked)
             }
         },
     },

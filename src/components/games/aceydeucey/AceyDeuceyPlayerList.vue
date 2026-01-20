@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import AceyDeuceyPlayer from "@/components/games/aceydeucey/AceyDeuceyPlayer"
+import AceyDeuceyPlayer from "@/components/games/aceydeucey/AceyDeuceyPlayer.vue"
 export default {
     name: "AceyDeuceyPlayerList",
     components: {AceyDeuceyPlayer},

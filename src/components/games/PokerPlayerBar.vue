@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import PlayerBar from "./PlayerBar"
+import PlayerBar from "./PlayerBar.vue"
 import {mapGetters} from "vuex"
 import balance from "../../mixins/balance"
 import show_error from "@/mixins/show_error"

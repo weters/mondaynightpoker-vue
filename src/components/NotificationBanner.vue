@@ -49,7 +49,7 @@ export default {
     transition: all 300ms;
 }
 
-.slide-notification-enter, .slide-notification-leave-to {
+.slide-notification-enter-from, .slide-notification-leave-to {
     transform: translateX(100%);
 }
 </style>

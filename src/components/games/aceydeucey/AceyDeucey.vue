@@ -35,13 +35,13 @@
 </template>
 
 <script>
-import PlayerBar from "@/components/games/PlayerBar"
-import AceyDeuceyRound from "@/components/games/aceydeucey/AceyDeuceyRound"
+import PlayerBar from "@/components/games/PlayerBar.vue"
+import AceyDeuceyRound from "@/components/games/aceydeucey/AceyDeuceyRound.vue"
 import {mapGetters, mapState} from "vuex"
 import show_error from "@/mixins/show_error"
 import balance from "@/mixins/balance"
-import AceyDeuceyPlayerList from "@/components/games/aceydeucey/AceyDeuceyPlayerList"
-import ChipStack from "@/components/ChipStack"
+import AceyDeuceyPlayerList from "@/components/games/aceydeucey/AceyDeuceyPlayerList.vue"
+import ChipStack from "@/components/ChipStack.vue"
 
 const defaultBet = '25'
 

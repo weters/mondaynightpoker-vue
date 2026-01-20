@@ -2,11 +2,10 @@
     <div :class="{ 'bourre-player': true, 'is-turn': isCurrentTurn }">
         <div class="hand">
             <div class="cards">
-                <template v-for="i in 5">
+                <template v-for="i in 5" :key="`playing-card-${i}`">
                     <playing-card-container
                         :hide-card="hideCard(i)"
                         :card="playingCard(i)"
-                        :key="`playing-card-${i}`"
                     />
                 </template>
             </div>
@@ -23,9 +22,9 @@
 <script>
 import {mapGetters} from "vuex"
 import balance from '@/mixins/balance'
-import BourreTricksTally from "@/components/games/bourre/BourreTricksTally"
+import BourreTricksTally from "@/components/games/bourre/BourreTricksTally.vue"
 import {mdiCardsPlayingOutline} from '@mdi/js'
-import PlayingCardContainer from "@/components/PlayingCardContainer"
+import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 
 export default {
     name: "BourrePlayer",
@@ -196,7 +195,7 @@ div.bourre-player {
     transition: all 1s;
 }
 
-.trade-in-leave-to, .trade-in-enter {
+.trade-in-leave-to, .trade-in-enter-from {
     transform: translateY(-100%);
     opacity:   0;
 }
@@ -213,7 +212,7 @@ div.bourre-player {
     transform: rotate3d(0, 1, 0, -90deg)
 }
 
-.game-enter {
+.game-enter-from {
     transform: rotate3d(0, 1, 0, 90deg)
 }
 </style>

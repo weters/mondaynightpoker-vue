@@ -15,10 +15,10 @@
 
 <script>
     import {mapGetters} from "vuex"
-    import BourrePlayers from "@/components/games/bourre/BourrePlayers"
-    import Error from "@/components/Error"
-    import BourreGameOverview from "@/components/games/bourre/BourreGameOverview"
-    import BourrePlayerBar from "@/components/games/bourre/BourrePlayerBar"
+    import BourrePlayers from "@/components/games/bourre/BourrePlayers.vue"
+    import Error from "@/components/Error.vue"
+    import BourreGameOverview from "@/components/games/bourre/BourreGameOverview.vue"
+    import BourrePlayerBar from "@/components/games/bourre/BourrePlayerBar.vue"
 
     export default {
         name: "Bourre",
@@ -39,7 +39,7 @@
                 return this.gameState.players
             },
         },
-        beforeDestroy() {
+        beforeUnmount() {
             this.$store.commit('clearGame')
         },
     }

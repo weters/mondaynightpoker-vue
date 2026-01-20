@@ -38,12 +38,12 @@
 </template>
 
 <script>
-import Loading from "@/components/Loading"
-import Error from "@/components/Error"
+import Loading from "@/components/Loading.vue"
+import Error from "@/components/Error.vue"
 import client from "@/client"
 import recaptcha from '@/recaptcha'
-import InputWithConfirm from "@/components/formelements/InputWithConfirm"
-import FancyInput from "@/components/formelements/FancyInput"
+import InputWithConfirm from "@/components/formelements/InputWithConfirm.vue"
+import FancyInput from "@/components/formelements/FancyInput.vue"
 
 export default {
     name: "SignUp",
@@ -73,7 +73,7 @@ export default {
     mounted() {
         this.recaptcha = recaptcha()
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.recaptcha
             .then(r => r.remove())
     },

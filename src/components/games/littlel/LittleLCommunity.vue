@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import PlayingCardContainer from "../../PlayingCardContainer"
+    import PlayingCardContainer from "../../PlayingCardContainer.vue"
     import {mapGetters} from "vuex"
 
     export default {

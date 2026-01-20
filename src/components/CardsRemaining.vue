@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import MdiIcon from "@/components/MdiIcon"
+import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiCards} from "@mdi/js"
 export default {
     name: "CardsRemaining",

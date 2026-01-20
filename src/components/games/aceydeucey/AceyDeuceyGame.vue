@@ -30,8 +30,8 @@
 </template>
 
 <script>
-import PlayingCardContainer from "@/components/PlayingCardContainer"
-import ChipStack from "@/components/ChipStack"
+import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
+import ChipStack from "@/components/ChipStack.vue"
 import audioplayer from "@/audioplayer"
 import balance from "@/mixins/balance"
 

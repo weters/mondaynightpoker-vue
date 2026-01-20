@@ -15,7 +15,7 @@
 
 <script>
     import {mapGetters} from "vuex"
-    import PlayingCardContainer from "../../PlayingCardContainer"
+    import PlayingCardContainer from "../../PlayingCardContainer.vue"
 
     export default {
         name: "LittleLHand",

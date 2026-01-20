@@ -56,7 +56,7 @@ export default {
     transition: all 300ms;
 }
 
-.slide-error-enter, .slide-error-leave-to {
+.slide-error-enter-from, .slide-error-leave-to {
     transform: translateX(100%);
 }
 </style>

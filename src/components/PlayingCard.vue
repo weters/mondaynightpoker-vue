@@ -15,7 +15,7 @@
 
 <script>
 import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStar, mdiStarCircleOutline} from '@mdi/js'
-    import MdiIcon from "@/components/MdiIcon"
+    import MdiIcon from "@/components/MdiIcon.vue"
     import {mapGetters} from "vuex"
 
     export default {
@@ -122,7 +122,7 @@ import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStar, md
             window.addEventListener('resize', this.sizeCard)
             this.sizeCard()
         },
-        beforeDestroy() {
+        beforeUnmount() {
             window.removeEventListener('resize', this.sizeCard)
         },
     }
@@ -151,7 +151,7 @@ import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStar, md
         &.hearts, &.diamonds {
             color: $red;
 
-            ::v-deep svg {
+            :deep(svg) {
                 fill: $red;
 
                 &.wild {
@@ -163,7 +163,7 @@ import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStar, md
         &.stars {
             color: $light-green;
 
-            ::v-deep svg {
+            :deep(svg) {
                 fill: $light-green;
 
                 &.wild {

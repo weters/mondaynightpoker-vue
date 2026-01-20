@@ -29,9 +29,9 @@
 </template>
 
 <script>
-import FancyInput from "@/components/formelements/FancyInput"
-import Toggle from "@/components/formelements/Toggle"
-import FancySelect from "@/components/formelements/FancySelect"
+import FancyInput from "@/components/formelements/FancyInput.vue"
+import Toggle from "@/components/formelements/Toggle.vue"
+import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorPassThePoop",

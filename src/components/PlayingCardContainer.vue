@@ -9,8 +9,8 @@
 </template>
 
 <script>
-    import PlayingCard from "./PlayingCard"
-    import PlayingCardBack from "./PlayingCardBack"
+    import PlayingCard from "./PlayingCard.vue"
+    import PlayingCardBack from "./PlayingCardBack.vue"
 
     export default {
         name: "PlayingCardContainer",
@@ -79,7 +79,7 @@
         transform: rotateY(90deg);
     }
 
-    .flip-enter {
+    .flip-enter-from {
         transform: rotateY(-90deg);
     }
 
@@ -87,7 +87,7 @@
         transition: all 300ms;
     }
 
-    .vanish-enter, .vanish-leave-to {
+    .vanish-enter-from, .vanish-leave-to {
         transform: translateY(-50%);
         opacity:   0;
     }

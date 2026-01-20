@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import PokerPot from "@/components/games/poker/PokerPot"
+import PokerPot from "@/components/games/poker/PokerPot.vue"
 import {mapGetters} from "vuex"
 export default {
     name: "PokerPots",

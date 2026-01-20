@@ -112,7 +112,7 @@
                 transition: all 500ms;
             }
 
-            span.chip-enter, span.chip-leave-to {
+            span.chip-enter-from, span.chip-leave-to {
                 top: 0 !important; /* hate important, but use it to override the nth-child */
                 opacity: 0;
             }
@@ -138,7 +138,7 @@
         position: absolute;
     }
 
-    .stack-enter, .stack-leave-to {
+    .stack-enter-from, .stack-leave-to {
         opacity: 0;
         transform: translateY(30px);
     }

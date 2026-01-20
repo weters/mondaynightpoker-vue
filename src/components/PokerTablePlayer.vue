@@ -19,12 +19,12 @@
 </template>
 
 <script>
-import PlayerStatus from "@/components/PlayerStatus"
+import PlayerStatus from "@/components/PlayerStatus.vue"
 import balance from "@/mixins/balance"
-import MdiIcon from "@/components/MdiIcon"
+import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiAccountEdit} from "@mdi/js"
 import bus from "@/bus"
-import Toggle from "@/components/formelements/Toggle"
+import Toggle from "@/components/formelements/Toggle.vue"
 import {mapGetters, mapState} from "vuex"
 
 export default {
@@ -71,15 +71,18 @@ export default {
         },
     },
     mounted() {
-        bus.$on('edit-player', comp => {
+        bus.on('edit-player', comp => {
             if (this !== comp) {
                 this.showMenu = false
             }
         })
     },
+    beforeUnmount() {
+        bus.off('edit-player')
+    },
     methods: {
         editTapped() {
-            bus.$emit('edit-player', this)
+            bus.emit('edit-player', this)
             this.showMenu = !this.showMenu
         },
         setFlag(value, flag) {

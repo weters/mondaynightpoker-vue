@@ -6,7 +6,7 @@
 </template>
 
 <script>
-    import MdiIcon from "./MdiIcon"
+    import MdiIcon from "./MdiIcon.vue"
     import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade} from "@mdi/js"
     export default {
         name: "TextPlayingCard",

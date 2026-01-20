@@ -17,14 +17,14 @@
 </template>
 
 <script>
-import LittleLCommunity from "./LittleLCommunity"
+import LittleLCommunity from "./LittleLCommunity.vue"
 import {mapGetters, mapState} from "vuex"
-import LittleLHand from "./LittleLHand"
+import LittleLHand from "./LittleLHand.vue"
 import balance from "../../../mixins/balance"
 import show_error from "../../../mixins/show_error"
-import LittleLParticipants from "./LittleLParticipants"
-import PokerPlayerBar from "../PokerPlayerBar"
-import PokerPots from "@/components/games/poker/PokerPots"
+import LittleLParticipants from "./LittleLParticipants.vue"
+import PokerPlayerBar from "../PokerPlayerBar.vue"
+import PokerPots from "@/components/games/poker/PokerPots.vue"
 
 export default {
     name: "LittleL",
@@ -73,7 +73,7 @@ div.board {
         margin-left: $spacing;
     }
 
-    ::v-deep .amount {
+    :deep(.amount) {
         font-size: 1.4em;
     }
 

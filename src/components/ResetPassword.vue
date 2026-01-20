@@ -32,11 +32,11 @@
 </template>
 
 <script>
-import InputWithConfirm from "@/components/formelements/InputWithConfirm"
-import Loading from "@/components/Loading"
-import Error from "@/components/Error"
+import InputWithConfirm from "@/components/formelements/InputWithConfirm.vue"
+import Loading from "@/components/Loading.vue"
+import Error from "@/components/Error.vue"
 import client from "@/client"
-import FancyInput from "@/components/formelements/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput.vue"
 
 export default {
     name: "ResetPassword",

@@ -32,10 +32,10 @@
 </template>
 
 <script>
-    import PlayingCardContainer from "../../PlayingCardContainer"
+    import PlayingCardContainer from "../../PlayingCardContainer.vue"
     import {mapGetters} from "vuex"
-    import ChipStack from "../../ChipStack"
-    import DealerButton from "../poker/DealerButton"
+    import ChipStack from "../../ChipStack.vue"
+    import DealerButton from "../poker/DealerButton.vue"
     import balance from "@/mixins/balance"
 
     export default {
@@ -126,7 +126,7 @@
                 }
             }
         },
-        beforeDestroy() {
+        beforeUnmount() {
             if (this.timeout) {
                 clearTimeout(this.timeout)
             }
@@ -236,7 +236,7 @@
         transition: all 250ms;
     }
 
-    .hand-enter {
+    .hand-enter-from {
         transform: translateY(-100%);
         opacity:   0;
     }

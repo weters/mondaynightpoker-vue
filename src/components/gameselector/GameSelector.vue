@@ -18,14 +18,14 @@
 </template>
 
 <script>
-import GameSelectorAceyDeucey from "@/components/gameselector/GameSelectorAceyDeucey"
-import GameSelectorLittleL from "@/components/gameselector/GameSelectorLittleL"
-import GameSelectorPassThePoop from "@/components/gameselector/GameSelectorPassThePoop"
-import GameSelectorBourre from "@/components/gameselector/GameSelectorBourre"
-import GameSelectorSevenCard from "@/components/gameselector/GameSelectorSevenCard"
+import GameSelectorAceyDeucey from "@/components/gameselector/GameSelectorAceyDeucey.vue"
+import GameSelectorLittleL from "@/components/gameselector/GameSelectorLittleL.vue"
+import GameSelectorPassThePoop from "@/components/gameselector/GameSelectorPassThePoop.vue"
+import GameSelectorBourre from "@/components/gameselector/GameSelectorBourre.vue"
+import GameSelectorSevenCard from "@/components/gameselector/GameSelectorSevenCard.vue"
 import {mapGetters} from "vuex"
-import Loading from "@/components/Loading"
-import GameSelectorTexasHoldEm from "@/components/gameselector/GameSelectorTexasHoldEm"
+import Loading from "@/components/Loading.vue"
+import GameSelectorTexasHoldEm from "@/components/gameselector/GameSelectorTexasHoldEm.vue"
 
 export default {
     name: "GameSelector",
@@ -65,7 +65,7 @@ div.game-selector {
         grid-template-columns: repeat( auto-fit, minmax(280px, 1fr) );
         gap:                   $spacing;
 
-        ::v-deep form {
+        :deep(form) {
             @include card;
             @include card-hover;
             width: 100%;
@@ -93,7 +93,7 @@ div.game-selector {
             }
         }
 
-        ::v-deep label {
+        :deep(label) {
             width: auto;
             margin-bottom: $spacing-medium;
 

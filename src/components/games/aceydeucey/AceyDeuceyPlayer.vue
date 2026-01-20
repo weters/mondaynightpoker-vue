@@ -9,7 +9,7 @@
 
 <script>
 import balance from "@/mixins/balance"
-import {tween} from "popmotion"
+import {animate} from "popmotion"
 
 export default {
     name: "AceyDeuceyPlayer",
@@ -37,15 +37,14 @@ export default {
     watch: {
         'participant.balance': {
             handler(newBalance, oldBalance) {
-                tween({
-                    from: oldBalance,
+                animate({
+                    from: oldBalance || 0,
                     to: newBalance,
                     duration: 500,
+                    onUpdate: val => {
+                        this.balance = Math.round(val)
+                    }
                 })
-                    .pipe(Math.round)
-                    .start(val => {
-                        this.balance = val
-                    })
             },
             immediate: true,
         },

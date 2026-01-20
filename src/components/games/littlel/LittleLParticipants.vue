@@ -6,7 +6,7 @@
 
 <script>
     import {mapGetters} from "vuex"
-    import LittleLParticipant from "./LittleLParticipant"
+    import LittleLParticipant from "./LittleLParticipant.vue"
 
     export default {
         name: "LittleLParticipants",

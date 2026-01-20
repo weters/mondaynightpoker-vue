@@ -1,10 +1,13 @@
+import dingSound from '@/assets/ding.mp3'
+import postSound from '@/assets/post.mp3'
+
 class AudioPlayer {
     constructor() {
         this.audio = new Audio()
         this.dingTimeout = null
 
         const listener = () => {
-            this.audio.src = '@/assets/ding.mp3'
+            this.audio.src = dingSound
             this.audio.play()
             this.audio.pause()
             this.audio.currentTime = 0
@@ -20,7 +23,7 @@ class AudioPlayer {
         }
 
         this.dingTimeout = setTimeout(() => {
-            this.audio.src = require('@/assets/ding.mp3')
+            this.audio.src = dingSound
             this.audio.play()
             this.dingTimeout = null
         }, 5000)
@@ -34,7 +37,7 @@ class AudioPlayer {
     }
 
     playPost() {
-        this.audio.src = require('@/assets/post.mp3')
+        this.audio.src = postSound
         this.audio.play()
     }
 }

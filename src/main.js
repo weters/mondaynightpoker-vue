@@ -1,28 +1,24 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import { createApp } from 'vue'
+import { createRouter, createWebHistory } from 'vue-router'
 import App from './App.vue'
-import Welcome from "@/components/Welcome"
+import Welcome from "@/components/Welcome.vue"
 import store from './store'
-import LogIn from "@/components/LogIn"
-import Admin from "@/components/admin/Admin"
-import SignUp from "@/components/SignUp"
-import PokerTable from "@/components/PokerTable"
+import LogIn from "@/components/LogIn.vue"
+import Admin from "@/components/admin/Admin.vue"
+import SignUp from "@/components/SignUp.vue"
+import PokerTable from "@/components/PokerTable.vue"
 import './auth'
-import JoinTable from "@/components/JoinTable"
+import JoinTable from "@/components/JoinTable.vue"
 import relDate from 'relative-date'
-import Profile from "./components/Profile"
-import MyTables from "@/components/MyTables"
-import CreateTable from "@/components/admin/CreateTable"
-import ForgotPassword from "@/components/ForgotPassword"
-import ResetPassword from "@/components/ResetPassword"
-import VerifyAccount from "@/components/VerifyAccount"
-import AdminPlayers from "@/components/admin/AdminPlayers"
-import AdminTables from "@/components/admin/AdminTables"
+import Profile from "./components/Profile.vue"
+import MyTables from "@/components/MyTables.vue"
+import CreateTable from "@/components/admin/CreateTable.vue"
+import ForgotPassword from "@/components/ForgotPassword.vue"
+import ResetPassword from "@/components/ResetPassword.vue"
+import VerifyAccount from "@/components/VerifyAccount.vue"
+import AdminPlayers from "@/components/admin/AdminPlayers.vue"
+import AdminTables from "@/components/admin/AdminTables.vue"
 import {formatAmount} from "@/currency"
-
-Vue.use(VueRouter)
-
-Vue.config.productionTip = false
 
 const routes = [
     {path: '/', component: Welcome, meta: {protected: false}},
@@ -44,9 +40,9 @@ const routes = [
     {path: '/admin/tables', component: AdminTables, meta: {adminOnly: true}},
 ]
 
-const router = new VueRouter({
+const router = createRouter({
     routes,
-    mode: 'history',
+    history: createWebHistory(),
 })
 
 router.beforeEach((to, from, next) => {
@@ -71,7 +67,13 @@ router.beforeEach((to, from, next) => {
     next()
 })
 
-Vue.mixin({
+const app = createApp(App)
+
+app.use(router)
+app.use(store)
+
+// Global mixin for methods
+app.mixin({
     methods: {
         relativeDate: date => relDate(new Date(date)),
         setTitle(title) {
@@ -90,8 +92,4 @@ Vue.mixin({
     }
 })
 
-new Vue({
-    render: h => h(App),
-    router,
-    store,
-}).$mount('#app')
+app.mount('#app')

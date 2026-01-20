@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import BourrePlayer from "@/components/games/bourre/BourrePlayer"
+    import BourrePlayer from "@/components/games/bourre/BourrePlayer.vue"
     import {mapGetters} from "vuex"
     export default {
         name: "BourrePlayers",

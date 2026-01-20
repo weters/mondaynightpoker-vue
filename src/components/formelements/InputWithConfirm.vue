@@ -21,7 +21,7 @@
 
 <script>
 import {mdiAlertCircle} from "@mdi/js"
-import FancyInput from "@/components/formelements/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput.vue"
 
 export default {
     name: "InputWithConfirm",

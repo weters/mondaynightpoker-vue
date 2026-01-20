@@ -22,9 +22,9 @@
 </template>
 
 <script>
-    import MdiIcon from "../../MdiIcon"
+    import MdiIcon from "../../MdiIcon.vue"
     import {mdiCardsPlayingOutline, mdiPokerChip, mdiTimerSand, mdiCardsOutline} from '@mdi/js'
-    import PlayingCardContainer from "../../PlayingCardContainer"
+    import PlayingCardContainer from "../../PlayingCardContainer.vue"
 
     export default {
         name: "PassThePoopParticipant",

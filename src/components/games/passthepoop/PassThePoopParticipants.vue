@@ -10,7 +10,7 @@
 </template>
 
 <script>
-    import PassThePoopParticipant from "./PassThePoopParticipant"
+    import PassThePoopParticipant from "./PassThePoopParticipant.vue"
 
     export default {
         name: "PassThePoopParticipants",

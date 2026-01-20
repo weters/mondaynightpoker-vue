@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ChipStack from "@/components/ChipStack"
+import ChipStack from "@/components/ChipStack.vue"
 
 export default {
     name: "AceyDeuceyPot",

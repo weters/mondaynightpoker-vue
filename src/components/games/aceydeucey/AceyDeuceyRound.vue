@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import AceyDeuceyGame from "@/components/games/aceydeucey/AceyDeuceyGame"
-import AceyDeuceyPot from "@/components/games/aceydeucey/AceyDeuceyPot"
-import {tween} from "popmotion"
-import CardsRemaining from "@/components/CardsRemaining"
+import AceyDeuceyGame from "@/components/games/aceydeucey/AceyDeuceyGame.vue"
+import AceyDeuceyPot from "@/components/games/aceydeucey/AceyDeuceyPot.vue"
+import {animate} from "popmotion"
+import CardsRemaining from "@/components/CardsRemaining.vue"
 
 export default {
     name: "AceyDeuceyRound",
@@ -47,13 +47,12 @@ export default {
         'round.pot': {
             immediate: true,
             handler(pot, oldPot) {
-                tween({
-                    from: oldPot,
+                animate({
+                    from: oldPot || 0,
                     to: pot,
                     duration: 500,
+                    onUpdate: val => this.pot = Math.floor(Math.round(val) / 25) * 25
                 })
-                    .pipe(Math.round)
-                    .start(val => this.pot = Math.floor(val / 25) * 25)
             },
         },
     },

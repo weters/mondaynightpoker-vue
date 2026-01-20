@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import MdiIcon from "./MdiIcon"
+import MdiIcon from "./MdiIcon.vue"
 import {mdiCardsPlayingOutline} from "@mdi/js"
 
 export default {
@@ -31,13 +31,14 @@ export default {
 
         this.resizeObserver.observe(this.$el)
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.resizeObserver.disconnect()
     }
 }
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:color';
 @import '../variables.scss';
 
 div.playing-card-back {
@@ -48,8 +49,8 @@ div.playing-card-back {
 
     & > span.image {
         background-color: $orange;
-        background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, darken($orange, 6%) 4px, darken($orange, 6%) 5px),
-                          repeating-linear-gradient(135deg, transparent, transparent 4px, darken($orange, 6%) 4px, darken($orange, 6%) 5px);
+        background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, color.adjust($orange, $lightness: -6%) 4px, color.adjust($orange, $lightness: -6%) 5px),
+                          repeating-linear-gradient(135deg, transparent, transparent 4px, color.adjust($orange, $lightness: -6%) 4px, color.adjust($orange, $lightness: -6%) 5px);
         border-radius:    2px;
         content:          '';
         display:          block;

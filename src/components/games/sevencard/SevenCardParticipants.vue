@@ -5,7 +5,7 @@
 </template>
 
 <script>
-    import SevenCardParticipant from "./SevenCardParticipant"
+    import SevenCardParticipant from "./SevenCardParticipant.vue"
     export default {
         name: "SevenCardParticipants",
         components: {SevenCardParticipant},

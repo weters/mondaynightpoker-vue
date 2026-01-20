@@ -16,7 +16,7 @@
 <script>
     import {mdiClose, mdiPlus} from '@mdi/js'
     import {interpolate} from 'flubber'
-    import {tween} from 'popmotion'
+    import {animate} from 'popmotion'
 
     export default {
         name: "SideSlider",
@@ -36,13 +36,12 @@
                 this.timeout = setTimeout(() => {
                     const [from, to] = didExpand ? [0, 1] : [1, 0]
                     const morph = interpolate(mdiPlus, mdiClose)
-                    tween({
-                        duration: 400,
+                    animate({
                         from,
                         to,
+                        duration: 400,
+                        onUpdate: value => this.$refs.path.setAttribute('d', morph(value))
                     })
-                        .pipe(morph)
-                        .start(value => this.$refs.path.setAttribute('d', value))
                 }, 300)
             },
         },
@@ -84,7 +83,7 @@
             position:         relative;
             z-index:          2;
 
-            ::v-deep svg {
+            :deep(svg) {
                 fill:      white;
                 width:     min($button-height, $button-width);
                 height:    min($button-height, $button-width);

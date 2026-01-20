@@ -13,7 +13,7 @@
                :step="step"
                ref="input"
                v-model="inputValue"
-               @input="$emit('input', $event.target.value)"
+               @input="$emit('update:modelValue', $event.target.value)"
                @invalid="isInvalid"
                @focus="isFocused=true"
                @blur="isFocused=false"
@@ -26,7 +26,7 @@
 
 <script>
 import {mdiAlertCircle} from "@mdi/js"
-import MdiIcon from "@/components/MdiIcon"
+import MdiIcon from "@/components/MdiIcon.vue"
 
 export default {
     name: "FancyInput",
@@ -45,17 +45,18 @@ export default {
         disabled: Boolean,
         showAlert: Boolean,
         required: Boolean,
-        value: String,
+        modelValue: String,
         hideRequired: Boolean,
         min: Number,
         max: Number,
         step: Number,
         unit: String,
     },
+    emits: ['update:modelValue'],
     data() {
         return {
             mdiAlertCircle,
-            inputValue: this.value,
+            inputValue: this.modelValue,
             isFocused: false,
             isAutoFilled: false,
             invalid: false,
@@ -64,7 +65,7 @@ export default {
     mounted() {
         this.$refs.input.addEventListener('animationstart', this.animationStart, { passive: true })
     },
-    beforeDestroy() {
+    beforeUnmount() {
         this.$refs.input.removeEventListener('animationstart', this.animationStart)
     },
     methods: {
@@ -84,7 +85,7 @@ export default {
         inputValue() {
             this.invalid = false
         },
-        value(newValue) {
+        modelValue(newValue) {
             this.inputValue = newValue
         }
     },
@@ -152,7 +153,7 @@ label.fancy-input {
         }
     }
 
-    ::v-deep svg {
+    :deep(svg) {
         width:       1em;
         height:      1em;
         margin-left: $spacing-small;
@@ -171,7 +172,7 @@ label.fancy-input {
         transition: opacity 200ms, transform 400ms;
     }
 
-    .alert-enter, .alert-leave-to {
+    .alert-enter-from, .alert-leave-to {
         transform: translateY(100%);
         opacity:   0;
     }

@@ -20,8 +20,8 @@
 </template>
 
 <script>
-import FancyInput from "@/components/formelements/FancyInput"
-import FancySelect from "@/components/formelements/FancySelect"
+import FancyInput from "@/components/formelements/FancyInput.vue"
+import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorSevenCard",

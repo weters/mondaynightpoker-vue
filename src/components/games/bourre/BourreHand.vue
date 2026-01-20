@@ -14,7 +14,7 @@
 </template>
 
 <script>
-    import BourreCardPicker from "@/components/games/bourre/BourreCardPicker"
+    import BourreCardPicker from "@/components/games/bourre/BourreCardPicker.vue"
     import {mapGetters} from "vuex"
 
     export default {

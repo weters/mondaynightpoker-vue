@@ -34,9 +34,9 @@
 </template>
 
 <script>
-import FancyInput from "@/components/formelements/FancyInput"
-import Toggle from "@/components/formelements/Toggle"
-import RadioButton from "@/components/formelements/RadioButton"
+import FancyInput from "@/components/formelements/FancyInput.vue"
+import Toggle from "@/components/formelements/Toggle.vue"
+import RadioButton from "@/components/formelements/RadioButton.vue"
 
 export default {
     name: "GameSelectorLittleL",

@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import MnpError from "@/components/Error"
-import Slider from "@/components/Slider"
+import MnpError from "@/components/Error.vue"
+import Slider from "@/components/Slider.vue"
 import {mapGetters} from "vuex"
 import balance from "../../mixins/balance"
 import audioplayer from "@/audioplayer"
-import Toggle from "@/components/formelements/Toggle"
+import Toggle from "@/components/formelements/Toggle.vue"
 
 export default {
     name: "PlayerBar",
@@ -116,10 +116,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:color';
 @import '../../variables';
 
 .player-bar {
-    background-color: rgba(darken($background-color, 10%), 0.8);
+    background-color: rgba(color.adjust($background-color, $lightness: -10%), 0.8);
     position:         fixed;
     bottom:           0;
     left:             0;
@@ -150,7 +151,7 @@ export default {
     right:            0;
     border-radius:    $border-radius 0 0 $border-radius;
 
-    ::v-deep p {
+    :deep(p) {
         margin:        0;
         padding:       $spacing-medium;
         border-radius: $border-radius 0 0 $border-radius;
@@ -161,7 +162,7 @@ export default {
     transition: transform 500ms;
 }
 
-.player-bar-error-enter, .player-bar-error-leave-to {
+.player-bar-error-enter-from, .player-bar-error-leave-to {
     transform: translateX(100%);
 }
 

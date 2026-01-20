@@ -2,7 +2,7 @@
     <label class="ante">
         <span class="ante">Ante</span>
         <span class="ante-input">
-            <input type="number" :min="min" :max="max" :step="step" :value="value" @input="$emit('input', parseInt($event.target.value, 10))"/>
+            <input type="number" :min="min" :max="max" :step="step" :value="modelValue" @input="$emit('update:modelValue', parseInt($event.target.value, 10))"/>
             <em>¢</em>
         </span>
     </label>
@@ -24,11 +24,12 @@ export default {
             type: Number,
             default: 25,
         },
-        value: {
+        modelValue: {
             type: Number,
             required: true,
         },
     },
+    emits: ['update:modelValue'],
 }
 </script>
 

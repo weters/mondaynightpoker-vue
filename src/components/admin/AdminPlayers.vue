@@ -45,11 +45,11 @@
 
 <script>
 import client from "../../client"
-import Error from "../Error"
-import Loading from "../Loading"
-import EditPlayer from "@/components/admin/EditPlayer"
-import FancyInput from "@/components/formelements/FancyInput"
-import AdminHeader from "@/components/admin/AdminHeader"
+import Error from "../Error.vue"
+import Loading from "../Loading.vue"
+import EditPlayer from "@/components/admin/EditPlayer.vue"
+import FancyInput from "@/components/formelements/FancyInput.vue"
+import AdminHeader from "@/components/admin/AdminHeader.vue"
 
 export default {
     name: "AdminPlayers",

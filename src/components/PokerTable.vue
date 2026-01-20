@@ -67,23 +67,23 @@
 <script>
 import webSocketClient from "@/webSocket"
 import {mapGetters, mapState} from "vuex"
-import PokerTablePlayerList from "@/components/games/PokerTablePlayerList"
-import Loading from "@/components/Loading"
+import PokerTablePlayerList from "@/components/games/PokerTablePlayerList.vue"
+import Loading from "@/components/Loading.vue"
 import client from "@/client"
-import DealerLog from "./DealerLog"
-import Bourre from '@/components/games/bourre/Bourre'
-import PassThePoop from "./games/passthepoop/PassThePoop"
-import LittleL from "./games/littlel/LittleL"
-import SevenCard from "./games/sevencard/SevenCard"
+import DealerLog from "./DealerLog.vue"
+import Bourre from '@/components/games/bourre/Bourre.vue'
+import PassThePoop from "./games/passthepoop/PassThePoop.vue"
+import LittleL from "./games/littlel/LittleL.vue"
+import SevenCard from "./games/sevencard/SevenCard.vue"
 import bus from "../bus"
-import ScheduledGame from "./ScheduledGame"
-import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey"
+import ScheduledGame from "./ScheduledGame.vue"
+import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey.vue"
 
-import GameSelector from "@/components/gameselector/GameSelector"
-import Toggle from "@/components/formelements/Toggle"
-import TexasHoldEm from "@/components/games/texasholdem/TexasHoldEm"
-import TableStakes from "@/components/TableStakes"
-import MdiIcon from "@/components/MdiIcon"
+import GameSelector from "@/components/gameselector/GameSelector.vue"
+import Toggle from "@/components/formelements/Toggle.vue"
+import TexasHoldEm from "@/components/games/texasholdem/TexasHoldEm.vue"
+import TableStakes from "@/components/TableStakes.vue"
+import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiContentCopy} from "@mdi/js"
 
 export default {
@@ -133,10 +133,10 @@ export default {
                 this.$router.push('/my-tables')
             })
 
-        bus.$on('error', this.listenForError)
+        bus.on('error', this.listenForError)
     },
-    beforeDestroy() {
-        bus.$off('error', this.listenForError)
+    beforeUnmount() {
+        bus.off('error', this.listenForError)
         this.ws.close()
         this.$store.commit('clearWebSocket')
         this.$store.commit('clearLogs')
@@ -386,7 +386,7 @@ export default {
         transition: all 200ms ease-in;
     }
 
-    .scheduled-game-enter, .scheduled-game-leave-to {
+    .scheduled-game-enter-from, .scheduled-game-leave-to {
         opacity:   0;
         transform: translateY(100%);
     }

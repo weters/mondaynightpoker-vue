@@ -1,5 +1,4 @@
-import Vuex from 'vuex'
-import Vue from 'vue'
+import { createStore } from 'vuex'
 import bourre from './store/bourre'
 import passThePoop from "./store/passThePoop"
 import poker from "./store/poker"
@@ -7,11 +6,9 @@ import {formatAmount} from "./currency"
 import aceyDeucey from "@/store/aceyDeucey"
 import texasHoldEm from "@/store/texasHoldEm"
 
-Vue.use(Vuex)
-
 let errorTimeout, notificationTimeout
 
-const store = new Vuex.Store({
+const store = createStore({
     modules: {
         bourre,
         passThePoop,

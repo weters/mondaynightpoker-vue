@@ -78,10 +78,10 @@
 
 <script>
 import client from "../client"
-import Loading from "./Loading"
-import Error from "./Error"
-import FancyInput from "@/components/formelements/FancyInput"
-import InputWithConfirm from "@/components/formelements/InputWithConfirm"
+import Loading from "./Loading.vue"
+import Error from "./Error.vue"
+import FancyInput from "@/components/formelements/FancyInput.vue"
+import InputWithConfirm from "@/components/formelements/InputWithConfirm.vue"
 
 export default {
     name: "Profile",

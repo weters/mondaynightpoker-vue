@@ -52,15 +52,15 @@
 
 <script>
     import {mapGetters, mapState} from "vuex"
-    import PlayerBar from "../PlayerBar"
-    import PlayingCard from "../../PlayingCard"
-    import PassThePoopParticipants from "./PassThePoopParticipants"
+    import PlayerBar from "../PlayerBar.vue"
+    import PlayingCard from "../../PlayingCard.vue"
+    import PassThePoopParticipants from "./PassThePoopParticipants.vue"
     import showError from "../../../mixins/show_error"
-    import {tween} from 'popmotion'
-    import MdiIcon from "../../MdiIcon"
+    import {animate} from 'popmotion'
+    import MdiIcon from "../../MdiIcon.vue"
     import {mdiCards} from "@mdi/js"
     import balance from "../../../mixins/balance"
-    import ChipStack from "../../ChipStack"
+    import ChipStack from "../../ChipStack.vue"
 
     export default {
         name: "PassThePoop",
@@ -110,12 +110,13 @@
 
                     if (pot !== oldPot) {
                         setTimeout(() => {
-                            tween({
+                            animate({
                                 from: oldPot,
                                 to: pot,
                                 duration: 500,
-                            }).pipe(Math.round).start(val => {
-                                this.pot = Math.floor(val / 25) * 25
+                                onUpdate: val => {
+                                    this.pot = Math.floor(Math.round(val) / 25) * 25
+                                }
                             })
                         }, 1000)
                     }
@@ -126,12 +127,13 @@
                 handler: function (newValue, oldValue) {
                     // doing it this way allows us to animate from 52
                     this.cardsLeftInDeck = newValue
-                    tween({
+                    animate({
                         from: parseInt(oldValue || 52, 10),
                         to: parseInt(newValue, 10),
                         duration: 500,
-                    }).pipe(Math.round).start(val => {
-                        this.cardsLeftInDeck = val
+                        onUpdate: val => {
+                            this.cardsLeftInDeck = Math.round(val)
+                        }
                     })
                 },
                 immediate: true,
@@ -176,7 +178,7 @@
         transition: all 500ms;
     }
 
-    .card-enter, .card-leave-to {
+    .card-enter-from, .card-leave-to {
         opacity:   0;
         transform: translateY(-100%);
     }

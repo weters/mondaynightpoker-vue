@@ -31,9 +31,9 @@
 
 <script>
 import client from "@/client"
-import Loading from "@/components/Loading"
-import Error from "@/components/Error"
-import FancyInput from "@/components/formelements/FancyInput"
+import Loading from "@/components/Loading.vue"
+import Error from "@/components/Error.vue"
+import FancyInput from "@/components/formelements/FancyInput.vue"
 
 export default {
     name: "LogIn",

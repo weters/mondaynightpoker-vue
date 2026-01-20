@@ -52,11 +52,11 @@
 </template>
 
 <script>
-    import BourreHand from "@/components/games/bourre/BourreHand"
-    import BourreDiscard from "@/components/games/bourre/BourreDiscard"
+    import BourreHand from "@/components/games/bourre/BourreHand.vue"
+    import BourreDiscard from "@/components/games/bourre/BourreDiscard.vue"
     import {mapGetters} from "vuex"
-    import Error from "@/components/Error"
-    import Slider from "@/components/Slider"
+    import Error from "@/components/Error.vue"
+    import Slider from "@/components/Slider.vue"
     import balance from "@/mixins/balance"
     import audioplayer from "@/audioplayer"
 
@@ -153,10 +153,11 @@
 </script>
 
 <style lang="scss" scoped>
+    @use 'sass:color';
     @import '../../../variables';
 
     .player-bar {
-        background-color: rgba(darken($background-color, 10%), 0.8);
+        background-color: rgba(color.adjust($background-color, $lightness: -10%), 0.8);
         position:         fixed;
         bottom:           0;
         left:             0;
@@ -179,7 +180,7 @@
             }
         }
 
-        ::v-deep div.buttons {
+        :deep(div.buttons) {
             margin: $spacing-medium 0;
         }
 
@@ -209,7 +210,7 @@
         right:            0;
         border-radius:    $border-radius 0 0 $border-radius;
 
-        ::v-deep p {
+        :deep(p) {
             margin:        0;
             padding:       $spacing-medium;
             border-radius: $border-radius 0 0 $border-radius;
@@ -220,7 +221,7 @@
         transition: transform 500ms;
     }
 
-    .player-bar-error-enter, .player-bar-error-leave-to {
+    .player-bar-error-enter-from, .player-bar-error-leave-to {
         transform: translateX(100%);
     }
 

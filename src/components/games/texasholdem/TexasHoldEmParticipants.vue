@@ -11,7 +11,7 @@
 </template>
 
 <script>
-import TexasHoldEmParticipant from "@/components/games/texasholdem/TexasHoldEmParticipant"
+import TexasHoldEmParticipant from "@/components/games/texasholdem/TexasHoldEmParticipant.vue"
 
 export default {
     name: "TexasHoldEmParticipants",

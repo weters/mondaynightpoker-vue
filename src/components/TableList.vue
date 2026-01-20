@@ -34,12 +34,12 @@
 </template>
 
 <script>
-import Loading from "@/components/Loading"
-import Error from "@/components/Error"
+import Loading from "@/components/Loading.vue"
+import Error from "@/components/Error.vue"
 import client from "@/client"
 import balance from "../mixins/balance"
-import TableGraph from "./TableGraph"
-import Toggle from "@/components/formelements/Toggle"
+import TableGraph from "./TableGraph.vue"
+import Toggle from "@/components/formelements/Toggle.vue"
 
 export default {
     name: "TableList",

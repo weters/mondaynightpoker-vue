@@ -11,7 +11,7 @@
 <script>
     import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade} from '@mdi/js'
     import { interpolate } from 'flubber'
-    import {tween} from "popmotion"
+    import { animate } from "popmotion"
 
     const suitOrder = [mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade]
 
@@ -23,43 +23,44 @@
             }
         },
         mounted() {
-            this.animate(0)
+            this.runAnimation(0)
         },
-        beforeDestroy() {
-            this.animation.stop()
+        beforeUnmount() {
+            if (this.animation) {
+                this.animation.stop()
+            }
         },
         methods: {
-            animate(index) {
+            runAnimation(index) {
                 const fromShape = suitOrder[index]
                 const fromColor = index === 0 || index === 3 ? '#000' : '#e53935'
                 index = (index + 1) % suitOrder.length
                 const toShape = suitOrder[index]
                 const toColor = index === 0 || index === 3 ? '#000' : '#e53935'
 
-
                 const morph = interpolate(fromShape, toShape, {
                     maxSegmentLength: 1,
                 })
 
-                this.animation = tween({
+                this.animation = animate({
+                    from: 0,
+                    to: 1,
                     duration: 900,
-                    from: {
-                        svg: 0,
-                        color: fromColor,
+                    onUpdate: progress => {
+                        this.$refs.path.setAttribute('d', morph(progress))
+                        // Interpolate color manually
+                        const r1 = parseInt(fromColor.slice(1, 3) || fromColor.slice(1, 2).repeat(2), 16)
+                        const g1 = parseInt(fromColor.slice(3, 5) || fromColor.slice(2, 3).repeat(2), 16)
+                        const b1 = parseInt(fromColor.slice(5, 7) || fromColor.slice(3, 4).repeat(2), 16)
+                        const r2 = parseInt(toColor.slice(1, 3) || toColor.slice(1, 2).repeat(2), 16)
+                        const g2 = parseInt(toColor.slice(3, 5) || toColor.slice(2, 3).repeat(2), 16)
+                        const b2 = parseInt(toColor.slice(5, 7) || toColor.slice(3, 4).repeat(2), 16)
+                        const r = Math.round(r1 + (r2 - r1) * progress)
+                        const g = Math.round(g1 + (g2 - g1) * progress)
+                        const b = Math.round(b1 + (b2 - b1) * progress)
+                        this.$refs.path.style.fill = `rgb(${r},${g},${b})`
                     },
-                    to: {
-                        svg: 1,
-                        color: toColor,
-                    }
-                }).pipe(val => ({
-                    color: val.color,
-                    svg: morph(val.svg)
-                })).start({
-                    update: val => {
-                        this.$refs.path.setAttribute('d', val.svg)
-                        this.$refs.path.style.fill = val.color
-                    },
-                    complete: () => this.animate(index)
+                    onComplete: () => this.runAnimation(index)
                 })
             },
         },
@@ -79,7 +80,7 @@
         transition: all 200ms;
     }
 
-    .loading-enter {
+    .loading-enter-from {
         opacity: 0;
     }
 </style>

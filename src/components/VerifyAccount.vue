@@ -15,7 +15,7 @@
 
 <script>
 import client from "@/client"
-import Loading from "@/components/Loading"
+import Loading from "@/components/Loading.vue"
 
 export default {
     name: "VerifyAccount",

@@ -10,7 +10,7 @@
 
 <script>
 
-import AdminHeader from "@/components/admin/AdminHeader"
+import AdminHeader from "@/components/admin/AdminHeader.vue"
 
 export default {
     name: "Admin",

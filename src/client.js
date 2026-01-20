@@ -1,6 +1,6 @@
 import store from './store'
 
-const baseURL = process.env.VUE_APP_API_URL || 'http://localhost:5080'
+const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5080'
 const withAuthorization = true
 
 class Client {

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-import TableList from "@/components/TableList"
+import TableList from "@/components/TableList.vue"
 
 export default {
     name: "MyTables",

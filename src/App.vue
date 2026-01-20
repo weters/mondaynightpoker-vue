@@ -12,24 +12,25 @@
 </template>
 
 <script>
-import SiteHeader from "@/components/SiteHeader"
-import SiteFooter from "@/components/SiteFooter"
-import ErrorBanner from "./components/ErrorBanner"
-import DevTools from "@/components/DevTools"
-import NotificationBanner from "@/components/NotificationBanner"
+import SiteHeader from "@/components/SiteHeader.vue"
+import SiteFooter from "@/components/SiteFooter.vue"
+import ErrorBanner from "./components/ErrorBanner.vue"
+import DevTools from "@/components/DevTools.vue"
+import NotificationBanner from "@/components/NotificationBanner.vue"
 
 export default {
     name: 'App',
     components: {NotificationBanner, DevTools, ErrorBanner, SiteHeader, SiteFooter},
     computed: {
         production() {
-            return process.env.NODE_ENV === 'production'
+            return import.meta.env.PROD
         },
     },
 }
 </script>
 
 <style lang="scss">
+@use 'sass:color';
 @import url("https://use.typekit.net/ukr2lpr.css");
 @import './variables';
 
@@ -129,7 +130,7 @@ main {
     transition: all 250ms;
 }
 
-.error-enter, .error-leave-to {
+.error-enter-from, .error-leave-to {
     opacity:   0;
     transform: scale(.8);
 }
@@ -205,7 +206,7 @@ table.standard {
     font-size:        1.0em;
 
     &:active {
-        background-color: darken($orange, 10%);
+        background-color: color.adjust($orange, $lightness: -10%);
     }
 
     &:disabled {
@@ -242,7 +243,7 @@ button.icon {
     }
 
     &:active path {
-        fill: darken($orange, 10%);
+        fill: color.adjust($orange, $lightness: -10%);
     }
 
     &:disabled, &:disabled:active {

@@ -5,7 +5,7 @@
 <script>
     import balance from "@/mixins/balance"
     import {mapGetters} from "vuex"
-    import ChipStack from "../../ChipStack"
+    import ChipStack from "../../ChipStack.vue"
 
     export default {
         name: "BourrePot",

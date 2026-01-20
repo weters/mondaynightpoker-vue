@@ -1,7 +1,7 @@
 <template>
     <label :class="{ 'radio-button': true, disabled }">
         <span class="label">{{ label }}</span>
-        <input type="radio" :value="value" :checked="value === checked" @change="$emit('change', $event.target.checked && value)" />
+        <input type="radio" :value="value" :checked="value === modelValue" @change="$emit('update:modelValue', $event.target.checked && value)" />
         <span class="radio"></span>
     </label>
 </template>
@@ -9,16 +9,13 @@
 <script>
 export default {
     name: "RadioButton",
-    model: {
-        event: 'change',
-        prop: 'checked',
-    },
     props: {
-        checked: String,
+        modelValue: String,
         value: String,
         label: String,
         disabled: Boolean,
     },
+    emits: ['update:modelValue'],
 }
 </script>
 

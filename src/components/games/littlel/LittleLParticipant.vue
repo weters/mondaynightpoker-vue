@@ -24,10 +24,10 @@
 </template>
 
 <script>
-    import PlayingCardContainer from "../../PlayingCardContainer"
+    import PlayingCardContainer from "../../PlayingCardContainer.vue"
     import {mapGetters} from "vuex"
     import balance from "../../../mixins/balance"
-    import ChipStack from "../../ChipStack"
+    import ChipStack from "../../ChipStack.vue"
     import {formatAmount} from "@/currency"
 
     export default {

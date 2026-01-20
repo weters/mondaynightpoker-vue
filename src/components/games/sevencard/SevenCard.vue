@@ -16,10 +16,10 @@
 
 <script>
     import {mapGetters} from "vuex"
-    import SevenCardHand from "./SevenCardHand"
-    import PokerPlayerBar from "../PokerPlayerBar"
-    import ChipStack from "../../ChipStack"
-    import SevenCardParticipants from "./SevenCardParticipants"
+    import SevenCardHand from "./SevenCardHand.vue"
+    import PokerPlayerBar from "../PokerPlayerBar.vue"
+    import ChipStack from "../../ChipStack.vue"
+    import SevenCardParticipants from "./SevenCardParticipants.vue"
 
     export default {
         name: "SevenCard",

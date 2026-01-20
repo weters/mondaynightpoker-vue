@@ -20,7 +20,7 @@
 
 <script>
     import balance from "../mixins/balance"
-    import Toggle from "@/components/formelements/Toggle"
+    import Toggle from "@/components/formelements/Toggle.vue"
 
     export default {
         name: "ScheduledGame",

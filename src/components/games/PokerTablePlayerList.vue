@@ -23,8 +23,8 @@
 <script>
     import {mapGetters, mapState} from "vuex"
     import balance from "@/mixins/balance"
-    import Error from "@/components/Error"
-    import PokerTablePlayer from "@/components/PokerTablePlayer"
+    import Error from "@/components/Error.vue"
+    import PokerTablePlayer from "@/components/PokerTablePlayer.vue"
 
     export default {
         name: "PokerTablePlayerList",

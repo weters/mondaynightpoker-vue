@@ -19,10 +19,10 @@
 </template>
 
 <script>
-import Error from "@/components/Error"
-import Loading from "@/components/Loading"
+import Error from "@/components/Error.vue"
+import Loading from "@/components/Loading.vue"
 import client from "@/client"
-import FancyInput from "@/components/formelements/FancyInput"
+import FancyInput from "@/components/formelements/FancyInput.vue"
 
 export default {
     name: "CreateTable",

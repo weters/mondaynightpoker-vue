@@ -1,9 +1,8 @@
 <template>
     <div :class="classes">
         <div :class="`cards cards-${numHoleCards}`">
-            <template v-for="(_, i) in numHoleCards">
+            <template v-for="(_, i) in numHoleCards" :key="i">
                 <playing-card-container
-                    :key="i"
                     :card="card(i)"
                     :hide-card="participant.folded || card(i) === undefined"
                 />
@@ -29,10 +28,10 @@
 </template>
 
 <script>
-import PlayingCardContainer from "@/components/PlayingCardContainer"
+import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 import balance from "@/mixins/balance"
-import ChipStack from "@/components/ChipStack"
-import DealerButton from "@/components/games/poker/DealerButton"
+import ChipStack from "@/components/ChipStack.vue"
+import DealerButton from "@/components/games/poker/DealerButton.vue"
 
 export default {
     name: "TexasHoldEmParticipant",

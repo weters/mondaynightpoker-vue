@@ -22,7 +22,7 @@ export default {
     data() {
         return {
             serverVersion: null,
-            version: process.env.VUE_APP_VERSION || 'v0.0.0',
+            version: import.meta.env.VITE_APP_VERSION || 'v0.0.0',
         }
     },
     computed: {

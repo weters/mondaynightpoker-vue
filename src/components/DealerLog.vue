@@ -19,7 +19,7 @@
 </template>
 
 <script>
-    import TextPlayingCard from "./TextPlayingCard"
+    import TextPlayingCard from "./TextPlayingCard.vue"
 
     export default {
         name: "DealerLog",
@@ -117,7 +117,7 @@
         transition: all $transition-normal;
     }
 
-    .log-enter {
+    .log-enter-from {
         opacity: 0;
         transform: translateY(-20px);
     }
