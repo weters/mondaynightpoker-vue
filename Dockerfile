@@ -4,7 +4,7 @@ COPY package*.json ./
 RUN npm install
 COPY . ./
 ARG version
-ENV VUE_APP_VERSION=$version
+ENV VITE_APP_VERSION=$version
 RUN npm run build
 
 FROM nginx:latest
