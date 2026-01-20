@@ -4,6 +4,9 @@ import path from 'path'
 
 export default defineConfig({
   plugins: [vue()],
+  define: {
+    'import.meta.env.VITE_APP_VERSION': JSON.stringify(process.env.VITE_APP_VERSION || 'dev'),
+  },
   resolve: {
     alias: {
       '@': path.resolve(__dirname, './src'),
