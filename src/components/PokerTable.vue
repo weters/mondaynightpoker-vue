@@ -50,9 +50,10 @@
                     </div>
                 </div>
 
-                <poker-table-player-list :client-state="clientState"/>
-
-                <game-selector/>
+                <div class="main-content">
+                    <poker-table-player-list :client-state="clientState"/>
+                    <game-selector/>
+                </div>
             </template>
             <template v-else>
                 <loading/>
@@ -249,6 +250,17 @@ export default {
                 padding: $spacing-medium $spacing;
                 font-size: 1rem;
             }
+        }
+    }
+
+    .main-content {
+        display: grid;
+        grid-template-columns: minmax(280px, 1fr) 2fr;
+        gap: $spacing;
+        align-items: start;
+
+        @media (max-width: 900px) {
+            grid-template-columns: 1fr;
         }
     }
 
