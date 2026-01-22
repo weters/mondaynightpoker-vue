@@ -125,36 +125,6 @@ export default {
 
 table.standard {
     width: 100%;
-    thead th {
-        text-transform: uppercase;
-        letter-spacing: 0.05em;
-        font-size: 0.75rem;
-        font-weight: 600;
-        color: $text-color-light;
-        padding: $spacing-medium $spacing;
-    }
-
-    tbody tr {
-        transition: background-color $transition-fast;
-
-        &:hover {
-            background-color: rgba($primary, 0.04);
-        }
-    }
-
-    tbody td {
-        padding: $spacing-medium $spacing;
-    }
-
-    a {
-        color: $primary;
-        text-decoration: none;
-        font-weight: 500;
-
-        &:hover {
-            color: $orange;
-        }
-    }
 
     .balance {
         text-align: right;
