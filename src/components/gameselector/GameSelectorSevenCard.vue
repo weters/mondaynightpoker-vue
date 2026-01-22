@@ -11,6 +11,7 @@
                               [ 'low-card-wild', 'Low Card Wild' ],
                               [ 'baseball', 'Baseball' ],
                               [ 'follow-the-queen', 'Follow the Queen' ],
+                              [ 'high-chicago', 'High Chicago' ],
             ]"/>
 
         <div class="buttons">
