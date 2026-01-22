@@ -148,6 +148,17 @@ export default {
                     this.$store.state.webSocket.send('next-round')
                         .catch(err => this.showError(err))
                     break
+                case 'flip-mushroom':
+                    this.confirm = {
+                        ...action,
+                        name: 'Flip Mushroom (lose card)',
+                    }
+                    break
+                case 'play-antidote':
+                    // Forced action - send immediately
+                    this.$store.state.webSocket.send('play-antidote')
+                        .catch(err => this.showError(err))
+                    break
                 default:
                     throw new Error(`unknown action: ${action.id}`)
             }
@@ -197,6 +208,7 @@ export default {
                 case 'fold':
                 case 'call':
                 case 'end-game':
+                case 'flip-mushroom':
                     this.$store.state.webSocket.send(this.confirm.id)
                         .catch(err => this.showError(err))
                     break

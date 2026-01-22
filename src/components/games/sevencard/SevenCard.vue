@@ -27,8 +27,8 @@
         computed: {
             ...mapGetters({
                 gameState: 'poker/gameState',
-            })
-        }
+            }),
+        },
     }
 </script>
 

@@ -12,6 +12,7 @@
                               [ 'baseball', 'Baseball' ],
                               [ 'follow-the-queen', 'Follow the Queen' ],
                               [ 'high-chicago', 'High Chicago' ],
+                              [ 'chiggs', '7 Card Chiggs' ],
             ]"/>
 
         <div class="buttons">

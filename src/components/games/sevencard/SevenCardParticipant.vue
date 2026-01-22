@@ -11,6 +11,25 @@
             </div>
         </div>
 
+        <!-- Comic-book style effects -->
+        <transition name="comic-pop">
+            <div v-if="showMushroomEffect" class="comic-effect mushroom-effect">
+                Mushroom Card!
+            </div>
+        </transition>
+
+        <transition name="comic-pop">
+            <div v-if="showAntidoteEffect" class="comic-effect antidote-effect">
+                Antidote!
+            </div>
+        </transition>
+
+        <transition name="comic-pop">
+            <div v-if="showNoAntidoteEffect" class="comic-effect no-antidote-effect">
+                Ah! Mushroom!
+            </div>
+        </transition>
+
         <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
             <div class="name-hand">
                 <strong class="display-name">{{ playerData.player.displayName }}</strong>
@@ -52,12 +71,27 @@
             return {
                 hand: [],
                 dealDelay: 200,
+                // Comic effect state
+                showMushroomEffect: false,
+                showAntidoteEffect: false,
+                showNoAntidoteEffect: false,
+                // Track what we've shown to prevent repeats
+                lastShownMushroomHolderId: null,
+                lastShownAntidotePlayerId: null,
+                lastShownNoAntidoteFoldsKey: null,
+                // Timeouts for auto-dismiss
+                mushroomTimeout: null,
+                antidoteTimeout: null,
+                noAntidoteTimeout: null,
             }
         },
         computed: {
             ...mapGetters({
                 gameState: 'poker/gameState',
             }),
+            variantState() {
+                return this.gameState?.variantState
+            },
             order() {
                 return this.gameState.participants.findIndex(p => p.playerId === this.participant.playerId)
             },
@@ -91,7 +125,24 @@
                 }
 
                 return this.participant.currentBet
-            }
+            },
+            // Chiggs-specific computed properties
+            isMushroomHolder() {
+                return this.variantState?.mushroomHolderId === this.participant.playerId
+            },
+            playedAntidote() {
+                return this.variantState?.antidotePlayed?.playerId === this.participant.playerId
+            },
+            isInMushroomFolds() {
+                const folds = this.variantState?.mushroomFolds
+                if (!folds || folds.length === 0) return false
+                return folds.some(f => f.playerId === this.participant.playerId)
+            },
+            mushroomFoldsKey() {
+                const folds = this.variantState?.mushroomFolds
+                if (!folds || folds.length === 0) return null
+                return folds.map(f => f.playerId).sort().join(',')
+            },
         },
         mounted() {
             if (this.gameState.round <= 1) {
@@ -124,11 +175,35 @@
                 if (shownLength + 1 < actualLength) {
                     this.timeout = setTimeout(this.addCardToHand, this.numParticipants * this.dealDelay)
                 }
-            }
+            },
+            showEffect(effectName) {
+                const dataKey = `show${effectName}Effect`
+                const timeoutKey = `${effectName.toLowerCase()}Timeout`
+
+                // Clear any existing timeout
+                if (this[timeoutKey]) {
+                    clearTimeout(this[timeoutKey])
+                }
+
+                this[dataKey] = true
+                this[timeoutKey] = setTimeout(() => {
+                    this[dataKey] = false
+                    this[timeoutKey] = null
+                }, 2000)
+            },
         },
         beforeUnmount() {
             if (this.timeout) {
                 clearTimeout(this.timeout)
+            }
+            if (this.mushroomTimeout) {
+                clearTimeout(this.mushroomTimeout)
+            }
+            if (this.antidoteTimeout) {
+                clearTimeout(this.antidoteTimeout)
+            }
+            if (this.noAntidoteTimeout) {
+                clearTimeout(this.noAntidoteTimeout)
             }
         },
         watch: {
@@ -144,7 +219,40 @@
                         this.timeout = setTimeout(() => addCardToHand(), this.order * this.dealDelay)
                     }
                 }
-            }
+            },
+            // Watch for mushroom holder changes (this participant got the mushroom)
+            isMushroomHolder: {
+                handler(isHolder) {
+                    const holderId = this.variantState?.mushroomHolderId
+                    if (isHolder && holderId && holderId !== this.lastShownMushroomHolderId) {
+                        this.lastShownMushroomHolderId = holderId
+                        this.showEffect('Mushroom')
+                    }
+                },
+                immediate: true,
+            },
+            // Watch for antidote played by this participant
+            playedAntidote: {
+                handler(played) {
+                    const playerId = this.variantState?.antidotePlayed?.playerId
+                    if (played && playerId && playerId !== this.lastShownAntidotePlayerId) {
+                        this.lastShownAntidotePlayerId = playerId
+                        this.showEffect('Antidote')
+                    }
+                },
+                immediate: true,
+            },
+            // Watch for this participant being in mushroom folds (no antidote)
+            isInMushroomFolds: {
+                handler(inFolds) {
+                    const key = this.mushroomFoldsKey
+                    if (inFolds && key && key !== this.lastShownNoAntidoteFoldsKey) {
+                        this.lastShownNoAntidoteFoldsKey = key
+                        this.showEffect('NoAntidote')
+                    }
+                },
+                immediate: true,
+            },
         }
     }
 </script>
@@ -230,8 +338,61 @@
                 font-style: italic;
             }
         }
+
+        // Comic-book style effects
+        .comic-effect {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            max-width: 120px;
+            padding: 6px 10px;
+            font-size: 0.8em;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 8px;
+            z-index: 100;
+            pointer-events: none;
+            white-space: nowrap;
+
+            // Starburst/jagged edge effect using clip-path
+            &::before {
+                content: '';
+                position: absolute;
+                top: -4px;
+                left: -4px;
+                right: -4px;
+                bottom: -4px;
+                background: inherit;
+                z-index: -1;
+                border-radius: 12px;
+                opacity: 0.3;
+            }
+        }
+
+        .mushroom-effect {
+            background: linear-gradient(135deg, #8B4513, #551a1a);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.6);
+        }
+
+        .antidote-effect {
+            background: linear-gradient(135deg, #4CAF50, #1B5E20);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(76, 175, 80, 0.6);
+        }
+
+        .no-antidote-effect {
+            background: linear-gradient(135deg, #f44336, #b71c1c);
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 2px 8px rgba(244, 67, 54, 0.6);
+        }
     }
 
+    // Hand card animation
     .hand-enter-active {
         transition: all 250ms;
     }
@@ -239,5 +400,39 @@
     .hand-enter-from {
         transform: translateY(-100%);
         opacity:   0;
+    }
+
+    // Comic pop animation
+    .comic-pop-enter-active {
+        animation: comic-pop-in 0.3s ease-out;
+    }
+
+    .comic-pop-leave-active {
+        animation: comic-pop-out 0.2s ease-in;
+    }
+
+    @keyframes comic-pop-in {
+        0% {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.3);
+        }
+        50% {
+            transform: translateX(-50%) scale(1.1);
+        }
+        100% {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+    }
+
+    @keyframes comic-pop-out {
+        0% {
+            opacity: 1;
+            transform: translateX(-50%) scale(1);
+        }
+        100% {
+            opacity: 0;
+            transform: translateX(-50%) scale(0.5);
+        }
     }
 </style>
