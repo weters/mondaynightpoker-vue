@@ -17,7 +17,7 @@
 
                     <!-- Display Mode: Tappable -->
                     <chip-stack :amount="parseInt(amount, 10)" v-show="!editingAmount"
-                                class="tappable" @click.native="startEditAmount"/>
+                                class="tappable" @click="startEditAmount"/>
 
                     <!-- Edit Mode: Text Input -->
                     <input type="text" inputmode="numeric" pattern="[0-9]*"
