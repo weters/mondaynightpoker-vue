@@ -11,14 +11,20 @@
                         <label class="optional">
                             <span>Amount</span>
                             <input type="range" :min="startingBet" :step="25" :max="maxBet"
-                                   v-model="amount"/>
+                                   v-model="amount" v-show="!editingAmount"/>
                         </label>
 
-                        <span class="amount">{{
-                                amount >= this.allInAmount ? "All-in"
-                                    : amount > maxBet ? formatAmount(maxBet)
-                                        : formatAmount(amount)
-                            }}</span>
+                        <!-- Display Mode: Tappable -->
+                        <span class="amount tappable" v-show="!editingAmount" @click="startEditAmount">
+                            {{ amountDisplay }}
+                        </span>
+
+                        <!-- Edit Mode: Text Input -->
+                        <input type="text" inputmode="numeric" pattern="[0-9]*"
+                               class="amount-input" v-show="editingAmount"
+                               v-model="editAmountValue" ref="amountInput"
+                               @blur="finishEditAmount" @keydown.enter="finishEditAmount"
+                               @keydown.escape="cancelEditAmount"/>
                     </div>
                     <button class="secondary" type="button" @click="bet=null">Cancel</button>
                     <button type="button" @click="handleBet">Yes, {{ bet.name }}</button>
@@ -89,6 +95,8 @@ export default {
             amount: 0,
             confirmFuture: null,
             futureAction: null,
+            editingAmount: false,
+            editAmountValue: '',
         }
     },
     computed: {
@@ -110,6 +118,11 @@ export default {
         },
         allInAmount() {
             return this.self.balance + this.self.currentBet
+        },
+        amountDisplay() {
+            if (this.amount >= this.allInAmount) return "All-in"
+            if (this.amount > this.maxBet) return this.formatAmount(this.maxBet)
+            return this.formatAmount(this.amount)
         },
     },
     methods: {
@@ -229,6 +242,37 @@ export default {
 
             return true
         },
+        startEditAmount() {
+            this.editAmountValue = String(this.amount)
+            this.editingAmount = true
+            this.$nextTick(() => {
+                this.$refs.amountInput.focus()
+                this.$refs.amountInput.select()
+            })
+        },
+        finishEditAmount() {
+            let value = parseInt(this.editAmountValue, 10)
+
+            // Handle non-numeric input
+            if (isNaN(value)) {
+                value = this.startingBet
+            }
+
+            // Clamp to valid range
+            value = Math.max(this.startingBet, Math.min(this.maxBet, value))
+
+            // Round to step of 25
+            value = Math.round(value / 25) * 25
+
+            // Ensure still in bounds after rounding
+            value = Math.max(this.startingBet, Math.min(this.maxBet, value))
+
+            this.amount = value
+            this.editingAmount = false
+        },
+        cancelEditAmount() {
+            this.editingAmount = false
+        },
     },
     watch: {
         actions() {
@@ -318,6 +362,29 @@ export default {
             input[type="range"] {
                 padding: 0;
             }
+        }
+
+        span.amount.tappable {
+            cursor: pointer;
+            padding: 4px 8px;
+            border-radius: 4px;
+            min-width: 60px;
+            text-align: center;
+
+            &:hover {
+                background-color: rgba(255, 255, 255, 0.1);
+            }
+        }
+
+        input.amount-input {
+            width: 80px;
+            text-align: center;
+            font-size: 16px;
+            padding: 4px;
+            border: 2px solid $green;
+            border-radius: 4px;
+            background: $gray;
+            color: $text-color;
         }
     }
 }

@@ -11,10 +11,20 @@
                 <div class="amount" v-if="confirm && confirm.name.toLowerCase() === 'bet'">
                     <label class="optional">
                         <span>Amount</span>
-                        <input type="range" min="25" step="25" :max="maxBet" v-model="amount"/>
+                        <input type="range" min="25" step="25" :max="maxBet" v-model="amount"
+                               v-show="!editingAmount"/>
                     </label>
 
-                    <chip-stack :amount="parseInt(amount, 10)"/>
+                    <!-- Display Mode: Tappable -->
+                    <chip-stack :amount="parseInt(amount, 10)" v-show="!editingAmount"
+                                class="tappable" @click.native="startEditAmount"/>
+
+                    <!-- Edit Mode: Text Input -->
+                    <input type="text" inputmode="numeric" pattern="[0-9]*"
+                           class="amount-input" v-show="editingAmount"
+                           v-model="editAmountValue" ref="amountInput"
+                           @blur="finishEditAmount" @keydown.enter="finishEditAmount"
+                           @keydown.escape="cancelEditAmount"/>
                 </div>
                 <div class="buttons">
                     <template v-if="confirm">
@@ -54,6 +64,8 @@ export default {
             error: null,
             confirm: null,
             amount: defaultBet,
+            editingAmount: false,
+            editAmountValue: '',
         }
     },
     computed: {
@@ -80,6 +92,38 @@ export default {
                 .then(() => {
                 })
                 .catch(err => this.showError(err))
+        },
+        startEditAmount() {
+            this.editAmountValue = String(this.amount)
+            this.editingAmount = true
+            this.$nextTick(() => {
+                this.$refs.amountInput.focus()
+                this.$refs.amountInput.select()
+            })
+        },
+        finishEditAmount() {
+            const minBet = 25
+            let value = parseInt(this.editAmountValue, 10)
+
+            // Handle non-numeric input
+            if (isNaN(value)) {
+                value = minBet
+            }
+
+            // Clamp to valid range
+            value = Math.max(minBet, Math.min(this.maxBet, value))
+
+            // Round to step of 25
+            value = Math.round(value / 25) * 25
+
+            // Ensure still in bounds after rounding
+            value = Math.max(minBet, Math.min(this.maxBet, value))
+
+            this.amount = value
+            this.editingAmount = false
+        },
+        cancelEditAmount() {
+            this.editingAmount = false
         },
     },
     watch: {
@@ -115,6 +159,27 @@ div.acey-deucey {
                 input[type="range"] {
                     width: 100%;
                 }
+            }
+
+            .tappable {
+                cursor: pointer;
+                padding: 4px 8px;
+                border-radius: 4px;
+
+                &:hover {
+                    background-color: rgba(255, 255, 255, 0.1);
+                }
+            }
+
+            input.amount-input {
+                width: 80px;
+                text-align: center;
+                font-size: 16px;
+                padding: 4px;
+                border: 2px solid $green;
+                border-radius: 4px;
+                background: $gray;
+                color: $text-color;
             }
         }
 
