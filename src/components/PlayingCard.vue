@@ -21,6 +21,7 @@ import {mapGetters} from "vuex"
 export default {
     name: "PlayingCard",
     components: {MdiIcon},
+    emits: ['click'],
     props: {
         suit: {
             type: String,

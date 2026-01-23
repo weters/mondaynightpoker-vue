@@ -44,7 +44,7 @@ export default {
             default: 'on',
         },
         disabled: Boolean,
-        value: {
+        modelValue: {
             type: Object,
             required: true,
         }
@@ -71,14 +71,14 @@ export default {
             this.emit()
             this.mismatch = this.primary !== newValue
         },
-        value(newValue) {
+        modelValue(newValue) {
             this.primary = newValue.primary
             this.confirm = newValue.confirm
         }
     },
     methods: {
         emit() {
-            this.$emit('input', {
+            this.$emit('update:modelValue', {
                 primary: this.primary,
                 confirm: this.confirm,
             })

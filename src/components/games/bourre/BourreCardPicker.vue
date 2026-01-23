@@ -29,7 +29,7 @@
                 type: Number,
                 required: true,
             },
-            value: {
+            modelValue: {
                 type: Array,
                 required: true,
             },
@@ -37,7 +37,9 @@
         },
         data() {
             const selected = {}
-            this.value.forEach(val => selected[this.cardId(val)] = true)
+            if (this.modelValue) {
+                this.modelValue.forEach(val => selected[this.cardId(val)] = true)
+            }
             return {
                 selected,
             }
@@ -57,7 +59,7 @@
             },
         },
         watch: {
-            value(newValue) {
+            modelValue(newValue) {
                 const selected = {}
                 newValue.forEach(val => selected[this.cardId(val)] = true)
                 this.selected = selected
@@ -83,7 +85,7 @@
                 }
 
                 this.selected = Object.assign({}, this.selected)
-                this.$emit('input', Object.keys(this.selected).map(cardId => this.cardByCardId(cardId)))
+                this.$emit('update:modelValue', Object.keys(this.selected).map(cardId => this.cardByCardId(cardId)))
             },
         },
     }

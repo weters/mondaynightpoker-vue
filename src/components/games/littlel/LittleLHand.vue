@@ -22,7 +22,7 @@
         components: {PlayingCardContainer},
         props: {
             canSelect: Boolean,
-            value: Array,
+            modelValue: Array,
         },
         data() {
             return {
@@ -60,7 +60,7 @@
                 }
 
                 this.selected = Object.assign({}, this.selected)
-                this.$emit('input', this.self.hand.filter(c => this.selected[this.key(c)]))
+                this.$emit('update:modelValue', this.self.hand.filter(c => this.selected[this.key(c)]))
             },
         },
     }
