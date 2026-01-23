@@ -133,9 +133,8 @@ import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStar, md
 
     .playing-card {
         position:    relative;
-        height:      0;
         width:       100%;
-        padding-top: calc(100% * 3.5 / 2.5);
+        height: 100%;
     }
 
     div.big-card {

@@ -2,93 +2,95 @@
     <div class="playing-card-container">
         <transition :name="transition" mode="out-in">
             <span v-if="hideCard"></span>
-            <playing-card v-else-if="card" :suit="card.suit" :rank="card.rank" :is-wild="card.isWild" :key="`${card.rank}.${card.suit}`" />
-            <playing-card-back v-else />
+            <playing-card v-else-if="card" :suit="card.suit" :rank="card.rank" :is-wild="card.isWild"
+                          :key="`${card.rank}.${card.suit}`"/>
+            <playing-card-back v-else/>
         </transition>
     </div>
 </template>
 
 <script>
-    import PlayingCard from "./PlayingCard.vue"
-    import PlayingCardBack from "./PlayingCardBack.vue"
+import PlayingCard from "./PlayingCard.vue"
+import PlayingCardBack from "./PlayingCardBack.vue"
 
-    export default {
-        name: "PlayingCardContainer",
-        components: {PlayingCardBack, PlayingCard},
-        data() {
-            return {
-                transition: 'flip',
+export default {
+    name: "PlayingCardContainer",
+    components: {PlayingCardBack, PlayingCard},
+    data() {
+        return {
+            transition: 'flip',
+        }
+    },
+    props: {
+        card: Object,
+        hideCard: Boolean,
+    },
+    watch: {
+        card() {
+            this.transition = 'flip'
+        },
+        hideCard(newVal) {
+            this.transition = 'vanish'
+            if (!newVal) {
+                setTimeout(() => {
+                    this.transition = 'flip'
+                }, 500)
             }
         },
-        props: {
-            card: Object,
-            hideCard: Boolean,
-        },
-        watch: {
-            card() {
-                this.transition = 'flip'
-            },
-            hideCard(newVal) {
-                this.transition = 'vanish'
-                if (!newVal) {
-                    setTimeout(() => {this.transition = 'flip'}, 500)
-                }
-            },
-        },
-    }
+    },
+}
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables.scss';
+@import '../variables.scss';
 
-    div.playing-card-container {
-        perspective:      200px;
-        width:            100%;
-        height:           0;
-        padding-top:      calc(3.5 / 2.5 * 100%);
-        position:         relative;
-        background-color: #eee;
+div.playing-card-container {
+    perspective:      200px;
+    width:            100%;
+    aspect-ratio:     2.5 / 3.5;
+    position:         relative;
+    background-color: #eee;
+    border-radius:    $border-radius;
+
+    & > * {
+        position: absolute;
+        top:      0;
+        right:    0;
+        bottom:   0;
+        left:     0;
+    }
+
+    .background {
         border-radius:    $border-radius;
-
-        & > * {
-            position: absolute;
-            top:      0;
-            right:    0;
-            bottom:   0;
-            left:     0;
-        }
-
-        .background {
-            border-radius:    $border-radius;
-            box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
-            background-color: rgba(black, 0.1);
-            border:           1px solid rgba(black, 0.1);
-            margin:           2px;
-        }
+        box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
+        background-color: rgba(black, 0.1);
+        border:           1px solid rgba(black, 0.1);
+        margin:           2px;
     }
+}
 
-    .flip-leave-active {
-        transition: all 300ms ease-in;
-    }
+.flip-leave-active {
+    transition: all 300ms ease-in;
+}
 
-    .flip-enter-active {
-        transition: all 300ms ease-out;
-    }
+.flip-enter-active {
+    transition: all 300ms ease-out;
+}
 
-    .flip-leave-to {
-        transform: rotateY(90deg);
-    }
+.flip-leave-to {
+    transform: rotateY(90deg);
+}
 
-    .flip-enter-from {
-        transform: rotateY(-90deg);
-    }
+.flip-enter-from {
+    transform: rotateY(-90deg);
+}
 
-    .vanish-enter-active, .vanish-leave-active {
-        transition: all 300ms;
-    }
+.vanish-enter-active, .vanish-leave-active {
+    transition: all 300ms;
+}
 
-    .vanish-enter-from, .vanish-leave-to {
-        transform: translateY(-50%);
-        opacity:   0;
-    }
+.vanish-enter-from, .vanish-leave-to {
+    transform: translateY(-50%);
+    opacity:   0;
+}
 </style>

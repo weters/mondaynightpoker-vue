@@ -5,6 +5,7 @@ import poker from "./store/poker"
 import {formatAmount} from "./currency"
 import aceyDeucey from "@/store/aceyDeucey"
 import texasHoldEm from "@/store/texasHoldEm"
+import guts from "@/store/guts"
 
 let errorTimeout, notificationTimeout
 
@@ -15,6 +16,7 @@ const store = createStore({
         poker,
         aceyDeucey,
         texasHoldEm,
+        guts,
     },
     state: {
         user: null, // { player: Object, jwt: String }

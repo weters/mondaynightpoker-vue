@@ -5,6 +5,7 @@
         <div class="games" v-if="canStart">
             <game-selector-acey-deucey @submit="startGame"/>
             <game-selector-bourre @submit="startGame"/>
+            <game-selector-guts @submit="startGame"/>
             <game-selector-texas-hold-em @submit="startGame"/>
             <game-selector-seven-card @submit="startGame"/>
             <game-selector-little-l @submit="startGame"/>
@@ -22,6 +23,7 @@ import GameSelectorAceyDeucey from "@/components/gameselector/GameSelectorAceyDe
 import GameSelectorLittleL from "@/components/gameselector/GameSelectorLittleL.vue"
 import GameSelectorPassThePoop from "@/components/gameselector/GameSelectorPassThePoop.vue"
 import GameSelectorBourre from "@/components/gameselector/GameSelectorBourre.vue"
+import GameSelectorGuts from "@/components/gameselector/GameSelectorGuts.vue"
 import GameSelectorSevenCard from "@/components/gameselector/GameSelectorSevenCard.vue"
 import {mapGetters} from "vuex"
 import Loading from "@/components/Loading.vue"
@@ -33,6 +35,7 @@ export default {
         GameSelectorTexasHoldEm,
         Loading,
         GameSelectorBourre,
+        GameSelectorGuts,
         GameSelectorPassThePoop,
         GameSelectorLittleL,
         GameSelectorAceyDeucey,

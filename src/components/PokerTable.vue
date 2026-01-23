@@ -22,6 +22,7 @@
                 <seven-card v-else-if="game.game === 'seven-card'"/>
                 <acey-deucey v-else-if="game.game === 'acey-deucey'"/>
                 <texas-hold-em v-else-if="game.game === 'texas-hold-em'"/>
+                <guts v-else-if="game.game === 'guts'"/>
             </template>
             <template v-else-if="clientState">
                 <transition name="scheduled-game">
@@ -78,6 +79,7 @@ import SevenCard from "./games/sevencard/SevenCard.vue"
 import bus from "../bus"
 import ScheduledGame from "./ScheduledGame.vue"
 import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey.vue"
+import Guts from "@/components/games/guts/Guts.vue"
 
 import GameSelector from "@/components/gameselector/GameSelector.vue"
 import Toggle from "@/components/formelements/Toggle.vue"
@@ -95,6 +97,7 @@ export default {
         Toggle,
         GameSelector,
         AceyDeucey,
+        Guts,
         ScheduledGame, SevenCard, LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre,
     },
     props: {
