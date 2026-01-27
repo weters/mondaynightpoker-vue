@@ -44,7 +44,7 @@
                         <table-stakes/>
 
                         <form class="player-state" v-if="userClientState.isSeated">
-                            <toggle :checked="userClientState.active" label="Deal me in!" :disabled="playButtonDisabled"
+                            <toggle v-model="userClientState.active" label="Deal me in!" :disabled="playButtonDisabled"
                                     @change="setPlayerActive"/>
                             <p class="details">If you want to sit out, uncheck "Deal me in!"</p>
                         </form>
