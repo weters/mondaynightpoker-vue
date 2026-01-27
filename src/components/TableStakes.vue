@@ -9,8 +9,7 @@
                 type="number"
                 label="Table Stakes"
                 unit="$"
-                :value="tableStake.toString()"
-                @input="tableStake=parseInt($event, 10)"
+                v-model="tableStake"
             />
 
             <div class="buttons">
@@ -35,7 +34,7 @@ export default {
     data() {
         return {
             editTableStake: false,
-            tableStake: this.$store.getters.userClientState.tableStake / 100,
+            tableStake: String(this.$store.getters.userClientState.tableStake / 100),
             saving: false,
         }
     },
@@ -43,7 +42,7 @@ export default {
         save() {
             this.saving = true
             this.$store.state.webSocket.send('tableStake', null, null, {
-                    tableStake: this.tableStake * 100,
+                    tableStake: parseInt(this.tableStake, 10) * 100,
                 })
                 .then(() => this.editTableStake = false)
                 .catch(err => {
@@ -52,7 +51,7 @@ export default {
                 .finally(() => this.saving = false)
         },
         reset() {
-            this.tableStake = this.$store.getters.userClientState.tableStake / 100
+            this.tableStake = String(this.$store.getters.userClientState.tableStake / 100)
             this.editTableStake = false
         },
     },
