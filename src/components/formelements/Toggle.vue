@@ -1,7 +1,7 @@
 <template>
     <label :class="{ toggle: true, disabled }">
         <span class="label" v-if="label">{{ label }}</span>
-        <input type="checkbox" :checked="Array.isArray(modelValue) ? modelValue.includes(value) : modelValue" @change="changed"
+        <input type="checkbox" :checked="Array.isArray(effectiveValue) ? effectiveValue.includes(value) : effectiveValue" @change="changed"
                :disabled="disabled"/>
         <span class="checkbox"></span>
     </label>
@@ -12,23 +12,35 @@ export default {
     name: "Toggle",
     props: {
         modelValue: [Boolean, Array],
+        checked: Boolean, // Alias for modelValue when not using v-model
         value: String,
         label: String,
         disabled: Boolean,
     },
-    emits: ['update:modelValue'],
+    emits: ['update:modelValue', 'change'],
+    computed: {
+        effectiveValue() {
+            // Use modelValue if provided, otherwise fall back to checked prop
+            return this.modelValue !== undefined ? this.modelValue : this.checked
+        },
+    },
     methods: {
         changed(event) {
-            if (Array.isArray(this.modelValue)) {
-                if (event.target.checked) {
-                    const newValue = [...this.modelValue]
+            const newChecked = event.target.checked
+            if (Array.isArray(this.effectiveValue)) {
+                if (newChecked) {
+                    const newValue = [...this.effectiveValue]
                     newValue.push(this.value)
                     this.$emit('update:modelValue', newValue)
+                    this.$emit('change', newValue)
                 } else {
-                    this.$emit('update:modelValue', this.modelValue.filter(f => f !== this.value))
+                    const newValue = this.effectiveValue.filter(f => f !== this.value)
+                    this.$emit('update:modelValue', newValue)
+                    this.$emit('change', newValue)
                 }
             } else {
-                this.$emit('update:modelValue', event.target.checked)
+                this.$emit('update:modelValue', newChecked)
+                this.$emit('change', newChecked)
             }
         },
     },

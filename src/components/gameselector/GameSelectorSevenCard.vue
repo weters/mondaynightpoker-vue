@@ -13,6 +13,7 @@
                               [ 'follow-the-queen', 'Follow the Queen' ],
                               [ 'high-chicago', 'High Chicago' ],
                               [ 'chiggs', '7 Card Chiggs' ],
+                              [ 'coupons-and-clippings', 'Coupons and Clippings' ],
             ]"/>
 
         <div class="buttons">
