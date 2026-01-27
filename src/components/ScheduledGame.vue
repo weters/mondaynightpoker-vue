@@ -9,7 +9,7 @@
                 <p class="started-by">{{ player }}</p>
             </div>
 
-            <toggle :checked="isPlayerActive" @change="$emit('setPlayerActive', $event)" label="Deal me in!" />
+            <toggle v-model="localActive" @change="$emit('setPlayerActive', $event)" label="Deal me in!" />
 
             <div class="buttons">
                 <button type="button" @click="$emit('cancel')" class="secondary" v-if="canStart">Cancel</button>
@@ -37,7 +37,13 @@
         data() {
             return {
                 t: new Date(this.info.start) - new Date(),
+                localActive: this.isPlayerActive,
             }
+        },
+        watch: {
+            isPlayerActive(newVal) {
+                this.localActive = newVal
+            },
         },
         computed: {
             player() {
