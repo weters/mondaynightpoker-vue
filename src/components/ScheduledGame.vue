@@ -9,7 +9,7 @@
                 <p class="started-by">{{ player }}</p>
             </div>
 
-            <toggle :checked="isPlayerActive" @change="$emit('setPlayerActive', $event)" label="Deal me in!" />
+            <toggle v-model="isPlayerActive" @change="$emit('setPlayerActive', $event)" label="Deal me in!" />
 
             <div class="buttons">
                 <button type="button" @click="$emit('cancel')" class="secondary" v-if="canStart">Cancel</button>
