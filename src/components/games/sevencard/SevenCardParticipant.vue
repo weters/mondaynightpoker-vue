@@ -32,26 +32,14 @@
 
         <!-- Coupons and Clippings effects -->
         <transition name="comic-pop">
-            <div v-if="showCouponEffect" class="comic-effect coupon-effect">
-                Coupon!
+            <div v-if="showBogoEffect" class="comic-effect bogo-effect">
+                BOGO!
             </div>
         </transition>
 
         <transition name="comic-pop">
-            <div v-if="showExpiredEffect" class="comic-effect expired-effect">
-                Coupons Expired!
-            </div>
-        </transition>
-
-        <transition name="comic-pop">
-            <div v-if="showNailClippingsEffect" class="comic-effect nailclippings-effect">
-                Nail Clipping!
-            </div>
-        </transition>
-
-        <transition name="comic-pop">
-            <div v-if="showMealCompEffect" class="comic-effect mealcomp-effect">
-                Meal Comp'd!
+            <div v-if="showNailClippingRefundEffect" class="comic-effect nailclipping-refund-effect">
+                Nail clipping found. Meal comp'd!
             </div>
         </transition>
 
@@ -109,21 +97,14 @@
                 antidoteTimeout: null,
                 noAntidoteTimeout: null,
                 // Coupons and Clippings splash state
-                showCouponEffect: false,
-                showExpiredEffect: false,
-                showNailClippingsEffect: false,
-                showMealCompEffect: false,
+                showBogoEffect: false,
+                showNailClippingRefundEffect: false,
                 // Track what we've shown to prevent repeats (Coupons and Clippings)
-                // Using keys based on array contents to detect changes
-                lastShownCouponKey: null,
-                lastShownExpiredPlayerId: null,
-                lastShownNailClippingsPlayerId: null,
-                lastShownMealCompKey: null,
+                lastShownBogoPlayerId: null,
+                lastShownNailClippingKey: null,
                 // Timeouts for auto-dismiss (Coupons and Clippings)
-                couponTimeout: null,
-                expiredTimeout: null,
-                nailClippingsTimeout: null,
-                mealCompTimeout: null,
+                bogoTimeout: null,
+                nailClippingRefundTimeout: null,
             }
         },
         computed: {
@@ -185,25 +166,14 @@
                 return folds.map(f => f.playerId).sort().join(',')
             },
             // Coupons and Clippings computed properties
-            isCouponPlayer() {
-                return this.variantState?.couponPlayerIds?.includes(this.participant.playerId)
+            isBogoPlayer() {
+                return this.variantState?.bogoPlayerId === this.participant.playerId
             },
-            couponPlayerIdsKey() {
-                const ids = this.variantState?.couponPlayerIds
-                if (!ids || ids.length === 0) return null
-                return `${this.gameState.round}:${ids.join(',')}`
+            isNailClippingRefundPlayer() {
+                return this.variantState?.nailClippingPlayerIds?.includes(this.participant.playerId)
             },
-            isExpiredPlayer() {
-                return this.variantState?.expiredPlayerId === this.participant.playerId
-            },
-            isNailClippingsPlayer() {
-                return this.variantState?.nailClippingsPlayerId === this.participant.playerId
-            },
-            isMealCompPlayer() {
-                return this.variantState?.mealCompPlayerIds?.includes(this.participant.playerId)
-            },
-            mealCompPlayerIdsKey() {
-                const ids = this.variantState?.mealCompPlayerIds
+            nailClippingPlayerIdsKey() {
+                const ids = this.variantState?.nailClippingPlayerIds
                 if (!ids || ids.length === 0) return null
                 return `${this.gameState.round}:${ids.join(',')}`
             },
@@ -270,17 +240,11 @@
                 clearTimeout(this.noAntidoteTimeout)
             }
             // Coupons and Clippings timeouts
-            if (this.couponTimeout) {
-                clearTimeout(this.couponTimeout)
+            if (this.bogoTimeout) {
+                clearTimeout(this.bogoTimeout)
             }
-            if (this.expiredTimeout) {
-                clearTimeout(this.expiredTimeout)
-            }
-            if (this.nailClippingsTimeout) {
-                clearTimeout(this.nailClippingsTimeout)
-            }
-            if (this.mealCompTimeout) {
-                clearTimeout(this.mealCompTimeout)
+            if (this.nailClippingRefundTimeout) {
+                clearTimeout(this.nailClippingRefundTimeout)
             }
         },
         watch: {
@@ -330,42 +294,23 @@
                 },
                 immediate: true,
             },
-            // Coupons and Clippings watchers - watch keys directly to detect ALL changes (including same player getting another 3)
-            couponPlayerIdsKey: {
-                handler(key) {
-                    if (key && this.isCouponPlayer && key !== this.lastShownCouponKey) {
-                        this.lastShownCouponKey = key
+            // Coupons and Clippings watchers
+            isBogoPlayer: {
+                handler(isPlayer) {
+                    const playerId = this.variantState?.bogoPlayerId
+                    if (isPlayer && playerId && playerId !== this.lastShownBogoPlayerId) {
+                        this.lastShownBogoPlayerId = playerId
                         // Delay: position-based offset + 250ms card animation
-                        setTimeout(() => this.showEffect('Coupon'), this.order * this.dealDelay + 250)
+                        setTimeout(() => this.showEffect('Bogo'), this.order * this.dealDelay + 250)
                     }
                 },
                 immediate: true,
             },
-            isExpiredPlayer: {
-                handler(isPlayer) {
-                    const playerId = this.variantState?.expiredPlayerId
-                    if (isPlayer && playerId && playerId !== this.lastShownExpiredPlayerId) {
-                        this.lastShownExpiredPlayerId = playerId
-                        setTimeout(() => this.showEffect('Expired'), this.order * this.dealDelay + 250)
-                    }
-                },
-                immediate: true,
-            },
-            isNailClippingsPlayer: {
-                handler(isPlayer) {
-                    const playerId = this.variantState?.nailClippingsPlayerId
-                    if (isPlayer && playerId && playerId !== this.lastShownNailClippingsPlayerId) {
-                        this.lastShownNailClippingsPlayerId = playerId
-                        setTimeout(() => this.showEffect('NailClippings'), this.order * this.dealDelay + 250)
-                    }
-                },
-                immediate: true,
-            },
-            mealCompPlayerIdsKey: {
+            nailClippingPlayerIdsKey: {
                 handler(key) {
-                    if (key && this.isMealCompPlayer && key !== this.lastShownMealCompKey) {
-                        this.lastShownMealCompKey = key
-                        setTimeout(() => this.showEffect('MealComp'), this.order * this.dealDelay + 250)
+                    if (key && this.isNailClippingRefundPlayer && key !== this.lastShownNailClippingKey) {
+                        this.lastShownNailClippingKey = key
+                        setTimeout(() => this.showEffect('NailClippingRefund'), this.order * this.dealDelay + 250)
                     }
                 },
                 immediate: true,
@@ -509,32 +454,20 @@
         }
 
         // Coupons and Clippings effects
-        .coupon-effect {
+        .bogo-effect {
+            background: linear-gradient(135deg, #FFD700, #FFA500);
+            color: #000;
+            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
+            box-shadow: 0 2px 8px rgba(255, 215, 0, 0.6);
+        }
+
+        .nailclipping-refund-effect {
             background: linear-gradient(135deg, #4CAF50, #1B5E20);
             color: white;
             text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
             box-shadow: 0 2px 8px rgba(76, 175, 80, 0.6);
-        }
-
-        .expired-effect {
-            background: linear-gradient(135deg, #f44336, #b71c1c);
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 2px 8px rgba(244, 67, 54, 0.6);
-        }
-
-        .nailclippings-effect {
-            background: linear-gradient(135deg, #8B4513, #3E2723);
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 2px 8px rgba(139, 69, 19, 0.6);
-        }
-
-        .mealcomp-effect {
-            background: linear-gradient(135deg, #66BB6A, #2E7D32);
-            color: white;
-            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-            box-shadow: 0 2px 8px rgba(102, 187, 106, 0.6);
+            max-width: 180px;
+            white-space: normal;
         }
     }
 
