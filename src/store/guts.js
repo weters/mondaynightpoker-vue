@@ -20,5 +20,6 @@ export default {
         maxOwed: (state, getters) => getters.gameState.maxOwed,
         getParticipant: (state, getters) => (playerId) =>
             getters.participants.find(p => p.playerId === playerId),
+        cardCount: (state, getters) => getters.gameState.cardCount,
     },
 }

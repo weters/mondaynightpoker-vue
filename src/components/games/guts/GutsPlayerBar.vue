@@ -5,7 +5,7 @@
                 <p class="game-over-message">Game Over!</p>
             </template>
             <template v-else>
-                <guts-hand :hand="hand"/>
+                <guts-hand :hand="hand" :card-count="cardCount"/>
                 <guts-decision v-if="isDeclarationPhase" @error="showError"/>
             </template>
 
@@ -44,6 +44,7 @@ export default {
             isDeclarationPhase: 'guts/isDeclarationPhase',
             isGameOver: 'guts/isGameOver',
             canDecide: 'guts/canDecide',
+            cardCount: 'guts/cardCount',
         }),
         phaseDisplay() {
             const phases = {

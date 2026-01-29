@@ -1,8 +1,8 @@
 <template>
     <div :class="playerClasses">
         <div class="hand">
-            <div class="cards">
-                <template v-for="i in 2" :key="`playing-card-${i}`">
+            <div :class="['cards', `cards-${cardCount}`]">
+                <template v-for="i in cardCount" :key="`playing-card-${i}`">
                     <playing-card-container
                         :hide-card="hideCard(i)"
                         :card="getCard(i)"
@@ -44,6 +44,7 @@ export default {
             isShowdown: 'guts/isShowdown',
             decisions: 'guts/decisions',
             showdownResult: 'guts/showdownResult',
+            cardCount: 'guts/cardCount',
         }),
         playerDecision() {
             if (!this.decisions) return null
@@ -129,6 +130,10 @@ div.guts-player {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             grid-gap: 4px;
+
+            &.cards-3 {
+                grid-template-columns: repeat(3, 1fr);
+            }
         }
     }
 

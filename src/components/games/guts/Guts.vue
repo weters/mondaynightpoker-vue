@@ -1,6 +1,6 @@
 <template>
     <div class="guts">
-        <h3>2-Card Guts</h3>
+        <h3>{{ cardCount }}-Card Guts</h3>
         <transition name="error">
             <error :message="error" v-if="error"/>
         </transition>
@@ -31,6 +31,7 @@ export default {
     computed: {
         ...mapGetters({
             gameState: 'guts/gameState',
+            cardCount: 'guts/cardCount',
         }),
         participants() {
             return this.gameState.participants
