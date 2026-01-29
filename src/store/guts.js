@@ -21,5 +21,10 @@ export default {
         getParticipant: (state, getters) => (playerId) =>
             getters.participants.find(p => p.playerId === playerId),
         cardCount: (state, getters) => getters.gameState.cardCount,
+        bloodyGuts: (state, getters) => getters.gameState.bloodyGuts,
+        deckHand: (state, getters) => getters.gameState.deckHand,
+        deckCardsRevealed: (state, getters) => getters.gameState.deckCardsRevealed,
+        deckCardsTotal: (state, getters) => getters.gameState.deckCardsTotal,
+        deckWon: (state, getters) => getters.showdownResult?.deckWon,
     },
 }

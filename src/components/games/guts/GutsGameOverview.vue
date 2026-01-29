@@ -26,6 +26,19 @@
                 <p class="all-folded">Everyone folded! Pot carries over to next round.</p>
             </template>
             <template v-else>
+                <div class="deck-battle" v-if="showDeckBattle">
+                    <p class="deck-label">The Deck</p>
+                    <div :class="['deck-cards', `deck-cards-${deckCardsTotal}`]">
+                        <playing-card-container
+                            v-for="(card, index) in deckCardsForDisplay"
+                            :key="'deck-' + index"
+                            :card="card"
+                        />
+                    </div>
+                    <p v-if="deckWon !== undefined" :class="['deck-outcome', deckWon ? 'deck-wins' : 'player-wins']">
+                        {{ deckWon ? 'The deck wins!' : 'Player beats the deck!' }}
+                    </p>
+                </div>
                 <p class="winners" v-if="showdownResult.winnerIds && showdownResult.winnerIds.length > 0">
                     <strong>Winner{{ showdownResult.winnerIds.length > 1 ? 's' : '' }}:</strong>
                     {{ winnerNames }}
@@ -47,11 +60,12 @@
 <script>
 import {mapGetters} from "vuex"
 import ChipStack from "@/components/ChipStack.vue"
+import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 import balance from "@/mixins/balance"
 
 export default {
     name: "GutsGameOverview",
-    components: {ChipStack},
+    components: {ChipStack, PlayingCardContainer},
     mixins: [balance],
     computed: {
         ...mapGetters({
@@ -61,7 +75,26 @@ export default {
             ante: 'guts/ante',
             maxOwed: 'guts/maxOwed',
             showdownResult: 'guts/showdownResult',
+            cardCount: 'guts/cardCount',
+            deckHand: 'guts/deckHand',
+            deckCardsRevealed: 'guts/deckCardsRevealed',
+            deckCardsTotal: 'guts/deckCardsTotal',
+            deckWon: 'guts/deckWon',
         }),
+        showDeckBattle() {
+            return this.deckCardsTotal > 0
+        },
+        deckCardsForDisplay() {
+            const cards = []
+            for (let i = 0; i < this.deckCardsTotal; i++) {
+                if (i < this.deckCardsRevealed && this.deckHand) {
+                    cards.push(this.deckHand[i])
+                } else {
+                    cards.push(null) // Shows card back
+                }
+            }
+            return cards
+        },
         phaseDisplay() {
             const phases = {
                 'dealing': 'Dealing',
@@ -130,6 +163,44 @@ div.guts-game-overview {
         padding: $spacing;
         margin-top: $spacing-medium;
         text-align: center;
+
+        .deck-battle {
+            margin-bottom: $spacing-medium;
+            padding-bottom: $spacing-medium;
+            border-bottom: 1px solid $border-color;
+
+            .deck-label {
+                font-weight: bold;
+                margin-bottom: $spacing-small;
+                color: $text-color-light;
+            }
+
+            .deck-cards {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(50px, 100px));
+                grid-gap: $spacing-medium;
+                justify-content: center;
+                margin: $spacing-small auto;
+                max-width: fit-content;
+
+                &.deck-cards-3 {
+                    grid-template-columns: repeat(3, minmax(50px, 100px));
+                }
+            }
+
+            .deck-outcome {
+                font-weight: bold;
+                margin-top: $spacing-small;
+
+                &.deck-wins {
+                    color: $red;
+                }
+
+                &.player-wins {
+                    color: $light-green;
+                }
+            }
+        }
 
         p {
             margin: $spacing-small 0;
