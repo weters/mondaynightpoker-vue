@@ -99,6 +99,7 @@ export default {
             const phases = {
                 'dealing': 'Dealing',
                 'declaration': 'Declaration',
+                'tradeIn': 'Trade',
                 'showdown': 'Showdown',
                 'roundEnd': 'Round Over',
                 'gameOver': 'Game Over',

@@ -26,5 +26,19 @@ export default {
         deckCardsRevealed: (state, getters) => getters.gameState.deckCardsRevealed,
         deckCardsTotal: (state, getters) => getters.gameState.deckCardsTotal,
         deckWon: (state, getters) => getters.showdownResult?.deckWon,
+        isTradePhase: (state, getters) => getters.phase === 'tradeIn',
+        canTrade: (state, getters) => getters.gameData.canTrade,
+        currentTraderID: (state, getters) => getters.gameState.currentTraderId,
+        allowTrades: (state, getters) => getters.gameState.allowTrades,
+        getMyParticipant: (state, getters, rootState) => {
+            const myId = rootState.user.player.id
+            return getters.participants.find(p => p.playerId === myId)
+        },
+        myTraded: (state, getters) => getters.getMyParticipant?.traded || 0,
+        hasTraded: (state, getters, rootState) => {
+            const myId = rootState.user.player.id
+            const tradesMade = getters.gameState.tradesMade
+            return tradesMade && myId in tradesMade
+        },
     },
 }

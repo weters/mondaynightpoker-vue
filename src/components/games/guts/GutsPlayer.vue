@@ -38,6 +38,21 @@ export default {
             required: true,
         },
     },
+    data() {
+        return {
+            hiddenCards: 0,
+        }
+    },
+    watch: {
+        'participant.traded'(newVal) {
+            if (newVal > 0) {
+                this.hiddenCards = newVal
+                setTimeout(() => {
+                    this.hiddenCards = 0
+                }, 500)
+            }
+        },
+    },
     computed: {
         ...mapGetters({
             phase: 'guts/phase',
@@ -90,6 +105,8 @@ export default {
         hideCard(index) {
             // Hide cards if no cards in hand
             if (this.participant.cardsInHand < index) return true
+            // Hide traded cards during animation (index is 1-based)
+            if (this.hiddenCards > 0 && index > this.cardCount - this.hiddenCards) return true
             // During declaration phase, show card backs
             if (!this.isShowdown) return false
             // After showdown, only show cards for players who went "In"

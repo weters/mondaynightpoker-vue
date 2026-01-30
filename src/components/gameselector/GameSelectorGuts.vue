@@ -6,6 +6,7 @@
         <fancy-input label="Max Owed" type="number" :min="5" :max="25" :step="1" v-model="maxOwed" unit="$" />
         <fancy-select label="Variant" v-model="cardCount" :options="cardCountOptions" />
         <toggle label="Bloody Guts" v-model="bloodyGuts" />
+        <toggle label="Allow Trades" v-model="allowTrades" />
 
         <div class="buttons">
             <button>Start</button>
@@ -27,6 +28,7 @@ export default {
             ante: '50',
             maxOwed: '10',
             bloodyGuts: false,
+            allowTrades: false,
             cardCountOptions: [
                 ['2', '2-Card'],
                 ['3', '3-Card'],
@@ -42,6 +44,7 @@ export default {
                     ante: parseInt(this.ante, 10),
                     maxOwed: parseInt(this.maxOwed, 10) * 100,
                     bloodyGuts: this.bloodyGuts,
+                    allowTrades: this.allowTrades,
                 },
             })
         },
