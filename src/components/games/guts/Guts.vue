@@ -1,6 +1,6 @@
 <template>
     <div class="guts">
-        <h3>{{ cardCount }}-Card Guts</h3>
+        <h3>{{ gameName }}</h3>
         <transition name="error">
             <error :message="error" v-if="error"/>
         </transition>
@@ -32,9 +32,14 @@ export default {
         ...mapGetters({
             gameState: 'guts/gameState',
             cardCount: 'guts/cardCount',
+            bloodyGuts: 'guts/bloodyGuts',
+            allowTrades: 'guts/allowTrades',
         }),
         participants() {
             return this.gameState.participants
+        },
+        gameName() {
+            return `${this.cardCount}-Card ${this.bloodyGuts ? 'Bloody ' : ''}Guts${this.allowTrades ? ' with Trades' : ''}`
         },
     },
     beforeUnmount() {
