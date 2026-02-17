@@ -15,6 +15,7 @@ export default {
         decisions: (state, getters) => getters.gameState.decisions,
         showdownResult: (state, getters) => getters.gameState.showdownResult,
         pot: (state, getters) => getters.gameState.pot,
+        overflowPot: (state, getters) => getters.gameState.overflowPot || 0,
         round: (state, getters) => getters.gameState.round,
         ante: (state, getters) => getters.gameState.ante,
         maxOwed: (state, getters) => getters.gameState.maxOwed,

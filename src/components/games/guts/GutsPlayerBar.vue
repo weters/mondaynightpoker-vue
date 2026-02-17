@@ -31,6 +31,7 @@
             <span class="round"><strong>Round:</strong> {{ round }}</span>
             <span class="phase"><strong>Phase:</strong> {{ phaseDisplay }}</span>
             <span class="pot"><strong>Pot:</strong> {{ formatAmount(pot) }}</span>
+            <span class="overflow" v-if="overflowPot > 0"><strong>Overflow:</strong> {{ formatAmount(overflowPot) }}</span>
         </template>
     </player-bar>
 </template>
@@ -59,6 +60,7 @@ export default {
             hand: 'guts/hand',
             round: 'guts/round',
             pot: 'guts/pot',
+            overflowPot: 'guts/overflowPot',
             phase: 'guts/phase',
             isDeclarationPhase: 'guts/isDeclarationPhase',
             isTradePhase: 'guts/isTradePhase',

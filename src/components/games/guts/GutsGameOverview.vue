@@ -19,6 +19,10 @@
                 <span class="label">Max Owed</span>
                 <span class="value">{{ formatAmount(maxOwed) }}</span>
             </div>
+            <div class="info-item" v-if="overflowPot > 0">
+                <span class="label">Overflow</span>
+                <span class="value">{{ formatAmount(overflowPot) }}</span>
+            </div>
         </div>
 
         <div class="showdown-result" v-if="showdownResult">
@@ -70,6 +74,7 @@ export default {
     computed: {
         ...mapGetters({
             pot: 'guts/pot',
+            overflowPot: 'guts/overflowPot',
             round: 'guts/round',
             phase: 'guts/phase',
             ante: 'guts/ante',
