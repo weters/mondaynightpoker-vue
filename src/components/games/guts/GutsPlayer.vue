@@ -57,6 +57,7 @@ export default {
         ...mapGetters({
             phase: 'guts/phase',
             isShowdown: 'guts/isShowdown',
+            isTradePhase: 'guts/isTradePhase',
             decisions: 'guts/decisions',
             showdownResult: 'guts/showdownResult',
             cardCount: 'guts/cardCount',
@@ -84,8 +85,14 @@ export default {
                 'is-loser': this.isLoser,
             }
         },
+        showDecisions() {
+            return this.isShowdown || this.isTradePhase
+        },
+        isFolded() {
+            return this.showDecisions && this.playerDecision === false
+        },
         statusClass() {
-            if (this.isShowdown) {
+            if (this.showDecisions) {
                 if (this.playerDecision === true) return 'in'
                 if (this.playerDecision === false) return 'out'
             }
@@ -93,7 +100,7 @@ export default {
             return 'waiting'
         },
         statusText() {
-            if (this.isShowdown) {
+            if (this.showDecisions) {
                 if (this.playerDecision === true) return 'IN'
                 if (this.playerDecision === false) return 'OUT'
             }
@@ -107,6 +114,8 @@ export default {
             if (this.participant.cardsInHand < index) return true
             // Hide traded cards during animation (index is 1-based)
             if (this.hiddenCards > 0 && index > this.cardCount - this.hiddenCards) return true
+            // Hide cards for players who folded during trade phase
+            if (this.isFolded) return true
             // During declaration phase, show card backs
             if (!this.isShowdown) return false
             // After showdown, only show cards for players who went "In"
