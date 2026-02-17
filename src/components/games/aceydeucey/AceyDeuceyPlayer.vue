@@ -56,23 +56,28 @@ export default {
 @import '../../../variables.scss';
 
 div.acey-deucey-player {
-    border:              0 solid $border-color;
-    border-bottom-width: 3px;
-    padding:             $spacing-medium;
-    margin:              $spacing-medium;
+    @include felt-seat;
+    text-align: center;
 
     &.is-turn {
-        border-bottom-color: $primary;
+        @include felt-seat-active;
     }
 
     p {
         margin: 0;
     }
 
+    p.display-name strong {
+        @include felt-seat-name;
+    }
+
+    .balance {
+        @include felt-seat-balance;
+    }
+
     &:not(.is-connected) {
         p.display-name strong {
-            font-weight: normal;
-            font-style:  italic;
+            @include felt-seat-disconnected;
         }
     }
 }

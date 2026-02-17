@@ -20,10 +20,6 @@
             <span class="void" v-else></span>
         </div>
 
-        <dealer-button
-            class="them-dealer-button"
-            v-if="participant.playerId === $store.getters['poker/gameState'].dealer"
-        />
     </div>
 </template>
 
@@ -31,11 +27,10 @@
 import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 import balance from "@/mixins/balance"
 import ChipStack from "@/components/ChipStack.vue"
-import DealerButton from "@/components/games/poker/DealerButton.vue"
 
 export default {
     name: "TexasHoldEmParticipant",
-    components: {DealerButton, ChipStack, PlayingCardContainer},
+    components: {ChipStack, PlayingCardContainer},
     mixins: [balance],
     props: {
         participant: {
@@ -88,73 +83,72 @@ export default {
 @import '../../../variables.scss';
 
 div.texas-hold-em-participant {
-    $root:          &;
-    border:         1px solid $border-color;
-    padding:        $spacing-small;
+    @include felt-seat;
     display:        flex;
     flex-direction: column;
-    position:       relative;
 
     &.current-turn {
-        @include current-turn;
+        @include felt-seat-active;
+    }
+
+    &.won {
+        @include felt-seat-won;
+    }
+
+    &.lost {
+        @include felt-seat-lost;
     }
 
     &:not(.is-connected) {
         span.name {
-            font-style: italic;
-            color:      $text-color-light;
+            @include felt-seat-disconnected;
         }
     }
 
     div.cards {
-        display:               grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap:              2px;
+        display: flex;
+        gap: 2px;
 
-        &.cards-3 {
-            grid-template-columns: repeat(3, 1fr);
+        & > * {
+            flex: 1 1 0;
+            min-width: 0;
         }
     }
 
+    span.name {
+        @include felt-seat-name;
+        margin-top: 3px;
+    }
+
     span.balance {
-        display:   block;
-        margin:    0;
-        color:     $text-color-light;
-        font-size: 0.7em;
+        @include felt-seat-balance;
+        display: block;
     }
 
     .chip-stack {
         margin-top: auto;
-        padding:    $spacing-small 0;
+        padding: 2px 0;
         align-self: center;
     }
 
     .info {
         & > span {
-            font-size: 0.8em;
-            padding:   4px;
+            font-size: 0.7em;
+            padding: 2px 4px;
+            border-radius: 3px;
         }
 
         .last-action {
-            background-color: $peach;
-            display:          block;
+            background-color: rgba(232, 168, 56, 0.3);
+            color: #e8a838;
+            display: block;
         }
 
         .hand {
-            display:          block;
-            color:            white;
-            background-color: rgba(black, 0.75);
-            margin:           0;
-
-            @at-root #{$root}.won .info .hand {
-                color:            white;
-                background-color: $green;
-            }
-
-            @at-root #{$root}.lost .info .hand {
-                background-color: $dark-green;
-                color:            rgba(white, 0.5);
-            }
+            display: block;
+            color: white;
+            background-color: rgba(255, 255, 255, 0.15);
+            margin: 0;
         }
 
         .void {
@@ -164,10 +158,5 @@ div.texas-hold-em-participant {
         }
     }
 
-    .them-dealer-button {
-        position: absolute;
-        bottom:   $spacing-small;
-        right:    $spacing-small;
-    }
 }
 </style>

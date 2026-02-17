@@ -56,10 +56,6 @@
             <chip-stack :amount="chipStack" />
         </div>
 
-        <dealer-button
-            class="dealer-button"
-            v-if="participant.playerId === gameState.dealerId"
-        />
     </div>
 </template>
 
@@ -67,12 +63,11 @@
     import PlayingCardContainer from "../../PlayingCardContainer.vue"
     import {mapGetters} from "vuex"
     import ChipStack from "../../ChipStack.vue"
-    import DealerButton from "../poker/DealerButton.vue"
     import balance from "@/mixins/balance"
 
     export default {
         name: "SevenCardParticipant",
-        components: {DealerButton, ChipStack, PlayingCardContainer},
+        components: {ChipStack, PlayingCardContainer},
         mixins: [balance],
         props: {
             participant: {
@@ -322,81 +317,67 @@
 <style lang="scss" scoped>
     @import '../../../variables.scss';
 
-    $max-width: 599px;
-
     div.seven-card-participant {
-        border: 1px solid $border-color;
-        padding:   $spacing-small;
+        @include felt-seat;
         display: flex;
         flex-wrap: wrap;
         position: relative;
 
         &.is-turn {
-            @include current-turn;
-        }
-
-        .dealer-button {
-            position: absolute;
-            top: $spacing-small;
-            right: $spacing-small;
+            @include felt-seat-active;
         }
 
         div.cards {
             display:  flex;
             position: relative;
             flex: 0 0 100%;
+            gap: 1px;
 
             & > div.card {
-                flex: 0 1 50px;
-
-                &:not(:first-child) {
-                    margin-left: 2px;
-                }
+                flex: 1 1 0;
+                min-width: 0;
             }
         }
 
         .chips {
             margin-left: auto;
-            margin-top: $spacing-small;
+            margin-top: 2px;
         }
 
         div.metadata {
             flex: 1 1 50%;
             display:    flex;
             flex-wrap:  wrap;
-            margin-top: $spacing-small;
+            margin-top: 3px;
 
             strong.display-name {
-                font-weight: normal;
+                @include felt-seat-name;
             }
 
             span.balance {
+                @include felt-seat-balance;
                 display: block;
-                margin: 0;
-                color: $text-color-light;
-                font-size: 0.7em;
             }
 
             &.disconnected {
-                font-style: italic;
-                color: $text-color-light;
+                @include felt-seat-disconnected;
             }
 
             .hand-rank {
                 display:     block;
-                font-size:   1.2em;
-                color: $text-color-light;
+                font-size:   0.75em;
+                color: rgba(255, 255, 255, 0.5);
 
                 &.is-winner {
                     font-weight: bold;
-                    color: black;
+                    color: $light-green;
                 }
             }
 
             .last-action {
                 display: block;
-                font-size: 0.9em;
-                color: $text-color-light;
+                font-size: 0.75em;
+                color: rgba(255, 255, 255, 0.5);
                 font-style: italic;
             }
         }

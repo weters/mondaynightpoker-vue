@@ -19,18 +19,20 @@
 <style lang="scss" scoped>
 @import '../../../variables.scss';
     div.tricks {
-        display: grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-gap: 2px;
+        display: flex;
+        gap: 2px;
 
         span.trick {
-            width: 12px;
-            height: 12px;
-            background-color: $gray;
-            border-radius: 12px;
+            width: 8px;
+            height: 8px;
+            min-width: 5px;
+            min-height: 5px;
+            flex-shrink: 1;
+            background-color: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
 
             &.won {
-                background-color: $green;
+                background-color: $light-green;
             }
         }
     }

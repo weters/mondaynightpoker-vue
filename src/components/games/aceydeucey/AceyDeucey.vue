@@ -2,9 +2,18 @@
     <div class="acey-deucey">
         <h3>{{ gameState.name }}</h3>
 
-        <acey-deucey-round :round="round"/>
+        <felt-table :participants="gameState.participants">
+            <template #center>
+                <acey-deucey-round :round="round"/>
+            </template>
 
-        <acey-deucey-player-list :participants="gameState.participants"/>
+            <template #player="{ participant }">
+                <acey-deucey-player
+                    :participant="participant"
+                    :player-data="$store.getters.playerDataById(participant.playerId)"
+                />
+            </template>
+        </felt-table>
 
         <player-bar :error="error" :is-turn="isTurn">
             <div class="acey-deucey-player-bar">
@@ -50,14 +59,15 @@ import AceyDeuceyRound from "@/components/games/aceydeucey/AceyDeuceyRound.vue"
 import {mapGetters, mapState} from "vuex"
 import show_error from "@/mixins/show_error"
 import balance from "@/mixins/balance"
-import AceyDeuceyPlayerList from "@/components/games/aceydeucey/AceyDeuceyPlayerList.vue"
+import AceyDeuceyPlayer from "@/components/games/aceydeucey/AceyDeuceyPlayer.vue"
 import ChipStack from "@/components/ChipStack.vue"
+import FeltTable from "@/components/FeltTable.vue"
 
 const defaultBet = '25'
 
 export default {
     name: "AceyDeucey",
-    components: {ChipStack, AceyDeuceyPlayerList, AceyDeuceyRound, PlayerBar},
+    components: {FeltTable, ChipStack, AceyDeuceyPlayer, AceyDeuceyRound, PlayerBar},
     mixins: [show_error, balance],
     data() {
         return {

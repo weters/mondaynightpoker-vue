@@ -5,9 +5,15 @@
             <error :message="error" v-if="error"/>
         </transition>
 
-        <guts-game-overview/>
+        <felt-table :participants="participants">
+            <template #center>
+                <guts-game-overview/>
+            </template>
 
-        <guts-players :participants="participants"/>
+            <template #player="{ participant }">
+                <guts-player :participant="participant" :player-data="playerDataById(participant.playerId)" />
+            </template>
+        </felt-table>
 
         <guts-player-bar/>
     </div>
@@ -15,14 +21,15 @@
 
 <script>
 import {mapGetters} from "vuex"
-import GutsPlayers from "@/components/games/guts/GutsPlayers.vue"
+import GutsPlayer from "@/components/games/guts/GutsPlayer.vue"
 import Error from "@/components/Error.vue"
 import GutsGameOverview from "@/components/games/guts/GutsGameOverview.vue"
 import GutsPlayerBar from "@/components/games/guts/GutsPlayerBar.vue"
+import FeltTable from "@/components/FeltTable.vue"
 
 export default {
     name: "Guts",
-    components: {GutsPlayerBar, GutsGameOverview, Error, GutsPlayers},
+    components: {FeltTable, GutsPlayerBar, GutsGameOverview, Error, GutsPlayer},
     data() {
         return {
             error: null,
@@ -40,6 +47,11 @@ export default {
         },
         gameName() {
             return `${this.cardCount}-Card ${this.bloodyGuts ? 'Bloody ' : ''}Guts${this.allowTrades ? ' with Trades' : ''}`
+        },
+    },
+    methods: {
+        playerDataById(id) {
+            return this.$store.getters.playerDataById(id)
         },
     },
     beforeUnmount() {

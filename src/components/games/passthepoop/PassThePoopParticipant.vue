@@ -102,52 +102,49 @@ export default {
 @import '../../../variables';
 
 .ptp-participant {
+    @include felt-seat;
     display:        flex;
     flex-direction: column;
-    max-width:      100px;
     align-items:    center;
 
     strong.name {
-        overflow: hidden;
-        display:  block;
-
-        @media(max-width: 500px) {
-            font-size: 10px;
-        }
+        @include felt-seat-name;
+        text-align: center;
     }
 
     &:not(.is-connected) {
         strong.name {
-            font-weight: normal;
-            font-style:  italic;
-            color:       $text-color-light;
+            @include felt-seat-disconnected;
         }
     }
 
     .lives {
-        display:               grid;
-        grid-template-columns: repeat(3, 1fr);
-        grid-gap:              $spacing-small;
-        margin:                $spacing-small 0;
-        width:                 100%;
-        align-items:           center;
+        display: flex;
+        gap: 2px;
+        margin: 2px 0;
+        justify-content: center;
 
         svg {
-            width: 100%;
+            width: 16px;
+            height: 16px;
+            fill: rgba(255, 255, 255, 0.7);
         }
 
         span.placeholder {
-            width:       100%;
-            padding-top: 100%;
-            height:      0;
+            width: 16px;
+            height: 16px;
         }
     }
 
     span.is-turn {
         display:    inline-block;
-        width:      25px;
-        height:     25px;
-        margin-top: $spacing-small;
+        width:      20px;
+        height:     20px;
+        margin-top: 2px;
+
+        svg {
+            fill: #e8a838;
+        }
     }
 
     div.ptp-card-container {
@@ -156,17 +153,14 @@ export default {
 
         .block-chip {
             position:         absolute;
-            top:              5px;
-            right:            5px;
-            width:            19px;
-            height:           19px;
+            top:              3px;
+            right:            3px;
+            width:            15px;
+            height:           15px;
             background-color: $red;
             border-radius:    50%;
             border:           2px dotted white;
             box-shadow:       2px 1px rgba(black, 0.3);
-
-            fill:             $red;
-            outline:          white 3px;
         }
     }
 }

@@ -2,11 +2,16 @@
     <div class="texas-hold-em">
         <h3>{{ replaceTokens(gameState.name) }}</h3>
 
-        <poker-pots class="the-poker-pots"/>
+        <felt-table :participants="gameState.participants" :dealer-id="gameState.dealer">
+            <template #center>
+                <poker-pots class="the-poker-pots"/>
+                <texas-hold-em-community class="the-community"/>
+            </template>
 
-        <texas-hold-em-community class="the-community"/>
-
-        <texas-hold-em-participants class="the-participants" :participants="gameState.participants"/>
+            <template #player="{ participant }">
+                <texas-hold-em-participant :participant="participant" />
+            </template>
+        </felt-table>
 
         <poker-player-bar :selected-cards="selectedCards">
             <div :class="`hand hand-${numHoleCards}`">
@@ -25,18 +30,20 @@
 <script>
 import {mapGetters} from "vuex"
 import TexasHoldEmCommunity from "@/components/games/texasholdem/TexasHoldEmCommunity.vue"
-import TexasHoldEmParticipants from "@/components/games/texasholdem/TexasHoldEmParticipants.vue"
+import TexasHoldEmParticipant from "@/components/games/texasholdem/TexasHoldEmParticipant.vue"
 import PokerPlayerBar from "@/components/games/PokerPlayerBar.vue"
 import PokerPots from "@/components/games/poker/PokerPots.vue"
 import TexasHoldEmHoleCard from "@/components/games/texasholdem/TexasHoldEmHoleCard.vue"
+import FeltTable from "@/components/FeltTable.vue"
 
 export default {
     name: "TexasHoldEm",
     components: {
+        FeltTable,
         TexasHoldEmHoleCard,
         PokerPots,
         PokerPlayerBar,
-        TexasHoldEmParticipants,
+        TexasHoldEmParticipant,
         TexasHoldEmCommunity,
     },
     data() {
@@ -106,18 +113,14 @@ export default {
 
 .texas-hold-em {
     .the-community {
-        max-width: 500px;
-        margin:    0 auto $spacing-medium;
+        max-width: 350px;
+        margin: $spacing-small auto 0;
     }
 
     .the-poker-pots {
-        margin-bottom:   $spacing-medium;
+        margin-bottom: $spacing-small;
         justify-content: center;
-        flex-direction:  row;
-    }
-
-    .the-participants {
-        margin-top: $spacing;
+        flex-direction: row;
     }
 
     .player-bar {

@@ -136,29 +136,24 @@ export default {
 @import '../../../variables.scss';
 
 div.guts-player {
-    @include card;
-    padding: $spacing-medium;
-    max-width: 250px;
-    transition: border-color 300ms, box-shadow 300ms;
+    @include felt-seat;
 
     &.is-winner {
-        border-color: $light-green;
-        box-shadow: 0 0 10px rgba($light-green, 0.3);
+        @include felt-seat-won;
     }
 
     &.is-loser {
-        border-color: $red;
-        box-shadow: 0 0 10px rgba($red, 0.3);
+        @include felt-seat-lost;
     }
 
     .hand {
         .cards {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            grid-gap: 4px;
+            display: flex;
+            gap: 2px;
 
-            &.cards-3 {
-                grid-template-columns: repeat(3, 1fr);
+            & > * {
+                flex: 1 1 0;
+                min-width: 0;
             }
         }
     }
@@ -168,52 +163,49 @@ div.guts-player {
         grid-template-columns: 1fr auto;
         justify-items: start;
         align-items: center;
-        margin-top: $spacing-small;
-        gap: $spacing-small;
+        margin-top: 3px;
+        gap: 2px;
 
         .name {
-            font-weight: bold;
+            @include felt-seat-name;
             grid-column: 1;
         }
 
         &.disconnected .name {
-            color: $text-color-light;
-            font-weight: normal;
-            font-style: italic;
+            @include felt-seat-disconnected;
         }
 
         .balance {
+            @include felt-seat-balance;
             grid-column: 2;
-            font-size: 0.9em;
-            color: $text-color-light;
         }
 
         .status-badge {
             grid-column: 1 / -1;
-            font-size: 0.75em;
-            padding: 2px 8px;
-            border-radius: $border-radius;
+            font-size: 0.65em;
+            padding: 1px 6px;
+            border-radius: 3px;
             text-transform: uppercase;
             font-weight: bold;
 
             &.waiting {
-                background: $background-color;
-                color: $text-color-light;
+                background: rgba(255, 255, 255, 0.1);
+                color: rgba(255, 255, 255, 0.4);
             }
 
             &.decided {
-                background: $primary;
-                color: white;
+                background: rgba(255, 255, 255, 0.15);
+                color: rgba(255, 255, 255, 0.7);
             }
 
             &.in {
-                background: $light-green;
-                color: white;
+                background: rgba($light-green, 0.3);
+                color: $light-green;
             }
 
             &.out {
-                background: $text-color-light;
-                color: white;
+                background: rgba(255, 255, 255, 0.1);
+                color: rgba(255, 255, 255, 0.4);
             }
         }
     }

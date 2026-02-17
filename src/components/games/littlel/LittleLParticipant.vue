@@ -101,47 +101,35 @@
 <style lang="scss" scoped>
     @import '../../../variables.scss';
 
-    $max-width: 599px;
-
     div.little-l-participant {
-        border: 1px solid $border-color;
-        padding:   $spacing-medium;
+        @include felt-seat;
 
         &.is-action {
-            border-color: $orange;
-            box-shadow: 0 0 5px $orange;
+            @include felt-seat-active;
         }
 
         div.cards {
             display: flex;
-            margin:  -2px;
+            gap: 1px;
 
             & > * {
-                flex:   1 1 100px;
-                margin: 2px;
-            }
-
-            @media (max-width: $max-width) {
-                margin: -1px;
-                & > * {
-                    margin: 1px;
-                }
+                flex: 1 1 0;
+                min-width: 0;
             }
         }
 
         div.metadata {
-            margin-top: $spacing-small;
+            margin-top: 3px;
             display: grid;
-            grid-template-columns: 2fr 1fr;
+            grid-template-columns: 1fr auto;
 
             strong.display-name {
+                @include felt-seat-name;
             }
 
             &.disconnected {
                 strong.display-name {
-                    font-weight: normal;
-                    font-style: italic;
-                    color: $text-color-light;
+                    @include felt-seat-disconnected;
                 }
             }
 
@@ -149,17 +137,18 @@
                 .name-hand {
                     .hand-rank {
                         display:     block;
-                        font-size:   1.2em;
-                        color: $text-color-light;
+                        font-size:   0.75em;
+                        color: rgba(255, 255, 255, 0.5);
 
                         &.is-winner {
                             font-weight: bold;
-                            color: black;
+                            color: $light-green;
                         }
                     }
                 }
 
                 .chips {
+                    @include felt-seat-balance;
                 }
             }
 

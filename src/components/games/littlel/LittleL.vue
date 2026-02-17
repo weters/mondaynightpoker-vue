@@ -2,13 +2,18 @@
     <div class="little-l">
         <h3>{{ gameState.name }}</h3>
 
-        <div class="board">
-            <little-l-community/>
+        <felt-table :participants="gameState.participants">
+            <template #center>
+                <div class="table-board">
+                    <little-l-community/>
+                    <poker-pots />
+                </div>
+            </template>
 
-            <poker-pots />
-        </div>
-
-        <little-l-participants/>
+            <template #player="{ participant }">
+                <little-l-participant :participant="participant" />
+            </template>
+        </felt-table>
 
         <poker-player-bar :selected-cards="selectedCards">
             <little-l-hand :can-select="gameState.round === 0" v-model="selectedCards" class="bar-hand"/>
@@ -22,13 +27,14 @@ import {mapGetters, mapState} from "vuex"
 import LittleLHand from "./LittleLHand.vue"
 import balance from "../../../mixins/balance"
 import show_error from "../../../mixins/show_error"
-import LittleLParticipants from "./LittleLParticipants.vue"
+import LittleLParticipant from "./LittleLParticipant.vue"
 import PokerPlayerBar from "../PokerPlayerBar.vue"
 import PokerPots from "@/components/games/poker/PokerPots.vue"
+import FeltTable from "@/components/FeltTable.vue"
 
 export default {
     name: "LittleL",
-    components: {PokerPots, PokerPlayerBar, LittleLParticipants, LittleLHand, LittleLCommunity},
+    components: {FeltTable, PokerPots, PokerPlayerBar, LittleLParticipant, LittleLHand, LittleLCommunity},
     mixins: [balance, show_error],
     data() {
         return {
@@ -60,25 +66,20 @@ export default {
 <style lang="scss" scoped>
 @import '../../../variables';
 
-div.board {
-    display:       flex;
-    margin-bottom: $spacing;
-    align-items:   flex-end;
+.little-l {
+    .table-board {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $spacing-small;
 
-    & > :first-child {
-        flex: 1 0 100px;
-    }
+        :deep(.poker-pots) {
+            justify-content: center;
+        }
 
-    & > :nth-child(2) {
-        margin-left: $spacing;
-    }
-
-    :deep(.amount) {
-        font-size: 1.4em;
-    }
-
-    @media (max-width: #{$mobile-max}) {
-        align-items: flex-start;
+        :deep(.amount) {
+            font-size: 1.2em;
+        }
     }
 }
 </style>

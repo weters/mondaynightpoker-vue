@@ -96,19 +96,21 @@ export default {
 @import '../../../variables.scss';
 
 div.bourre-player {
-    border: 1px solid $border-color;
-    padding: $spacing-medium;
-    max-width: 400px;
+    @include felt-seat;
 
     &.is-turn {
-        @include current-turn;
+        @include felt-seat-active;
     }
 
     .hand {
         .cards {
-            display:               grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-gap:              2px;
+            display: flex;
+            gap: 1px;
+
+            & > * {
+                flex: 1 1 0;
+                min-width: 0;
+            }
 
             .card-container {
                 perspective: 200px;
@@ -128,8 +130,8 @@ div.bourre-player {
                 .background {
                     border-radius:    $border-radius;
                     box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
-                    background-color: rgba(black, 0.1);
-                    border:           1px solid rgba(black, 0.1);
+                    background-color: rgba(white, 0.08);
+                    border:           1px solid rgba(white, 0.1);
                     margin:           2px;
                 }
 
@@ -154,7 +156,7 @@ div.bourre-player {
         }
 
         .folded {
-            background-color: $background-color;
+            background-color: rgba(white, 0.05);
             overflow:         hidden;
             width:            100%;
             height:           0;
@@ -173,15 +175,18 @@ div.bourre-player {
         grid-template-columns: 1fr auto;
         justify-items:         start;
         align-items:           center;
+        margin-top:            3px;
 
         .name {
-            font-weight: bold;
+            @include felt-seat-name;
         }
 
         &.disconnected .name {
-            color:       $text-color-light;
-            font-weight: normal;
-            font-style:  italic;
+            @include felt-seat-disconnected;
+        }
+
+        .balance {
+            @include felt-seat-balance;
         }
 
         .tricks {

@@ -92,6 +92,54 @@ $page-width-max-width: 1000px;
     box-shadow: 0 0 4px $orange;
 }
 
+// Felt table seat styles
+@mixin felt-seat {
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 5px;
+    color: white;
+    overflow: hidden;
+    transition: border-color 300ms, box-shadow 300ms;
+}
+
+@mixin felt-seat-active {
+    border-color: #e8a838;
+    box-shadow: 0 0 0 1px #e8a838, 0 0 15px rgba(232, 168, 56, 0.4);
+}
+
+@mixin felt-seat-won {
+    border-color: $light-green;
+    box-shadow: 0 0 0 1px $light-green, 0 0 15px rgba($light-green, 0.4);
+}
+
+@mixin felt-seat-lost {
+    opacity: 0.5;
+}
+
+@mixin felt-seat-name {
+    font-weight: 600;
+    font-size: 0.85em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+}
+
+@mixin felt-seat-balance {
+    font-size: 0.75em;
+    color: rgba(255, 255, 255, 0.6);
+    white-space: nowrap;
+}
+
+@mixin felt-seat-disconnected {
+    font-weight: normal;
+    font-style: italic;
+    color: rgba(255, 255, 255, 0.35);
+}
+
 @mixin card {
     background: white;
     border-radius: $border-radius;

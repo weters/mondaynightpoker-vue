@@ -2,11 +2,20 @@
     <div class="pass-the-poop">
         <h3>Pass the Poop / {{ gameData.gameState.edition }} Edition</h3>
 
-        <div class="pot">
-            <chip-stack :amount="pot" />
-        </div>
+        <felt-table :participants="participants">
+            <template #center>
+                <div class="table-pot">
+                    <chip-stack :amount="pot" />
+                </div>
+            </template>
 
-        <pass-the-poop-participants :participants="participants"/>
+            <template #player="{ participant }">
+                <pass-the-poop-participant
+                    :participant="participant"
+                    :player-data="playerDataById(participant.playerId)"
+                />
+            </template>
+        </felt-table>
 
         <player-bar :error="error" :is-turn="isTurn">
             <div class="bar">
@@ -54,17 +63,18 @@
     import {mapGetters, mapState} from "vuex"
     import PlayerBar from "../PlayerBar.vue"
     import PlayingCard from "../../PlayingCard.vue"
-    import PassThePoopParticipants from "./PassThePoopParticipants.vue"
+    import PassThePoopParticipant from "./PassThePoopParticipant.vue"
     import showError from "../../../mixins/show_error"
     import {animate} from 'popmotion'
     import MdiIcon from "../../MdiIcon.vue"
     import {mdiCards} from "@mdi/js"
     import balance from "../../../mixins/balance"
     import ChipStack from "../../ChipStack.vue"
+    import FeltTable from "@/components/FeltTable.vue"
 
     export default {
         name: "PassThePoop",
-        components: {ChipStack, MdiIcon, PassThePoopParticipants, PlayingCard, PlayerBar},
+        components: {FeltTable, ChipStack, MdiIcon, PassThePoopParticipant, PlayingCard, PlayerBar},
         mixins: [showError, balance],
         data() {
             return {
@@ -97,6 +107,9 @@
                 this.webSocket.send('execute', String(action.id))
                     .then(() => {})
                     .catch(err => this.showError(err))
+            },
+            playerDataById(id) {
+                return this.$store.getters.playerDataById(id)
             },
         },
         watch: {
@@ -149,12 +162,10 @@
     @import '../../../variables';
 
     .pass-the-poop {
-        .pot {
-            & > * {
+        .table-pot {
+            :deep(.chip-stack) {
                 margin: 0 auto;
             }
-
-            margin-bottom: $spacing;
         }
 
         .card {
