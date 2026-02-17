@@ -11,9 +11,19 @@
             </div>
         </div>
 
-        <div class="games">
-            <acey-deucey-game v-for="(game, i) in round.games" :key="game.uuid" :game="game"
-                              :is-active="i === activeGameIndex"/>
+        <div :class="['games', { 'has-multiple': round.games.length > 1 }]">
+            <div class="played-games" v-if="playedGames.length">
+                <acey-deucey-game v-for="game in playedGames" :key="game.uuid" :game="game"
+                                  :is-active="false" :mini="true"/>
+            </div>
+            <div class="active-game">
+                <acey-deucey-game v-if="activeGame" :key="activeGame.uuid" :game="activeGame"
+                                  :is-active="true"/>
+            </div>
+            <div class="upcoming-games" v-if="upcomingGames.length">
+                <acey-deucey-game v-for="game in upcomingGames" :key="game.uuid" :game="game"
+                                  :is-active="false" :mini="true"/>
+            </div>
         </div>
     </div>
 </template>
@@ -42,6 +52,15 @@ export default {
         activeGameIndex() {
             return this.$store.getters["aceyDeucey/gameState"].round.activeGameIndex
         },
+        playedGames() {
+            return this.round.games.slice(0, this.activeGameIndex)
+        },
+        activeGame() {
+            return this.round.games[this.activeGameIndex]
+        },
+        upcomingGames() {
+            return this.round.games.slice(this.activeGameIndex + 1)
+        },
     },
     watch: {
         'round.pot': {
@@ -67,7 +86,7 @@ export default {
         display: flex;
         justify-content: center;
         align-items: stretch;
-        margin-bottom: $spacing;
+        margin-bottom: $spacing-medium;
 
         & > div {
             display: flex;
@@ -91,14 +110,21 @@ export default {
 }
 
 .games {
-    display:               grid;
-    grid-template-columns: 1fr;
-    @media (min-width: 400px) {
-        grid-template-columns: 1fr 1fr;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: $spacing-small;
+
+    .active-game {
+        flex: 1 1 0;
     }
-    @media (min-width: 800px) {
-        grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    .played-games,
+    .upcoming-games {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-small;
+        flex: 0 0 100px;
     }
-    grid-gap:              $spacing-medium;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div :class="{ 'acey-deucey-game': true, 'is-active': isActive }">
+    <div :class="{ 'acey-deucey-game': true, 'is-active': isActive, 'is-mini': mini }">
         <div class="cards">
             <div class="acey-deucey-card">
                 <playing-card-container :card="game.firstCard" :hide-card="!game.firstCard"/>
@@ -14,16 +14,16 @@
                 <div class="card-state"></div>
             </div>
         </div>
-        <div class="bet">
+        <div class="bet" v-if="!mini">
             <div>
-                <p><strong>Bet</strong></p>
+                <strong>Bet</strong>
                 <chip-stack :amount="game.bet.amount"/>
             </div>
-        </div>
-        <div class="result" v-if="result">
-            <div class="result-text">{{ result }}</div>
-            <div v-if="adjustment !== null" :class="{adjustment: true, negative: adjustment < 0}">
-                {{ formatAmount(adjustment) }}
+            <div class="result" v-if="result">
+                <div class="result-text">{{ result }}</div>
+                <div v-if="adjustment !== null" :class="{adjustment: true, negative: adjustment < 0}">
+                    {{ formatAmount(adjustment) }}
+                </div>
             </div>
         </div>
     </div>
@@ -45,6 +45,10 @@ export default {
             required: true,
         },
         isActive: Boolean,
+        mini: {
+            type: Boolean,
+            default: false,
+        },
     },
     data() {
         return {
@@ -112,55 +116,66 @@ export default {
 }
 </script>
 
-<style lang="scss" . scoped>
+<style lang="scss" scoped>
 @import '../../../variables.scss';
 
 div.acey-deucey-game {
-    border:                1px solid $border-color;
-    display:               grid;
-    grid-template-columns: 1fr 1fr;
-    padding:               $spacing-medium;
-
-    &.is-active {
-        box-shadow: 0 0 5px 2px rgba($orange, 0.25);
-    }
+    padding: $spacing-small;
 
     &:not(.is-active) {
         opacity: 0.5;
     }
 
+    &.is-mini {
+        padding: 4px;
+
+        div.cards {
+            max-width: none;
+        }
+    }
+
     div.cards {
-        display:     flex;
-        grid-column: 1 / span 2;
+        display: flex;
+        max-width: 200px;
+        margin: 0 auto;
 
         div.acey-deucey-card {
-            flex: 1 1 125px;
+            flex: 1 1 0;
+            min-width: 0;
 
             &:nth-child(2) {
-                margin: 0 $spacing-medium;
+                margin: 0 $spacing-small;
             }
         }
     }
 
     div.bet {
+        margin-top: $spacing-small;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: $spacing-medium;
+        font-size: 0.85em;
+
         & > div {
-            display:          flex;
-            flex-direction:   column;
-            align-items:      center;
-            width: min-content;
+            display:        flex;
+            align-items:    center;
+            gap:            $spacing-small;
         }
     }
 
     div.result {
-        justify-self: flex-end;
+        text-align: right;
 
         div.result-text {
             text-transform: uppercase;
             font-weight:    bold;
-            color:          $secondary;
+            color:          rgba(255, 255, 255, 0.9);
         }
 
         div.adjustment {
+            color: $light-green;
+
             &.negative {
                 color: $red;
             }
