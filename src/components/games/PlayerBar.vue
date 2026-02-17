@@ -5,6 +5,7 @@
                 <p>Table balance: {{ formatAmount(userClientState.balance) }}</p>
 
                 <p><toggle label="Deal me in!" v-model="dealMeIn" :disabled="dealMeInLoading" /></p>
+                <p><toggle label="Mute sounds" v-model="muteSounds" /></p>
 
                 <template v-if="isTableAdmin || canTerminate">
                     <h3>Admin</h3>
@@ -55,6 +56,7 @@ export default {
             dealMeIn: this.$store.getters.userClientState.active,
             dealMeInLoading: false,
             confirmTerminate: false,
+            muteSounds: audioplayer.muted,
         }
     },
     computed: {
@@ -90,6 +92,9 @@ export default {
                     this.showError(err)
                 })
                 .finally(() => this.dealMeInLoading = false)
+        },
+        muteSounds(newVal) {
+            audioplayer.setMuted(newVal)
         },
         isTurn: {
             immediate: true,

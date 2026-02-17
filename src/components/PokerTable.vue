@@ -46,6 +46,7 @@
                         <form class="player-state" v-if="userClientState.isSeated">
                             <toggle v-model="userClientState.active" label="Deal me in!" :disabled="playButtonDisabled"
                                     @change="setPlayerActive"/>
+                            <toggle v-model="muteSounds" label="Mute sounds" class="mute-sounds"/>
                             <p class="details">If you want to sit out, uncheck "Deal me in!"</p>
                         </form>
                     </div>
@@ -87,6 +88,7 @@ import TexasHoldEm from "@/components/games/texasholdem/TexasHoldEm.vue"
 import TableStakes from "@/components/TableStakes.vue"
 import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiContentCopy} from "@mdi/js"
+import audioplayer from "@/audioplayer"
 
 export default {
     name: "PokerTable",
@@ -113,6 +115,7 @@ export default {
             error: null,
             ws: null,
             playButtonDisabled: false,
+            muteSounds: audioplayer.muted,
         }
     },
     computed: {
@@ -175,6 +178,9 @@ export default {
             if (table) {
                 this.setTitle(this.tableName)
             }
+        },
+        muteSounds(newVal) {
+            audioplayer.setMuted(newVal)
         },
     },
 }
@@ -274,6 +280,10 @@ export default {
     form.player-state {
         @include card;
         padding: $spacing;
+
+        .mute-sounds {
+            margin-top: $spacing-medium;
+        }
 
         p.details {
             font-size: 0.85em;

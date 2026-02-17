@@ -6,6 +6,7 @@
                 <p>Table balance: {{ formatAmount(userClientState.balance) }}</p>
                 <p><label class="optional"><span>Sit out</span><input type="checkbox" v-model="sitOut"
                                                                       :disabled="sitOutLoading"/></label></p>
+                <p><toggle label="Mute sounds" v-model="muteSounds" /></p>
 
                 <template v-if="isTableAdmin || canRestart || canTerminate">
                     <h3>Admin</h3>
@@ -59,10 +60,11 @@
     import Slider from "@/components/Slider.vue"
     import balance from "@/mixins/balance"
     import audioplayer from "@/audioplayer"
+    import Toggle from "@/components/formelements/Toggle.vue"
 
     export default {
         name: "BourrePlayerBar",
-        components: {Slider, Error, BourreDiscard, BourreHand},
+        components: {Toggle, Slider, Error, BourreDiscard, BourreHand},
         mixins: [balance],
         data() {
             return {
@@ -71,6 +73,7 @@
                 sitOutLoading: false,
                 confirmRestart: false,
                 confirmTerminate: false,
+                muteSounds: audioplayer.muted,
             }
         },
         computed: {
@@ -122,6 +125,9 @@
                         this.showError(err)
                     })
                     .finally(() => this.sitOutLoading = false)
+            },
+            muteSounds(newVal) {
+                audioplayer.setMuted(newVal)
             },
             isTurn: {
                 immediate: true,
