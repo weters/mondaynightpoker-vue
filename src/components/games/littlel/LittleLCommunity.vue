@@ -22,7 +22,7 @@
 <style lang="scss" scoped>
     @import '../../../variables';
     .community {
-        max-width: 150px;
+        width: min(120px, 100%);
         display: grid;
         grid-template-columns: 1fr 1fr;
         grid-template-rows: 1fr 1fr;

@@ -103,8 +103,8 @@ export default {
             const dy = cy - seat.y
             const dist = Math.sqrt(dx * dx + dy * dy)
 
-            // Place button ~30% of the way from seat toward center
-            const t = 0.30
+            // Place button ~50% of the way from seat toward center
+            const t = 0.50
             const bx = seat.x + dx * t
             const by = seat.y + dy * t
 
@@ -207,7 +207,7 @@ export default {
     transform: translate(-50%, -50%);
     width: 60%;
     text-align: center;
-    z-index: 1;
+    z-index: 3;
     color: rgba(255, 255, 255, 0.95);
 
     @media (max-width: $mobile-max) {

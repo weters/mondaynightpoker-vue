@@ -49,7 +49,7 @@ div.playing-card-container {
     width:            100%;
     aspect-ratio:     2.5 / 3.5;
     position:         relative;
-    background-color: #eee;
+    background-color: rgba(0, 0, 0, 0.25);
     border-radius:    $border-radius;
 
     & > * {

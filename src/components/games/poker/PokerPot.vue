@@ -46,9 +46,7 @@ export default {
 @import '../../../variables';
 
 .poker-pot {
-    background-color: $gray;
     padding: $spacing-medium;
-    border-radius: $border-radius;
 
     display: flex;
     flex-direction: column;
