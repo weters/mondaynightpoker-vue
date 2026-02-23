@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mondaynightpoker-vue-beta
+  labels:
+    app: mondaynightpoker-vue-beta
+    type: frontend
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: mondaynightpoker-vue-beta
+      type: frontend
+  template:
+    metadata:
+      labels:
+        app: mondaynightpoker-vue-beta
+        type: frontend
+    spec:
+      imagePullSecrets:
+        - name: github
+      containers:
+        - name: mondaynightpoker-vue-beta
+          image: ghcr.io/weters/mondaynightpoker-vue/mondaynightpoker-vue:beta
+          readinessProbe:
+            httpGet:
+              port: 80
+              path: /
+          livenessProbe:
+            httpGet:
+              port: 80
+              path: /

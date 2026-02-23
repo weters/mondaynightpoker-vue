@@ -10,10 +10,19 @@ spec:
     - hosts:
         - mondaynight.bid
       secretName: tls-mondaynightpoker
+    - hosts:
+        - beta.mondaynight.bid
+      secretName: tls-mondaynightpoker
   rules:
     - host: mondaynight.bid
       http:
         paths:
           - backend:
               serviceName: mondaynightpoker-vue
+              servicePort: 80
+    - host: beta.mondaynight.bid
+      http:
+        paths:
+          - backend:
+              serviceName: mondaynightpoker-vue-beta
               servicePort: 80
