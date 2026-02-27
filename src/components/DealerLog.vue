@@ -4,7 +4,7 @@
 
         <div class="container">
             <transition-group name="log" tag="div">
-                <div v-for="log in logs" :key="log.uuid" class="log">
+                <div v-for="log in logs" :key="log.key" class="log">
                     <div class="time">{{ new Date(log.time).toLocaleTimeString() }}</div>
                     <div class="message">{{ log.message }}</div>
                     <div class="cards">

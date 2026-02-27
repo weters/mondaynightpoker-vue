@@ -7,7 +7,7 @@ import aceyDeucey from "@/store/aceyDeucey"
 import texasHoldEm from "@/store/texasHoldEm"
 import guts from "@/store/guts"
 
-let errorTimeout, notificationTimeout
+let errorTimeout, notificationTimeout, logIdCounter = 0
 
 const store = createStore({
     modules: {
@@ -34,22 +34,26 @@ const store = createStore({
                 return
             }
 
-            const formattedLogs = logs.map(log => {
-                let players = ''
-                if (log.playerIds && log.playerIds.length > 0 && log.playerIds[0] !== 0) {
-                    players = log.playerIds.map(pid => state.clientState[pid].player.displayName).join(', ')
-                }
+            const existingUuids = new Set(state.logs.map(l => l.uuid))
+            const formattedLogs = logs
+                .filter(log => !log.uuid || !existingUuids.has(log.uuid))
+                .map(log => {
+                    let players = ''
+                    if (log.playerIds && log.playerIds.length > 0 && log.playerIds[0] !== 0) {
+                        players = log.playerIds.map(pid => state.clientState[pid].player.displayName).join(', ')
+                    }
 
-                const cards = log.cards ? log.cards : []
+                    const cards = log.cards ? log.cards : []
 
-                let message = log.message.replace(/{}/g, players)
-                message = message.replace(/\${(-?\d+)}/g, (match, cents) => formatAmount(cents))
-                return {
-                    ...log,
-                    message,
-                    cards,
-                }
-            })
+                    let message = log.message.replace(/{}/g, players)
+                    message = message.replace(/\${(-?\d+)}/g, (match, cents) => formatAmount(cents))
+                    return {
+                        ...log,
+                        key: log.uuid || `log-${++logIdCounter}`,
+                        message,
+                        cards,
+                    }
+                })
 
             state.logs.push(...formattedLogs)
             const len = state.logs.length
