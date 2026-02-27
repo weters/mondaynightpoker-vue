@@ -85,6 +85,12 @@
 </script>
 
 <style scoped>
+    .bourre-hand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
     div.buttons {
         white-space: nowrap;
     }

@@ -24,6 +24,8 @@
 </script>
 
 <style lang="scss" scoped>
+    @import '../../../variables';
+
     .seven-card-hand {
         .hand {
             display: flex;
