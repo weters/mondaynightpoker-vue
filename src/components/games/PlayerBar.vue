@@ -168,14 +168,10 @@ p.game-info {
     padding-bottom: calc(2px + env(safe-area-inset-bottom));
     display: flex;
     align-items: center;
+    gap: $spacing-small;
     line-height: 1.4;
 
-    & > span:not(:first-child):not(.settings-trigger):not(.turn-badge)::before {
-        color: #bbb;
-        content: ' |  ';
-    }
-
-    strong::after {
+    :deep(strong)::after {
         content: ' ';
     }
 }
