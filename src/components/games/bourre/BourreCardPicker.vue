@@ -95,9 +95,18 @@
     @import '../../../variables';
 
     .hand {
-        display:               grid;
-        grid-template-columns: repeat(5, 1fr);
-        grid-gap:              $spacing-small;
+        display: flex;
+        gap: 3px;
+
+        & > * {
+            width: 40px;
+            flex: 0 0 40px;
+
+            @media (min-width: $mobile-max) {
+                width: 64px;
+                flex: 0 0 64px;
+            }
+        }
 
         .card {
             display: inline-block;

@@ -11,23 +11,19 @@
                 <template v-if="pending">
                     <button key="pending" class="pending" @click="pending = null">{{ pendingButtonText }}</button>
                 </template>
-                <template v-else-if="confirmFold">
-                    <button class="secondary" @click="confirmFold=false">Cancel</button>
-                    <button @click="fold">Yes, Fold</button>
-                </template>
-                <template v-else-if="confirmPlay">
-                    <button class="secondary" @click="confirmPlay=false">Cancel</button>
-                    <button @click="discard">
-                        <span v-if="Object.keys(selected).length === 0">Yes, Keep All</span>
-                        <span v-else>Yes, Discard Selected</span>
-                    </button>
-                </template>
                 <template v-else>
-                    <button class="secondary" @click="setConfirmFold">Fold</button>
-                    <button @click="confirmPlay=true">
-                        <span v-if="Object.keys(selected).length === 0">Keep All</span>
-                        <span v-else>Discard Selected</span>
-                    </button>
+                    <confirm-button
+                        label="Fold"
+                        confirm-text="Confirm Fold?"
+                        danger
+                        :disabled="selected.length > 0"
+                        @confirmed="fold"
+                    />
+                    <confirm-button
+                        :label="discardLabel"
+                        confirm-text="Confirm?"
+                        @confirmed="discard"
+                    />
                 </template>
             </div>
         </div>
@@ -36,11 +32,12 @@
 
 <script>
 import BourreCardPicker from "@/components/games/bourre/BourreCardPicker.vue"
+import ConfirmButton from "@/components/ConfirmButton.vue"
 import {mapGetters} from "vuex"
 
 export default {
     name: "BourreDiscard",
-    components: {BourreCardPicker},
+    components: {ConfirmButton, BourreCardPicker},
     props: {
         hand: {
             type: Array,
@@ -50,8 +47,6 @@ export default {
     data() {
         return {
             selected: [],
-            confirmFold: false,
-            confirmPlay: false,
             pending: null,
         }
     },
@@ -69,6 +64,9 @@ export default {
         isTurnOver() {
             return this.discards !== null || this.folded
         },
+        discardLabel() {
+            return Object.keys(this.selected).length === 0 ? 'Keep All' : 'Discard Selected'
+        },
         pendingButtonText() {
             return this.pending === 'Fold' ? 'Fold' :
                 this.pending === 'Discard' && Object.keys(this.selected).length === 0 ? 'Keep All'
@@ -83,28 +81,22 @@ export default {
             }
 
             this.$store.state.webSocket.send('discard', null, this.selected)
-                .then(res => console.log(res))
                 .catch(err => {
                     this.$emit('error', err)
                 })
         },
-        setConfirmFold() {
+        fold() {
             if (this.selected.length > 0) {
                 this.$emit('error', 'You cannot fold with cards selected')
                 return
             }
 
-            this.confirmFold = true
-        },
-        fold() {
             if (!this.isTurn) {
                 this.pending = 'Fold'
                 return
             }
 
-            this.error = null
             this.$store.state.webSocket.send('discard')
-                .then(res => console.log(res))
                 .catch(err => {
                     this.$emit('error', err)
                 })
@@ -128,12 +120,6 @@ export default {
                 this.selected = newValue || []
             },
         },
-        pending(pending) {
-            if (pending) {
-                this.confirmFold = false
-                this.confirmPlay = false
-            }
-        },
     },
 }
 </script>
@@ -150,7 +136,7 @@ div.buttons {
 
             &.secondary {
                 background-color: transparent;
-                color:            #888;
+                color: #888;
             }
 
             &.pending {

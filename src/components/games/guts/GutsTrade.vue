@@ -6,22 +6,16 @@
         <template v-else-if="canTrade || isTradePhase">
             <p class="instruction">Select cards to trade (or keep all)</p>
             <div class="buttons">
-                <!-- Confirmation mode -->
-                <template v-if="confirm">
-                    <button class="secondary" @click="confirm=null">Cancel</button>
-                    <button @click="handleConfirm">Yes, {{ confirmLabel }}</button>
+                <template v-if="canTrade">
+                    <confirm-button
+                        :label="tradeButtonLabel"
+                        confirm-text="Confirm?"
+                        @confirmed="submitTrade"
+                    />
                 </template>
-                <!-- Future action confirmation -->
-                <template v-else-if="confirmFuture">
-                    <button class="secondary" @click="confirmFuture=null">Cancel</button>
-                    <button class="future-action" @click="handleConfirmFuture">Yes, {{ confirmFutureLabel }}</button>
-                </template>
-                <!-- Normal mode -->
                 <template v-else>
-                    <button v-if="canTrade" @click="requestConfirm">
-                        {{ tradeButtonLabel }}
-                    </button>
-                    <button v-else :class="{'future-action': true, pending: futureAction !== null}"
+                    <!-- Future action: queue trade for when it's our turn -->
+                    <button :class="{'future-action': true, pending: futureAction !== null}"
                             @click="handleFutureAction">
                         {{ futureButtonLabel }}
                     </button>
@@ -37,9 +31,11 @@
 
 <script>
 import {mapGetters} from "vuex"
+import ConfirmButton from "@/components/ConfirmButton.vue"
 
 export default {
     name: "GutsTrade",
+    components: {ConfirmButton},
     props: {
         selectedCards: {
             type: Array,
@@ -49,9 +45,7 @@ export default {
     emits: ['error', 'clearSelection'],
     data() {
         return {
-            confirm: null,
-            confirmFuture: null,
-            futureAction: null, // stores the queued trade cards array
+            futureAction: null,
         }
     },
     computed: {
@@ -82,70 +76,41 @@ export default {
             if (this.selectedCount === 0) return 'Queue Stand Pat'
             return `Queue Trade ${this.selectedCount}`
         },
-        confirmLabel() {
-            if (this.confirm.length === 0) return 'Stand Pat'
-            return `Trade ${this.confirm.length} Card${this.confirm.length > 1 ? 's' : ''}`
-        },
-        confirmFutureLabel() {
-            if (this.confirmFuture.length === 0) return 'Stand Pat'
-            return `Trade ${this.confirmFuture.length} Card${this.confirmFuture.length > 1 ? 's' : ''}`
-        },
     },
     watch: {
         canTrade(newVal) {
-            if (newVal) {
-                // If we have a queued future action, auto-submit it
-                if (this.futureAction !== null) {
-                    this.submitTradeWithCards(this.futureAction)
-                    return
-                }
+            if (newVal && this.futureAction !== null) {
+                this.submitTradeWithCards(this.futureAction)
             }
         },
         isTradePhase(newVal) {
             if (!newVal) {
-                // Clear state when trade phase ends
                 this.clearState()
             }
         },
         selectedCards() {
-            // Clear future action if selection changes after queuing
             if (this.futureAction !== null) {
                 this.futureAction = null
             }
-            // Clear any pending confirmations
-            this.confirm = null
-            this.confirmFuture = null
         },
     },
     methods: {
         getSelectedCards() {
-            // Convert card objects to "14h" format for server
             return this.selectedCards.map(card => {
                 return `${card.rank}${card.suit.charAt(0)}`
             })
         },
-        requestConfirm() {
-            this.confirm = this.getSelectedCards()
-        },
-        handleConfirm() {
-            this.submitTradeWithCards(this.confirm)
+        submitTrade() {
+            this.submitTradeWithCards(this.getSelectedCards())
         },
         handleFutureAction() {
-            // Toggle off if already queued
             if (this.futureAction !== null) {
                 this.futureAction = null
                 return
             }
-            // Request confirmation for future action
-            this.confirmFuture = this.getSelectedCards()
-        },
-        handleConfirmFuture() {
-            this.futureAction = this.confirmFuture
-            this.confirmFuture = null
+            this.futureAction = this.getSelectedCards()
         },
         clearState() {
-            this.confirm = null
-            this.confirmFuture = null
             this.futureAction = null
             this.$emit('clearSelection')
         },
@@ -168,11 +133,11 @@ export default {
 
 .guts-trade {
     text-align: center;
-    margin-bottom: $spacing-medium;
 
     .instruction {
-        margin: 0 0 $spacing-small;
+        margin: 0 0 2px;
         font-weight: bold;
+        font-size: 0.85em;
     }
 
     .buttons {
@@ -181,8 +146,7 @@ export default {
         justify-content: center;
 
         button {
-            min-width: 120px;
-            padding: $spacing-small $spacing-medium;
+            min-width: 100px;
             font-weight: bold;
 
             &.future-action {
@@ -191,11 +155,6 @@ export default {
                 &.pending {
                     box-shadow: 0 0 5px 2px $yellow;
                 }
-            }
-
-            &.secondary {
-                background-color: $gray;
-                color: $text-color;
             }
         }
     }

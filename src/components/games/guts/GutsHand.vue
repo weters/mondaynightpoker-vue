@@ -94,12 +94,17 @@ export default {
 @import '../../../variables';
 
 .guts-hand {
-    display:               grid;
-    grid-template-columns: repeat(2, minmax(50px, 100px));
-    grid-gap:              $spacing-medium;
+    display: flex;
+    gap: 4px;
 
-    &.guts-hand-3 {
-        grid-template-columns: repeat(3, minmax(50px, 100px));
+    & > .card {
+        width: 40px;
+        flex: 0 0 40px;
+
+        @media (min-width: $mobile-max) {
+            width: 64px;
+            flex: 0 0 64px;
+        }
     }
 
     &.folded .card {

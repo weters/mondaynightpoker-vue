@@ -9,42 +9,41 @@
         <pass-the-poop-participants :participants="participants"/>
 
         <player-bar :error="error" :is-turn="isTurn">
-            <div class="bar">
-                <div class="card">
-                    <transition name="card" mode="out-in">
-                        <playing-card :rank="card.rank" :suit="card.suit" v-if="card"
-                                      :key="`${card.rank}.${card.suit}`"/>
-                    </transition>
-                </div>
+            <template #cards>
+                <div class="card-and-meta">
+                    <div class="card">
+                        <transition name="card" mode="out-in">
+                            <playing-card :rank="card.rank" :suit="card.suit" v-if="card"
+                                          :key="`${card.rank}.${card.suit}`"/>
+                        </transition>
+                    </div>
 
-                <div class="metadata">
-                    <div class="item">
-                        <span class="icon"><mdi-icon :icon="mdiCards"/></span>
-                        <span class="value">{{ cardsLeftInDeck }}</span>
+                    <div class="metadata">
+                        <div class="item">
+                            <span class="icon"><mdi-icon :icon="mdiCards"/></span>
+                            <span class="value">{{ cardsLeftInDeck }}</span>
+                        </div>
                     </div>
                 </div>
+            </template>
 
+            <template #actions>
                 <div class="buttons">
-                    <template v-if="confirm">
-                        <button @click="confirm=null" type="button" class="secondary">Cancel</button>
-                        <button @click="execute(confirm)" type="button">Yes, {{confirm.name}}</button>
-                    </template>
-                    <template v-else>
-                        <button
-                                type="button"
-                                v-for="a in availableActions"
-                                :key="a.id"
-                                @click="confirm=a">{{a.name}}
-                        </button>
-                    </template>
+                    <confirm-button
+                        v-for="a in availableActions"
+                        :key="a.id"
+                        :label="a.name"
+                        :confirm-text="`Confirm ${a.name}?`"
+                        @confirmed="execute(a)"
+                    />
                 </div>
-            </div>
+            </template>
 
-            <template v-slot:gameInfo>
-            <span class="turn">
-                <strong>Turn:</strong>
-                <span>{{ currentTurn }}</span>
-            </span>
+            <template #gameInfo>
+                <span class="turn">
+                    <strong>Turn:</strong>
+                    <span>{{ currentTurn }}</span>
+                </span>
             </template>
         </player-bar>
     </div>
@@ -55,6 +54,7 @@
     import PlayerBar from "../PlayerBar.vue"
     import PlayingCard from "../../PlayingCard.vue"
     import PassThePoopParticipants from "./PassThePoopParticipants.vue"
+    import ConfirmButton from "@/components/ConfirmButton.vue"
     import showError from "../../../mixins/show_error"
     import {animate} from 'popmotion'
     import MdiIcon from "../../MdiIcon.vue"
@@ -64,7 +64,7 @@
 
     export default {
         name: "PassThePoop",
-        components: {ChipStack, MdiIcon, PassThePoopParticipants, PlayingCard, PlayerBar},
+        components: {ConfirmButton, ChipStack, MdiIcon, PassThePoopParticipants, PlayingCard, PlayerBar},
         mixins: [showError, balance],
         data() {
             return {
@@ -72,7 +72,6 @@
                 error: null,
                 cardsLeftInDeck: 52,
                 pot: 0,
-                confirm: null,
             }
         },
         computed: {
@@ -95,7 +94,6 @@
         methods: {
             execute(action) {
                 this.webSocket.send('execute', String(action.id))
-                    .then(() => {})
                     .catch(err => this.showError(err))
             },
         },
@@ -125,7 +123,6 @@
             },
             'gameData.gameState.cardsLeftInDeck': {
                 handler: function (newValue, oldValue) {
-                    // doing it this way allows us to animate from 52
                     this.cardsLeftInDeck = newValue
                     animate({
                         from: parseInt(oldValue || 52, 10),
@@ -138,9 +135,6 @@
                 },
                 immediate: true,
             },
-            availableActions() {
-                this.confirm = null
-            }
         },
     }
 </script>
@@ -158,19 +152,21 @@
         }
 
         .card {
-            max-width: 100px;
-            width:     100%;
+            width: 40px;
+
+            @media (min-width: $mobile-max) {
+                width: 64px;
+            }
         }
 
-        .bar {
-            display:     flex;
+        .card-and-meta {
+            display: flex;
             align-items: center;
+        }
 
-            .buttons {
-                margin-left: auto;
-                white-space: nowrap;
-                width:       min-content;
-            }
+        .buttons {
+            white-space: nowrap;
+            width: min-content;
         }
     }
 
@@ -179,19 +175,19 @@
     }
 
     .card-enter-from, .card-leave-to {
-        opacity:   0;
+        opacity: 0;
         transform: translateY(-100%);
     }
 
     .metadata {
-        display:     flex;
+        display: flex;
         margin-left: $spacing;
 
         .item {
-            display:        flex;
+            display: flex;
             flex-direction: column;
-            align-items:    center;
-            width:          min-content;
+            align-items: center;
+            width: min-content;
 
             &:not(:first-child) {
                 margin-left: $spacing-small;
@@ -199,7 +195,7 @@
 
             span.icon {
                 display: block;
-                width:   30px;
+                width: 30px;
             }
         }
     }

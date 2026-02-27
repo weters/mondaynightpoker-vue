@@ -120,31 +120,17 @@ export default {
         margin-top: $spacing;
     }
 
-    .player-bar {
-        & > div {
-            display:     flex;
-            align-items: center;
+    div.hand {
+        display: flex;
+        gap: 4px;
 
-            div.hand {
-                display:               grid;
-                grid-template-columns: repeat(2, minmax(50px, 100px));
-                grid-gap:              $spacing-medium;
+        & > * {
+            width: 40px;
+            flex: 0 0 40px;
 
-                &.hand-3 {
-                    grid-template-columns: repeat(3, minmax(50px, 100px));
-                }
-            }
-
-            & > div:last-child {
-                margin-left: auto;
-            }
-
-            @media(max-width: $mobile-max) {
-                display: block;
-
-                & > div:last-child {
-                    margin-top: $spacing-medium;
-                }
+            @media (min-width: $mobile-max) {
+                width: 64px;
+                flex: 0 0 64px;
             }
         }
     }

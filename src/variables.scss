@@ -46,6 +46,10 @@ $control-size: 20px;
 $media-small-table-width: 600px;
 $mobile-max: 600px;
 
+// Player bar
+$bar-padding-v: 6px;
+$bar-padding-v-landscape: 3px;
+
 $page-width-max-width: 1000px;
 
 @mixin page-width {

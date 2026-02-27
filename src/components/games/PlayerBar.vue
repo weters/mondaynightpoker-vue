@@ -1,120 +1,88 @@
 <template>
     <div :class="{ 'player-bar': true, 'is-turn': isTurn }" ref="bar">
-        <slider>
-            <div class="settings">
-                <p>Table balance: {{ formatAmount(userClientState.balance) }}</p>
-
-                <p><toggle label="Deal me in!" v-model="dealMeIn" :disabled="dealMeInLoading" /></p>
-                <p><toggle label="Mute sounds" v-model="muteSounds" /></p>
-
-                <template v-if="isTableAdmin || canTerminate">
-                    <h3>Admin</h3>
-
-                    <div class="buttons">
-                        <template v-if="confirmTerminate">
-                            <button class="secondary" @click="confirmTerminate=false">Cancel</button>
-                            <button @click="terminateGame">Yes, Terminate</button>
-                        </template>
-                        <template v-else>
-                            <button @click="confirmTerminate=true" v-if="canTerminate">Terminate</button>
-                        </template>
-                    </div>
-                </template>
+        <div class="bar-content">
+            <div class="cards-area">
+                <slot name="cards"></slot>
             </div>
-        </slider>
-
-        <slot></slot>
+            <div class="actions-area">
+                <slot name="actions"></slot>
+            </div>
+        </div>
 
         <p class="game-info">
+            <span class="turn-badge" v-if="isTurn">YOUR TURN</span>
             <slot name="gameInfo"></slot>
+            <span class="settings-trigger" @click="settingsOpen = true">
+                <svg viewBox="0 0 24 24" width="14" height="14"><path :d="mdiCog" fill="currentColor"/></svg>
+            </span>
         </p>
+
         <transition name="player-bar-error">
             <mnp-error :message="combinedError" v-if="combinedError" class="error"/>
         </transition>
+
+        <settings-bottom-sheet :open="settingsOpen" @close="settingsOpen = false">
+            <div class="settings">
+                <p>Table balance: {{ formatAmount(userClientState.balance) }}</p>
+
+                <p><toggle label="Deal me in!" v-model="dealMeIn" :disabled="dealMeInLoading"/></p>
+                <p><toggle label="Mute sounds" v-model="muteSounds"/></p>
+
+                <slot name="settings"></slot>
+
+                <template v-if="isTableAdmin || canTerminate">
+                    <h3>Admin</h3>
+                    <div class="buttons">
+                        <confirm-button
+                            v-if="canTerminate"
+                            label="Terminate"
+                            confirm-text="Confirm Terminate?"
+                            danger
+                            @confirmed="terminateGame"
+                        />
+                    </div>
+                </template>
+            </div>
+        </settings-bottom-sheet>
     </div>
 </template>
 
 <script>
 import MnpError from "@/components/Error.vue"
-import Slider from "@/components/Slider.vue"
-import {mapGetters} from "vuex"
-import balance from "../../mixins/balance"
-import audioplayer from "@/audioplayer"
 import Toggle from "@/components/formelements/Toggle.vue"
+import SettingsBottomSheet from "@/components/SettingsBottomSheet.vue"
+import ConfirmButton from "@/components/ConfirmButton.vue"
+import playerBarShared from "@/mixins/playerBarShared"
+import {mdiCog} from '@mdi/js'
 
 export default {
     name: "PlayerBar",
-    mixins: [balance],
-    components: {Toggle, Slider, MnpError},
+    mixins: [playerBarShared],
+    components: {ConfirmButton, SettingsBottomSheet, Toggle, MnpError},
     props: {
         isTurn: Boolean,
         error: [String, Error],
     },
     data() {
         return {
-            localError: null,
-            dealMeIn: this.$store.getters.userClientState.active,
-            dealMeInLoading: false,
-            confirmTerminate: false,
-            muteSounds: audioplayer.muted,
+            mdiCog,
+            settingsOpen: false,
         }
     },
     computed: {
-        ...mapGetters({
-            isTableAdmin: 'isTableAdmin',
-            canTerminate: 'canTerminate',
-            userClientState: 'userClientState',
-        }),
         combinedError() {
             return this.localError || this.error
         },
     },
     mounted() {
-        this.$watch(() => this.$refs.bar.offsetHeight, newVal => {
-            document.querySelector('main').style.paddingBottom = `${newVal + 20}px`
-        }, {immediate: true})
-
-        // give time for images to load
-        setTimeout(() => {
-            document.querySelector('main').style.paddingBottom = `${this.$refs.bar.offsetHeight + 20}px`
-        }, 100)
+        const main = document.querySelector('main')
+        if (main && this.$refs.bar) {
+            main.style.paddingBottom = `${this.$refs.bar.offsetHeight + 8}px`
+        }
     },
     watch: {
         dealMeIn(active) {
-            if (this.dealMeInLoading) {
-                return
-            }
-
-            this.dealMeInLoading = true
-            this.$store.state.webSocket.send('playerStatus', null, null, {active})
-                .catch(err => {
-                    this.dealMeIn = !active
-                    this.showError(err)
-                })
-                .finally(() => this.dealMeInLoading = false)
-        },
-        muteSounds(newVal) {
-            audioplayer.setMuted(newVal)
-        },
-        isTurn: {
-            immediate: true,
-            handler(isTurn) {
-                if (isTurn) {
-                    audioplayer.queueDing()
-                } else {
-                    audioplayer.cancelDing()
-                }
-            }
-        },
-    },
-    methods: {
-        showError(err) {
-            this.localError = err
-            setTimeout(() => this.localError = null, 2000)
-        },
-        terminateGame() {
-            this.$store.state.webSocket.send('terminateGame')
-                .catch(err => this.showError(err))
+            this.toggleDealMeIn(active)
         },
     },
 }
@@ -125,61 +93,85 @@ export default {
 @import '../../variables';
 
 .player-bar {
-    background-color: rgba(color.adjust($background-color, $lightness: -10%), 0.8);
-    position:         fixed;
-    bottom:           0;
-    left:             0;
-    right:            0;
-    padding:          $spacing $spacing 0;
-    z-index:          100;
+    background-color: rgba(color.adjust($background-color, $lightness: -10%), 0.95);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
 
     &.is-turn {
-        border-top: 5px solid $primary;
+        box-shadow: 0 -2px 12px rgba($primary, 0.3);
+    }
+}
 
-        &::before {
-            content:     'IT\'S YOUR TURN';
-            color:       $primary;
-            font-size:   0.7em;
-            font-weight: bold;
-            display:     block;
-            position:    absolute;
-            top:         0;
-            transform:   translateY(calc(-100% - 5px));
-        }
+.bar-content {
+    display: flex;
+    align-items: center;
+    padding: $spacing-small $spacing-medium;
+    gap: $spacing-medium;
+
+    .cards-area {
+        flex: 0 1 auto;
+        min-width: 0;
+    }
+
+    .actions-area {
+        flex-shrink: 0;
+        margin-left: auto;
+    }
+
+    // Compact buttons inside the bar
+    :deep(button:not(.icon):not(.chip-pill)) {
+        padding: 5px 12px;
+        font-size: 0.85em;
+    }
+
+    :deep(div.buttons) {
+        margin: 0;
     }
 }
 
 .error {
     background-color: white;
-    position:         absolute;
-    bottom:           $spacing-medium;
-    right:            0;
-    border-radius:    $border-radius 0 0 $border-radius;
+    position: absolute;
+    bottom: 100%;
+    right: 0;
+    margin-bottom: 4px;
+    border-radius: $border-radius;
+    box-shadow: $shadow-md;
 
     :deep(p) {
-        margin:        0;
-        padding:       $spacing-medium;
-        border-radius: $border-radius 0 0 $border-radius;
+        margin: 0;
+        padding: $spacing-small $spacing-medium;
+        border-radius: $border-radius;
     }
 }
 
 .player-bar-error-enter-active, .player-bar-error-leave-active {
-    transition: transform 500ms;
+    transition: transform 300ms ease, opacity 300ms ease;
 }
 
 .player-bar-error-enter-from, .player-bar-error-leave-to {
-    transform: translateX(100%);
+    transform: translateY(8px);
+    opacity: 0;
 }
 
 p.game-info {
     background-color: #333;
-    color:            white;
-    font-size:        0.9em;
-    margin:           $spacing-medium calc(-1 * #{$spacing}) env(safe-area-inset-bottom);
-    padding:          $spacing-small $spacing;
+    color: white;
+    font-size: 0.75em;
+    margin: 0;
+    padding: 2px $spacing-medium;
+    padding-bottom: calc(2px + env(safe-area-inset-bottom));
+    display: flex;
+    align-items: center;
+    line-height: 1.4;
 
-    & > span:not(:first-child)::before {
-        color:   #bbb;
+    & > span:not(:first-child):not(.settings-trigger):not(.turn-badge)::before {
+        color: #bbb;
         content: ' |  ';
     }
 
@@ -188,28 +180,37 @@ p.game-info {
     }
 }
 
-.settings {
-    label {
-        display:     flex;
-        margin:      0;
-        align-items: center;
+.turn-badge {
+    background: $primary;
+    color: white;
+    font-size: 0.8em;
+    font-weight: bold;
+    padding: 1px 5px;
+    border-radius: $border-radius-small;
+    margin-right: $spacing-small;
+    animation: badge-pulse 2s ease-in-out infinite;
+}
 
-        span {
-            order: 2;
-        }
+@keyframes badge-pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.6; }
+}
 
-        input {
-            order:        1;
-            margin-right: $spacing-small;
-        }
+.settings-trigger {
+    margin-left: auto;
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+
+    &:hover {
+        opacity: 1;
     }
 
-    p:last-child {
-        margin-bottom: 0;
-    }
-
-    div.buttons {
-        margin-bottom: 0;
+    &::before {
+        display: none !important;
     }
 }
+
 </style>

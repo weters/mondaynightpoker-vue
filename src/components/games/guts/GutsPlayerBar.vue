@@ -1,6 +1,6 @@
 <template>
     <player-bar :error="error" :is-turn="canDecide || canTrade">
-        <div class="bar">
+        <template #cards>
             <template v-if="isGameOver">
                 <p class="game-over-message">Game Over!</p>
             </template>
@@ -13,6 +13,11 @@
                     :folded="isTradePhase && myDecision === false"
                     v-model="selectedCards"
                 />
+            </template>
+        </template>
+
+        <template #actions>
+            <template v-if="!isGameOver">
                 <guts-decision v-if="isDeclarationPhase" @error="showError"/>
                 <guts-trade
                     v-if="isTradePhase && myDecision"
@@ -24,10 +29,9 @@
                     <p>You folded this round</p>
                 </div>
             </template>
+        </template>
 
-        </div>
-
-        <template v-slot:gameInfo>
+        <template #gameInfo>
             <span class="round"><strong>Round:</strong> {{ round }}</span>
             <span class="phase"><strong>Phase:</strong> {{ phaseDisplay }}</span>
             <span class="pot"><strong>Pot:</strong> {{ formatAmount(pot) }}</span>
@@ -117,30 +121,12 @@ export default {
 <style lang="scss" scoped>
 @import '../../../variables';
 
-.bar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    @media(max-width: $mobile-max) {
-        display: block;
-
-        & > div:last-child {
-            margin-top: $spacing-medium;
-        }
-    }
-}
-
 .game-over-message {
-    text-align:  center;
-    font-size:   1.5em;
+    text-align: center;
+    font-size: 1.2em;
     font-weight: bold;
-    color:       $primary;
-    margin:      $spacing 0;
-}
-
-.round, .phase {
-    margin-right: $spacing-medium;
+    color: $primary;
+    margin: 0;
 }
 
 .folded-message {

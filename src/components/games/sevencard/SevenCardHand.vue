@@ -27,12 +27,16 @@
     .seven-card-hand {
         .hand {
             display: flex;
-            width: 100%;
-            margin: -3px;
+            gap: 3px;
 
             & > div.card {
-                flex: 0 1 100px;
-                margin: 3px;
+                flex: 0 0 36px;
+                width: 36px;
+
+                @media (min-width: $mobile-max) {
+                    flex: 0 0 52px;
+                    width: 52px;
+                }
             }
         }
     }

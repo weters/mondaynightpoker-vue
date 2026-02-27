@@ -12,27 +12,21 @@
         <template v-else-if="!canDecide">
             <p class="waiting">Waiting...</p>
         </template>
-        <!-- Confirmation for In -->
-        <template v-else-if="confirmIn">
-            <p class="confirm-prompt">Go IN?</p>
-            <div class="buttons">
-                <button class="secondary" @click="confirmIn=false">Cancel</button>
-                <button class="in-button" @click="decide(true)">Yes, I'm In!</button>
-            </div>
-        </template>
-        <!-- Confirmation for Out -->
-        <template v-else-if="confirmOut">
-            <p class="confirm-prompt">Go OUT?</p>
-            <div class="buttons">
-                <button class="secondary" @click="confirmOut=false">Cancel</button>
-                <button class="out-button" @click="decide(false)">Yes, I'm Out</button>
-            </div>
-        </template>
         <!-- Show decision buttons -->
         <template v-else>
             <div class="buttons decision-buttons">
-                <button class="in-button" @click="confirmIn=true">I'm In</button>
-                <button class="out-button" @click="confirmOut=true">I'm Out</button>
+                <confirm-button
+                    class="in-button"
+                    label="I'm In"
+                    confirm-text="Confirm In?"
+                    @confirmed="decide(true)"
+                />
+                <confirm-button
+                    class="out-button"
+                    label="I'm Out"
+                    confirm-text="Confirm Out?"
+                    @confirmed="decide(false)"
+                />
             </div>
         </template>
     </div>
@@ -40,13 +34,13 @@
 
 <script>
 import {mapGetters} from "vuex"
+import ConfirmButton from "@/components/ConfirmButton.vue"
 
 export default {
     name: "GutsDecision",
+    components: {ConfirmButton},
     data() {
         return {
-            confirmIn: false,
-            confirmOut: false,
             localDecision: null,
         }
     },
@@ -58,13 +52,9 @@ export default {
     },
     watch: {
         canDecide(canDecide) {
-            // Reset confirmations and local decision when ability to decide changes
             if (canDecide) {
-                // New round started, reset everything
                 this.localDecision = null
             }
-            this.confirmIn = false
-            this.confirmOut = false
         },
     },
     methods: {
@@ -72,13 +62,9 @@ export default {
             this.$store.state.webSocket.send('decide', null, null, {in: goIn})
                 .then(() => {
                     this.localDecision = goIn
-                    this.confirmIn = false
-                    this.confirmOut = false
                 })
                 .catch(err => {
                     this.$emit('error', err)
-                    this.confirmIn = false
-                    this.confirmOut = false
                 })
         },
     },
@@ -91,26 +77,11 @@ export default {
 
 .guts-decision {
     text-align: center;
-    margin-bottom: $spacing-medium;
 
     .waiting {
         color: $text-color-light;
         font-style: italic;
         margin: 0;
-    }
-
-    .my-decision {
-        font-size: 1.2em;
-        font-weight: bold;
-        margin: 0 0 $spacing-small;
-
-        &.in {
-            color: $light-green;
-        }
-
-        &.out {
-            color: $text-color-light;
-        }
     }
 
     .waiting-others {
@@ -120,27 +91,21 @@ export default {
         margin: 0;
     }
 
-    .confirm-prompt {
-        font-weight: bold;
-        margin: 0 0 $spacing-small;
-    }
-
     .buttons {
         display: flex;
         gap: $spacing-small;
         justify-content: center;
 
         &.decision-buttons {
-            button {
-                min-width: 100px;
-                padding: $spacing-medium $spacing;
-                font-size: 1.1em;
+            button, :deep(.confirm-button) {
+                min-width: 80px;
                 font-weight: bold;
             }
         }
     }
 
-    .in-button {
+    .in-button,
+    :deep(.in-button:not(.confirming)) {
         background: $light-green;
         border-color: $light-green;
 
@@ -150,7 +115,8 @@ export default {
         }
     }
 
-    .out-button {
+    .out-button,
+    :deep(.out-button:not(.confirming)) {
         background: $text-color-light;
         border-color: $text-color-light;
 

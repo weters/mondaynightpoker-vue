@@ -71,12 +71,15 @@
 
     div.hand {
         display: flex;
+        gap: 3px;
 
         & > * {
-            flex: 0 1 100px;
+            flex: 0 0 40px;
+            width: 40px;
 
-            &:not(:first-child) {
-                margin-left: $spacing-small;
+            @media (min-width: $mobile-max) {
+                flex: 0 0 64px;
+                width: 64px;
             }
         }
 
