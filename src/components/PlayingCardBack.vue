@@ -1,7 +1,11 @@
 <template>
     <div class="playing-card-back">
-        <span class="image">
-        <mdi-icon :icon="mdiCardsPlayingOutline"/>
+        <span class="border-frame">
+            <span class="pattern">
+                <span class="medallion">
+                    <mdi-icon :icon="mdiCardsPlayingOutline"/>
+                </span>
+            </span>
         </span>
     </div>
 </template>
@@ -16,24 +20,8 @@ export default {
     data() {
         return {
             mdiCardsPlayingOutline,
-            resizeObserver: null
         }
     },
-    mounted: function () {
-        this.resizeObserver = new ResizeObserver(els => {
-            const cardBack = els[0].target
-            const size = `${Math.ceil(cardBack.offsetWidth / 15)}px`
-            cardBack.firstElementChild.style.top = size
-            cardBack.firstElementChild.style.right = size
-            cardBack.firstElementChild.style.bottom = size
-            cardBack.firstElementChild.style.left = size
-        })
-
-        this.resizeObserver.observe(this.$el)
-    },
-    beforeUnmount() {
-        this.resizeObserver.disconnect()
-    }
 }
 </script>
 
@@ -41,35 +29,65 @@ export default {
 @use 'sass:color';
 @import '../variables.scss';
 
-div.playing-card-back {
-    background:    #fff;
-    border-radius: $border-radius;
-    position:      relative;
-    box-shadow:    0 0 2px rgba(black, 0.1), 1px 1px 1px rgba(black, 0.1);
+$dark-orange: color.adjust($orange, $lightness: -10%);
 
-    & > span.image {
-        background-color: $orange;
-        background-image: repeating-linear-gradient(45deg, transparent, transparent 4px, color.adjust($orange, $lightness: -6%) 4px, color.adjust($orange, $lightness: -6%) 5px),
-                          repeating-linear-gradient(135deg, transparent, transparent 4px, color.adjust($orange, $lightness: -6%) 4px, color.adjust($orange, $lightness: -6%) 5px);
-        border-radius:    2px;
-        content:          '';
-        display:          block;
-        position:         absolute;
-        top:              5px;
-        left:             5px;
-        right:            5px;
-        bottom:           5px;
-        z-index:          1;
+div.playing-card-back {
+    background:     #fff;
+    border-radius:  $border-radius;
+    position:       relative;
+    border: 1px solid #d2d2d2;
+    box-shadow:     0 0 2px rgba(black, 0.1), 1px 1px 1px rgba(black, 0.1);
+    container-type: inline-size;
+
+    .border-frame {
+        display:       block;
+        position:      absolute;
+        inset:         5cqi;
+        border:        2cqi solid $dark-orange;
+        border-radius: 2cqi;
     }
 
-    svg {
-        fill:      white;
-        width:     75%;
-        position:  absolute;
-        top:       50%;
-        left:      50%;
-        transform: translate(-50%, -50%);
-        z-index:   2;
+    .pattern {
+        display:          block;
+        position:         absolute;
+        inset:            0;
+        background-color: $orange;
+        background-image: repeating-linear-gradient(
+                45deg,
+                transparent,
+                transparent 5cqi,
+                $dark-orange 5cqi,
+                $dark-orange 6cqi
+        ),
+        repeating-linear-gradient(
+                135deg,
+                transparent,
+                transparent 5cqi,
+                $dark-orange 5cqi,
+                $dark-orange 6cqi
+        );
+    }
+
+    .medallion {
+        display:       block;
+        position:      absolute;
+        top:           50%;
+        left:          50%;
+        transform:     translate(-50%, -50%);
+        width:         36cqi;
+        height:        36cqi;
+        background:    $dark-orange;
+        border:        3cqi solid white;
+        border-radius: 50%;
+
+        :deep(svg) {
+            fill:      white;
+            width:     60%;
+            position:  absolute;
+            top:       50%;
+            left:      50%;
+            transform: translate(-50%, -50%);
+        }
     }
 }
 </style>

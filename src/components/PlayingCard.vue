@@ -1,11 +1,15 @@
 <template>
     <div class="playing-card" @click="$emit('click')">
         <div :class="classes">
-            <span class="corner">
-                <span class="rank" ref="cornerRank">{{ displayRank }}</span>
-                <span class="suit" ref="cornerSuit"><mdi-icon :icon="displaySuit"/></span>
+            <span class="corner top-left">
+                <span class="rank">{{ displayRank }}</span>
+                <span class="suit"><mdi-icon :icon="displaySuit"/></span>
             </span>
             <span class="center">
+                <mdi-icon :icon="displaySuit"/>
+            </span>
+            <span class="corner bottom-right">
+                <span class="rank">{{ displayRank }}</span>
                 <span class="suit"><mdi-icon :icon="displaySuit"/></span>
             </span>
             <mdi-icon class="wild" :icon="mdiStarCircleOutline" v-if="isWild"/>
@@ -16,7 +20,6 @@
 <script>
 import {mdiCardsClub, mdiCardsDiamond, mdiCardsHeart, mdiCardsSpade, mdiStar, mdiStarCircleOutline} from '@mdi/js'
 import MdiIcon from "@/components/MdiIcon.vue"
-import {mapGetters} from "vuex"
 
 export default {
     name: "PlayingCard",
@@ -38,18 +41,10 @@ export default {
     },
     data() {
         return {
-            mdiCardsClub,
-            mdiCardsDiamond,
-            mdiCardsHeart,
-            mdiCardsSpade,
             mdiStarCircleOutline,
-            mdiStar,
         }
     },
     computed: {
-        ...mapGetters({
-            isTurn: 'bourre/isTurn',
-        }),
         classes() {
             const classes = {
                 'big-card': true,
@@ -87,44 +82,6 @@ export default {
 
             throw new Error('unknown suit')
         },
-        formattedRank() {
-            switch (this.rank) {
-                case 11:
-                    return 'J'
-                case 12:
-                    return 'Q'
-                case 13:
-                    return 'K'
-                case 14:
-                    return 'A'
-            }
-
-            return this.rank
-        },
-        card() {
-            return `${this.formattedRank} of ${this.suit}`
-        },
-    },
-    methods: {
-        sizeCard() {
-            const size = this.$el.clientHeight / 4
-            this.$refs.cornerRank.style.fontSize = `${size}px`
-            this.$refs.cornerRank.style.lineHeight = `${size}px`
-            this.$refs.cornerSuit.style.width = `${size}px`
-            this.$refs.cornerSuit.style.height = `${size}px`
-        },
-    },
-    watch: {
-        isTurn() {
-            this.sizeCard()
-        },
-    },
-    mounted() {
-        window.addEventListener('resize', this.sizeCard)
-        this.sizeCard()
-    },
-    beforeUnmount() {
-        window.removeEventListener('resize', this.sizeCard)
     },
 }
 </script>
@@ -133,20 +90,18 @@ export default {
 @import '../variables.scss';
 
 .playing-card {
-    position: relative;
-    width:    100%;
-    aspect-ratio: 2.5 / 3.5;
+    position:       relative;
+    width:          100%;
+    aspect-ratio:   2.5 / 3.5;
+    container-type: inline-size;
 }
 
 div.big-card {
     background-color: white;
     border-radius:    $border-radius;
-    border:           1px solid #eee;
+    border:           1px solid #d2d2d2;
     position:         absolute;
-    top:              0;
-    right:            0;
-    bottom:           0;
-    left:             0;
+    inset:            0;
 
     &.hearts, &.diamonds {
         color: $red;
@@ -176,20 +131,29 @@ div.big-card {
         position:       absolute;
         display:        flex;
         flex-direction: column;
-        top:            2px;
-        left:           2px;
         width:          min-content;
         align-items:    center;
 
-        span.suit {
-            line-height: 40%;
-            height:      100%;
-            width:       100%;
+        &.top-left {
+            top:  2cqi;
+            left: 2cqi;
         }
 
-        span.rank {
-            font-size:   32px;
-            line-height: 28px;
+        &.bottom-right {
+            bottom:    2cqi;
+            right:     2cqi;
+            transform: rotate(180deg);
+        }
+
+        .rank {
+            font-size:   28cqi;
+            line-height: 28cqi;
+        }
+
+        .suit {
+            width:       24cqi;
+            height:      24cqi;
+            line-height: 0;
         }
     }
 
@@ -203,10 +167,11 @@ div.big-card {
 
     .center {
         position:  absolute;
-        top:       45%;
-        right:     45%;
-        transform: translateX(50%);
-        width:     60%;
+        top:       50%;
+        left:      50%;
+        transform: translate(-50%, -50%);
+        width:     40cqi;
+        height:    40cqi;
     }
 }
 </style>
