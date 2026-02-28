@@ -53,9 +53,9 @@
                     </table>
                 </div>
 
-                <div class="balance-graph" v-if="profile.tables.length > 0">
+                <div class="balance-graph" v-if="profile.graphData && profile.graphData.length > 0">
                     <h3>Cumulative Winnings</h3>
-                    <profile-graph :tables="profile.tables"/>
+                    <profile-graph :tables="profile.graphData"/>
                 </div>
 
                 <div class="tables-section">
