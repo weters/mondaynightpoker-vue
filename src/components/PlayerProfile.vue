@@ -44,8 +44,8 @@
                 </div>
 
                 <div class="balance-graph" v-if="profile.tables.length > 0">
-                    <h3>Balance by Table</h3>
-                    <table-graph :tables="profile.tables"/>
+                    <h3>Cumulative Winnings</h3>
+                    <profile-graph :tables="profile.tables"/>
                 </div>
 
                 <div class="tables-section">
@@ -82,7 +82,7 @@
 import client from "../client"
 import Error from "./Error.vue"
 import Loading from "./Loading.vue"
-import TableGraph from "./TableGraph.vue"
+import ProfileGraph from "./ProfileGraph.vue"
 import AdminPagination from "./admin/AdminPagination.vue"
 import balance from "../mixins/balance"
 
@@ -91,7 +91,7 @@ export default {
     title() {
         return this.profile ? this.profile.player.displayName : 'Player Profile'
     },
-    components: { AdminPagination, TableGraph, Loading, Error },
+    components: { AdminPagination, ProfileGraph, Loading, Error },
     mixins: [balance],
     props: {
         id: {
