@@ -280,6 +280,16 @@ export default {
         .positive {
             color: $light-green;
         }
+
+        @media (max-width: #{$media-small-table-width}) {
+            td:nth-child(1)::before { content: 'Game' }
+            td:nth-child(2)::before { content: 'Games' }
+            td:nth-child(3)::before { content: 'Winnings' }
+
+            .text-right {
+                text-align: left;
+            }
+        }
     }
 
     .balance-graph {

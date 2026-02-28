@@ -200,6 +200,21 @@ export default {
 .table-card {
     @include card;
     padding: $spacing;
+
+    @media (max-width: #{$media-small-table-width}) {
+        td:nth-child(1)::before { content: 'Name' }
+        td:nth-child(2)::before { content: 'Created' }
+        td:nth-child(3)::before { content: 'Balance' }
+        td:nth-child(4)::before { content: 'Graph' }
+
+        .balance, .graph {
+            text-align: left;
+        }
+
+        .toggle {
+            justify-content: flex-start;
+        }
+    }
 }
 
 .empty-state {
@@ -240,20 +255,6 @@ table.standard {
         justify-content: center;
     }
 
-    @media (max-width: #{$media-small-table-width}) {
-        td:nth-child(1)::before { content: 'Name' }
-        td:nth-child(2)::before { content: 'Created' }
-        td:nth-child(3)::before { content: 'Balance' }
-        td:nth-child(4)::before { content: 'Graph' }
-
-        .balance, .graph {
-            text-align: left;
-        }
-
-        .toggle {
-            justify-content: flex-start;
-        }
-    }
 }
 
 table label {
@@ -367,6 +368,16 @@ table label {
 
         .positive {
             color: $light-green;
+        }
+
+        @media (max-width: #{$media-small-table-width}) {
+            td:nth-child(1)::before { content: 'Game' }
+            td:nth-child(2)::before { content: 'Games' }
+            td:nth-child(3)::before { content: 'Winnings' }
+
+            .text-right {
+                text-align: left;
+            }
         }
     }
 
