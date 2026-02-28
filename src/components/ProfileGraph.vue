@@ -33,9 +33,7 @@ export default {
     },
     computed: {
         orderedTables() {
-            const tables = [...this.tables]
-            tables.reverse()
-            return tables
+            return this.tables
         },
         labels() {
             return this.orderedTables.map(tbl => new Date(tbl.created).toLocaleDateString())
