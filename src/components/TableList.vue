@@ -67,12 +67,22 @@
 
                 <div class="winnings-by-game" v-if="Object.keys(profile.stats.winningsByGame).length > 0">
                     <h4>Winnings by Game</h4>
-                    <div class="game-list">
-                        <div class="game-item" v-for="(amount, game) in profile.stats.winningsByGame" :key="game">
-                            <span class="game-name">{{ game }}</span>
-                            <span class="game-amount" :class="{ negative: amount < 0 }">{{ formatAmount(amount) }}</span>
-                        </div>
-                    </div>
+                    <table class="standard">
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th class="text-right">Games</th>
+                                <th class="text-right">Winnings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(amount, game) in profile.stats.winningsByGame" :key="game">
+                                <td>{{ game }}</td>
+                                <td class="text-right">{{ profile.stats.gamesCountByType[game] || 0 }}</td>
+                                <td class="text-right" :class="{ negative: amount < 0, positive: amount > 0 }">{{ formatAmount(amount) }}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
 
                 <div class="balance-graph" v-if="profile.tables.length > 0">
@@ -347,32 +357,16 @@ table label {
     .winnings-by-game {
         margin-bottom: $spacing;
 
-        .game-list {
-            @include card;
-            padding: $spacing-medium;
+        .text-right {
+            text-align: right;
+        }
 
-            .game-item {
-                display: flex;
-                justify-content: space-between;
-                padding: $spacing-small 0;
+        .negative {
+            color: $red;
+        }
 
-                &:not(:last-child) {
-                    border-bottom: 1px solid $border-color;
-                }
-
-                .game-name {
-                    font-weight: 500;
-                }
-
-                .game-amount {
-                    font-weight: 600;
-                    color: $primary;
-
-                    &.negative {
-                        color: $error;
-                    }
-                }
-            }
+        .positive {
+            color: $light-green;
         }
     }
 
