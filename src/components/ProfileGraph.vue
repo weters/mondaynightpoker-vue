@@ -1,6 +1,6 @@
 <template>
     <div class="profile-graph">
-        <Line :data="chartData" :options="chartOptions" />
+        <line-chart :data="chartData" :options="chartOptions" />
     </div>
 </template>
 
@@ -23,7 +23,7 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScal
 
 export default {
     name: "ProfileGraph",
-    components: { Line },
+    components: { LineChart: Line },
     mixins: [balance],
     props: {
         tables: {
