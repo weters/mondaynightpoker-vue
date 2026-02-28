@@ -31,6 +31,7 @@
                         </tbody>
                     </table>
                 </div>
+                <admin-pagination v-if="tables.length > 0" :start="start" :rows="rows" :count="tables.length" @prev="changePage"/>
                 <div class="empty-state" v-else>
                     <p>You haven't joined any tables yet.</p>
                     <p>Create a new table to get started playing with your friends!</p>
@@ -101,10 +102,11 @@ import client from "@/client"
 import balance from "../mixins/balance"
 import ProfileGraph from "./ProfileGraph.vue"
 import Toggle from "@/components/formelements/Toggle.vue"
+import AdminPagination from "@/components/admin/AdminPagination.vue"
 
 export default {
     name: "TableList",
-    components: {Toggle, ProfileGraph, Error, Loading},
+    components: {AdminPagination, Toggle, ProfileGraph, Error, Loading},
     mixins: [balance],
     data() {
         return {
@@ -112,6 +114,8 @@ export default {
             tables: null,
             error: null,
             graph: [],
+            start: 0,
+            rows: 10,
             profile: null,
             from: '',
             to: '',
@@ -130,17 +134,26 @@ export default {
     mounted() {
         const excludeTables = JSON.parse(localStorage.getItem('exclude-tables')) || {}
 
-        client.listTables()
-            .then(res => {
-                this.tables = res
-                this.tables.forEach(tbl => !excludeTables[tbl.uuid] ? this.graph.push(tbl.uuid) : null)
-            })
-            .catch(err => this.error = err)
-            .finally(() => this.loading = false)
+        this.fetchTables(excludeTables)
 
         this.fetchProfile()
     },
     methods: {
+        fetchTables(excludeTables) {
+            client.listTables(this.start, this.rows)
+                .then(res => {
+                    this.tables = res
+                    if (excludeTables) {
+                        this.tables.forEach(tbl => !excludeTables[tbl.uuid] ? this.graph.push(tbl.uuid) : null)
+                    }
+                })
+                .catch(err => this.error = err)
+                .finally(() => this.loading = false)
+        },
+        changePage(newStart) {
+            this.start = newStart
+            this.fetchTables()
+        },
         fetchProfile() {
             client.getMyProfile(0, 100, this.from, this.to)
                 .then(res => this.profile = res)
@@ -206,15 +219,11 @@ export default {
         td:nth-child(2)::before { content: 'Created' }
         td:nth-child(3)::before { content: 'Balance' }
         td:nth-child(4)::before { content: 'Graph' }
-
-        .balance, .graph {
-            text-align: left;
-        }
-
-        .toggle {
-            justify-content: flex-start;
-        }
     }
+}
+
+.admin-pagination {
+    margin-top: $spacing;
 }
 
 .empty-state {
@@ -255,6 +264,15 @@ table.standard {
         justify-content: center;
     }
 
+    @media (max-width: #{$media-small-table-width}) {
+        .balance, .graph {
+            text-align: left;
+        }
+
+        .toggle {
+            justify-content: flex-start;
+        }
+    }
 }
 
 table label {

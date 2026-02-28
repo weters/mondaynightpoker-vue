@@ -24,7 +24,7 @@ class Client {
         return this._post(`/table/${encodeURIComponent(uuid)}/seat`, null, withAuthorization)
     }
 
-    listTables(start = 0, rows = 100) {
+    listTables(start = 0, rows = 10) {
         return this._get(`/table` + this._query({ start, rows }), withAuthorization)
     }
 
