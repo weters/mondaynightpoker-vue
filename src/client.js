@@ -96,6 +96,13 @@ class Client {
         return this._delete(`/player/${encodeURIComponent(playerId)}`, true)
     }
 
+    getPlayerProfile(playerId, start = 0, rows = 10, from = '', to = '') {
+        const params = { start, rows }
+        if (from) params.from = from
+        if (to) params.to = to
+        return this._get(`/player/${encodeURIComponent(playerId)}/profile` + this._query(params), withAuthorization)
+    }
+
     getTables(start, rows) {
         return this._get(`/admin/table` + this._query({ start, rows }), true)
     }

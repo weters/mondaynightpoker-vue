@@ -30,7 +30,7 @@
                 <tr v-for="player in players" :key="player.id">
                     <td>{{ player.id }}</td>
                     <td>{{ player.email }}</td>
-                    <td>{{ player.displayName }}</td>
+                    <td><router-link :to="'/player/' + player.id">{{ player.displayName }}</router-link></td>
                     <td>{{ player.status }}</td>
                     <td>{{ new Date(player.created).toLocaleString() }}</td>
                     <td>

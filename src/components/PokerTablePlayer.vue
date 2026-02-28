@@ -2,7 +2,7 @@
     <div :class="{ 'poker-table-player': true, connected, seated }">
         <div class="player-data">
             <player-status :connected="connected" :seated="seated"/>
-            <strong class="display-name">{{ displayName }}</strong>
+            <router-link :to="'/player/' + player.playerId" class="display-name"><strong>{{ displayName }}</strong></router-link>
             <span :class="{ balance: true, negative: balance < 0 }">{{ formatAmount(balance) }}</span>
             <button type="button" class="icon" @click="editTapped" v-if="canAdmin" :disabled="userClientState.playerId === this.player.playerId">
                 <mdi-icon :icon="mdiAccountEdit"/>
@@ -141,7 +141,7 @@ div.poker-table-player {
     }
 
     &:not(.seated) {
-        .display-name {
+        .display-name strong {
             text-decoration: line-through;
             opacity: 0.7;
         }
@@ -156,13 +156,21 @@ div.poker-table-player {
             margin-bottom: $spacing-medium;
         }
 
-        strong.display-name {
-            font-weight: 500;
+        a.display-name {
             margin-right: auto;
             white-space: nowrap;
+            text-decoration: none;
             color: $text-color;
 
-            @at-root #{$parent}:not(.connected) strong.display-name {
+            strong {
+                font-weight: 500;
+            }
+
+            &:hover {
+                text-decoration: underline;
+            }
+
+            @at-root #{$parent}:not(.connected) a.display-name {
                 color:      $text-color-light;
                 font-style: italic;
             }

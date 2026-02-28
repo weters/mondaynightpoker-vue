@@ -18,6 +18,7 @@ import ResetPassword from "@/components/ResetPassword.vue"
 import VerifyAccount from "@/components/VerifyAccount.vue"
 import AdminPlayers from "@/components/admin/AdminPlayers.vue"
 import AdminTables from "@/components/admin/AdminTables.vue"
+import PlayerProfile from "@/components/PlayerProfile.vue"
 import {formatAmount} from "@/currency"
 
 const routes = [
@@ -32,6 +33,7 @@ const routes = [
     {path: '/my-profile', component: Profile },
     {path: '/my-tables', component: MyTables },
     {path: '/table/create', component: CreateTable },
+    {path: '/player/:id', component: PlayerProfile, props: true},
     {path: '/table/:uuid', component: PokerTable, props: true},
     {path: '/table/:uuid/join', component: JoinTable, props: true},
 
