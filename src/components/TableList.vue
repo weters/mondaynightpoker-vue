@@ -155,7 +155,7 @@ export default {
             this.fetchTables()
         },
         fetchProfile() {
-            client.getMyProfile(0, 100, this.from, this.to)
+            client.getMyProfile(0, 1000, this.from, this.to)
                 .then(res => this.profile = res)
                 .catch(() => {})
         },
