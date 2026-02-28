@@ -2,8 +2,7 @@
     <div :class="{ 'poker-table-player': true, connected, seated }">
         <div class="player-data">
             <player-status :connected="connected" :seated="seated"/>
-            <router-link v-if="canViewProfile" :to="'/player/' + player.playerId" class="display-name"><strong>{{ displayName }}</strong></router-link>
-            <strong v-else class="display-name">{{ displayName }}</strong>
+            <strong class="display-name">{{ displayName }}</strong>
             <span :class="{ balance: true, negative: balance < 0 }">{{ formatAmount(balance) }}</span>
             <button type="button" class="icon" @click="editTapped" v-if="canAdmin" :disabled="userClientState.playerId === this.player.playerId">
                 <mdi-icon :icon="mdiAccountEdit"/>
@@ -54,9 +53,6 @@ export default {
         ...mapGetters(['userClientState']),
         canAdmin() {
             return this.userClientState.isTableAdmin || this.userClientState.player.isSiteAdmin
-        },
-        canViewProfile() {
-            return this.userClientState.player.isSiteAdmin || this.userClientState.playerId === this.player.playerId
         },
         isSiteAdmin() {
             return this.player.player.isSiteAdmin
@@ -169,14 +165,6 @@ div.poker-table-player {
             @at-root #{$parent}:not(.connected) .display-name {
                 color:      $text-color-light;
                 font-style: italic;
-            }
-        }
-
-        a.display-name {
-            text-decoration: none;
-
-            &:hover {
-                text-decoration: underline;
             }
         }
 

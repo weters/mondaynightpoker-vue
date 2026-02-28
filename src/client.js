@@ -96,6 +96,13 @@ class Client {
         return this._delete(`/player/${encodeURIComponent(playerId)}`, true)
     }
 
+    getMyProfile(start = 0, rows = 10, from = '', to = '') {
+        const params = { start, rows }
+        if (from) params.from = from
+        if (to) params.to = to
+        return this._get(`/player/profile` + this._query(params), withAuthorization)
+    }
+
     getPlayerProfile(playerId, start = 0, rows = 10, from = '', to = '') {
         const params = { start, rows }
         if (from) params.from = from

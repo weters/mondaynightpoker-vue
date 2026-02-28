@@ -37,10 +37,47 @@
                 </div>
             </div>
 
-            <div class="graph-section" v-if="tables.length > 0">
+            <div class="profile-section" v-if="profile">
                 <h3 class="section-label">Performance</h3>
-                <div class="graph-card">
-                    <table-graph :tables="tablesToGraph"/>
+
+                <div class="time-filter">
+                    <button v-for="preset in presets" :key="preset.label"
+                            :class="['secondary', { active: activePreset === preset.label }]"
+                            @click="applyPreset(preset)">{{ preset.label }}</button>
+                    <div class="date-inputs">
+                        <input type="date" v-model="fromDate" @change="applyCustomDates"/>
+                        <input type="date" v-model="toDate" @change="applyCustomDates"/>
+                    </div>
+                </div>
+
+                <div class="stats-cards">
+                    <div class="stat-card">
+                        <span class="stat-value">{{ profile.stats.tablesJoined }}</span>
+                        <span class="stat-label">Tables Joined</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value">{{ profile.stats.gamesPlayed }}</span>
+                        <span class="stat-label">Games Played</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-value" :class="{ negative: profile.stats.totalWinnings < 0 }">{{ formatAmount(profile.stats.totalWinnings) }}</span>
+                        <span class="stat-label">Total Winnings</span>
+                    </div>
+                </div>
+
+                <div class="winnings-by-game" v-if="Object.keys(profile.stats.winningsByGame).length > 0">
+                    <h4>Winnings by Game</h4>
+                    <div class="game-list">
+                        <div class="game-item" v-for="(amount, game) in profile.stats.winningsByGame" :key="game">
+                            <span class="game-name">{{ game }}</span>
+                            <span class="game-amount" :class="{ negative: amount < 0 }">{{ formatAmount(amount) }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="balance-graph" v-if="profile.tables.length > 0">
+                    <h4>Cumulative Winnings</h4>
+                    <profile-graph :tables="profile.tables"/>
                 </div>
             </div>
         </div>
@@ -52,12 +89,12 @@ import Loading from "@/components/Loading.vue"
 import Error from "@/components/Error.vue"
 import client from "@/client"
 import balance from "../mixins/balance"
-import TableGraph from "./TableGraph.vue"
+import ProfileGraph from "./ProfileGraph.vue"
 import Toggle from "@/components/formelements/Toggle.vue"
 
 export default {
     name: "TableList",
-    components: {Toggle, TableGraph, Error, Loading},
+    components: {Toggle, ProfileGraph, Error, Loading},
     mixins: [balance],
     data() {
         return {
@@ -65,14 +102,20 @@ export default {
             tables: null,
             error: null,
             graph: [],
+            profile: null,
+            from: '',
+            to: '',
+            fromDate: '',
+            toDate: '',
+            activePreset: 'All',
+            presets: [
+                { label: '1M', months: 1 },
+                { label: '3M', months: 3 },
+                { label: '6M', months: 6 },
+                { label: '1Y', months: 12 },
+                { label: 'All', months: 0 },
+            ],
         }
-    },
-    computed: {
-        tablesToGraph() {
-            const includeGraph = {}
-            this.graph.forEach(g => includeGraph[g] = true)
-            return this.tables.filter(g => includeGraph[g.uuid])
-        },
     },
     mounted() {
         const excludeTables = JSON.parse(localStorage.getItem('exclude-tables')) || {}
@@ -84,6 +127,47 @@ export default {
             })
             .catch(err => this.error = err)
             .finally(() => this.loading = false)
+
+        this.fetchProfile()
+    },
+    methods: {
+        fetchProfile() {
+            client.getMyProfile(0, 100, this.from, this.to)
+                .then(res => this.profile = res)
+                .catch(() => {})
+        },
+        applyPreset(preset) {
+            this.activePreset = preset.label
+            if (preset.months === 0) {
+                this.from = ''
+                this.to = ''
+                this.fromDate = ''
+                this.toDate = ''
+            } else {
+                const now = new Date()
+                const fromDate = new Date(now)
+                fromDate.setMonth(fromDate.getMonth() - preset.months)
+                this.from = fromDate.toISOString()
+                this.to = now.toISOString()
+                this.fromDate = fromDate.toISOString().split('T')[0]
+                this.toDate = now.toISOString().split('T')[0]
+            }
+            this.fetchProfile()
+        },
+        applyCustomDates() {
+            this.activePreset = ''
+            if (this.fromDate) {
+                this.from = new Date(this.fromDate + 'T00:00:00Z').toISOString()
+            } else {
+                this.from = ''
+            }
+            if (this.toDate) {
+                this.to = new Date(this.toDate + 'T23:59:59Z').toISOString()
+            } else {
+                this.to = ''
+            }
+            this.fetchProfile()
+        },
     },
     watch: {
         graph() {
@@ -103,7 +187,7 @@ export default {
     @include section-header;
 }
 
-.table-card, .graph-card {
+.table-card {
     @include card;
     padding: $spacing;
 }
@@ -181,15 +265,118 @@ table label {
 
 .columns {
     @media (min-width: 1000px) {
-        display:               grid;
+        display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-gap:              $spacing;
-        align-items:           start;
+        grid-gap: $spacing;
+        align-items: start;
     }
 }
 
-.tables-section, .graph-section {
+.tables-section, .profile-section {
     @media (max-width: 999px) {
+        margin-bottom: $spacing;
+    }
+}
+
+.profile-section {
+    h4 {
+        @include section-header;
+        font-size: 1em;
+    }
+
+    .time-filter {
+        display: flex;
+        align-items: center;
+        gap: $spacing-small;
+        margin-bottom: $spacing;
+        flex-wrap: wrap;
+
+        button {
+            &.secondary.active {
+                background-color: $primary;
+                color: white;
+            }
+        }
+
+        .date-inputs {
+            display: flex;
+            gap: $spacing-small;
+            margin-left: $spacing-small;
+
+            input {
+                padding: 7px 14px;
+                border: 1px solid $border-color;
+                border-radius: $border-radius-small;
+                font-size: 1em;
+            }
+        }
+    }
+
+    .stats-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: $spacing-medium;
+        margin-bottom: $spacing;
+
+        .stat-card {
+            @include card;
+            padding: $spacing;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+
+            .stat-value {
+                font-size: 1.5em;
+                font-weight: 600;
+                color: $primary;
+
+                &.negative {
+                    color: $error;
+                }
+            }
+
+            .stat-label {
+                font-size: 0.85em;
+                color: $text-color-light;
+                margin-top: $spacing-small;
+            }
+        }
+    }
+
+    .winnings-by-game {
+        margin-bottom: $spacing;
+
+        .game-list {
+            @include card;
+            padding: $spacing-medium;
+
+            .game-item {
+                display: flex;
+                justify-content: space-between;
+                padding: $spacing-small 0;
+
+                &:not(:last-child) {
+                    border-bottom: 1px solid $border-color;
+                }
+
+                .game-name {
+                    font-weight: 500;
+                }
+
+                .game-amount {
+                    font-weight: 600;
+                    color: $primary;
+
+                    &.negative {
+                        color: $error;
+                    }
+                }
+            }
+        }
+    }
+
+    .balance-graph {
         margin-bottom: $spacing;
     }
 }

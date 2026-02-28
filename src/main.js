@@ -33,12 +33,12 @@ const routes = [
     {path: '/my-profile', component: Profile },
     {path: '/my-tables', component: MyTables },
     {path: '/table/create', component: CreateTable },
-    {path: '/player/:id', component: PlayerProfile, props: true},
     {path: '/table/:uuid', component: PokerTable, props: true},
     {path: '/table/:uuid/join', component: JoinTable, props: true},
 
     {path: '/admin', component: Admin, meta: {adminOnly: true}},
     {path: '/admin/players', component: AdminPlayers, meta: {adminOnly: true}},
+    {path: '/admin/players/:id', component: PlayerProfile, props: true, meta: {adminOnly: true}},
     {path: '/admin/tables', component: AdminTables, meta: {adminOnly: true}},
 ]
 
