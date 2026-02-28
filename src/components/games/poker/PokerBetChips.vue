@@ -7,26 +7,22 @@
                 :class="{ 'chip-pill': true, active: amount === preset.amount }"
                 @click="selectPreset(preset)"
             >{{ preset.label }}</button>
+        </div>
 
-            <button class="chip-pill custom" @click="toggleCustom">
-                <template v-if="editingCustom">
-                    <input
-                        type="text"
-                        inputmode="numeric"
-                        pattern="[0-9]*"
-                        class="custom-input"
-                        v-model="customValue"
-                        ref="customInput"
-                        @blur="finishCustom"
-                        @keydown.enter="finishCustom"
-                        @keydown.escape="cancelCustom"
-                        @click.stop
-                    />
-                </template>
-                <template v-else>
-                    {{ customLabel }}
-                </template>
-            </button>
+        <div class="slider-row">
+            <button class="stepper" type="button" @click="nudge(-1)">&minus;</button>
+            <div class="slider-wrap">
+                <input
+                    type="range"
+                    class="bet-slider"
+                    :min="minBet"
+                    :max="sliderMax"
+                    :step="step"
+                    :value="amount"
+                    @input="onSlider"
+                />
+            </div>
+            <button class="stepper" type="button" @click="nudge(1)">+</button>
         </div>
 
         <div class="bet-actions">
@@ -72,11 +68,15 @@ export default {
     data() {
         return {
             amount: this.minBet,
-            editingCustom: false,
-            customValue: '',
         }
     },
     computed: {
+        isAllIn() {
+            return this.allInAmount <= this.maxBet
+        },
+        sliderMax() {
+            return Math.min(this.maxBet, this.allInAmount)
+        },
         presets() {
             const list = []
             const {minBet, maxBet, pot, allInAmount} = this
@@ -100,8 +100,10 @@ export default {
                 }
             }
 
-            if (allInAmount > minBet) {
-                list.push({label: 'All-in', amount: Math.min(allInAmount, maxBet)})
+            const maxAmount = Math.min(allInAmount, maxBet)
+            if (maxAmount > minBet) {
+                const label = allInAmount <= maxBet ? 'All-in' : 'Max'
+                list.push({label, amount: maxAmount})
             }
 
             return list
@@ -113,12 +115,6 @@ export default {
             if (this.effectiveAmount >= this.allInAmount) return `All-in ${this.formatAmount(this.allInAmount)}`
             return `${this.actionName} ${this.formatAmount(this.effectiveAmount)}`
         },
-        customLabel() {
-            // Show current amount if it doesn't match any preset
-            const matchesPreset = this.presets.some(p => p.amount === this.amount)
-            if (!matchesPreset) return this.formatAmount(this.amount)
-            return 'Custom'
-        },
     },
     methods: {
         roundToStep(val) {
@@ -127,27 +123,12 @@ export default {
         selectPreset(preset) {
             this.amount = preset.amount
         },
-        toggleCustom() {
-            this.customValue = String(this.amount)
-            this.editingCustom = true
-            this.$nextTick(() => {
-                if (this.$refs.customInput) {
-                    this.$refs.customInput.focus()
-                    this.$refs.customInput.select()
-                }
-            })
+        onSlider(e) {
+            this.amount = parseInt(e.target.value, 10)
         },
-        finishCustom() {
-            let value = parseInt(this.customValue, 10)
-            if (isNaN(value)) value = this.minBet
-            value = Math.max(this.minBet, Math.min(this.maxBet, value))
-            value = this.roundToStep(value)
-            value = Math.max(this.minBet, Math.min(this.maxBet, value))
-            this.amount = value
-            this.editingCustom = false
-        },
-        cancelCustom() {
-            this.editingCustom = false
+        nudge(direction) {
+            const next = this.amount + direction * this.step
+            this.amount = Math.max(this.minBet, Math.min(this.sliderMax, next))
         },
     },
 }
@@ -192,23 +173,84 @@ export default {
         color: white;
         border-color: $primary;
     }
+}
 
-    &.custom {
-        min-width: 60px;
-        text-align: center;
+.slider-row {
+    display: flex;
+    align-items: center;
+    gap: $spacing-small;
+}
+
+.stepper {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border-radius: 50%;
+    font-size: 1.1em;
+    font-weight: bold;
+    line-height: 1;
+    background: $gray;
+    color: $text-color;
+    border: 1px solid $border-color;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:active {
+        background: $primary;
+        color: white;
+        border-color: $primary;
     }
 }
 
-.custom-input {
-    width: 50px;
-    text-align: center;
-    font-size: inherit;
-    font-weight: inherit;
-    padding: 0;
-    border: none;
+.slider-wrap {
+    flex: 1;
+    min-width: 0;
+}
+
+.bet-slider {
+    width: 100%;
+    height: 24px;
+    -webkit-appearance: none;
+    appearance: none;
     background: transparent;
-    color: inherit;
-    outline: none;
+    cursor: pointer;
+
+    &::-webkit-slider-runnable-track {
+        height: 6px;
+        border-radius: 3px;
+        background: $border-color;
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: $primary;
+        border: 2px solid white;
+        box-shadow: $shadow-sm;
+        margin-top: -7px;
+    }
+
+    &::-moz-range-track {
+        height: 6px;
+        border-radius: 3px;
+        background: $border-color;
+        border: none;
+    }
+
+    &::-moz-range-thumb {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: $primary;
+        border: 2px solid white;
+        box-shadow: $shadow-sm;
+    }
 }
 
 .bet-actions {

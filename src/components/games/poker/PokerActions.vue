@@ -142,7 +142,7 @@ export default {
             return `${action.name} ${this.formatAmount(this.amountToCall)}`
         },
         isLowRisk(action) {
-            return ['next-round', 'check', 'play-antidote'].includes(action.id)
+            return ['next-round', 'play-antidote'].includes(action.id)
         },
         handleAction(action) {
             switch (action.id) {
