@@ -86,9 +86,9 @@
                     </table>
                 </div>
 
-                <div class="balance-graph" v-if="profile.tables.length > 0">
+                <div class="balance-graph" v-if="profile.graphData && profile.graphData.length > 0">
                     <h4>Cumulative Winnings</h4>
-                    <profile-graph :tables="profile.tables"/>
+                    <profile-graph :tables="profile.graphData"/>
                 </div>
             </div>
         </div>
@@ -155,7 +155,7 @@ export default {
             this.fetchTables()
         },
         fetchProfile() {
-            client.getMyProfile(0, 1000, this.from, this.to)
+            client.getMyProfile(0, 100, this.from, this.to)
                 .then(res => this.profile = res)
                 .catch(() => {})
         },
