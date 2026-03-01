@@ -98,7 +98,7 @@ export default {
 
 div.big-card {
     background:    linear-gradient(135deg, #ffffff, #f5f0e8);
-    border-radius: $border-radius;
+    border-radius: $border-radius-card;
     border:        1px solid #d0c8b8;
 
     position:      absolute;

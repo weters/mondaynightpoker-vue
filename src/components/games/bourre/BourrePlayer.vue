@@ -109,62 +109,6 @@ div.bourre-player {
             display:               grid;
             grid-template-columns: repeat(5, 1fr);
             grid-gap:              2px;
-
-            .card-container {
-                perspective: 200px;
-                width:       100%;
-                height:      0;
-                padding-top: calc(3.5 / 2.5 * 100%);
-                position:    relative;
-
-                & > * {
-                    position: absolute;
-                    top:      0;
-                    right:    0;
-                    bottom:   0;
-                    left:     0;
-                }
-
-                .background {
-                    border-radius:    $border-radius;
-                    box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
-                    background-color: rgba(black, 0.1);
-                    border:           1px solid rgba(black, 0.1);
-                    margin:           2px;
-                }
-
-                div.card-back {
-                    background:    linear-gradient($primary, $secondary);
-                    border-radius: $border-radius;
-
-                    svg {
-                        fill:      white;
-                        width:     75%;
-                        position:  absolute;
-                        top:       50%;
-                        left:      50%;
-                        transform: translate(-50%, -50%);
-                    }
-                }
-            }
-        }
-
-        img {
-            width: 100%;
-        }
-
-        .folded {
-            background-color: $background-color;
-            overflow:         hidden;
-            width:            100%;
-            height:           0;
-            padding-top:      calc(1056 / 691 * 100%);
-            border-radius:    $border-radius;
-        }
-
-        .playing-card {
-            width:       100%;
-            margin-left: 2px;
         }
     }
 

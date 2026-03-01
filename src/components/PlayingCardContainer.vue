@@ -50,7 +50,8 @@ div.playing-card-container {
     aspect-ratio:     2.5 / 3.5;
     position:         relative;
     background-color: #eee;
-    border-radius:    $border-radius;
+    border-radius:    $border-radius-card;
+    overflow:         hidden;
 
     & > * {
         position: absolute;
@@ -58,7 +59,7 @@ div.playing-card-container {
     }
 
     .background {
-        border-radius:    $border-radius;
+        border-radius:    $border-radius-card;
         box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
         background-color: rgba(black, 0.1);
         border:           1px solid rgba(black, 0.1);
