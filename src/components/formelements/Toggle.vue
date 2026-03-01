@@ -81,7 +81,7 @@ export default {
         border-radius:    1000px;
         background-color: rgba(black, 0.05);
         position:         relative;
-        transition:       all 150ms;
+        transition:       all 300ms ease-in-out;
         border:           1px solid $border-color;
 
         &::before {
@@ -94,7 +94,7 @@ export default {
             left:             -1px;
             border-radius:    9999px;
             background-color: $border-color;
-            transition:       left 150ms;
+            transition:       left 150ms ease-in-out;
         }
     }
 
