@@ -51,7 +51,7 @@ div.playing-card-container {
     position:         relative;
     background-color: #eee;
     border-radius:    $border-radius-card;
-    overflow:         hidden;
+    overflow:         visible;
 
     & > * {
         position: absolute;
