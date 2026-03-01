@@ -84,11 +84,18 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+    @import '../../../variables';
+
     .bourre-hand {
         display: flex;
         align-items: center;
         gap: 8px;
+
+        @media (max-width: $mobile-max) {
+            flex-wrap: wrap;
+            justify-content: center;
+        }
     }
 
     div.buttons {
