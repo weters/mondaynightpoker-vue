@@ -100,9 +100,24 @@ div.big-card {
     background:    linear-gradient(135deg, #ffffff, #f5f0e8);
     border-radius: $border-radius-card;
     border:        1px solid #d0c8b8;
+    box-shadow:    inset 0 1px 3px rgba(0, 0, 0, 0.06),
+                   inset 0 -1px 2px rgba(255, 255, 255, 0.8),
+                   0 2px 6px rgba(0, 0, 0, 0.1);
 
     position:      absolute;
     inset:         0;
+    overflow:      hidden;
+
+    // Noise texture overlay
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.015) 1px, transparent 0);
+        background-size: 4px 4px;
+        pointer-events: none;
+        z-index: 1;
+    }
 
     &.hearts, &.diamonds {
         color: $red;
@@ -149,6 +164,7 @@ div.big-card {
         .rank {
             font-size:   28cqi;
             line-height: 28cqi;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.08);
         }
 
         .suit {
@@ -171,8 +187,9 @@ div.big-card {
         top:       50%;
         left:      50%;
         transform: translate(-50%, -50%);
-        width:     40cqi;
-        height:    40cqi;
+        width:     52cqi;
+        height:    52cqi;
+        opacity:   0.85;
     }
 }
 </style>
