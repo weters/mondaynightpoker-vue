@@ -39,7 +39,7 @@ export default {
     data() {
         return {
             ante: '150',
-            edition: 'standard',
+            edition: 'pairs',
             lives: '2',
             allowBlocks: false,
         }

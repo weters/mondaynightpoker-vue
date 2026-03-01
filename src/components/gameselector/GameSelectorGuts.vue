@@ -24,11 +24,11 @@ export default {
     components: {FancyInput, FancySelect, Toggle},
     data() {
         return {
-            cardCount: '2',
+            cardCount: '3',
             ante: '50',
             maxOwed: '10',
-            bloodyGuts: false,
-            allowTrades: false,
+            bloodyGuts: true,
+            allowTrades: true,
             cardCountOptions: [
                 ['2', '2-Card'],
                 ['3', '3-Card'],

@@ -20,7 +20,7 @@
             ]"/>
 
         <div class="buttons">
-            <button type="submit">Start</button>
+            <button>Start</button>
         </div>
     </form>
 </template>
