@@ -35,6 +35,7 @@ import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorPassThePoop",
+    inheritAttrs: false,
     components: {FancySelect, Toggle, FancyInput},
     data() {
         return {

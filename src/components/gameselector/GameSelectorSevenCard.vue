@@ -28,6 +28,7 @@ import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorSevenCard",
+    inheritAttrs: false,
     components: {FancySelect, FancyInput},
     data() {
         return {

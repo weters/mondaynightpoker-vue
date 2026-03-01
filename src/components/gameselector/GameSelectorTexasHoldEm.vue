@@ -31,6 +31,7 @@ import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorTexasHoldEm",
+    inheritAttrs: false,
     components: {FancySelect, FancyInput},
     data() {
         return {

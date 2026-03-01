@@ -40,6 +40,7 @@ import RadioButton from "@/components/formelements/RadioButton.vue"
 
 export default {
     name: "GameSelectorLittleL",
+    inheritAttrs: false,
     components: {RadioButton, Toggle, FancyInput},
     data() {
         return {

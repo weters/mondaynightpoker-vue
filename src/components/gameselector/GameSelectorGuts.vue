@@ -21,6 +21,7 @@ import Toggle from "@/components/formelements/Toggle.vue"
 
 export default {
     name: "GameSelectorGuts",
+    inheritAttrs: false,
     components: {FancyInput, FancySelect, Toggle},
     data() {
         return {
