@@ -23,7 +23,10 @@
 
         <settings-bottom-sheet :open="settingsOpen" @close="settingsOpen = false">
             <div class="settings">
-                <p>Table balance: {{ formatAmount(userClientState.balance) }}</p>
+                <div class="balance-display">
+                    <span class="balance-label">Table balance</span>
+                    <span class="balance-amount">{{ formatAmount(userClientState.balance) }}</span>
+                </div>
 
                 <p>
                     <toggle label="Deal me in!" v-model="dealMeIn" :disabled="dealMeInLoading"/>
@@ -212,6 +215,32 @@ p.game-info {
 
     &::before {
         display: none !important;
+    }
+}
+
+.balance-display {
+    display:        flex;
+    flex-direction: column;
+    gap:            2px;
+    background:     linear-gradient(135deg, rgba(white, 0.06) 0%, rgba($peach, 0.08) 100%);
+    border:         1px solid rgba(white, 0.1);
+    border-radius:  $border-radius;
+    padding:        $spacing-medium;
+    margin:         $spacing 0;
+
+    .balance-label {
+        font-size:      0.7em;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        color:          rgba(white, 0.45);
+        font-weight:    600;
+    }
+
+    .balance-amount {
+        font-size:      1.2em;
+        font-weight:    700;
+        color:          $peach;
+        letter-spacing: -0.01em;
     }
 }
 
