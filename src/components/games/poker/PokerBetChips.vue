@@ -63,6 +63,10 @@ export default {
             type: String,
             default: 'Bet',
         },
+        allInLabel: {
+            type: String,
+            default: 'All-in',
+        },
     },
     emits: ['submit', 'cancel'],
     data() {
@@ -102,7 +106,7 @@ export default {
 
             const maxAmount = Math.min(allInAmount, maxBet)
             if (maxAmount > minBet) {
-                const label = allInAmount <= maxBet ? 'All-in' : 'Max'
+                const label = allInAmount <= maxBet ? this.allInLabel : 'Max'
                 list.push({label, amount: maxAmount})
             }
 
@@ -112,7 +116,7 @@ export default {
             return Math.min(this.amount, this.maxBet, this.allInAmount)
         },
         submitLabel() {
-            if (this.effectiveAmount >= this.allInAmount) return `All-in ${this.formatAmount(this.allInAmount)}`
+            if (this.effectiveAmount >= this.allInAmount) return `${this.allInLabel} ${this.formatAmount(this.allInAmount)}`
             return `${this.actionName} ${this.formatAmount(this.effectiveAmount)}`
         },
     },

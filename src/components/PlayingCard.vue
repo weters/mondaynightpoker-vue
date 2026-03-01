@@ -97,11 +97,12 @@ export default {
 }
 
 div.big-card {
-    background-color: white;
-    border-radius:    $border-radius;
-    border:           1px solid #d2d2d2;
-    position:         absolute;
-    inset:            0;
+    background:    linear-gradient(135deg, #ffffff, #f5f0e8);
+    border-radius: $border-radius;
+    border:        1px solid #d0c8b8;
+
+    position:      absolute;
+    inset:         0;
 
     &.hearts, &.diamonds {
         color: $red;

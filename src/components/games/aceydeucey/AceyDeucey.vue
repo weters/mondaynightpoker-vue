@@ -14,6 +14,7 @@
                         :min-bet="25"
                         :max-bet="maxBet"
                         :all-in-amount="maxBet"
+                        all-in-label="Max bet"
                         action-name="Bet"
                         @submit="executeBet"
                         @cancel="showBet = false"
@@ -24,7 +25,7 @@
                             :key="action.id"
                             :label="action.name"
                             :confirm-text="`Confirm ${action.name}?`"
-                            :skip-confirm="action.name.toLowerCase() !== 'bet'"
+                            :skip-confirm="action.name.toLowerCase() === 'bet'"
                             @confirmed="handleAction(action)"
                         />
                     </div>

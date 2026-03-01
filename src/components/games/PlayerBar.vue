@@ -25,8 +25,12 @@
             <div class="settings">
                 <p>Table balance: {{ formatAmount(userClientState.balance) }}</p>
 
-                <p><toggle label="Deal me in!" v-model="dealMeIn" :disabled="dealMeInLoading"/></p>
-                <p><toggle label="Mute sounds" v-model="muteSounds"/></p>
+                <p>
+                    <toggle label="Deal me in!" v-model="dealMeIn" :disabled="dealMeInLoading"/>
+                </p>
+                <p>
+                    <toggle label="Mute sounds" v-model="muteSounds"/>
+                </p>
 
                 <slot name="settings"></slot>
 
@@ -93,14 +97,16 @@ export default {
 @import '../../variables';
 
 .player-bar {
-    background-color: rgba(color.adjust($background-color, $lightness: -10%), 0.95);
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
+    background:              rgba(255, 255, 255, 0.15);
+    backdrop-filter:         blur(10px);
+    -webkit-backdrop-filter: blur(10px); /* Safari */
+    border-top:              2px solid rgba(255, 255, 255, 0.3);
+
+    position:                fixed;
+    bottom:                  0;
+    left:                    0;
+    right:                   0;
+    z-index:                 100;
 
     &.is-turn {
         box-shadow: 0 -2px 12px rgba($primary, 0.3);
@@ -108,13 +114,13 @@ export default {
 }
 
 .bar-content {
-    display: flex;
+    display:     flex;
     align-items: center;
-    padding: $spacing-small $spacing-medium;
-    gap: $spacing-medium;
+    padding:     $spacing-small $spacing-medium;
+    gap:         $spacing-medium;
 
     .cards-area {
-        flex: 0 1 auto;
+        flex:      0 1 auto;
         min-width: 0;
     }
 
@@ -125,7 +131,7 @@ export default {
 
     // Compact buttons inside the bar
     :deep(button:not(.icon):not(.chip-pill)) {
-        padding: 5px 12px;
+        padding:   5px 12px;
         font-size: 0.85em;
     }
 
@@ -136,16 +142,16 @@ export default {
 
 .error {
     background-color: white;
-    position: absolute;
-    bottom: 100%;
-    right: 0;
-    margin-bottom: 4px;
-    border-radius: $border-radius;
-    box-shadow: $shadow-md;
+    position:         absolute;
+    bottom:           100%;
+    right:            0;
+    margin-bottom:    4px;
+    border-radius:    $border-radius;
+    box-shadow:       $shadow-md;
 
     :deep(p) {
-        margin: 0;
-        padding: $spacing-small $spacing-medium;
+        margin:        0;
+        padding:       $spacing-small $spacing-medium;
         border-radius: $border-radius;
     }
 }
@@ -156,20 +162,20 @@ export default {
 
 .player-bar-error-enter-from, .player-bar-error-leave-to {
     transform: translateY(8px);
-    opacity: 0;
+    opacity:   0;
 }
 
 p.game-info {
     background-color: #333;
-    color: white;
-    font-size: 0.75em;
-    margin: 0;
-    padding: 2px $spacing-medium;
-    padding-bottom: calc(2px + env(safe-area-inset-bottom));
-    display: flex;
-    align-items: center;
-    gap: $spacing-small;
-    line-height: 1.4;
+    color:            white;
+    font-size:        0.75em;
+    margin:           0;
+    padding:          2px $spacing-medium;
+    padding-bottom:   calc(2px + env(safe-area-inset-bottom));
+    display:          flex;
+    align-items:      center;
+    gap:              $spacing-small;
+    line-height:      1.4;
 
     :deep(strong)::after {
         content: ' ';
@@ -177,14 +183,14 @@ p.game-info {
 }
 
 .turn-badge {
-    background: $primary;
-    color: white;
-    font-size: 0.8em;
-    font-weight: bold;
-    padding: 1px 5px;
+    background:    $primary;
+    color:         white;
+    font-size:     0.8em;
+    font-weight:   bold;
+    padding:       1px 5px;
     border-radius: $border-radius-small;
-    margin-right: $spacing-small;
-    animation: badge-pulse 2s ease-in-out infinite;
+    margin-right:  $spacing-small;
+    animation:     badge-pulse 2s ease-in-out infinite;
 }
 
 @keyframes badge-pulse {
@@ -194,10 +200,10 @@ p.game-info {
 
 .settings-trigger {
     margin-left: auto;
-    cursor: pointer;
-    opacity: 0.7;
-    padding: 2px;
-    display: flex;
+    cursor:      pointer;
+    opacity:     0.7;
+    padding:     2px;
+    display:     flex;
     align-items: center;
 
     &:hover {

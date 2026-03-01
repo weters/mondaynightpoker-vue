@@ -35,7 +35,7 @@ div.playing-card-back {
     background:     #fff;
     border-radius:  $border-radius;
     position:       relative;
-    border: 1px solid #d2d2d2;
+    border:         1px solid #d0c8b8;
     box-shadow:     0 0 2px rgba(black, 0.1), 1px 1px 1px rgba(black, 0.1);
     container-type: inline-size;
 
@@ -53,19 +53,19 @@ div.playing-card-back {
         inset:            0;
         background-color: $orange;
         background-image: repeating-linear-gradient(
-                45deg,
-                transparent,
-                transparent 5cqi,
-                $dark-orange 5cqi,
-                $dark-orange 6cqi
-        ),
-        repeating-linear-gradient(
-                135deg,
-                transparent,
-                transparent 5cqi,
-                $dark-orange 5cqi,
-                $dark-orange 6cqi
-        );
+                                  45deg,
+                                  transparent,
+                                  transparent 5cqi,
+                                  $dark-orange 5cqi,
+                                  $dark-orange 6cqi
+                          ),
+                          repeating-linear-gradient(
+                                  135deg,
+                                  transparent,
+                                  transparent 5cqi,
+                                  $dark-orange 5cqi,
+                                  $dark-orange 6cqi
+                          );
     }
 
     .medallion {
