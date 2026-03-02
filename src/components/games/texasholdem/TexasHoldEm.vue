@@ -129,8 +129,8 @@ export default {
             flex: 0 0 40px;
 
             @media (min-width: $mobile-max) {
-                width: 64px;
-                flex: 0 0 64px;
+                width: 100px;
+                flex: 0 0 100px;
             }
         }
     }

@@ -155,7 +155,7 @@
             width: 40px;
 
             @media (min-width: $mobile-max) {
-                width: 64px;
+                width: 100px;
             }
         }
 

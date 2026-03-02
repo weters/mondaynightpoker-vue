@@ -36,8 +36,8 @@
                 width: 36px;
 
                 @media (min-width: $mobile-max) {
-                    flex: 0 0 52px;
-                    width: 52px;
+                    flex: 0 0 100px;
+                    width: 100px;
                 }
             }
         }
