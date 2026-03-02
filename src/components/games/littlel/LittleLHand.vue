@@ -74,13 +74,7 @@
         gap: 3px;
 
         & > * {
-            flex: 0 0 40px;
-            width: 40px;
-
-            @media (min-width: $mobile-max) {
-                flex: 0 0 100px;
-                width: 100px;
-            }
+            @include player-bar-card-size;
         }
 
         .card {

@@ -152,11 +152,7 @@
         }
 
         .card {
-            width: 40px;
-
-            @media (min-width: $mobile-max) {
-                width: 100px;
-            }
+            @include player-bar-card-size;
         }
 
         .card-and-meta {

@@ -32,12 +32,12 @@
             gap: 3px;
 
             & > div.card {
-                flex: 0 0 36px;
-                width: 36px;
+                flex: 1 1 0;
+                min-width: 0;
 
-                @media (min-width: $mobile-max) {
-                    flex: 0 0 100px;
+                @media (min-width: 601px) and (min-height: 600px) {
                     width: 100px;
+                    flex: 0 0 100px;
                 }
             }
         }

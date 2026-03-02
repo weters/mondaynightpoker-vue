@@ -98,13 +98,7 @@ export default {
     gap: 4px;
 
     & > .card {
-        width: 40px;
-        flex: 0 0 40px;
-
-        @media (min-width: $mobile-max) {
-            width: 100px;
-            flex: 0 0 100px;
-        }
+        @include player-bar-card-size;
     }
 
     &.folded .card {

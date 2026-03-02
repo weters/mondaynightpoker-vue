@@ -121,15 +121,16 @@ export default {
     align-items: center;
     padding:     $spacing-small $spacing-medium;
     gap:         $spacing-medium;
+    flex-wrap:   wrap;
 
     .cards-area {
-        flex:      0 1 auto;
+        flex:      1 1 auto;
         min-width: 0;
     }
 
     .actions-area {
-        flex-shrink: 0;
-        margin-left: auto;
+        flex:      1 1 100%;
+        min-width: 0;
     }
 
     // Compact buttons inside the bar

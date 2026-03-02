@@ -92,6 +92,16 @@ $page-width-max-width: 1000px;
     }
 }
 
+@mixin player-bar-card-size($small-width: 40px) {
+    width: $small-width;
+    flex: 0 0 $small-width;
+
+    @media (min-height: 600px) {
+        width: 100px;
+        flex: 0 0 100px;
+    }
+}
+
 @mixin current-turn {
     border-color: $orange;
     box-shadow: 0 0 4px $orange;

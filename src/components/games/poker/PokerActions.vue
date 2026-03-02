@@ -218,9 +218,13 @@ export default {
     .buttons {
         display: flex;
         flex-wrap: wrap;
+        justify-content: center;
         gap: $spacing-small;
-        justify-content: flex-end;
         margin: 0;
+
+        :deep(> *) {
+            flex: 0 1 0;
+        }
     }
 }
 
