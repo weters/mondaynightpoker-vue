@@ -12,6 +12,8 @@
 </template>
 
 <script>
+const confirmBus = new EventTarget()
+
 export default {
     name: "ConfirmButton",
     props: {
@@ -58,9 +60,18 @@ export default {
             ]
         },
     },
+    created() {
+        this._onResetOthers = (e) => {
+            if (e.detail !== this && this.confirming) {
+                this.reset()
+            }
+        }
+        confirmBus.addEventListener('reset-others', this._onResetOthers)
+    },
     methods: {
         handleClick() {
             if (this.skipConfirm) {
+                confirmBus.dispatchEvent(new CustomEvent('reset-others', { detail: this }))
                 this.$emit('confirmed')
                 return
             }
@@ -75,6 +86,7 @@ export default {
                 return
             }
 
+            confirmBus.dispatchEvent(new CustomEvent('reset-others', { detail: this }))
             this.confirming = true
             this.resetTimeout = setTimeout(() => {
                 this.confirming = false
@@ -90,6 +102,7 @@ export default {
         },
     },
     beforeUnmount() {
+        confirmBus.removeEventListener('reset-others', this._onResetOthers)
         if (this.resetTimeout) {
             clearTimeout(this.resetTimeout)
         }
