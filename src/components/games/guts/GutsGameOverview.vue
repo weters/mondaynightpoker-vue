@@ -192,6 +192,10 @@ div.guts-game-overview {
                 &.deck-cards-3 {
                     grid-template-columns: repeat(3, minmax(50px, 100px));
                 }
+
+                &.deck-cards-4 {
+                    grid-template-columns: repeat(4, minmax(50px, 100px));
+                }
             }
 
             .deck-outcome {
