@@ -1,12 +1,13 @@
 <template>
     <div class="playing-card" @click="$emit('click')">
         <div :class="classes">
+            <span class="center">
+                <img v-if="courtImage" :src="courtImage" :srcset="courtSrcset" class="court-illustration" alt="">
+                <mdi-icon v-else :icon="displaySuit"/>
+            </span>
             <span class="corner top-left">
                 <span class="rank">{{ displayRank }}</span>
                 <span class="suit"><mdi-icon :icon="displaySuit"/></span>
-            </span>
-            <span class="center">
-                <mdi-icon :icon="displaySuit"/>
             </span>
             <span class="corner bottom-right">
                 <span class="rank">{{ displayRank }}</span>
@@ -65,6 +66,19 @@ export default {
             }
 
             return this.rank
+        },
+        courtImage() {
+            if (this.rank === 13) {
+                return `/images/poker/king-${this.suit}.png`
+            }
+            return null
+        },
+        courtSrcset() {
+            if (this.rank === 13) {
+                const base = `/images/poker/king-${this.suit}`
+                return `${base}.png 1x, ${base}@2x.png 2x, ${base}@3x.png 3x`
+            }
+            return null
         },
         displaySuit() {
             switch (this.suit) {
@@ -190,6 +204,16 @@ div.big-card {
         width:     52cqi;
         height:    52cqi;
         opacity:   0.85;
+
+        .court-illustration {
+            position:   absolute;
+            top:        50%;
+            left:       50%;
+            transform:  translate(-50%, -50%);
+            width:      60cqi;
+            height:     95cqi;
+            object-fit: fill;
+        }
     }
 }
 </style>
