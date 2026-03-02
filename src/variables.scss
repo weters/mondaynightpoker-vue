@@ -92,13 +92,13 @@ $page-width-max-width: 1000px;
     }
 }
 
-@mixin player-bar-card-size($small-width: 40px) {
+@mixin player-bar-card-size($small-width: 50px) {
     width: $small-width;
-    flex: 0 0 $small-width;
+    flex: 0 1 $small-width;
 
     @media (min-height: 600px) {
         width: 100px;
-        flex: 0 0 100px;
+        flex: 0 1 100px;
     }
 }
 

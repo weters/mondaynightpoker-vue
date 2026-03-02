@@ -6,26 +6,24 @@
             v-model="selected"
         />
 
-        <div class="buttons">
-            <div :class="{ 'pending-turn': !isTurn }" v-if="!currentPlayer.decided">
-                <template v-if="pending">
-                    <button key="pending" class="pending" @click="pending = null">{{ pendingButtonText }}</button>
-                </template>
-                <template v-else>
-                    <confirm-button
-                        label="Fold"
-                        confirm-text="Confirm Fold?"
-                        danger
-                        :disabled="selected.length > 0"
-                        @confirmed="fold"
-                    />
-                    <confirm-button
-                        :label="discardLabel"
-                        confirm-text="Confirm?"
-                        @confirmed="discard"
-                    />
-                </template>
-            </div>
+        <div :class="{ buttons: true, 'pending-turn': !isTurn }" v-if="!currentPlayer.decided">
+            <template v-if="pending">
+                <button key="pending" class="pending" @click="pending = null">{{ pendingButtonText }}</button>
+            </template>
+            <template v-else>
+                <confirm-button
+                    label="Fold"
+                    confirm-text="Confirm Fold?"
+                    danger
+                    :disabled="selected.length > 0"
+                    @confirmed="fold"
+                />
+                <confirm-button
+                    :label="discardLabel"
+                    confirm-text="Confirm?"
+                    @confirmed="discard"
+                />
+            </template>
         </div>
     </div>
 </template>
@@ -128,12 +126,13 @@ export default {
 @import '../../../variables';
 
 .bourre-discard {
-    display: flex;
-    align-items: center;
-    gap: 8px;
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    gap:             8px;
 
     @media (max-width: $mobile-max) {
-        flex-wrap: wrap;
+        flex-wrap:       wrap;
         justify-content: center;
     }
 }
@@ -147,7 +146,7 @@ div.buttons {
 
             &.secondary {
                 background-color: transparent;
-                color: #888;
+                color:            #888;
             }
 
             &.pending {

@@ -1,10 +1,10 @@
 <template>
     <div :class="{ 'player-bar': true, 'is-turn': isTurn }" ref="bar">
         <div class="bar-content">
-            <div class="cards-area">
+            <div class="cards-area" v-if="$slots.cards">
                 <slot name="cards"></slot>
             </div>
-            <div class="actions-area">
+            <div class="actions-area" v-if="$slots.actions">
                 <slot name="actions"></slot>
             </div>
         </div>

@@ -97,9 +97,12 @@
     .hand {
         display: flex;
         gap: 3px;
+        max-width: 100%;
+        min-width: 0;
 
         & > * {
             @include player-bar-card-size;
+            min-width: 0;
         }
 
         .card {

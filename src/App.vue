@@ -6,7 +6,7 @@
         </main>
         <site-footer/>
         <error-banner/>
-        <notification-banner />
+        <notification-banner/>
         <dev-tools v-if="!production"/>
     </div>
 </template>
@@ -109,9 +109,9 @@ main {
     }
 
     & > .big-content {
-        background: linear-gradient(#011f26, #011f26 120px, $background-color 121px);
+        background:     linear-gradient(#011f26, #011f26 120px, $background-color 121px);
         padding-bottom: $spacing * 4;
-        overflow:   auto;
+        overflow:       auto;
 
         & > * {
             @include page-width;
@@ -300,15 +300,12 @@ label {
 }
 
 div.buttons {
-    text-align: right;
-
-    & button:not(:first-child) {
-        margin-left: $spacing-medium;
-    }
+    display: flex;
+    gap:     $spacing-medium;
 }
 
 p.note {
-    color: $text-color-light;
+    color:     $text-color-light;
     font-size: 0.7em;
 }
 </style>

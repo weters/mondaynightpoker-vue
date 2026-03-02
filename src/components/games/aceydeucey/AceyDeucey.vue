@@ -99,10 +99,15 @@ export default {
 
 div.acey-deucey {
     .acey-deucey-actions {
+        padding: $spacing-medium 0;
+
         .buttons {
-            display: flex;
-            gap: $spacing-small;
-            margin: 0;
+            display:         flex;
+            align-items:     center;
+            justify-content: center;
+            gap:             $spacing-medium;
+            margin:          0;
+            flex-wrap:       wrap;
         }
     }
 }
