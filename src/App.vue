@@ -300,8 +300,9 @@ label {
 }
 
 div.buttons {
-    display: flex;
-    gap:     $spacing-medium;
+    display:         flex;
+    gap:             $spacing-medium;
+    justify-content: center;
 }
 
 p.note {

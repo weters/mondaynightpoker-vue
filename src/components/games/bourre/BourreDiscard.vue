@@ -8,7 +8,8 @@
 
         <div :class="{ buttons: true, 'pending-turn': !isTurn }" v-if="!currentPlayer.decided">
             <template v-if="pending">
-                <button key="pending" class="pending" @click="pending = null">{{ pendingButtonText }}</button>
+                <span class="pending-label">{{ pendingActionText }} queued</span>
+                <button key="pending" class="pending" @click="pending = null">Cancel</button>
             </template>
             <template v-else>
                 <confirm-button
@@ -65,10 +66,10 @@ export default {
         discardLabel() {
             return Object.keys(this.selected).length === 0 ? 'Keep All' : 'Discard Selected'
         },
-        pendingButtonText() {
+        pendingActionText() {
             return this.pending === 'Fold' ? 'Fold' :
                 this.pending === 'Discard' && Object.keys(this.selected).length === 0 ? 'Keep All'
-                    : 'Discard Selected'
+                    : 'Discard'
         },
     },
     methods: {
@@ -134,24 +135,37 @@ export default {
     @media (max-width: $mobile-max) {
         flex-wrap:       wrap;
         justify-content: center;
+        width:           100%;
     }
 }
 
 div.buttons {
     white-space: nowrap;
 
-    .pending-turn {
-        button {
-            background-color: #888;
+    &.pending-turn {
+        align-items: center;
+    }
 
-            &.secondary {
-                background-color: transparent;
-                color:            #888;
-            }
+    @media (max-width: $mobile-max) {
+        flex-basis: 100%;
+        text-align: center;
+    }
 
-            &.pending {
-                box-shadow: 0 0 5px 2px $yellow;
-            }
+
+    .pending-label {
+        margin-right: $spacing-small;
+        font-size:    .8rem;
+        font-weight:  bold;
+        animation:    2s pulse ease-in-out infinite;
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            color: black;
+        }
+
+        50% {
+            color: $yellow;
         }
     }
 }

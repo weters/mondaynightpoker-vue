@@ -95,10 +95,16 @@
         @media (max-width: $mobile-max) {
             flex-wrap: wrap;
             justify-content: center;
+            width: 100%;
         }
     }
 
     div.buttons {
         white-space: nowrap;
+
+        @media (max-width: $mobile-max) {
+            flex-basis: 100%;
+            text-align: center;
+        }
     }
 </style>

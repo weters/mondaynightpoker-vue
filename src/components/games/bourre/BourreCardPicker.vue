@@ -100,6 +100,10 @@
         max-width: 100%;
         min-width: 0;
 
+        @media (max-width: $mobile-max) {
+            justify-content: center;
+        }
+
         & > * {
             @include player-bar-card-size;
             min-width: 0;
