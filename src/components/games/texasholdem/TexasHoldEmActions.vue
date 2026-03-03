@@ -14,7 +14,7 @@
                 </button>
             </template>
             <template v-else>
-                <button type="button" v-for="action in actions" :key="action.id" @click="confirm = { action, isCurrentAction }">
+                <button type="button" v-for="action in actions" :key="action.id" :class="actionButtonClass(action)" @click="confirm = { action, isCurrentAction }">
                     <span>{{ action.name }}</span>
                     <span v-if="action.amount">{{ formatAmount(action.amount) }}</span>
                 </button>
@@ -51,6 +51,9 @@ export default {
         },
     },
     methods: {
+        actionButtonClass(action) {
+            return `action-${action.id}`
+        },
         executeAction({ action, isCurrentAction }) {
             if (!isCurrentAction) {
                 this.futureAction = action
@@ -101,6 +104,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@use 'sass:color';
 @import '../../../variables';
 
 .texas-hold-em-actions {
@@ -120,6 +124,35 @@ export default {
 
         &.future-action {
             animation: pulse ease-in-out 2s infinite;
+        }
+    }
+
+    &:not(.future-action) button {
+        &.action-fold {
+            background-color: $red;
+
+            &:active {
+                background-color: color.adjust($red, $lightness: -10%);
+            }
+        }
+
+        &.action-check {
+            background-color: transparent;
+            color: $orange;
+            border: 1px solid $orange;
+
+            &:active {
+                background-color: rgba($orange, 0.1);
+            }
+        }
+
+        &.action-bet,
+        &.action-raise {
+            background-color: $light-green;
+
+            &:active {
+                background-color: color.adjust($light-green, $lightness: -10%);
+            }
         }
     }
 

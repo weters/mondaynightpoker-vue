@@ -15,13 +15,14 @@
                 <confirm-button
                     label="Fold"
                     confirm-text="Confirm Fold?"
-                    danger
+                    button-class="action-fold"
                     :disabled="selected.length > 0"
                     @confirmed="fold"
                 />
                 <confirm-button
                     :label="discardLabel"
                     confirm-text="Confirm?"
+                    :button-class="selected.length === 0 ? 'action-keep-all' : ''"
                     @confirmed="discard"
                 />
             </template>

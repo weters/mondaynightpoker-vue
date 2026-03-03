@@ -22,6 +22,7 @@
                             :label="actionLabel(action)"
                             :confirm-text="actionConfirmText(action)"
                             :skip-confirm="isLowRisk(action)"
+                            :button-class="actionButtonClass(action)"
                             @confirmed="handleAction(action)"
                         />
 
@@ -140,6 +141,9 @@ export default {
                 return `All-in ${this.formatAmount(this.self.balance)}`
             }
             return `${action.name} ${this.formatAmount(this.amountToCall)}`
+        },
+        actionButtonClass(action) {
+            return `action-${action.id}`
         },
         isLowRisk(action) {
             return ['next-round', 'play-antidote', 'bet'].includes(action.id)

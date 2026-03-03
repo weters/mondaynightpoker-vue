@@ -118,17 +118,10 @@ export default {
     transition: background-color $transition-fast, color $transition-fast;
 
     &.confirming {
-        background-color: $red;
-        border-color: $red;
         animation: confirm-pulse 1s ease-in-out infinite;
-
-        &:hover {
-            background-color: color.adjust($red, $lightness: -10%);
-            border-color: color.adjust($red, $lightness: -10%);
-        }
     }
 
-    &.danger:not(.confirming) {
+    &.danger {
         background-color: $orange;
         border-color: $orange;
 
@@ -137,11 +130,45 @@ export default {
             border-color: color.adjust($orange, $lightness: -10%);
         }
     }
+
+    &.action-fold {
+        background-color: $red;
+
+        &:active {
+            background-color: color.adjust($red, $lightness: -10%);
+        }
+    }
+
+    &.action-check {
+        background-color: transparent;
+        color: $orange;
+        border: 1px solid $orange;
+
+        &:active {
+            background-color: rgba($orange, 0.1);
+        }
+    }
+
+    &.action-bet,
+    &.action-raise,
+    &.action-keep-all {
+        background-color: $light-green;
+
+        &:active {
+            background-color: color.adjust($light-green, $lightness: -10%);
+        }
+    }
 }
 
 @keyframes confirm-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.8; }
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(white, 0.4);
+        transform: scale(1);
+    }
+    50% {
+        box-shadow: 0 0 8px 3px rgba(white, 0.6);
+        transform: scale(1.05);
+    }
 }
 
 .confirm-text-enter-active,
