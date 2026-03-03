@@ -116,7 +116,12 @@ export default {
                 if (Array.isArray(this.actions)) {
                     for (const action of this.actions) {
                         if (this.isFutureActionValid(action)) {
-                            this.executeAction(this.futureAction.id)
+                            if (this.futureAction.selectedCards) {
+                                this.$store.state.webSocket.send(this.futureAction.id, null, this.futureAction.selectedCards)
+                                    .catch(err => this.$emit('error', err))
+                            } else {
+                                this.executeAction(this.futureAction.id)
+                            }
                             break
                         }
                     }
@@ -192,6 +197,10 @@ export default {
 
             if (action.id === 'call') {
                 action.currentBet = this.pokerState.currentBet
+            }
+
+            if (action.id === 'trade') {
+                action.selectedCards = [...this.selectedCards]
             }
 
             this.futureAction = action
