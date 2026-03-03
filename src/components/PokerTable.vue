@@ -179,6 +179,13 @@ export default {
                 this.setTitle(this.tableName)
             }
         },
+        game(newVal, oldVal) {
+            if (newVal && !oldVal) {
+                this.$nextTick(() => {
+                    this.$el.scrollIntoView({behavior: 'smooth'})
+                })
+            }
+        },
         muteSounds(newVal) {
             audioplayer.setMuted(newVal)
         },
