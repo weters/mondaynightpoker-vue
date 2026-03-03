@@ -2,28 +2,23 @@
     <div class="pass-the-poop">
         <h3>Pass the Poop / {{ gameData.gameState.edition }} Edition</h3>
 
-        <div class="pot">
+        <div class="pot-row">
             <chip-stack :amount="pot" />
+            <div class="cards-left">
+                <span class="icon"><mdi-icon :icon="mdiCards"/></span>
+                <span class="value">{{ cardsLeftInDeck }}</span>
+            </div>
         </div>
 
         <pass-the-poop-participants :participants="participants"/>
 
         <player-bar :error="error" :is-turn="isTurn">
             <template #cards>
-                <div class="card-and-meta">
-                    <div class="card">
-                        <transition name="card" mode="out-in">
-                            <playing-card :rank="card.rank" :suit="card.suit" v-if="card"
-                                          :key="`${card.rank}.${card.suit}`"/>
-                        </transition>
-                    </div>
-
-                    <div class="metadata">
-                        <div class="item">
-                            <span class="icon"><mdi-icon :icon="mdiCards"/></span>
-                            <span class="value">{{ cardsLeftInDeck }}</span>
-                        </div>
-                    </div>
+                <div class="card">
+                    <transition name="card" mode="out-in">
+                        <playing-card :rank="card.rank" :suit="card.suit" v-if="card"
+                                      :key="`${card.rank}.${card.suit}`"/>
+                    </transition>
                 </div>
             </template>
 
@@ -143,26 +138,34 @@
     @import '../../../variables';
 
     .pass-the-poop {
-        .pot {
-            & > * {
-                margin: 0 auto;
-            }
-
+        .pot-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: $spacing;
             margin-bottom: $spacing;
+
+            .cards-left {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+
+                span.icon {
+                    display: block;
+                    width: 21.5px;
+                }
+            }
         }
 
         .card {
             @include player-bar-card-size;
-        }
-
-        .card-and-meta {
-            display: flex;
-            align-items: center;
+            margin: 0 auto;
         }
 
         .buttons {
             white-space: nowrap;
             width: min-content;
+            margin: 0 auto;
         }
     }
 
@@ -173,26 +176,5 @@
     .card-enter-from, .card-leave-to {
         opacity: 0;
         transform: translateY(-100%);
-    }
-
-    .metadata {
-        display: flex;
-        margin-left: $spacing;
-
-        .item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: min-content;
-
-            &:not(:first-child) {
-                margin-left: $spacing-small;
-            }
-
-            span.icon {
-                display: block;
-                width: 30px;
-            }
-        }
     }
 </style>

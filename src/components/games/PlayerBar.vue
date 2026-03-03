@@ -129,8 +129,10 @@ export default {
     }
 
     .actions-area {
-        flex:      1 1 100%;
-        min-width: 0;
+        flex:            1 1 100%;
+        min-width:       0;
+        display:         flex;
+        justify-content: center;
     }
 
     // Compact buttons inside the bar
