@@ -4,6 +4,7 @@ export default {
         gameData: (state, getters, rootState) => rootState.game.data,
         gameState: (state, getters) => getters.gameData.gameState,
         hand: (state, getters) => getters.gameData.hand,
+        handRank: (state, getters) => getters.gameData.handRank,
         canDecide: (state, getters) => getters.gameData.canDecide,
         hasDecided: (state, getters) => getters.gameData.hasDecided,
         myDecision: (state, getters) => getters.gameData.myDecision,

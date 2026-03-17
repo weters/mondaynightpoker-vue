@@ -32,10 +32,7 @@
         </template>
 
         <template #gameInfo>
-            <span class="round"><strong>Round:</strong> {{ round }}</span>
-            <span class="phase"><strong>Phase:</strong> {{ phaseDisplay }}</span>
-            <span class="pot"><strong>Pot:</strong> {{ formatAmount(pot) }}</span>
-            <span class="overflow" v-if="overflowPot > 0"><strong>Overflow:</strong> {{ formatAmount(overflowPot) }}</span>
+            {{ handRank }}
         </template>
     </player-bar>
 </template>
@@ -46,12 +43,10 @@ import GutsHand from "@/components/games/guts/GutsHand.vue"
 import GutsDecision from "@/components/games/guts/GutsDecision.vue"
 import GutsTrade from "@/components/games/guts/GutsTrade.vue"
 import {mapGetters} from "vuex"
-import balance from "@/mixins/balance"
 
 export default {
     name: "GutsPlayerBar",
     components: {PlayerBar, GutsDecision, GutsHand, GutsTrade},
-    mixins: [balance],
     data() {
         return {
             error: null,
@@ -62,10 +57,7 @@ export default {
     computed: {
         ...mapGetters({
             hand: 'guts/hand',
-            round: 'guts/round',
-            pot: 'guts/pot',
-            overflowPot: 'guts/overflowPot',
-            phase: 'guts/phase',
+            handRank: 'guts/handRank',
             isDeclarationPhase: 'guts/isDeclarationPhase',
             isTradePhase: 'guts/isTradePhase',
             isGameOver: 'guts/isGameOver',
@@ -78,17 +70,6 @@ export default {
         }),
         canSelectCards() {
             return this.isTradePhase && !this.hasTraded
-        },
-        phaseDisplay() {
-            const phases = {
-                'dealing': 'Dealing',
-                'declaration': 'Declaration',
-                'tradeIn': 'Trade',
-                'showdown': 'Showdown',
-                'roundEnd': 'Round Over',
-                'gameOver': 'Game Over',
-            }
-            return phases[this.phase] || this.phase
         },
     },
     watch: {
