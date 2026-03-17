@@ -12,8 +12,11 @@
         <p class="game-info">
             <span class="turn-badge" v-if="isTurn">YOUR TURN</span>
             <slot name="gameInfo"></slot>
+            <span class="help-trigger" v-if="gameRules.length" @click="rulesOpen = true">
+                <svg viewBox="0 0 24 24" width="20" height="20"><path :d="mdiHelpCircleOutline" fill="currentColor"/></svg>
+            </span>
             <span class="settings-trigger" @click="settingsOpen = true">
-                <svg viewBox="0 0 24 24" width="14" height="14"><path :d="mdiCog" fill="currentColor"/></svg>
+                <svg viewBox="0 0 24 24" width="20" height="20"><path :d="mdiCog" fill="currentColor"/></svg>
             </span>
         </p>
 
@@ -51,6 +54,16 @@
                 </template>
             </div>
         </settings-bottom-sheet>
+
+        <settings-bottom-sheet :open="rulesOpen" @close="rulesOpen = false">
+            <div class="rules">
+                <h3>How to Play</h3>
+                <div v-for="section in gameRules" :key="section.title" class="rule-section">
+                    <h4>{{ section.title }}</h4>
+                    <p>{{ section.body }}</p>
+                </div>
+            </div>
+        </settings-bottom-sheet>
     </div>
 </template>
 
@@ -60,7 +73,7 @@ import Toggle from "@/components/formelements/Toggle.vue"
 import SettingsBottomSheet from "@/components/SettingsBottomSheet.vue"
 import ConfirmButton from "@/components/ConfirmButton.vue"
 import playerBarShared from "@/mixins/playerBarShared"
-import {mdiCog} from '@mdi/js'
+import {mdiCog, mdiHelpCircleOutline} from '@mdi/js'
 
 export default {
     name: "PlayerBar",
@@ -73,12 +86,17 @@ export default {
     data() {
         return {
             mdiCog,
+            mdiHelpCircleOutline,
             settingsOpen: false,
+            rulesOpen: false,
         }
     },
     computed: {
         combinedError() {
             return this.localError || this.error
+        },
+        gameRules() {
+            return this.$store.getters.gameRules
         },
     },
     mounted() {
@@ -204,11 +222,12 @@ p.game-info {
     50% { opacity: 0.6; }
 }
 
+.help-trigger,
 .settings-trigger {
-    margin-left: auto;
     cursor:      pointer;
     opacity:     0.7;
-    padding:     2px;
+    padding:     10px 6px;
+    margin:      -10px 0;
     display:     flex;
     align-items: center;
 
@@ -219,6 +238,10 @@ p.game-info {
     &::before {
         display: none !important;
     }
+}
+
+.help-trigger {
+    margin-left: auto;
 }
 
 .balance-display {
@@ -244,6 +267,33 @@ p.game-info {
         font-weight:    700;
         color:          $peach;
         letter-spacing: -0.01em;
+    }
+}
+
+.rules {
+    h3 {
+        margin:      0 0 $spacing;
+        font-size:   1.1em;
+        color:       white;
+        font-weight: 600;
+    }
+
+    .rule-section {
+        margin-bottom: $spacing;
+
+        h4 {
+            margin:      0 0 4px;
+            font-size:   0.9em;
+            color:       rgba(white, 0.85);
+            font-weight: 600;
+        }
+
+        p {
+            margin:      0;
+            font-size:   0.85em;
+            color:       rgba(white, 0.6);
+            line-height: 1.5;
+        }
     }
 }
 

@@ -149,6 +149,7 @@ const store = createStore({
         canStart: (state, getters) => getters.isTableAdmin || getters.userClientState.canStart,
         canRestart: (state, getters) => getters.isTableAdmin || getters.userClientState.canRestart,
         canTerminate: (state, getters) => getters.isTableAdmin || getters.userClientState.canTerminate,
+        gameRules: state => state.game?.rules || [],
     },
 })
 

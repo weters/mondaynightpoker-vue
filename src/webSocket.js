@@ -103,6 +103,7 @@ class webSocketClient {
                 store.commit('setGame', {
                     game: message.value,
                     data: message.data,
+                    rules: message.rules || [],
                 })
                 break
             case 'gameEnded':
