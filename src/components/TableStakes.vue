@@ -10,6 +10,7 @@
                 label="Table Stakes"
                 unit="$"
                 v-model="tableStake"
+                autofocus
             />
 
             <div class="buttons">

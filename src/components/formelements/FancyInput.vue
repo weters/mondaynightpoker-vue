@@ -51,6 +51,7 @@ export default {
         max: Number,
         step: Number,
         unit: String,
+        autofocus: Boolean,
     },
     emits: ['update:modelValue'],
     data() {
@@ -64,6 +65,12 @@ export default {
     },
     mounted() {
         this.$refs.input.addEventListener('animationstart', this.animationStart, { passive: true })
+        if (this.autofocus) {
+            this.$nextTick(() => {
+                this.$refs.input.focus()
+                this.$refs.input.select()
+            })
+        }
     },
     beforeUnmount() {
         this.$refs.input.removeEventListener('animationstart', this.animationStart)
