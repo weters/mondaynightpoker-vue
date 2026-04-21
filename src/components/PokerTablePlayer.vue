@@ -1,8 +1,9 @@
 <template>
-    <div :class="{ 'poker-table-player': true, connected, seated }">
+    <div :class="{ 'poker-table-player': true, connected, seated, 'next-picker': isNextPicker }">
         <div class="player-data">
             <player-status :connected="connected" :seated="seated"/>
             <strong class="display-name">{{ displayName }}</strong>
+            <span class="next-picker-badge" v-if="isNextPicker">Next Pick</span>
             <span :class="{ balance: true, negative: balance < 0 }">{{ formatAmount(balance) }}</span>
             <button type="button" class="icon" @click="editTapped" v-if="canAdmin" :disabled="userClientState.playerId === this.player.playerId">
                 <mdi-icon :icon="mdiAccountEdit"/>
@@ -63,6 +64,9 @@ export default {
         seated() {
             return this.player.active
         },
+        isNextPicker() {
+            return Boolean(this.player.isNextPicker)
+        },
         displayName() {
             return this.player.player.displayName
         },
@@ -118,6 +122,7 @@ export default {
 div.poker-table-player {
     $parent: &;
     padding: $spacing-medium;
+    border: 1px solid transparent;
     border-radius: $border-radius-small;
     transition: background-color $transition-fast;
 
@@ -128,6 +133,11 @@ div.poker-table-player {
     &:not(:last-child) {
         border-bottom: 1px solid rgba($border-color, 0.5);
         padding-bottom: $spacing-medium;
+    }
+
+    &.next-picker {
+        @include current-turn;
+        background-color: rgba($orange, 0.06);
     }
 
     &.connected.seated {
@@ -181,6 +191,18 @@ div.poker-table-player {
                 color: $error;
                 background: rgba($error, 0.08);
             }
+        }
+
+        span.next-picker-badge {
+            font-size: 0.7em;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: white;
+            background: $orange;
+            padding: $spacing-small $spacing-medium;
+            border-radius: $border-radius-small;
+            white-space: nowrap;
         }
 
         button.icon {
