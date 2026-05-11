@@ -38,6 +38,12 @@ class Client {
         }, withAuthorization)
     }
 
+    cloneTable(uuid, name) {
+        return this._post(`/table/${encodeURIComponent(uuid)}/clone`, {
+            name,
+        }, withAuthorization)
+    }
+
     updatePlayer(playerId, { email, displayName, newPassword, oldPassword }) {
         return this._post(`/player/${encodeURIComponent(playerId)}`, {
             email,

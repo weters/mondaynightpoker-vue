@@ -62,6 +62,20 @@
             </template>
 
             <dealer-log class="dealer-log"/>
+
+            <div class="admin-actions" v-if="clientState && !game && isTableAdmin">
+                <h3>Admin</h3>
+                <form class="clone-table" @submit.prevent="cloneTable">
+                    <error :message="cloneError" v-if="cloneError"/>
+                    <p class="details">Clone this table to start a fresh session with the same players. Balances reset to zero, table stake carries over, and everyone starts in sit-out.</p>
+                    <fancy-input label="New Table Name" type="text" autocomplete="off" required
+                                 v-model="cloneName" :disabled="cloneLoading"/>
+                    <div class="buttons">
+                        <button type="submit" :disabled="cloneLoading || !cloneName">Clone Table</button>
+                    </div>
+                    <loading v-if="cloneLoading"/>
+                </form>
+            </div>
         </div>
     </div>
 </template>
@@ -89,6 +103,8 @@ import TableStakes from "@/components/TableStakes.vue"
 import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiContentCopy} from "@mdi/js"
 import audioplayer from "@/audioplayer"
+import FancyInput from "@/components/formelements/FancyInput.vue"
+import Error from "@/components/Error.vue"
 
 export default {
     name: "PokerTable",
@@ -100,6 +116,8 @@ export default {
         GameSelector,
         AceyDeucey,
         Guts,
+        FancyInput,
+        Error,
         ScheduledGame, SevenCard, LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre,
     },
     props: {
@@ -116,11 +134,14 @@ export default {
             ws: null,
             playButtonDisabled: false,
             muteSounds: audioplayer.muted,
+            cloneName: '',
+            cloneLoading: false,
+            cloneError: null,
         }
     },
     computed: {
         ...mapState(['game', 'clientState', 'user', 'scheduledGame']),
-        ...mapGetters(['canStart', 'userClientState']),
+        ...mapGetters(['canStart', 'isTableAdmin', 'userClientState']),
         isSeated() {
             return this.clientState && this.clientState[this.user.player.id].isSeated
         },
@@ -171,6 +192,15 @@ export default {
                     this.showError(err)
                 })
                 .finally(() => this.playButtonDisabled = false)
+        },
+        cloneTable() {
+            if (this.cloneLoading || !this.cloneName) return
+            this.cloneLoading = true
+            this.cloneError = null
+            client.cloneTable(this.uuid, this.cloneName)
+                .then(res => this.$router.push(`/table/${encodeURIComponent(res.uuid)}`))
+                .catch(err => this.cloneError = err)
+                .finally(() => this.cloneLoading = false)
         },
     },
     watch: {
@@ -425,6 +455,29 @@ export default {
 
             @media (max-width: $mobile-max) {
                 grid-template-columns: 1fr;
+            }
+        }
+    }
+
+    div.admin-actions {
+        margin-top: $spacing * 1.5;
+
+        h3 {
+            @include section-header;
+        }
+
+        form.clone-table {
+            @include card;
+            padding: $spacing;
+
+            p.details {
+                font-size: 0.85em;
+                color: $text-color-light;
+                margin: 0 0 $spacing-medium;
+            }
+
+            div.buttons {
+                margin-top: $spacing-medium;
             }
         }
     }
