@@ -199,6 +199,7 @@ export default {
             this.cloneError = null
             client.cloneTable(this.uuid, this.cloneName)
                 .then(res => this.$router.push(`/table/${encodeURIComponent(res.uuid)}`))
+                .then(() => window.scrollTo(0, 0))
                 .catch(err => this.cloneError = err)
                 .finally(() => this.cloneLoading = false)
         },
