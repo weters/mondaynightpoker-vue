@@ -2,7 +2,7 @@
     <div id="body">
         <site-header/>
         <main>
-            <router-view/>
+            <router-view :key="$route.path"/>
         </main>
         <site-footer/>
         <error-banner/>
