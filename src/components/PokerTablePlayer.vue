@@ -2,7 +2,10 @@
     <div :class="{ 'poker-table-player': true, connected, seated, 'next-picker': isNextPicker }">
         <div class="player-data">
             <player-status :connected="connected" :seated="seated"/>
-            <strong class="display-name">{{ displayName }}</strong>
+            <strong class="display-name">
+                <router-link v-if="viewerIsSiteAdmin" :to="`/admin/players/${player.playerId}`">{{ displayName }}</router-link>
+                <template v-else>{{ displayName }}</template>
+            </strong>
             <span class="next-picker-badge" v-if="isNextPicker">Next Pick</span>
             <span :class="{ balance: true, negative: balance < 0 }">{{ formatAmount(balance) }}</span>
             <button type="button" class="icon" @click="editTapped" v-if="canAdmin" :disabled="userClientState.playerId === this.player.playerId">
@@ -57,6 +60,9 @@ export default {
         },
         isSiteAdmin() {
             return this.player.player.isSiteAdmin
+        },
+        viewerIsSiteAdmin() {
+            return Boolean(this.userClientState.player.isSiteAdmin)
         },
         connected() {
             return this.player.isConnected
@@ -171,6 +177,16 @@ div.poker-table-player {
             white-space: nowrap;
             color: $text-color;
             font-weight: 500;
+
+            a {
+                color: inherit;
+                text-decoration: none;
+
+                &:hover {
+                    color: $primary;
+                    text-decoration: underline;
+                }
+            }
 
             @at-root #{$parent}:not(.connected) .display-name {
                 color:      $text-color-light;
