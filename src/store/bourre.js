@@ -1,13 +1,14 @@
 export default {
     namespaced: true,
     getters: {
-        gameData: (state, getters, rootState) => rootState.game.data,
+        // guard the entry getters: the game may clear while components are unmounting
+        gameData: (state, getters, rootState) => rootState.game?.data ?? {},
         hand: (state, getters) => getters.gameData.hand,
-        validMoves: (state, getters) => getters.gameData.validMoves,
+        validMoves: (state, getters) => getters.gameData.validMoves ?? [],
         folded: (state, getters) => getters.gameData.folded,
         discards: (state, getters) => getters.gameData.discards,
         maxDraw: (state, getters) => getters.gameData.maxDraw,
-        gameState: (state, getters) => getters.gameData.gameState,
+        gameState: (state, getters) => getters.gameData.gameState ?? {},
         seed: (state, getters) => getters.gameState.seed,
 
         round: (state, getters) => getters.gameState.round,
@@ -25,6 +26,6 @@ export default {
         isRoundOver: (state, getters) => getters.gameState.isRoundOver,
         isGameOver: (state, getters) => getters.gameState.isGameOver,
 
-        getCurrentPlayer: (state, getters) => (playerId) => getters.gameState.players.find(p => p.playerId === playerId),
+        getCurrentPlayer: (state, getters) => (playerId) => (getters.gameState.players ?? []).find(p => p.playerId === playerId),
     },
 }

@@ -1,8 +1,9 @@
 export default {
     namespaced: true,
     getters: {
-        gameData: (state, getters, rootState) => rootState.game.data,
-        gameState: (state, getters) => getters.gameData.gameState,
+        // guard the entry getters: the game may clear while components are unmounting
+        gameData: (state, getters, rootState) => rootState.game?.data ?? {},
+        gameState: (state, getters) => getters.gameData.gameState ?? {},
         hand: (state, getters) => getters.gameData.hand,
         handRank: (state, getters) => getters.gameData.handRank,
         canDecide: (state, getters) => getters.gameData.canDecide,
@@ -12,7 +13,7 @@ export default {
         isDeclarationPhase: (state, getters) => getters.phase === 'declaration',
         isShowdown: (state, getters) => getters.phase === 'showdown' || getters.phase === 'roundEnd',
         isGameOver: (state, getters) => getters.gameState.isGameOver,
-        participants: (state, getters) => getters.gameState.participants,
+        participants: (state, getters) => getters.gameState.participants ?? [],
         decisions: (state, getters) => getters.gameState.decisions,
         showdownResult: (state, getters) => getters.gameState.showdownResult,
         pot: (state, getters) => getters.gameState.pot,
