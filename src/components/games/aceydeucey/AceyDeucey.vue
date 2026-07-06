@@ -55,7 +55,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['game', 'webSocket']),
+        ...mapState(['game']),
         ...mapGetters({
             gameState: 'aceyDeucey/gameState',
             actions: 'aceyDeucey/actions',
@@ -76,13 +76,13 @@ export default {
                 this.showBet = true
                 return
             }
-            this.webSocket.send('execute', String(action.id))
+            this.$store.dispatch('webSocketSend', {action: 'execute', subject: String(action.id)})
                 .catch(err => this.showError(err))
         },
         executeBet(amount) {
             const betAction = this.actions.find(a => a.name.toLowerCase() === 'bet')
             if (!betAction) return
-            this.webSocket.send('execute', String(betAction.id), null, {amount})
+            this.$store.dispatch('webSocketSend', {action: 'execute', subject: String(betAction.id), additionalData: {amount}})
                 .catch(err => this.showError(err))
         },
     },

@@ -16,13 +16,7 @@
             </div>
 
             <template v-if="game">
-                <bourre v-if="game.game === 'bourre'"/>
-                <pass-the-poop v-else-if="game.game === 'pass-the-poop'"/>
-                <little-l v-else-if="game.game === 'little-l'"/>
-                <seven-card v-else-if="game.game === 'seven-card'"/>
-                <acey-deucey v-else-if="game.game === 'acey-deucey'"/>
-                <texas-hold-em v-else-if="game.game === 'texas-hold-em'"/>
-                <guts v-else-if="game.game === 'guts'"/>
+                <component v-if="gameComponent" :is="gameComponent"/>
             </template>
             <template v-else-if="clientState">
                 <transition name="scheduled-game">
@@ -44,7 +38,7 @@
                         <table-stakes/>
 
                         <form class="player-state" v-if="userClientState.isSeated">
-                            <toggle v-model="userClientState.active" label="Deal me in!" :disabled="playButtonDisabled"
+                            <toggle :model-value="userClientState.active" label="Deal me in!" :disabled="playButtonDisabled"
                                     @change="setPlayerActive"/>
                             <toggle v-model="muteSounds" label="Mute sounds" class="mute-sounds"/>
                             <p class="details">If you want to sit out, uncheck "Deal me in!"</p>
@@ -81,24 +75,18 @@
 </template>
 
 <script>
-import webSocketClient from "@/webSocket"
+import * as webSocket from "@/webSocket"
 import {mapGetters, mapState} from "vuex"
 import PokerTablePlayerList from "@/components/games/PokerTablePlayerList.vue"
 import Loading from "@/components/Loading.vue"
 import client from "@/client"
 import DealerLog from "./DealerLog.vue"
-import Bourre from '@/components/games/bourre/Bourre.vue'
-import PassThePoop from "./games/passthepoop/PassThePoop.vue"
-import LittleL from "./games/littlel/LittleL.vue"
-import SevenCard from "./games/sevencard/SevenCard.vue"
 import bus from "../bus"
 import ScheduledGame from "./ScheduledGame.vue"
-import AceyDeucey from "@/components/games/aceydeucey/AceyDeucey.vue"
-import Guts from "@/components/games/guts/Guts.vue"
+import {componentForSlug} from "@/games"
 
 import GameSelector from "@/components/gameselector/GameSelector.vue"
 import Toggle from "@/components/formelements/Toggle.vue"
-import TexasHoldEm from "@/components/games/texasholdem/TexasHoldEm.vue"
 import TableStakes from "@/components/TableStakes.vue"
 import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiContentCopy} from "@mdi/js"
@@ -111,14 +99,11 @@ export default {
     components: {
         MdiIcon,
         TableStakes,
-        TexasHoldEm,
         Toggle,
         GameSelector,
-        AceyDeucey,
-        Guts,
         FancyInput,
         Error,
-        ScheduledGame, SevenCard, LittleL, PassThePoop, DealerLog, Loading, PokerTablePlayerList, Bourre,
+        ScheduledGame, DealerLog, Loading, PokerTablePlayerList,
     },
     props: {
         uuid: {
@@ -131,7 +116,6 @@ export default {
             mdiContentCopy,
             table: null,
             error: null,
-            ws: null,
             playButtonDisabled: false,
             muteSounds: audioplayer.muted,
             cloneName: '',
@@ -142,16 +126,18 @@ export default {
     computed: {
         ...mapState(['game', 'clientState', 'user', 'scheduledGame']),
         ...mapGetters(['canStart', 'isTableAdmin', 'userClientState']),
+        gameComponent() {
+            return componentForSlug(this.game?.game)
+        },
         isSeated() {
-            return this.clientState && this.clientState[this.user.player.id].isSeated
+            return this.clientState && this.clientState[this.user.player.id]?.isSeated
         },
         tableName() {
             return this.table && this.table.name
         },
     },
     mounted() {
-        this.ws = new webSocketClient(this.uuid)
-        this.$store.commit('setWebSocket', this.ws)
+        webSocket.connect(this.uuid, this.$store)
 
         client.getTableByUUID(this.uuid)
             .then(res => this.table = res)
@@ -164,8 +150,7 @@ export default {
     },
     beforeUnmount() {
         bus.off('error', this.listenForError)
-        this.ws.close()
-        this.$store.commit('clearWebSocket')
+        webSocket.disconnect()
         this.$store.commit('clearLogs')
     },
     methods: {
@@ -182,12 +167,12 @@ export default {
             this.$store.dispatch('error', err)
         },
         cancelGame() {
-            this.ws.send('cancelGame')
+            this.$store.dispatch('webSocketSend', {action: 'cancelGame'})
                 .catch(err => this.showError(err))
         },
         setPlayerActive(active) {
             this.playButtonDisabled = true
-            this.ws.send('playerStatus', null, null, {active})
+            this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: {active}})
                 .catch(err => {
                     this.showError(err)
                 })

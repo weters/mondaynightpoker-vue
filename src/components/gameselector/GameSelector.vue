@@ -3,13 +3,7 @@
         <h3>Pick a Game</h3>
 
         <div class="games" v-if="canStart">
-            <game-selector-acey-deucey @submit="startGame"/>
-            <game-selector-bourre @submit="startGame"/>
-            <game-selector-guts @submit="startGame"/>
-            <game-selector-texas-hold-em @submit="startGame"/>
-            <game-selector-seven-card @submit="startGame"/>
-            <game-selector-little-l @submit="startGame"/>
-            <game-selector-pass-the-poop @submit="startGame"/>
+            <component v-for="g in games" :key="g.slug" :is="g.selector" @submit="startGame($event, g.slug)"/>
         </div>
         <div class="waiting" v-else>
             <p>Waiting on the table admin to start the game!</p>
@@ -19,37 +13,28 @@
 </template>
 
 <script>
-import GameSelectorAceyDeucey from "@/components/gameselector/GameSelectorAceyDeucey.vue"
-import GameSelectorLittleL from "@/components/gameselector/GameSelectorLittleL.vue"
-import GameSelectorPassThePoop from "@/components/gameselector/GameSelectorPassThePoop.vue"
-import GameSelectorBourre from "@/components/gameselector/GameSelectorBourre.vue"
-import GameSelectorGuts from "@/components/gameselector/GameSelectorGuts.vue"
-import GameSelectorSevenCard from "@/components/gameselector/GameSelectorSevenCard.vue"
 import {mapGetters} from "vuex"
 import Loading from "@/components/Loading.vue"
-import GameSelectorTexasHoldEm from "@/components/gameselector/GameSelectorTexasHoldEm.vue"
+import games from "@/games"
 
 export default {
     name: "GameSelector",
     components: {
-        GameSelectorTexasHoldEm,
         Loading,
-        GameSelectorBourre,
-        GameSelectorGuts,
-        GameSelectorPassThePoop,
-        GameSelectorLittleL,
-        GameSelectorAceyDeucey,
-        GameSelectorSevenCard,
+    },
+    data() {
+        return {
+            games,
+        }
     },
     computed: {
         ...mapGetters(['canStart']),
-        ws() {
-            return this.$store.state.webSocket
-        },
     },
     methods: {
-        startGame({game, opts}) {
-            this.ws.send('createGame', game, null, opts)
+        // the registry slug is authoritative; the `game` field in the selector's
+        // submit payload is ignored
+        startGame({opts}, slug) {
+            this.$store.dispatch('webSocketSend', {action: 'createGame', subject: slug, additionalData: opts})
         },
     },
 }

@@ -1,28 +1,16 @@
 import { createStore } from 'vuex'
-import bourre from './store/bourre'
-import passThePoop from "./store/passThePoop"
-import poker from "./store/poker"
 import {formatAmount} from "./currency"
-import aceyDeucey from "@/store/aceyDeucey"
-import texasHoldEm from "@/store/texasHoldEm"
-import guts from "@/store/guts"
+import * as webSocket from "./webSocket"
+import { storeModules } from "@/games"
 
 let errorTimeout, notificationTimeout, logIdCounter = 0
 
 const store = createStore({
-    modules: {
-        bourre,
-        passThePoop,
-        poker,
-        aceyDeucey,
-        texasHoldEm,
-        guts,
-    },
+    modules: storeModules(),
     state: {
         user: null, // { player: Object, jwt: String }
         game: null,
         clientState: null,
-        webSocket: null,
         logs: [],
         error: null,
         notification: null,
@@ -40,7 +28,8 @@ const store = createStore({
                 .map(log => {
                     let players = ''
                     if (log.playerIds && log.playerIds.length > 0 && log.playerIds[0] !== 0) {
-                        players = log.playerIds.map(pid => state.clientState[pid].player.displayName).join(', ')
+                        // clientState may not have arrived yet when the first logs come in
+                        players = log.playerIds.map(pid => state.clientState?.[pid]?.player.displayName ?? '').join(', ')
                     }
 
                     const cards = log.cards ? log.cards : []
@@ -64,12 +53,6 @@ const store = createStore({
         },
         clearLogs(state) {
             state.logs = []
-        },
-        setWebSocket(state, webSocket) {
-            state.webSocket = webSocket
-        },
-        clearWebSocket(state) {
-            state.webSocket = null
         },
         setUser(state, user) {
             state.user = user
@@ -105,6 +88,12 @@ const store = createStore({
         },
     },
     actions: {
+        // webSocketSend sends a player action over the table's WebSocket connection.
+        // Returns a promise that resolves with the server's reply, so callers can
+        // chain .catch/.finally as with any async action.
+        webSocketSend(context, {action, subject = null, cards = null, additionalData = null}) {
+            return webSocket.send(action, subject, cards, additionalData)
+        },
         error(context, error) {
             context.commit('error', error)
 
@@ -142,13 +131,15 @@ const store = createStore({
         },
     },
     getters: {
-        isSiteAdmin: state => state.user && state.user.player && state.user.player.isSiteAdmin,
+        isSiteAdmin: state => Boolean(state.user && state.user.player && state.user.player.isSiteAdmin),
         playerDataById: state => id => state.clientState && state.clientState[id],
         userClientState: (state, getters) => state.user && state.user.player && getters.playerDataById(state.user.player.id),
-        isTableAdmin: (state, getters) => getters.isSiteAdmin || getters.userClientState.isTableAdmin,
-        canStart: (state, getters) => getters.isTableAdmin || getters.userClientState.canStart,
-        canRestart: (state, getters) => getters.isTableAdmin || getters.userClientState.canRestart,
-        canTerminate: (state, getters) => getters.isTableAdmin || getters.userClientState.canTerminate,
+        // userClientState is null until the server sends the first clientState message,
+        // so the permission getters must not assume it exists
+        isTableAdmin: (state, getters) => Boolean(getters.isSiteAdmin || getters.userClientState?.isTableAdmin),
+        canStart: (state, getters) => Boolean(getters.isTableAdmin || getters.userClientState?.canStart),
+        canRestart: (state, getters) => Boolean(getters.isTableAdmin || getters.userClientState?.canRestart),
+        canTerminate: (state, getters) => Boolean(getters.isTableAdmin || getters.userClientState?.canTerminate),
         gameRules: state => state.game?.rules || [],
     },
 })

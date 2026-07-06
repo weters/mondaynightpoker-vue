@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from "vuex"
+import {mapGetters} from "vuex"
 import balance from "@/mixins/balance"
 
 export default {
@@ -38,7 +38,6 @@ export default {
         }
     },
     computed: {
-        ...mapState(['webSocket']),
         ...mapGetters({
             currentActions: 'texasHoldEm/actions',
             futureActions: 'texasHoldEm/futureActions',
@@ -64,7 +63,7 @@ export default {
             this.futureAction = null
             this.confirm = null
             this.hideButtons = true
-            this.webSocket.send(action.name)
+            this.$store.dispatch('webSocketSend', {action: action.name})
                 .catch(err => {
                     this.hideButtons = false
                     this.$store.dispatch('error', err)

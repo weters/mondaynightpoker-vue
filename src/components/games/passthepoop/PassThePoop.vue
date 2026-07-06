@@ -70,7 +70,7 @@
             }
         },
         computed: {
-            ...mapState(['game', 'webSocket', 'user']),
+            ...mapState(['game', 'user']),
             ...mapGetters({
                 card: 'passThePoop/card',
                 gameData: 'passThePoop/gameData',
@@ -88,7 +88,7 @@
         },
         methods: {
             execute(action) {
-                this.webSocket.send('execute', String(action.id))
+                this.$store.dispatch('webSocketSend', {action: 'execute', subject: String(action.id)})
                     .catch(err => this.showError(err))
             },
         },

@@ -115,7 +115,7 @@ export default {
             this.$emit('clearSelection')
         },
         submitTradeWithCards(cards) {
-            this.$store.state.webSocket.send('trade', null, null, {cards})
+            this.$store.dispatch('webSocketSend', {action: 'trade', additionalData: {cards}})
                 .then(() => {
                     this.clearState()
                 })

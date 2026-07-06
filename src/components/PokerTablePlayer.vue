@@ -29,7 +29,7 @@ import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiAccountEdit} from "@mdi/js"
 import bus from "@/bus"
 import Toggle from "@/components/formelements/Toggle.vue"
-import {mapGetters, mapState} from "vuex"
+import {mapGetters} from "vuex"
 
 export default {
     name: "PokerTablePlayer",
@@ -53,7 +53,6 @@ export default {
         }
     },
     computed: {
-        ...mapState(['webSocket']),
         ...mapGetters(['userClientState']),
         canAdmin() {
             return this.userClientState.isTableAdmin || this.userClientState.player.isSiteAdmin
@@ -81,16 +80,18 @@ export default {
         },
     },
     mounted() {
-        bus.on('edit-player', comp => {
+        bus.on('edit-player', this.onEditPlayer)
+    },
+    beforeUnmount() {
+        // pass the handler so only this component's listener is removed
+        bus.off('edit-player', this.onEditPlayer)
+    },
+    methods: {
+        onEditPlayer(comp) {
             if (this !== comp) {
                 this.showMenu = false
             }
-        })
-    },
-    beforeUnmount() {
-        bus.off('edit-player')
-    },
-    methods: {
+        },
         editTapped() {
             bus.emit('edit-player', this)
             this.showMenu = !this.showMenu
@@ -100,7 +101,7 @@ export default {
                 playerId: this.player.playerId,
             }
             data[flag] = value
-            this.webSocket.send('tableAdmin', null, null, data)
+            this.$store.dispatch('webSocketSend', {action: 'tableAdmin', additionalData: data})
                 .catch(err => {
                     this[flag] = !value
                     this.$store.dispatch('error', err)
@@ -112,7 +113,7 @@ export default {
                 playerId: this.player.playerId,
             }
 
-            this.webSocket.send('playerStatus', null, null, payload)
+            this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: payload})
                 .catch(err => {
                     this.isSeated = !active
                     this.$store.dispatch('error', err)

@@ -42,8 +42,9 @@ export default {
     methods: {
         save() {
             this.saving = true
-            this.$store.state.webSocket.send('tableStake', null, null, {
-                    tableStake: parseInt(this.tableStake, 10) * 100,
+            this.$store.dispatch('webSocketSend', {
+                    action: 'tableStake',
+                    additionalData: {tableStake: parseInt(this.tableStake, 10) * 100},
                 })
                 .then(() => this.editTableStake = false)
                 .catch(err => {

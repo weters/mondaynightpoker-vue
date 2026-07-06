@@ -117,7 +117,7 @@ export default {
                     for (const action of this.actions) {
                         if (this.isFutureActionValid(action)) {
                             if (this.futureAction.selectedCards) {
-                                this.$store.state.webSocket.send(this.futureAction.id, null, this.futureAction.selectedCards)
+                                this.$store.dispatch('webSocketSend', {action: this.futureAction.id, cards: this.futureAction.selectedCards})
                                     .catch(err => this.$emit('error', err))
                             } else {
                                 this.executeAction(this.futureAction.id)
@@ -157,7 +157,7 @@ export default {
             switch (action.id) {
                 case 'discard':
                 case 'trade':
-                    this.$store.state.webSocket.send(action.id, null, this.selectedCards)
+                    this.$store.dispatch('webSocketSend', {action: action.id, cards: this.selectedCards})
                         .catch(err => this.$emit('error', err))
                     break
                 case 'check':
@@ -178,7 +178,7 @@ export default {
             }
         },
         executeAction(actionId) {
-            this.$store.state.webSocket.send(actionId)
+            this.$store.dispatch('webSocketSend', {action: actionId})
                 .catch(err => this.$emit('error', err))
         },
         handleBetSubmit(amount) {
@@ -186,7 +186,7 @@ export default {
             if (finalAmount > this.allInAmount) finalAmount = this.allInAmount
             if (finalAmount > this.maxBet) finalAmount = this.maxBet
 
-            this.$store.state.webSocket.send(this.betAction.id, null, null, {amount: finalAmount})
+            this.$store.dispatch('webSocketSend', {action: this.betAction.id, additionalData: {amount: finalAmount}})
                 .catch(err => this.$emit('error', err))
         },
         handleFutureAction(action) {

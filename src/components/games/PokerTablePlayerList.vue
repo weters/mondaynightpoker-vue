@@ -44,7 +44,7 @@
             }
         },
         computed: {
-            ...mapState(['user', 'webSocket']),
+            ...mapState(['user']),
             ...mapGetters(['isTableAdmin', 'userClientState']),
             allClients() {
                 return this.clientState && Object.values(this.clientState).sort((a, b) => a.player.displayName.localeCompare(b.player.displayName))
@@ -63,7 +63,7 @@
                 }
                 data[key] = event.target.checked
                 event.target.disabled = true
-                this.webSocket.send('tableAdmin', null, null, data)
+                this.$store.dispatch('webSocketSend', {action: 'tableAdmin', additionalData: data})
                     .catch(err => {
                         event.target.checked = !event.target.checked
                         this.showError(err)
@@ -97,7 +97,7 @@
                 }
 
                 event.target.disabled = true
-                this.webSocket.send('playerStatus', null, null, payload)
+                this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: payload})
                     .catch(err => {
                         event.target.checked = !event.target.checked
                         this.showError(err)

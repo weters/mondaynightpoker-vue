@@ -79,7 +79,7 @@ export default {
         sitOut(sitOut) {
             if (this.sitOutLoading) return
             this.sitOutLoading = true
-            this.$store.state.webSocket.send('playerStatus', null, null, {active: !sitOut})
+            this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: {active: !sitOut}})
                 .catch(err => {
                     this.sitOut = !sitOut
                     this.showError(err)
@@ -89,7 +89,7 @@ export default {
     },
     methods: {
         newBourreGame() {
-            this.$store.state.webSocket.send('createGame', 'bourre', null, {ante: this.gameState.ante})
+            this.$store.dispatch('webSocketSend', {action: 'createGame', subject: 'bourre', additionalData: {ante: this.gameState.ante}})
                 .catch(err => this.showError(err))
         },
     },

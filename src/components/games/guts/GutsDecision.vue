@@ -59,7 +59,7 @@ export default {
     },
     methods: {
         decide(goIn) {
-            this.$store.state.webSocket.send('decide', null, null, {in: goIn})
+            this.$store.dispatch('webSocketSend', {action: 'decide', additionalData: {in: goIn}})
                 .then(() => {
                     this.localDecision = goIn
                 })

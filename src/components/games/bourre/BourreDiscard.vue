@@ -80,7 +80,7 @@ export default {
                 return
             }
 
-            this.$store.state.webSocket.send('discard', null, this.selected)
+            this.$store.dispatch('webSocketSend', {action: 'discard', cards: this.selected})
                 .catch(err => {
                     this.$emit('error', err)
                 })
@@ -96,7 +96,7 @@ export default {
                 return
             }
 
-            this.$store.state.webSocket.send('discard')
+            this.$store.dispatch('webSocketSend', {action: 'discard'})
                 .catch(err => {
                     this.$emit('error', err)
                 })

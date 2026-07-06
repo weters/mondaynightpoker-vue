@@ -49,13 +49,13 @@ export default {
             }, 2000)
         },
         terminateGame() {
-            this.$store.state.webSocket.send('terminateGame')
+            this.$store.dispatch('webSocketSend', {action: 'terminateGame'})
                 .catch(err => this.showError(err))
         },
         toggleDealMeIn(active) {
             if (this.dealMeInLoading) return
             this.dealMeInLoading = true
-            this.$store.state.webSocket.send('playerStatus', null, null, {active})
+            this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: {active}})
                 .catch(err => {
                     this.dealMeIn = !active
                     this.showError(err)

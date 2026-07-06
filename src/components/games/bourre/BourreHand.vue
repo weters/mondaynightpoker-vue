@@ -74,8 +74,7 @@
                     this.timeout = null
                 }
 
-                this.$store.state.webSocket.send('playCard', null, this.selected)
-                    .then(res => console.log(res))
+                this.$store.dispatch('webSocketSend', {action: 'playCard', cards: this.selected})
                     .catch(err => {
                         this.$emit('error', err)
                     })
