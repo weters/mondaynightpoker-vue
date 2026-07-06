@@ -29,4 +29,9 @@ export default defineConfig({
   build: {
     sourcemap: false,
   },
+  test: {
+    environment: 'jsdom',
+    globals: false,
+    include: ['src/**/*.spec.js'],
+  },
 })
