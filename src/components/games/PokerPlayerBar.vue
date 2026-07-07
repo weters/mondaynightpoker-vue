@@ -25,7 +25,8 @@
 <script>
 import PlayerBar from "./PlayerBar.vue"
 import PokerActions from "./poker/PokerActions.vue"
-import {mapGetters} from "vuex"
+import {mapState} from "pinia"
+import {usePokerStore} from "@/store/poker"
 import show_error from "@/mixins/show_error"
 
 export default {
@@ -44,13 +45,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            self: 'poker/self',
-            gameState: 'poker/gameState',
-            pokerState: 'poker/pokerState',
-            actions: 'poker/actions',
-            futureActions: 'poker/futureActions',
-        }),
+        ...mapState(usePokerStore, ['self', 'gameState', 'pokerState', 'actions', 'futureActions']),
         isTurn() {
             return this.gameState.currentTurn === this.self.playerId || this.gameState.action === this.self.playerId
         },

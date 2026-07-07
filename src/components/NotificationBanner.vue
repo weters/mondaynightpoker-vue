@@ -7,12 +7,13 @@
 </template>
 
 <script>
-import {mapState} from "vuex"
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
 
 export default {
     name: "NotificationBanner",
     computed: {
-        ...mapState(['notification']),
+        ...mapState(useRootStore, ['notification']),
     },
 }
 </script>

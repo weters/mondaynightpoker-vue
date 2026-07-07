@@ -41,7 +41,9 @@ import PlayerBar from "@/components/games/PlayerBar.vue"
 import BourreHand from "@/components/games/bourre/BourreHand.vue"
 import BourreDiscard from "@/components/games/bourre/BourreDiscard.vue"
 import ConfirmButton from "@/components/ConfirmButton.vue"
-import {mapGetters} from "vuex"
+import {mapActions, mapState} from "pinia"
+import {useRootStore} from "@/store"
+import {useBourreStore} from "@/store/bourre"
 import balance from "@/mixins/balance"
 import show_error from "@/mixins/show_error"
 
@@ -52,34 +54,26 @@ export default {
     data() {
         return {
             error: null,
-            sitOut: !this.$store.getters.userClientState.active,
+            sitOut: !useRootStore().userClientState.active,
             sitOutLoading: false,
         }
     },
     computed: {
-        ...mapGetters({
-            isTradeInRound: 'bourre/isTradeInRound',
-            hand: 'bourre/hand',
-            folded: 'bourre/folded',
-            isTurn: 'bourre/isTurn',
-            round: 'bourre/round',
-            gameState: 'bourre/gameState',
-            gameData: 'bourre/gameData',
-            canRestart: 'canRestart',
-        }),
+        ...mapState(useBourreStore, ['isTradeInRound', 'hand', 'folded', 'isTurn', 'round', 'gameState', 'gameData']),
+        ...mapState(useRootStore, ['canRestart', 'playerDataById']),
         roundText() {
             return this.round === 0 ? 'Play/Fold' : this.round
         },
         currentTurn() {
             if (!this.gameState.currentTurn) return
-            return this.$store.getters.playerDataById(this.gameState.currentTurn).player.displayName
+            return this.playerDataById(this.gameState.currentTurn).player.displayName
         },
     },
     watch: {
         sitOut(sitOut) {
             if (this.sitOutLoading) return
             this.sitOutLoading = true
-            this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: {active: !sitOut}})
+            this.webSocketSend({action: 'playerStatus', additionalData: {active: !sitOut}})
                 .catch(err => {
                     this.sitOut = !sitOut
                     this.showError(err)
@@ -88,8 +82,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend']),
         newBourreGame() {
-            this.$store.dispatch('webSocketSend', {action: 'createGame', subject: 'bourre', additionalData: {ante: this.gameState.ante}})
+            this.webSocketSend({action: 'createGame', subject: 'bourre', additionalData: {ante: this.gameState.ante}})
                 .catch(err => this.showError(err))
         },
     },

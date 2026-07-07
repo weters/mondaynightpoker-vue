@@ -13,7 +13,8 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapActions, mapState} from "pinia"
+import {useRootStore} from "@/store"
 import Loading from "@/components/Loading.vue"
 import games from "@/games"
 
@@ -28,13 +29,14 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['canStart']),
+        ...mapState(useRootStore, ['canStart']),
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend']),
         // the registry slug is authoritative; the `game` field in the selector's
         // submit payload is ignored
         startGame({opts}, slug) {
-            this.$store.dispatch('webSocketSend', {action: 'createGame', subject: slug, additionalData: opts})
+            this.webSocketSend({action: 'createGame', subject: slug, additionalData: opts})
         },
     },
 }

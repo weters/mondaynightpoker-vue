@@ -6,7 +6,9 @@
 
 <script>
     import BourrePlayer from "@/components/games/bourre/BourrePlayer.vue"
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {useRootStore} from "@/store"
+    import {useBourreStore} from "@/store/bourre"
     export default {
         name: "BourrePlayers",
         components: {BourrePlayer},
@@ -17,9 +19,8 @@
             }
         },
         computed: {
-            ...mapGetters({
-                round: 'bourre/round'
-            }),
+            ...mapState(useBourreStore, ['round']),
+            ...mapState(useRootStore, ['playerDataById']),
             sortedPlayers() {
                 // 0 = trade-in round
                 if (this.round === 0) {
@@ -36,7 +37,7 @@
         },
         methods: {
             playerDataById(id) {
-                return this.$store.getters.playerDataById(id)
+                return this.playerDataById(id)
             },
         }
     }

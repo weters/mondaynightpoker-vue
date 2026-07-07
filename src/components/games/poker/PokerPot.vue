@@ -16,6 +16,8 @@
 
 <script>
 import ChipStack from "@/components/ChipStack.vue"
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
 
 export default {
     name: "PokerPot",
@@ -35,8 +37,9 @@ export default {
         },
     },
     computed: {
+        ...mapState(useRootStore, ['playerDataById']),
         allInParticipants() {
-            return this.pot.allInParticipants.map(id => this.$store.getters.playerDataById(id).player.displayName).sort()
+            return this.pot.allInParticipants.map(id => this.playerDataById(id).player.displayName).sort()
         }
     }
 }

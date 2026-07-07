@@ -6,13 +6,16 @@
 
 <script>
 import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
+import {mapState} from "pinia"
+import {usePokerStore} from "@/store/poker"
 
 export default {
     name: "TexasHoldEmCommunity",
     components: {PlayingCardContainer},
     computed: {
+        ...mapState(usePokerStore, ['pokerState']),
         community() {
-            return this.$store.getters["poker/pokerState"].community
+            return this.pokerState.community
         },
     },
     methods: {

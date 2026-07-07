@@ -10,6 +10,8 @@
 </template>
 
 <script>
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
 import GutsPlayer from "@/components/games/guts/GutsPlayer.vue"
 
 export default {
@@ -21,11 +23,9 @@ export default {
             required: true,
         }
     },
-    methods: {
-        playerDataById(id) {
-            return this.$store.getters.playerDataById(id)
-        },
-    }
+    computed: {
+        ...mapState(useRootStore, ['playerDataById']),
+    },
 }
 </script>
 

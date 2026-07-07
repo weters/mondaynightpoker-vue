@@ -20,14 +20,16 @@
         </form>
         <div v-else>
             <button @click="editTableStake=true">
-                ${{ $store.getters.userClientState.tableStake / 100 }}
+                ${{ userClientState.tableStake / 100 }}
             </button>
         </div>
     </div>
 </template>
 
 <script>
+import {mapActions, mapState} from "pinia"
 import FancyInput from "@/components/formelements/FancyInput.vue"
+import {useRootStore} from "@/store"
 
 export default {
     name: "TableStakes",
@@ -35,25 +37,29 @@ export default {
     data() {
         return {
             editTableStake: false,
-            tableStake: String(this.$store.getters.userClientState.tableStake / 100),
+            tableStake: String(useRootStore().userClientState.tableStake / 100),
             saving: false,
         }
     },
+    computed: {
+        ...mapState(useRootStore, ['userClientState']),
+    },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend', 'setError']),
         save() {
             this.saving = true
-            this.$store.dispatch('webSocketSend', {
+            this.webSocketSend({
                     action: 'tableStake',
                     additionalData: {tableStake: parseInt(this.tableStake, 10) * 100},
                 })
                 .then(() => this.editTableStake = false)
                 .catch(err => {
-                    this.$store.dispatch('error', err)
+                    this.setError(err)
                 })
                 .finally(() => this.saving = false)
         },
         reset() {
-            this.tableStake = String(this.$store.getters.userClientState.tableStake / 100)
+            this.tableStake = String(this.userClientState.tableStake / 100)
             this.editTableStake = false
         },
     },

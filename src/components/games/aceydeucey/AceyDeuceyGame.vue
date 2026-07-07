@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import {mapState} from "pinia"
+import {useAceyDeuceyStore} from "@/store/aceyDeucey"
 import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 import ChipStack from "@/components/ChipStack.vue"
 import audioplayer from "@/audioplayer"
@@ -53,10 +55,11 @@ export default {
         }
     },
     computed: {
+        ...mapState(useAceyDeuceyStore, ['config']),
         aceState() {
             if (this.game.firstCard) {
                 const bitField = this.game.firstCard.bitField
-                for (let entry of Object.entries(this.$store.getters["aceyDeucey/config"].cardBitFields)) {
+                for (let entry of Object.entries(this.config.cardBitFields)) {
                     if (bitField & entry[0]) {
                         return entry[1]
                     }
@@ -112,7 +115,7 @@ export default {
 }
 </script>
 
-<style lang="scss" . scoped>
+<style lang="scss" scoped>
 div.acey-deucey-game {
     border:                1px solid $border-color;
     display:               grid;

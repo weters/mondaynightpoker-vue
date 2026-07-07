@@ -31,12 +31,13 @@
 </template>
 
 <script>
-import {mapState} from "vuex"
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
 
 export default {
     name: "MondayNightPokerHeader",
     computed: {
-        ...mapState(['user']),
+        ...mapState(useRootStore, ['user']),
     },
 }
 </script>

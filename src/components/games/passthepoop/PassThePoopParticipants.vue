@@ -10,6 +10,8 @@
 </template>
 
 <script>
+    import {mapState} from "pinia"
+    import {useRootStore} from "@/store"
     import PassThePoopParticipant from "./PassThePoopParticipant.vue"
 
     export default {
@@ -21,11 +23,9 @@
                 required: true,
             },
         },
-        methods: {
-            playerDataById(id) {
-                return this.$store.getters.playerDataById(id)
-            }
-        }
+        computed: {
+            ...mapState(useRootStore, ['playerDataById']),
+        },
     }
 </script>
 

@@ -5,16 +5,15 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {usePokerStore} from "@/store/poker"
     import LittleLParticipant from "./LittleLParticipant.vue"
 
     export default {
         name: "LittleLParticipants",
         components: {LittleLParticipant},
         computed: {
-            ...mapGetters({
-                gameState: 'poker/gameState',
-            })
+            ...mapState(usePokerStore, ['gameState'])
         }
     }
 </script>

@@ -5,13 +5,16 @@
 </template>
 
 <script>
+    import {mapState} from "pinia"
+    import {usePokerStore} from "@/store/poker"
     import SevenCardParticipant from "./SevenCardParticipant.vue"
     export default {
         name: "SevenCardParticipants",
         components: {SevenCardParticipant},
         computed: {
+            ...mapState(usePokerStore, ['gameState']),
             participants() {
-                return this.$store.getters['poker/gameState'].participants
+                return this.gameState.participants
             }
         }
     }

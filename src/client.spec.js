@@ -1,15 +1,17 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
 import client from './client'
-import store from './store'
+import { useRootStore } from './store'
 
 describe('client 401 handling', () => {
     beforeEach(() => {
-        store.commit('setUser', {jwt: 'test-jwt', player: {id: 1}})
+        setActivePinia(createPinia())
+        useRootStore().setUser({jwt: 'test-jwt', player: {id: 1}})
     })
 
     afterEach(() => {
         vi.unstubAllGlobals()
-        store.commit('clearUser')
+        useRootStore().clearUser()
     })
 
     it('clears the session and redirects on a 401 from an authorized call', async () => {

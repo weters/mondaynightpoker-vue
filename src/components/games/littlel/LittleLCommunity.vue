@@ -6,15 +6,14 @@
 
 <script>
     import PlayingCardContainer from "../../PlayingCardContainer.vue"
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {usePokerStore} from "@/store/poker"
 
     export default {
         name: "LittleLCommunity",
         components: {PlayingCardContainer},
         computed: {
-            ...mapGetters({
-                pokerState: 'poker/pokerState',
-            })
+            ...mapState(usePokerStore, ['pokerState'])
         }
     }
 </script>

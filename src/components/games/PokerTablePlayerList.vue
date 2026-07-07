@@ -23,7 +23,8 @@
 </template>
 
 <script>
-    import {mapGetters, mapState} from "vuex"
+    import {mapActions, mapState} from "pinia"
+    import {useRootStore} from "@/store"
     import balance from "@/mixins/balance"
     import Error from "@/components/Error.vue"
     import PokerTablePlayer from "@/components/PokerTablePlayer.vue"
@@ -39,7 +40,7 @@
             },
         },
         data() {
-            const {clientState, user} = this.$store.state
+            const {clientState, user} = useRootStore()
             return {
                 error: null,
                 currentUserActive: clientState[user.player.id].active,
@@ -47,8 +48,7 @@
             }
         },
         computed: {
-            ...mapState(['user']),
-            ...mapGetters(['isTableAdmin', 'userClientState']),
+            ...mapState(useRootStore, ['user', 'isTableAdmin', 'userClientState']),
             allClients() {
                 return this.clientState && Object.values(this.clientState).sort((a, b) => a.player.displayName.localeCompare(b.player.displayName))
             },
@@ -60,6 +60,7 @@
             },
         },
         methods: {
+            ...mapActions(useRootStore, ['webSocketSend']),
             toggleMenu(playerId) {
                 this.openMenuPlayerId = this.openMenuPlayerId === playerId ? null : playerId
             },
@@ -69,7 +70,7 @@
                 }
                 data[key] = event.target.checked
                 event.target.disabled = true
-                this.$store.dispatch('webSocketSend', {action: 'tableAdmin', additionalData: data})
+                this.webSocketSend({action: 'tableAdmin', additionalData: data})
                     .catch(err => {
                         event.target.checked = !event.target.checked
                         this.showError(err)
@@ -103,7 +104,7 @@
                 }
 
                 event.target.disabled = true
-                this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: payload})
+                this.webSocketSend({action: 'playerStatus', additionalData: payload})
                     .catch(err => {
                         event.target.checked = !event.target.checked
                         this.showError(err)

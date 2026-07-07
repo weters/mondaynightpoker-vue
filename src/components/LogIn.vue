@@ -30,7 +30,9 @@
 </template>
 
 <script>
+import {mapActions} from "pinia"
 import client from "@/client"
+import {useRootStore} from "@/store"
 import Loading from "@/components/Loading.vue"
 import Error from "@/components/Error.vue"
 import FancyInput from "@/components/formelements/FancyInput.vue"
@@ -48,7 +50,7 @@ export default {
         }
     },
     mounted() {
-        this.$store.commit('clearUser')
+        this.clearUser()
     },
     computed: {
         submitDisabled() {
@@ -56,12 +58,13 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['clearUser', 'setUser']),
         submit() {
             this.error = null
             this.loading = true
             client.logIn(this.email, this.password)
                 .then(res => {
-                    this.$store.commit('setUser', res)
+                    this.setUser(res)
 
                     const redirect = this.$route.query.redirect || '/my-tables'
                     this.$router.push(redirect)

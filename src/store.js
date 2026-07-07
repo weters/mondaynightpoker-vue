@@ -1,13 +1,11 @@
-import { createStore } from 'vuex'
+import { defineStore } from 'pinia'
 import {formatAmount} from "./currency"
 import * as webSocket from "./webSocket"
-import { storeModules } from "@/games"
 
 let errorTimeout, notificationTimeout, logIdCounter = 0
 
-const store = createStore({
-    modules: storeModules(),
-    state: {
+export const useRootStore = defineStore('root', {
+    state: () => ({
         user: null, // { player: Object, jwt: String }
         game: null,
         clientState: null,
@@ -15,21 +13,43 @@ const store = createStore({
         error: null,
         notification: null,
         scheduledGame: null,
+    }),
+    getters: {
+        isSiteAdmin: state => Boolean(state.user && state.user.player && state.user.player.isSiteAdmin),
+        playerDataById: state => id => state.clientState && state.clientState[id],
+        userClientState(state) {
+            return state.user && state.user.player && this.playerDataById(state.user.player.id)
+        },
+        // userClientState is null until the server sends the first clientState message,
+        // so the permission getters must not assume it exists
+        isTableAdmin() {
+            return Boolean(this.isSiteAdmin || this.userClientState?.isTableAdmin)
+        },
+        canStart() {
+            return Boolean(this.isTableAdmin || this.userClientState?.canStart)
+        },
+        canRestart() {
+            return Boolean(this.isTableAdmin || this.userClientState?.canRestart)
+        },
+        canTerminate() {
+            return Boolean(this.isTableAdmin || this.userClientState?.canTerminate)
+        },
+        gameRules: state => state.game?.rules || [],
     },
-    mutations: {
-        addLogs(state, logs) {
+    actions: {
+        addLogs(logs) {
             if (!logs) {
                 return
             }
 
-            const existingUuids = new Set(state.logs.map(l => l.uuid))
+            const existingUuids = new Set(this.logs.map(l => l.uuid))
             const formattedLogs = logs
                 .filter(log => !log.uuid || !existingUuids.has(log.uuid))
                 .map(log => {
                     let players = ''
                     if (log.playerIds && log.playerIds.length > 0 && log.playerIds[0] !== 0) {
                         // clientState may not have arrived yet when the first logs come in
-                        players = log.playerIds.map(pid => state.clientState?.[pid]?.player.displayName ?? '').join(', ')
+                        players = log.playerIds.map(pid => this.clientState?.[pid]?.player.displayName ?? '').join(', ')
                     }
 
                     const cards = log.cards ? log.cards : []
@@ -44,58 +64,47 @@ const store = createStore({
                     }
                 })
 
-            state.logs.push(...formattedLogs)
-            const len = state.logs.length
+            this.logs.push(...formattedLogs)
+            const len = this.logs.length
             const over = len - 100
             if (over > 0) {
-                state.logs.splice(0, over)
+                this.logs.splice(0, over)
             }
         },
-        clearLogs(state) {
-            state.logs = []
+        clearLogs() {
+            this.logs = []
         },
-        setUser(state, user) {
-            state.user = user
+        setUser(user) {
+            this.user = user
         },
-        setUserPlayer(state, player) {
-            if (!state.user) {
+        setUserPlayer(player) {
+            if (!this.user) {
                 throw new Error('no user')
             }
 
-            state.user.player = player
-            state.user = Object.assign({}, state.user)
+            this.user.player = player
+            this.user = Object.assign({}, this.user)
         },
-        clearUser(state) {
-            state.user = null
+        clearUser() {
+            this.user = null
         },
-        setGame(state, message) {
-            state.game = message
+        setGame(message) {
+            this.game = message
         },
-        clearGame(state) {
-            state.game = null
+        clearGame() {
+            this.game = null
         },
-        setClientState(state, clientState) {
-            state.clientState = clientState
+        setClientState(clientState) {
+            this.clientState = clientState
         },
-        error(state, error) {
-            state.error = error
-        },
-        notification(state, notification) {
-            state.notification = notification
-        },
-        scheduledGame(state, scheduledGame) {
-            state.scheduledGame = scheduledGame
-        },
-    },
-    actions: {
         // webSocketSend sends a player action over the table's WebSocket connection.
         // Returns a promise that resolves with the server's reply, so callers can
         // chain .catch/.finally as with any async action.
-        webSocketSend(context, {action, subject = null, cards = null, additionalData = null}) {
+        webSocketSend({action, subject = null, cards = null, additionalData = null}) {
             return webSocket.send(action, subject, cards, additionalData)
         },
-        error(context, error) {
-            context.commit('error', error)
+        setError(error) {
+            this.error = error
 
             if (errorTimeout) {
                 clearTimeout(errorTimeout)
@@ -103,11 +112,13 @@ const store = createStore({
             }
 
             if (error !== null) {
-                errorTimeout = setTimeout(() => context.commit('error', null), 2500)
+                errorTimeout = setTimeout(() => {
+                    this.error = null
+                }, 2500)
             }
         },
-        notification(context, notification) {
-            context.commit('notification', notification)
+        setNotification(notification) {
+            this.notification = notification
 
             if (notificationTimeout) {
                 clearTimeout(notificationTimeout)
@@ -115,33 +126,21 @@ const store = createStore({
             }
 
             if (notification !== null) {
-                notificationTimeout = setTimeout(() => context.commit('notification', null), 2500)
+                notificationTimeout = setTimeout(() => {
+                    this.notification = null
+                }, 2500)
             }
         },
-        scheduledGame(context, scheduledGame) {
-            context.commit('scheduledGame', scheduledGame)
+        setScheduledGame(scheduledGame) {
+            this.scheduledGame = scheduledGame
 
             if (scheduledGame) {
                 setTimeout(() => {
-                    if (!context.state.scheduledGame || context.state.scheduledGame.start === scheduledGame.start) {
-                        context.commit('scheduledGame', null)
+                    if (!this.scheduledGame || this.scheduledGame.start === scheduledGame.start) {
+                        this.scheduledGame = null
                     }
                 }, new Date(scheduledGame.start) - new Date())
             }
         },
     },
-    getters: {
-        isSiteAdmin: state => Boolean(state.user && state.user.player && state.user.player.isSiteAdmin),
-        playerDataById: state => id => state.clientState && state.clientState[id],
-        userClientState: (state, getters) => state.user && state.user.player && getters.playerDataById(state.user.player.id),
-        // userClientState is null until the server sends the first clientState message,
-        // so the permission getters must not assume it exists
-        isTableAdmin: (state, getters) => Boolean(getters.isSiteAdmin || getters.userClientState?.isTableAdmin),
-        canStart: (state, getters) => Boolean(getters.isTableAdmin || getters.userClientState?.canStart),
-        canRestart: (state, getters) => Boolean(getters.isTableAdmin || getters.userClientState?.canRestart),
-        canTerminate: (state, getters) => Boolean(getters.isTableAdmin || getters.userClientState?.canTerminate),
-        gameRules: state => state.game?.rules || [],
-    },
 })
-
-export default store

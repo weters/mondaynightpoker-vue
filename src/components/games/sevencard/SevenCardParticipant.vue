@@ -65,7 +65,9 @@
 
 <script>
     import PlayingCardContainer from "../../PlayingCardContainer.vue"
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {useRootStore} from "@/store"
+    import {usePokerStore} from "@/store/poker"
     import ChipStack from "../../ChipStack.vue"
     import DealerButton from "../poker/DealerButton.vue"
     import balance from "@/mixins/balance"
@@ -108,9 +110,8 @@
             }
         },
         computed: {
-            ...mapGetters({
-                gameState: 'poker/gameState',
-            }),
+            ...mapState(usePokerStore, ['gameState']),
+            ...mapState(useRootStore, ['playerDataById']),
             variantState() {
                 return this.gameState?.variantState
             },
@@ -121,7 +122,7 @@
                 return this.gameState.participants.length
             },
             playerData() {
-                return this.$store.getters.playerDataById(this.participant.playerId)
+                return this.playerDataById(this.participant.playerId)
             },
             isTurn() {
                 return this.gameState.currentTurn === this.participant.playerId

@@ -19,8 +19,10 @@
 </template>
 
 <script>
+    import {mapState} from "pinia"
     import balance from "../mixins/balance"
     import Toggle from "@/components/formelements/Toggle.vue"
+    import {useRootStore} from "@/store"
 
     export default {
         name: "ScheduledGame",
@@ -46,8 +48,9 @@
             },
         },
         computed: {
+            ...mapState(useRootStore, ['playerDataById']),
             player() {
-                return this.$store.getters.playerDataById(this.info.playerId).player.displayName
+                return this.playerDataById(this.info.playerId).player.displayName
             },
         },
         mounted() {

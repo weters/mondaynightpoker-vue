@@ -2,7 +2,7 @@
     <footer>
         <div>
             <ul class="links">
-                <li v-if="$store.getters.isSiteAdmin"><router-link to="/admin">Admin</router-link></li>
+                <li v-if="isSiteAdmin"><router-link to="/admin">Admin</router-link></li>
                 <li><a href="https://github.com/weters/mondaynightpoker-server">Source Code</a></li>
             </ul>
             <p class="copyright">&copy; 2021 Thomas Peters</p>
@@ -15,7 +15,9 @@
 </template>
 
 <script>
+import {mapState} from "pinia"
 import client from "../client"
+import {useRootStore} from "@/store"
 
 export default {
     name: "MondayNightPokerFooter",
@@ -26,6 +28,7 @@ export default {
         }
     },
     computed: {
+        ...mapState(useRootStore, ['isSiteAdmin']),
         vueVersionUrl() {
             return 'https://github.com/weters/mondaynightpoker-vue'
         },

@@ -25,7 +25,9 @@
 
 <script>
     import PlayingCardContainer from "../../PlayingCardContainer.vue"
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {useRootStore} from "@/store"
+    import {usePokerStore} from "@/store/poker"
     import balance from "../../../mixins/balance"
     import ChipStack from "../../ChipStack.vue"
     import {formatAmount} from "@/currency"
@@ -47,14 +49,13 @@
             }
         },
         computed: {
-            ...mapGetters({
-                gameState: 'poker/gameState',
-            }),
+            ...mapState(usePokerStore, ['gameState']),
+            ...mapState(useRootStore, ['playerDataById']),
             isAction() {
                 return this.participant.playerId === this.gameState.action
             },
             playerData() {
-                return this.$store.getters.playerDataById(this.participant.playerId)
+                return this.playerDataById(this.participant.playerId)
             },
             cards() {
                 if (!this.participant.hand || this.participant.didFold) {

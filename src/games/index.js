@@ -14,12 +14,12 @@ import GameSelectorSevenCard from '@/components/gameselector/GameSelectorSevenCa
 import GameSelectorLittleL from '@/components/gameselector/GameSelectorLittleL.vue'
 import GameSelectorPassThePoop from '@/components/gameselector/GameSelectorPassThePoop.vue'
 
-import aceyDeucey from '@/store/aceyDeucey'
-import bourre from '@/store/bourre'
-import guts from '@/store/guts'
-import texasHoldEm from '@/store/texasHoldEm'
-import poker from '@/store/poker'
-import passThePoop from '@/store/passThePoop'
+import { useAceyDeuceyStore } from '@/store/aceyDeucey'
+import { useBourreStore } from '@/store/bourre'
+import { useGutsStore } from '@/store/guts'
+import { useTexasHoldEmStore } from '@/store/texasHoldEm'
+import { usePokerStore } from '@/store/poker'
+import { usePassThePoopStore } from '@/store/passThePoop'
 
 // games is the single registry of playable games. Each slug must match the key in
 // the backend's gamefactory registry (pkg/room/gamefactory/gamefactory.go); the
@@ -28,31 +28,19 @@ import passThePoop from '@/store/passThePoop'
 //
 // Array order determines the game-selector display order.
 const games = [
-    {slug: 'acey-deucey', label: 'Acey Deucey', component: AceyDeucey, selector: GameSelectorAceyDeucey, store: {name: 'aceyDeucey', module: aceyDeucey}},
-    {slug: 'bourre', label: 'Bourré', component: Bourre, selector: GameSelectorBourre, store: {name: 'bourre', module: bourre}},
-    {slug: 'guts', label: 'Guts', component: Guts, selector: GameSelectorGuts, store: {name: 'guts', module: guts}},
-    {slug: 'texas-hold-em', label: "Texas Hold'em", component: TexasHoldEm, selector: GameSelectorTexasHoldEm, store: {name: 'texasHoldEm', module: texasHoldEm}},
-    {slug: 'seven-card', label: 'Seven Card', component: SevenCard, selector: GameSelectorSevenCard, store: {name: 'poker', module: poker}},
-    {slug: 'little-l', label: 'Little L', component: LittleL, selector: GameSelectorLittleL, store: {name: 'poker', module: poker}},
-    {slug: 'pass-the-poop', label: 'Pass the Poop', component: PassThePoop, selector: GameSelectorPassThePoop, store: {name: 'passThePoop', module: passThePoop}},
+    {slug: 'acey-deucey', label: 'Acey Deucey', component: AceyDeucey, selector: GameSelectorAceyDeucey, store: useAceyDeuceyStore},
+    {slug: 'bourre', label: 'Bourré', component: Bourre, selector: GameSelectorBourre, store: useBourreStore},
+    {slug: 'guts', label: 'Guts', component: Guts, selector: GameSelectorGuts, store: useGutsStore},
+    {slug: 'texas-hold-em', label: "Texas Hold'em", component: TexasHoldEm, selector: GameSelectorTexasHoldEm, store: useTexasHoldEmStore},
+    {slug: 'seven-card', label: 'Seven Card', component: SevenCard, selector: GameSelectorSevenCard, store: usePokerStore},
+    {slug: 'little-l', label: 'Little L', component: LittleL, selector: GameSelectorLittleL, store: usePokerStore},
+    {slug: 'pass-the-poop', label: 'Pass the Poop', component: PassThePoop, selector: GameSelectorPassThePoop, store: usePassThePoopStore},
 ]
 
 // componentForSlug returns the game component to render for a server game slug,
 // or null when the slug is unknown
 export function componentForSlug(slug) {
     return games.find(g => g.slug === slug)?.component ?? null
-}
-
-// storeModules returns the Vuex modules required by the registered games, keyed by
-// module name. Games may share a module (seven-card and little-l both use poker);
-// keying by name registers each module exactly once.
-export function storeModules() {
-    const modules = {}
-    for (const g of games) {
-        modules[g.store.name] = g.store.module
-    }
-
-    return modules
 }
 
 export default games

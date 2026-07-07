@@ -17,14 +17,17 @@
 </template>
 
 <script>
+    import {mapState} from "pinia"
     import TextPlayingCard from "./TextPlayingCard.vue"
+    import {useRootStore} from "@/store"
 
     export default {
         name: "DealerLog",
         components: {TextPlayingCard},
         computed: {
+            ...mapState(useRootStore, {storeLogs: 'logs'}),
             logs() {
-                const logs = [...this.$store.state.logs]
+                const logs = [...this.storeLogs]
                 return logs.reverse()
             },
         },

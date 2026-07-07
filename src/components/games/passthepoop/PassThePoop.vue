@@ -45,7 +45,9 @@
 </template>
 
 <script>
-    import {mapGetters, mapState} from "vuex"
+    import {mapActions, mapState} from "pinia"
+    import {useRootStore} from "@/store"
+    import {usePassThePoopStore} from "@/store/passThePoop"
     import PlayerBar from "../PlayerBar.vue"
     import PlayingCard from "../../PlayingCard.vue"
     import PassThePoopParticipants from "./PassThePoopParticipants.vue"
@@ -70,25 +72,22 @@
             }
         },
         computed: {
-            ...mapState(['game', 'user']),
-            ...mapGetters({
-                card: 'passThePoop/card',
-                gameData: 'passThePoop/gameData',
-                availableActions: 'passThePoop/availableActions',
-            }),
+            ...mapState(useRootStore, ['game', 'user', 'playerDataById']),
+            ...mapState(usePassThePoopStore, ['card', 'gameData', 'availableActions', 'isPlayerTurn']),
             isTurn() {
-                return this.$store.getters['passThePoop/isPlayerTurn'](this.user.player.id)
+                return this.isPlayerTurn(this.user.player.id)
             },
             currentTurn() {
-                return this.gameData.gameState.currentTurn && this.$store.getters.playerDataById(this.gameData.gameState.currentTurn).player.displayName
+                return this.gameData.gameState.currentTurn && this.playerDataById(this.gameData.gameState.currentTurn).player.displayName
             },
             participants() {
                 return this.gameData.gameState.participants
             },
         },
         methods: {
+            ...mapActions(useRootStore, ['webSocketSend']),
             execute(action) {
-                this.$store.dispatch('webSocketSend', {action: action.id})
+                this.webSocketSend({action: action.id})
                     .catch(err => this.showError(err))
             },
         },

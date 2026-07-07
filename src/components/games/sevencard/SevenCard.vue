@@ -15,7 +15,8 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {usePokerStore} from "@/store/poker"
     import SevenCardHand from "./SevenCardHand.vue"
     import PokerPlayerBar from "../PokerPlayerBar.vue"
     import ChipStack from "../../ChipStack.vue"
@@ -25,9 +26,7 @@
         name: "SevenCard",
         components: {SevenCardParticipants, ChipStack, PokerPlayerBar, SevenCardHand},
         computed: {
-            ...mapGetters({
-                gameState: 'poker/gameState',
-            }),
+            ...mapState(usePokerStore, ['gameState']),
         },
     }
 </script>

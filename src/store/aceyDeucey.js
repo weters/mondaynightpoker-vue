@@ -1,9 +1,13 @@
-export default {
-    namespaced: true,
+import { defineStore } from 'pinia'
+import { useRootStore } from '@/store'
+
+export const useAceyDeuceyStore = defineStore('aceyDeucey', {
     getters: {
         // guard the root read: the game may clear while components are unmounting
-        gameState: (state, getters, rootState) => rootState.game?.data?.gameState ?? {},
-        config: (state, getters) => getters.gameState.config,
-        actions: (state, getters, rootState) => rootState.game?.data?.actions,
-    }
-}
+        gameState: () => useRootStore().game?.data?.gameState ?? {},
+        config() {
+            return this.gameState.config
+        },
+        actions: () => useRootStore().game?.data?.actions,
+    },
+})

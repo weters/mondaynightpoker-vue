@@ -7,12 +7,13 @@
 </template>
 
 <script>
-import {mapState} from "vuex"
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
 
 export default {
     name: "ErrorBanner",
     computed: {
-        ...mapState(['error']),
+        ...mapState(useRootStore, ['error']),
         errorMessage() {
             if (!this.error) {
                 return

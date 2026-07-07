@@ -24,6 +24,8 @@
 </template>
 
 <script>
+import {mapState} from "pinia"
+import {usePassThePoopStore} from "@/store/passThePoop"
 import MdiIcon from "../../MdiIcon.vue"
 import {mdiCardsPlayingOutline, mdiPokerChip, mdiTimerSand, mdiCardsOutline} from '@mdi/js'
 import PlayingCardContainer from "../../PlayingCardContainer.vue"
@@ -58,11 +60,14 @@ export default {
         card() {
             return this.participant.card
         },
+        // the store's isPlayerTurn getter is aliased so the mapped function and this
+        // participant-specific computed can coexist
+        ...mapState(usePassThePoopStore, {isPlayerTurnById: 'isPlayerTurn', gameData: 'gameData'}),
         isPlayerTurn() {
-            return this.$store.getters['passThePoop/isPlayerTurn'](this.participant.playerId)
+            return this.isPlayerTurnById(this.participant.playerId)
         },
         lastGameAction() {
-            return this.$store.getters['passThePoop/gameData'].gameState.lastGameAction
+            return this.gameData.gameState.lastGameAction
         },
         goingToDeck() {
             return this.lastGameAction && this.lastGameAction.gameAction.name === 'Go to Deck'

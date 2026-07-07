@@ -23,7 +23,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapState} from "pinia"
+import {useTexasHoldEmStore} from "@/store/texasHoldEm"
+import {usePokerStore} from "@/store/poker"
 import TexasHoldEmCommunity from "@/components/games/texasholdem/TexasHoldEmCommunity.vue"
 import TexasHoldEmParticipants from "@/components/games/texasholdem/TexasHoldEmParticipants.vue"
 import PokerPlayerBar from "@/components/games/PokerPlayerBar.vue"
@@ -47,10 +49,8 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            gameState: 'texasHoldEm/gameState',
-            activeParticipant: 'texasHoldEm/activeParticipant',
-        }),
+        ...mapState(useTexasHoldEmStore, ['gameState', 'activeParticipant']),
+        ...mapState(usePokerStore, ['actions', 'futureActions']),
         cards() {
             return this.activeParticipant && this.activeParticipant.cards
         },
@@ -65,8 +65,8 @@ export default {
             return [this.cards[this.selected]]
         },
         canDiscard() {
-            const actions = this.$store.getters["poker/actions"] || []
-            const futureActions = this.$store.getters["poker/futureActions"] || []
+            const actions = this.actions || []
+            const futureActions = this.futureActions || []
 
             return [
                 ...actions,

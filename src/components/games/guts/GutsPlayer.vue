@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapState} from "pinia"
+import {useGutsStore} from "@/store/guts"
 import balance from '@/mixins/balance'
 import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 
@@ -54,14 +55,7 @@ export default {
         },
     },
     computed: {
-        ...mapGetters({
-            phase: 'guts/phase',
-            isShowdown: 'guts/isShowdown',
-            isTradePhase: 'guts/isTradePhase',
-            decisions: 'guts/decisions',
-            showdownResult: 'guts/showdownResult',
-            cardCount: 'guts/cardCount',
-        }),
+        ...mapState(useGutsStore, ['phase', 'isShowdown', 'isTradePhase', 'decisions', 'showdownResult', 'cardCount']),
         playerDecision() {
             if (!this.decisions) return null
             return this.decisions[this.participant.playerId]

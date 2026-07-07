@@ -14,7 +14,8 @@
 <script>
     import PlayingCard from "@/components/PlayingCard.vue"
     import card from '@/mixins/card'
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {useBourreStore} from "@/store/bourre"
 
     export default {
         name: "BourreCardPicker",
@@ -45,10 +46,7 @@
             }
         },
         computed: {
-            ...mapGetters({
-                hand: 'bourre/hand',
-                canPlayCard: 'bourre/canPlayCard',
-            }),
+            ...mapState(useBourreStore, ['hand', 'canPlayCard']),
             sortedHand() {
                 return [...this.hand].sort((a, b) => {
                     const cmp = a.suit.localeCompare(b.suit)

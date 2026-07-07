@@ -4,7 +4,8 @@
 
 <script>
     import balance from "@/mixins/balance"
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {useBourreStore} from "@/store/bourre"
     import ChipStack from "../../ChipStack.vue"
 
     export default {
@@ -12,9 +13,7 @@
         components: {ChipStack},
         mixins: [balance],
         computed: {
-            ...mapGetters({
-                gameState: 'bourre/gameState',
-            }),
+            ...mapState(useBourreStore, ['gameState']),
         },
     }
 </script>

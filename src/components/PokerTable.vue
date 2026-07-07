@@ -76,7 +76,8 @@
 
 <script>
 import * as webSocket from "@/webSocket"
-import {mapGetters, mapState} from "vuex"
+import {mapActions, mapState} from "pinia"
+import {useRootStore} from "@/store"
 import PokerTablePlayerList from "@/components/games/PokerTablePlayerList.vue"
 import Loading from "@/components/Loading.vue"
 import client from "@/client"
@@ -123,8 +124,7 @@ export default {
         }
     },
     computed: {
-        ...mapState(['game', 'clientState', 'user', 'scheduledGame']),
-        ...mapGetters(['canStart', 'isTableAdmin', 'userClientState']),
+        ...mapState(useRootStore, ['game', 'clientState', 'user', 'scheduledGame', 'canStart', 'isTableAdmin', 'userClientState']),
         gameComponent() {
             return componentForSlug(this.game?.game)
         },
@@ -136,7 +136,7 @@ export default {
         },
     },
     mounted() {
-        webSocket.connect(this.uuid, this.$store)
+        webSocket.connect(this.uuid, useRootStore())
 
         client.getTableByUUID(this.uuid)
             .then(res => this.table = res)
@@ -147,25 +147,26 @@ export default {
     },
     beforeUnmount() {
         webSocket.disconnect()
-        this.$store.commit('clearLogs')
+        this.clearLogs()
     },
     methods: {
+        ...mapActions(useRootStore, ['clearLogs', 'setError', 'setNotification', 'webSocketSend']),
         copy() {
             const url = document.location.toString()
             navigator.clipboard.writeText(url)
-                .then(() => this.$store.dispatch('notification', 'Link has been copied'))
+                .then(() => this.setNotification('Link has been copied'))
                 .catch(() => console.log('Could not copy URL to the clipboard'))
         },
         showError(err) {
-            this.$store.dispatch('error', err)
+            this.setError(err)
         },
         cancelGame() {
-            this.$store.dispatch('webSocketSend', {action: 'cancelGame'})
+            this.webSocketSend({action: 'cancelGame'})
                 .catch(err => this.showError(err))
         },
         setPlayerActive(active) {
             this.playButtonDisabled = true
-            this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: {active}})
+            this.webSocketSend({action: 'playerStatus', additionalData: {active}})
                 .catch(err => {
                     this.showError(err)
                 })

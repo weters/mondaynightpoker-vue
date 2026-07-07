@@ -53,7 +53,7 @@ export class WebSocketClient {
     }
 
     _connect() {
-        const user = this.store.state.user
+        const user = this.store.user
         if (!user || !user.jwt) {
             throw new Error('logged in user not found')
         }
@@ -77,7 +77,7 @@ export class WebSocketClient {
     // this client did not itself initiate, regardless of event.wasClean.
     _close() {
         this._rejectPendingRequests(new Error('connection closed'))
-        this.store.commit('clearGame')
+        this.store.clearGame()
 
         if (this.closed) {
             return
@@ -133,30 +133,30 @@ export class WebSocketClient {
 
         switch (message.key) {
             case 'clientState':
-                this.store.commit('setClientState', message.data)
+                this.store.setClientState(message.data)
                 break
             case 'game':
-                this.store.commit('setGame', {
+                this.store.setGame({
                     game: message.value,
                     data: message.data,
                     rules: message.rules || [],
                 })
                 break
             case 'gameEnded':
-                this.store.commit('clearGame')
+                this.store.clearGame()
                 break
             case 'logs':
-                this.store.commit('addLogs', message.data)
+                this.store.addLogs(message.data)
                 break
             case 'allLogs':
-                this.store.commit('clearLogs')
-                this.store.commit('addLogs', message.data)
+                this.store.clearLogs()
+                this.store.addLogs(message.data)
                 break
             case 'error':
-                this.store.dispatch('error', message.value)
+                this.store.setError(message.value)
                 break
             case 'scheduledGame':
-                this.store.dispatch('scheduledGame', message.data)
+                this.store.setScheduledGame(message.data)
                 break
             default:
                 throw new Error(`could not process message: ${JSON.stringify(message)}`)

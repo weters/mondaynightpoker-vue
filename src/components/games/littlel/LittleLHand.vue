@@ -14,7 +14,8 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {usePokerStore} from "@/store/poker"
     import PlayingCardContainer from "../../PlayingCardContainer.vue"
 
     export default {
@@ -30,9 +31,7 @@
             }
         },
         computed: {
-            ...mapGetters({
-                self: 'poker/self',
-            }),
+            ...mapState(usePokerStore, ['self']),
         },
         watch: {
             canSelect(canSelect) {

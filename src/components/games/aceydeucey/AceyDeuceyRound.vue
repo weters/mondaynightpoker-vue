@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import {mapState} from "pinia"
+import {useAceyDeuceyStore} from "@/store/aceyDeucey"
 import AceyDeuceyGame from "@/components/games/aceydeucey/AceyDeuceyGame.vue"
 import AceyDeuceyPot from "@/components/games/aceydeucey/AceyDeuceyPot.vue"
 import {animate} from "popmotion"
@@ -39,8 +41,9 @@ export default {
         }
     },
     computed: {
+        ...mapState(useAceyDeuceyStore, ['gameState']),
         activeGameIndex() {
-            return this.$store.getters["aceyDeucey/gameState"].round.activeGameIndex
+            return this.gameState.round.activeGameIndex
         },
     },
     watch: {

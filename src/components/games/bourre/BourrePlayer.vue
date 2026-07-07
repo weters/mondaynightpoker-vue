@@ -20,7 +20,8 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapState} from "pinia"
+import {useBourreStore} from "@/store/bourre"
 import balance from '@/mixins/balance'
 import BourreTricksTally from "@/components/games/bourre/BourreTricksTally.vue"
 import {mdiCardsPlayingOutline} from '@mdi/js'
@@ -46,10 +47,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            isTradeInRound: 'bourre/isTradeInRound',
-            gameState: 'bourre/gameState',
-        }),
+        ...mapState(useBourreStore, ['isTradeInRound', 'gameState']),
         transitionName() {
             return this.isTradeInRound ? 'trade-in' : 'game'
         },

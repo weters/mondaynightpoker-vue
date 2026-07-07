@@ -1,4 +1,5 @@
-import {mapGetters} from "vuex"
+import {mapActions, mapState} from "pinia"
+import {useRootStore} from "@/store"
 import audioplayer from "@/audioplayer"
 import balance from "./balance"
 
@@ -8,7 +9,7 @@ export default {
         return {
             localError: null,
             errorTimeout: null,
-            dealMeIn: this.$store.getters.userClientState.active,
+            dealMeIn: useRootStore().userClientState.active,
             dealMeInLoading: false,
             confirmTerminate: false,
             confirmRestart: false,
@@ -16,12 +17,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            isTableAdmin: 'isTableAdmin',
-            canTerminate: 'canTerminate',
-            canRestart: 'canRestart',
-            userClientState: 'userClientState',
-        }),
+        ...mapState(useRootStore, ['isTableAdmin', 'canTerminate', 'canRestart', 'userClientState']),
     },
     watch: {
         muteSounds(newVal) {
@@ -39,6 +35,7 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend']),
         showError(err) {
             if (this.errorTimeout) {
                 clearTimeout(this.errorTimeout)
@@ -49,13 +46,13 @@ export default {
             }, 2000)
         },
         terminateGame() {
-            this.$store.dispatch('webSocketSend', {action: 'terminateGame'})
+            this.webSocketSend({action: 'terminateGame'})
                 .catch(err => this.showError(err))
         },
         toggleDealMeIn(active) {
             if (this.dealMeInLoading) return
             this.dealMeInLoading = true
-            this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: {active}})
+            this.webSocketSend({action: 'playerStatus', additionalData: {active}})
                 .catch(err => {
                     this.dealMeIn = !active
                     this.showError(err)

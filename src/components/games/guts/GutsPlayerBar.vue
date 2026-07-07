@@ -42,7 +42,8 @@ import PlayerBar from "@/components/games/PlayerBar.vue"
 import GutsHand from "@/components/games/guts/GutsHand.vue"
 import GutsDecision from "@/components/games/guts/GutsDecision.vue"
 import GutsTrade from "@/components/games/guts/GutsTrade.vue"
-import {mapGetters} from "vuex"
+import {mapState} from "pinia"
+import {useGutsStore} from "@/store/guts"
 
 export default {
     name: "GutsPlayerBar",
@@ -55,19 +56,19 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            hand: 'guts/hand',
-            handRank: 'guts/handRank',
-            isDeclarationPhase: 'guts/isDeclarationPhase',
-            isTradePhase: 'guts/isTradePhase',
-            isGameOver: 'guts/isGameOver',
-            canDecide: 'guts/canDecide',
-            canTrade: 'guts/canTrade',
-            cardCount: 'guts/cardCount',
-            myTraded: 'guts/myTraded',
-            hasTraded: 'guts/hasTraded',
-            myDecision: 'guts/myDecision',
-        }),
+        ...mapState(useGutsStore, [
+            'hand',
+            'handRank',
+            'isDeclarationPhase',
+            'isTradePhase',
+            'isGameOver',
+            'canDecide',
+            'canTrade',
+            'cardCount',
+            'myTraded',
+            'hasTraded',
+            'myDecision',
+        ]),
         canSelectCards() {
             return this.isTradePhase && !this.hasTraded
         },

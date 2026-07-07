@@ -8,6 +8,8 @@
 </template>
 
 <script>
+import {mapState} from "pinia"
+import {useAceyDeuceyStore} from "@/store/aceyDeucey"
 import balance from "@/mixins/balance"
 import {animate} from "popmotion"
 
@@ -30,8 +32,9 @@ export default {
         }
     },
     computed: {
+        ...mapState(useAceyDeuceyStore, ['gameState']),
         isTurn() {
-            return this.$store.getters["aceyDeucey/gameState"].currentTurn === this.participant.playerId
+            return this.gameState.currentTurn === this.participant.playerId
         },
     },
     watch: {

@@ -33,7 +33,9 @@
 <script>
 import BourreCardPicker from "@/components/games/bourre/BourreCardPicker.vue"
 import ConfirmButton from "@/components/ConfirmButton.vue"
-import {mapGetters} from "vuex"
+import {mapActions, mapState} from "pinia"
+import {useRootStore} from "@/store"
+import {useBourreStore} from "@/store/bourre"
 
 export default {
     name: "BourreDiscard",
@@ -51,15 +53,9 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            maxDraw: 'bourre/maxDraw',
-            discards: 'bourre/discards',
-            folded: 'bourre/folded',
-            isTurn: 'bourre/isTurn',
-            isRoundOver: 'bourre/isRoundOver',
-        }),
+        ...mapState(useBourreStore, ['maxDraw', 'discards', 'folded', 'isTurn', 'isRoundOver', 'getCurrentPlayer']),
         currentPlayer() {
-            return this.$store.getters["bourre/getCurrentPlayer"](this.$store.state.user.player.id)
+            return this.getCurrentPlayer(useRootStore().user.player.id)
         },
         isTurnOver() {
             return this.discards !== null || this.folded
@@ -74,13 +70,14 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend']),
         discard() {
             if (!this.isTurn) {
                 this.pending = 'Discard'
                 return
             }
 
-            this.$store.dispatch('webSocketSend', {action: 'discard', cards: this.selected})
+            this.webSocketSend({action: 'discard', cards: this.selected})
                 .catch(err => {
                     this.$emit('error', err)
                 })
@@ -96,7 +93,7 @@ export default {
                 return
             }
 
-            this.$store.dispatch('webSocketSend', {action: 'discard'})
+            this.webSocketSend({action: 'discard'})
                 .catch(err => {
                     this.$emit('error', err)
                 })

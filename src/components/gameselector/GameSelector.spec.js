@@ -1,27 +1,25 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { mount } from '@vue/test-utils'
-import { createStore } from 'vuex'
+import { createPinia, setActivePinia } from 'pinia'
 import GameSelector from './GameSelector.vue'
 import games from '@/games'
+import { useRootStore } from '@/store'
 
 describe('GameSelector', () => {
-    let webSocketSend, store
+    let pinia, root
 
     beforeEach(() => {
-        webSocketSend = vi.fn().mockResolvedValue({})
-        store = createStore({
-            getters: {
-                canStart: () => true,
-            },
-            actions: {
-                webSocketSend,
-            },
-        })
+        pinia = createPinia()
+        setActivePinia(pinia)
+        root = useRootStore()
+        // a site admin can always start a game
+        root.user = {player: {id: 1, isSiteAdmin: true}}
+        vi.spyOn(root, 'webSocketSend').mockResolvedValue({})
     })
 
     const mountSelector = () => mount(GameSelector, {
         shallow: true,
-        global: {plugins: [store]},
+        global: {plugins: [pinia]},
     })
 
     it('renders one selector per registered game', () => {
@@ -38,16 +36,14 @@ describe('GameSelector', () => {
 
         wrapper.findComponent(guts.selector).vm.$emit('submit', {game: 'stale-slug', opts: {ante: 25}})
 
-        expect(webSocketSend).toHaveBeenCalledTimes(1)
-        const payload = webSocketSend.mock.calls[0][1]
+        expect(root.webSocketSend).toHaveBeenCalledTimes(1)
+        const payload = root.webSocketSend.mock.calls[0][0]
         expect(payload).toEqual({action: 'createGame', subject: 'guts', additionalData: {ante: 25}})
     })
 
     it('shows a waiting message when the player cannot start a game', () => {
-        store = createStore({
-            getters: {canStart: () => false},
-            actions: {webSocketSend},
-        })
+        // no admin flags and no clientState, so canStart computes false
+        root.user = {player: {id: 1, isSiteAdmin: false}}
 
         const wrapper = mountSelector()
         expect(wrapper.text()).toContain('Waiting on the table admin')

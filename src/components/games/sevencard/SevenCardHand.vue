@@ -9,16 +9,15 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {usePokerStore} from "@/store/poker"
     import PlayingCardContainer from "../../PlayingCardContainer.vue"
 
     export default {
         name: "SevenCardHand",
         components: {PlayingCardContainer},
         computed: {
-            ...mapGetters({
-                self: 'poker/self',
-            })
+            ...mapState(usePokerStore, ['self'])
         }
     }
 </script>

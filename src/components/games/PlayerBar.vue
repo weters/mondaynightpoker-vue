@@ -68,6 +68,7 @@
 </template>
 
 <script>
+import {useRootStore} from "@/store"
 import MnpError from "@/components/Error.vue"
 import Toggle from "@/components/formelements/Toggle.vue"
 import SettingsBottomSheet from "@/components/SettingsBottomSheet.vue"
@@ -96,7 +97,7 @@ export default {
             return this.localError || this.error
         },
         gameRules() {
-            return this.$store.getters.gameRules
+            return useRootStore().gameRules
         },
     },
     mounted() {

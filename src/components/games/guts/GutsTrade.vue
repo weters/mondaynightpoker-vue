@@ -30,7 +30,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapState, mapActions} from "pinia"
+import {useRootStore} from "@/store"
+import {useGutsStore} from "@/store/guts"
 import ConfirmButton from "@/components/ConfirmButton.vue"
 
 export default {
@@ -49,18 +51,14 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            canTrade: 'guts/canTrade',
-            currentTraderID: 'guts/currentTraderID',
-            isTradePhase: 'guts/isTradePhase',
-            hasTraded: 'guts/hasTraded',
-        }),
+        ...mapState(useGutsStore, ['canTrade', 'currentTraderID', 'isTradePhase', 'hasTraded']),
+        ...mapState(useRootStore, ['playerDataById']),
         selectedCount() {
             return this.selectedCards.length
         },
         currentTraderName() {
             if (!this.currentTraderID) return 'player'
-            const playerData = this.$store.getters.playerDataById(this.currentTraderID)
+            const playerData = this.playerDataById(this.currentTraderID)
             return playerData ? playerData.player.displayName : 'player'
         },
         tradeButtonLabel() {
@@ -95,6 +93,7 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend']),
         getSelectedCards() {
             return this.selectedCards.map(card => {
                 return `${card.rank}${card.suit.charAt(0)}`
@@ -115,7 +114,7 @@ export default {
             this.$emit('clearSelection')
         },
         submitTradeWithCards(cards) {
-            this.$store.dispatch('webSocketSend', {action: 'trade', additionalData: {cards}})
+            this.webSocketSend({action: 'trade', additionalData: {cards}})
                 .then(() => {
                     this.clearState()
                 })

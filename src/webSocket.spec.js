@@ -24,9 +24,14 @@ class MockWebSocket {
 
 function makeStore() {
     return {
-        state: {user: {jwt: 'test-jwt', player: {id: 1}}},
-        commit: vi.fn(),
-        dispatch: vi.fn(),
+        user: {jwt: 'test-jwt', player: {id: 1}},
+        setClientState: vi.fn(),
+        setGame: vi.fn(),
+        clearGame: vi.fn(),
+        addLogs: vi.fn(),
+        clearLogs: vi.fn(),
+        setScheduledGame: vi.fn(),
+        setError: vi.fn(),
     }
 }
 
@@ -47,7 +52,7 @@ describe('WebSocketClient', () => {
     })
 
     it('throws when the user is not logged in', () => {
-        expect(() => new WebSocketClient('uuid', {state: {user: null}})).toThrow('logged in user not found')
+        expect(() => new WebSocketClient('uuid', {user: null})).toThrow('logged in user not found')
     })
 
     it('connects with the table uuid and access token', () => {
@@ -108,7 +113,7 @@ describe('WebSocketClient', () => {
             expect(MockWebSocket.instances).toHaveLength(1)
 
             lastSocket().onclose({wasClean: false})
-            expect(store.commit).toHaveBeenCalledWith('clearGame')
+            expect(store.clearGame).toHaveBeenCalled()
 
             vi.advanceTimersByTime(1000)
             expect(MockWebSocket.instances).toHaveLength(2)
@@ -165,7 +170,7 @@ describe('WebSocketClient', () => {
             const store = makeStore()
             new WebSocketClient('t', store)
 
-            store.state.user = null
+            store.user = null
             lastSocket().onclose({wasClean: false})
             vi.advanceTimersByTime(60000)
             expect(MockWebSocket.instances).toHaveLength(1)
@@ -183,40 +188,40 @@ describe('WebSocketClient', () => {
 
         const receive = message => ws.onmessage({data: JSON.stringify(message)})
 
-        it('commits clientState', () => {
+        it('sets clientState', () => {
             receive({key: 'clientState', data: {1: {}}})
-            expect(store.commit).toHaveBeenCalledWith('setClientState', {1: {}})
+            expect(store.setClientState).toHaveBeenCalledWith({1: {}})
         })
 
-        it('commits the game with value, data, and rules', () => {
+        it('sets the game with value, data, and rules', () => {
             receive({key: 'game', value: 'guts', data: {gameState: {}}})
-            expect(store.commit).toHaveBeenCalledWith('setGame', {game: 'guts', data: {gameState: {}}, rules: []})
+            expect(store.setGame).toHaveBeenCalledWith({game: 'guts', data: {gameState: {}}, rules: []})
         })
 
         it('clears the game when it ends', () => {
             receive({key: 'gameEnded'})
-            expect(store.commit).toHaveBeenCalledWith('clearGame')
+            expect(store.clearGame).toHaveBeenCalled()
         })
 
         it('adds logs', () => {
             receive({key: 'logs', data: [{message: 'hi'}]})
-            expect(store.commit).toHaveBeenCalledWith('addLogs', [{message: 'hi'}])
+            expect(store.addLogs).toHaveBeenCalledWith([{message: 'hi'}])
         })
 
         it('replaces logs on allLogs', () => {
             receive({key: 'allLogs', data: [{message: 'hi'}]})
-            expect(store.commit).toHaveBeenCalledWith('clearLogs')
-            expect(store.commit).toHaveBeenCalledWith('addLogs', [{message: 'hi'}])
+            expect(store.clearLogs).toHaveBeenCalled()
+            expect(store.addLogs).toHaveBeenCalledWith([{message: 'hi'}])
         })
 
-        it('dispatches scheduledGame', () => {
+        it('sets the scheduled game', () => {
             receive({key: 'scheduledGame', data: {start: 'soon'}})
-            expect(store.dispatch).toHaveBeenCalledWith('scheduledGame', {start: 'soon'})
+            expect(store.setScheduledGame).toHaveBeenCalledWith({start: 'soon'})
         })
 
-        it('dispatches unsolicited server errors to the store', () => {
+        it('passes unsolicited server errors to the store', () => {
             receive({key: 'error', value: 'something broke'})
-            expect(store.dispatch).toHaveBeenCalledWith('error', 'something broke')
+            expect(store.setError).toHaveBeenCalledWith('something broke')
         })
 
         it('throws on unknown message keys', () => {

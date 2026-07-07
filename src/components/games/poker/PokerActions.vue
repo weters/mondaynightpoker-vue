@@ -51,6 +51,8 @@
 import ConfirmButton from "@/components/ConfirmButton.vue"
 import PokerBetChips from "./PokerBetChips.vue"
 import balance from "@/mixins/balance"
+import {mapActions} from "pinia"
+import {useRootStore} from "@/store"
 
 export default {
     name: "PokerActions",
@@ -117,7 +119,7 @@ export default {
                     for (const action of this.actions) {
                         if (this.isFutureActionValid(action)) {
                             if (this.futureAction.selectedCards) {
-                                this.$store.dispatch('webSocketSend', {action: this.futureAction.id, cards: this.futureAction.selectedCards})
+                                this.webSocketSend({action: this.futureAction.id, cards: this.futureAction.selectedCards})
                                     .catch(err => this.$emit('error', err))
                             } else {
                                 this.executeAction(this.futureAction.id)
@@ -131,6 +133,7 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend']),
         actionLabel(action) {
             if (action.id === 'call') return this.callLabel(action)
             if (action.id === 'flip-mushroom') return 'Flip Mushroom (lose card)'
@@ -157,7 +160,7 @@ export default {
             switch (action.id) {
                 case 'discard':
                 case 'trade':
-                    this.$store.dispatch('webSocketSend', {action: action.id, cards: this.selectedCards})
+                    this.webSocketSend({action: action.id, cards: this.selectedCards})
                         .catch(err => this.$emit('error', err))
                     break
                 case 'check':
@@ -178,7 +181,7 @@ export default {
             }
         },
         executeAction(actionId) {
-            this.$store.dispatch('webSocketSend', {action: actionId})
+            this.webSocketSend({action: actionId})
                 .catch(err => this.$emit('error', err))
         },
         handleBetSubmit(amount) {
@@ -186,7 +189,7 @@ export default {
             if (finalAmount > this.allInAmount) finalAmount = this.allInAmount
             if (finalAmount > this.maxBet) finalAmount = this.maxBet
 
-            this.$store.dispatch('webSocketSend', {action: this.betAction.id, additionalData: {amount: finalAmount}})
+            this.webSocketSend({action: this.betAction.id, additionalData: {amount: finalAmount}})
                 .catch(err => this.$emit('error', err))
         },
         handleFutureAction(action) {

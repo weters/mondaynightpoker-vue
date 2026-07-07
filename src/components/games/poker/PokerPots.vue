@@ -12,14 +12,13 @@
 
 <script>
 import PokerPot from "@/components/games/poker/PokerPot.vue"
-import {mapGetters} from "vuex"
+import {mapState} from "pinia"
+import {usePokerStore} from "@/store/poker"
 export default {
     name: "PokerPots",
     components: {PokerPot},
     computed: {
-        ...mapGetters({
-            pokerState: 'poker/pokerState',
-        })
+        ...mapState(usePokerStore, ['pokerState'])
     }
 }
 </script>

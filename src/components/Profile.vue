@@ -77,7 +77,9 @@
 </template>
 
 <script>
+import {mapActions, mapState} from "pinia"
 import client from "../client"
+import {useRootStore} from "@/store"
 import Loading from "./Loading.vue"
 import Error from "./Error.vue"
 import FancyInput from "@/components/formelements/FancyInput.vue"
@@ -89,7 +91,7 @@ export default {
     components: {InputWithConfirm, FancyInput, Error, Loading},
     data() {
         return {
-            displayName: this.$store.state.user.player.displayName,
+            displayName: useRootStore().user.player.displayName,
             loading: false,
             error: null,
             success: false,
@@ -106,15 +108,16 @@ export default {
         }
     },
     methods: {
+        ...mapActions(useRootStore, ['setUserPlayer', 'setNotification', 'setError']),
         playerUpdated() {
-            client.validateJWT(this.$store.state.user.jwt)
-                .then(player => this.$store.commit('setUserPlayer', player))
+            client.validateJWT(this.user.jwt)
+                .then(player => this.setUserPlayer(player))
                 .catch(err => this.error = err)
         },
         saveDisplayName() {
             this.loading = true
             this.error = null
-            client.updatePlayer(this.$store.state.user.player.id, {
+            client.updatePlayer(this.user.player.id, {
                     displayName: this.displayName,
                 })
                 .then(() => {
@@ -127,7 +130,7 @@ export default {
         changePassword() {
             this.loading = true
             this.password.error = null
-            client.updatePlayer(this.$store.state.user.player.id, {
+            client.updatePlayer(this.user.player.id, {
                 oldPassword: this.password.old,
                 newPassword: this.password.new.primary,
             })
@@ -142,17 +145,18 @@ export default {
             .finally(() => this.loading = false)
         },
         deleteAccount() {
-            client.deleteAccount(this.$store.state.user.player.id)
+            client.deleteAccount(this.user.player.id)
                 .then(() => {
-                    this.$store.dispatch('notification', 'Your account has been deleted')
+                    this.setNotification('Your account has been deleted')
                     this.$router.push('/login')
                 })
-                .catch(err => this.$store.dispatch('error', err))
+                .catch(err => this.setError(err))
         },
     },
     computed: {
+        ...mapState(useRootStore, ['user']),
         canDeleteAccount() {
-            return this.$store.state.user.player.email === this.deleteConfirmEmail
+            return this.user.player.email === this.deleteConfirmEmail
         },
     },
 }

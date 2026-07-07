@@ -22,7 +22,7 @@
 
         <dealer-button
             class="them-dealer-button"
-            v-if="participant.playerId === $store.getters['poker/gameState'].dealer"
+            v-if="participant.playerId === pokerGameState.dealer"
         />
     </div>
 </template>
@@ -32,6 +32,10 @@ import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 import balance from "@/mixins/balance"
 import ChipStack from "@/components/ChipStack.vue"
 import DealerButton from "@/components/games/poker/DealerButton.vue"
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
+import {usePokerStore} from "@/store/poker"
+import {useTexasHoldEmStore} from "@/store/texasHoldEm"
 
 export default {
     name: "TexasHoldEmParticipant",
@@ -44,11 +48,15 @@ export default {
         },
     },
     computed: {
+        // poker and texasHoldEm both expose a gameState getter; alias poker's
+        ...mapState(usePokerStore, {pokerGameState: 'gameState'}),
+        ...mapState(useTexasHoldEmStore, ['gameState']),
+        ...mapState(useRootStore, ['playerDataById']),
         numHoleCards() {
-            return this.$store.getters["poker/gameState"].variant.holeCards
+            return this.pokerGameState.variant.holeCards
         },
         lastAction() {
-            const lastAction = this.$store.getters["texasHoldEm/gameState"].lastAction
+            const lastAction = this.gameState.lastAction
             if (!lastAction) {
                 return
             }
@@ -60,12 +68,12 @@ export default {
             return ''
         },
         playerData() {
-            return this.$store.getters.playerDataById(this.participant.playerId)
+            return this.playerDataById(this.participant.playerId)
         },
         classes() {
             return {
                 'texas-hold-em-participant': true,
-                'current-turn': this.participant.playerId === this.$store.getters["texasHoldEm/gameState"].currentTurn,
+                'current-turn': this.participant.playerId === this.gameState.currentTurn,
                 won: this.participant.result === 'won',
                 lost: this.participant.result === 'lost',
                 'is-connected': this.playerData.isConnected,

@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from './store'
+import { useRootStore } from './store'
 
 // Routes are lazy-loaded so each page ships as its own chunk. Auth is explicit:
 // routes without meta are public; requiresAuth needs a logged-in user;
@@ -31,11 +31,14 @@ const router = createRouter({
 })
 
 router.beforeEach(to => {
-    if (to.meta.requiresAdmin && !store.getters.isSiteAdmin) {
+    // useRootStore must be called inside the guard: the router is created before pinia
+    const store = useRootStore()
+
+    if (to.meta.requiresAdmin && !store.isSiteAdmin) {
         return '/'
     }
 
-    if ((to.meta.requiresAuth || to.meta.requiresAdmin) && !store.state.user) {
+    if ((to.meta.requiresAuth || to.meta.requiresAdmin) && !store.user) {
         return '/login?redirect=' + encodeURIComponent(to.fullPath)
     }
 })

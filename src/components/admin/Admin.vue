@@ -3,16 +3,21 @@
         <div>
             <admin-header/>
 
-            <p>Welcome {{ $store.state.user.player.displayName }}</p>
+            <p>Welcome {{ user.player.displayName }}</p>
         </div>
     </div>
 </template>
 
 <script>
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
 
 import AdminHeader from "@/components/admin/AdminHeader.vue"
 
 export default {
+    computed: {
+        ...mapState(useRootStore, ['user']),
+    },
     name: "Admin",
     components: {AdminHeader},
     title: 'Admin',

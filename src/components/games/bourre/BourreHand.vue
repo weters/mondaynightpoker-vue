@@ -15,7 +15,9 @@
 
 <script>
     import BourreCardPicker from "@/components/games/bourre/BourreCardPicker.vue"
-    import {mapGetters} from "vuex"
+    import {mapActions, mapState} from "pinia"
+    import {useRootStore} from "@/store"
+    import {useBourreStore} from "@/store/bourre"
 
     export default {
         name: "BourreHand",
@@ -33,13 +35,7 @@
             }
         },
         computed: {
-            ...mapGetters({
-                validMoves: 'bourre/validMoves',
-                round: 'bourre/round',
-                isTurn: 'bourre/isTurn',
-                isRoundOver: 'bourre/isRoundOver',
-                isGameOver: 'bourre/isGameOver',
-            }),
+            ...mapState(useBourreStore, ['validMoves', 'round', 'isTurn', 'isRoundOver', 'isGameOver', 'hand']),
         },
         watch: {
             round() {
@@ -57,7 +53,7 @@
                         if (this.validMoves.length === 1) {
                             this.selected = [...this.validMoves]
                             let timeoutDuration = 500
-                            if (this.$store.getters["bourre/hand"].length > 1) {
+                            if (this.hand.length > 1) {
                                 timeoutDuration = 4000 + Math.floor(Math.random() * 2000)
                             }
 
@@ -68,13 +64,14 @@
             }
         },
         methods: {
+            ...mapActions(useRootStore, ['webSocketSend']),
             playCard() {
                 if (this.timeout) {
                     clearTimeout(this.timeout)
                     this.timeout = null
                 }
 
-                this.$store.dispatch('webSocketSend', {action: 'playCard', cards: this.selected})
+                this.webSocketSend({action: 'playCard', cards: this.selected})
                     .catch(err => {
                         this.$emit('error', err)
                     })

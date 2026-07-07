@@ -1,4 +1,4 @@
-import store from './store'
+import { useRootStore } from './store'
 import { clearStoredUser } from './session'
 
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5080'
@@ -148,7 +148,7 @@ class Client {
 
     _do(path, init = {}, withAuthorization = false) {
         if (withAuthorization) {
-            const jwt = store.state.user && store.state.user.jwt
+            const jwt = useRootStore().user?.jwt
             if (!jwt) {
                 return Promise.reject(new Error('user is not authorized'))
             }

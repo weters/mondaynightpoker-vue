@@ -1,15 +1,13 @@
-export default {
-    namespaced: true,
-    state: {
-    },
-    mutations: {
-    },
+import { defineStore } from 'pinia'
+import { useRootStore } from '@/store'
+
+export const usePokerStore = defineStore('poker', {
     getters: {
         // guard the root read: the game may clear while components are unmounting
-        gameState: (state, getters, rootState) => rootState.game?.data?.gameState ?? {},
-        pokerState: (state, getters, rootState) => rootState.game?.data?.pokerState,
-        self: (state, getters, rootState) => rootState.game?.data?.participant,
-        actions: (state, getters, rootState) => rootState.game?.data?.actions,
-        futureActions: (state, getters, rootState) => rootState.game?.data?.futureActions,
-    }
-}
+        gameState: () => useRootStore().game?.data?.gameState ?? {},
+        pokerState: () => useRootStore().game?.data?.pokerState,
+        self: () => useRootStore().game?.data?.participant,
+        actions: () => useRootStore().game?.data?.actions,
+        futureActions: () => useRootStore().game?.data?.futureActions,
+    },
+})

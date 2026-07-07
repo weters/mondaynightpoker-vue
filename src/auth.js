@@ -1,13 +1,14 @@
+import { watch } from 'vue'
 import client from "@/client"
-import store from "@/store"
+import { useRootStore } from "@/store"
 import { loadStoredUser, saveStoredUser, clearStoredUser } from "@/session"
 
 // half-life of the 30-day server token; refresh once a token is older than this
 const refreshAfterSeconds = 15 * 24 * 3600
 
-function clearUser() {
+function clearUser(store) {
     clearStoredUser()
-    store.commit('clearUser')
+    store.clearUser()
 }
 
 // jwtClaims decodes a JWT payload without verifying it (the server verifies)
@@ -27,7 +28,7 @@ export function shouldRefresh({iat, exp}, nowSeconds = Date.now() / 1000) {
     return nowSeconds - iat > refreshAfterSeconds
 }
 
-function refreshIfNeeded(jwt) {
+function refreshIfNeeded(store, jwt) {
     let claims
     try {
         claims = jwtClaims(jwt)
@@ -40,21 +41,27 @@ function refreshIfNeeded(jwt) {
     }
 
     client.refreshAuth()
-        .then(({jwt, player}) => store.commit('setUser', {jwt, player}))
+        .then(({jwt, player}) => store.setUser({jwt, player}))
         .catch(err => console.error('token refresh failed', err))
 }
 
-try {
-    const data = loadStoredUser()
-    store.commit('setUser', data)
-    client.validateJWT(data.jwt)
-        .then(() => refreshIfNeeded(data.jwt))
-        .catch(err => {
-            console.error(err)
-            clearUser()
-        })
-} catch (err) {
-    clearUser(err)
-}
+// initAuth restores the persisted session and keeps it in sync with the store.
+// It must run after pinia is installed and before the app mounts.
+export function initAuth() {
+    const store = useRootStore()
 
-store.watch(state => state.user, saveStoredUser)
+    try {
+        const data = loadStoredUser()
+        store.setUser(data)
+        client.validateJWT(data.jwt)
+            .then(() => refreshIfNeeded(store, data.jwt))
+            .catch(err => {
+                console.error(err)
+                clearUser(store)
+            })
+    } catch {
+        clearUser(store)
+    }
+
+    watch(() => store.user, saveStoredUser)
+}

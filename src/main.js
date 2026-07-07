@@ -1,15 +1,17 @@
 import { createApp } from 'vue'
+import { createPinia } from 'pinia'
 import App from './App.vue'
-import store from './store'
 import router from './router'
-import './auth'
+import { initAuth } from './auth'
 import relDate from 'relative-date'
 import {formatAmount} from "@/currency"
 
 const app = createApp(App)
 
 app.use(router)
-app.use(store)
+app.use(createPinia())
+
+initAuth()
 
 // Global mixin for methods
 app.mixin({

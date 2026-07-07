@@ -28,7 +28,8 @@ import balance from "@/mixins/balance"
 import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiAccountEdit} from "@mdi/js"
 import Toggle from "@/components/formelements/Toggle.vue"
-import {mapGetters} from "vuex"
+import {mapActions, mapState} from "pinia"
+import {useRootStore} from "@/store"
 
 export default {
     name: "PokerTablePlayer",
@@ -57,7 +58,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['userClientState']),
+        ...mapState(useRootStore, ['userClientState']),
         canAdmin() {
             return this.userClientState.isTableAdmin || this.userClientState.player.isSiteAdmin
         },
@@ -84,6 +85,7 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend', 'setError']),
         editTapped() {
             this.$emit('toggle-menu')
         },
@@ -92,10 +94,10 @@ export default {
                 playerId: this.player.playerId,
             }
             data[flag] = value
-            this.$store.dispatch('webSocketSend', {action: 'tableAdmin', additionalData: data})
+            this.webSocketSend({action: 'tableAdmin', additionalData: data})
                 .catch(err => {
                     this[flag] = !value
-                    this.$store.dispatch('error', err)
+                    this.setError(err)
                 })
         },
         setPlayerActive(active) {
@@ -104,10 +106,10 @@ export default {
                 playerId: this.player.playerId,
             }
 
-            this.$store.dispatch('webSocketSend', {action: 'playerStatus', additionalData: payload})
+            this.webSocketSend({action: 'playerStatus', additionalData: payload})
                 .catch(err => {
                     this.isSeated = !active
-                    this.$store.dispatch('error', err)
+                    this.setError(err)
                 })
         }
     },

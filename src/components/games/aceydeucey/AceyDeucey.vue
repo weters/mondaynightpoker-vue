@@ -40,7 +40,9 @@ import PlayerBar from "@/components/games/PlayerBar.vue"
 import AceyDeuceyRound from "@/components/games/aceydeucey/AceyDeuceyRound.vue"
 import PokerBetChips from "@/components/games/poker/PokerBetChips.vue"
 import ConfirmButton from "@/components/ConfirmButton.vue"
-import {mapGetters, mapState} from "vuex"
+import {mapActions, mapState} from "pinia"
+import {useRootStore} from "@/store"
+import {useAceyDeuceyStore} from "@/store/aceyDeucey"
 import show_error from "@/mixins/show_error"
 import AceyDeuceyPlayerList from "@/components/games/aceydeucey/AceyDeuceyPlayerList.vue"
 
@@ -55,13 +57,10 @@ export default {
         }
     },
     computed: {
-        ...mapState(['game']),
-        ...mapGetters({
-            gameState: 'aceyDeucey/gameState',
-            actions: 'aceyDeucey/actions',
-        }),
+        ...mapState(useRootStore, ['game', 'user']),
+        ...mapState(useAceyDeuceyStore, ['gameState', 'actions']),
         isTurn() {
-            return this.gameState.currentTurn === this.$store.state.user.player.id
+            return this.gameState.currentTurn === this.user.player.id
         },
         round() {
             return this.gameState.round
@@ -71,18 +70,19 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend']),
         handleAction(action) {
             if (action.id === 'bet') {
                 this.showBet = true
                 return
             }
-            this.$store.dispatch('webSocketSend', {action: action.id})
+            this.webSocketSend({action: action.id})
                 .catch(err => this.showError(err))
         },
         executeBet(amount) {
             const betAction = this.actions.find(a => a.id === 'bet')
             if (!betAction) return
-            this.$store.dispatch('webSocketSend', {action: betAction.id, additionalData: {amount}})
+            this.webSocketSend({action: betAction.id, additionalData: {amount}})
                 .catch(err => this.showError(err))
         },
     },

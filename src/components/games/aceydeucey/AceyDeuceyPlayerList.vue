@@ -4,12 +4,14 @@
             v-for="participant in participants"
             :key="participant.playerId"
             :participant="participant"
-            :player-data="$store.getters.playerDataById(participant.playerId)"
+            :player-data="playerDataById(participant.playerId)"
             />
     </div>
 </template>
 
 <script>
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
 import AceyDeuceyPlayer from "@/components/games/aceydeucey/AceyDeuceyPlayer.vue"
 export default {
     name: "AceyDeuceyPlayerList",
@@ -19,6 +21,9 @@ export default {
             type: Array,
             required: true,
         }
+    },
+    computed: {
+        ...mapState(useRootStore, ['playerDataById']),
     },
 }
 </script>

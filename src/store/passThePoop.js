@@ -1,14 +1,24 @@
-export default {
-    namespaced: true,
+import { defineStore } from 'pinia'
+import { useRootStore } from '@/store'
+
+export const usePassThePoopStore = defineStore('passThePoop', {
     getters: {
         // guard the entry getters: the game may clear while components are unmounting
-        gameData: (state, getters, rootState) => rootState.game?.data ?? {},
-        gameState: (state, getters) => getters.gameData.gameState ?? {},
-        card: (state, getters) => getters.gameData.card,
-        availableActions: (state, getters) => getters.gameData.availableActions,
-        isCurrentTurn: (state, getters, rootState) => {
-            return getters.gameState.currentTurn === rootState.user.player.id
+        gameData: () => useRootStore().game?.data ?? {},
+        gameState() {
+            return this.gameData.gameState ?? {}
         },
-        isPlayerTurn: (state, getters) => id => getters.gameState.currentTurn === id,
+        card() {
+            return this.gameData.card
+        },
+        availableActions() {
+            return this.gameData.availableActions
+        },
+        isCurrentTurn() {
+            return this.gameState.currentTurn === useRootStore().user.player.id
+        },
+        isPlayerTurn() {
+            return id => this.gameState.currentTurn === id
+        },
     },
-}
+})

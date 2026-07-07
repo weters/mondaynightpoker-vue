@@ -14,7 +14,9 @@
 </template>
 
 <script>
-    import {mapGetters} from "vuex"
+    import {mapState, mapActions} from "pinia"
+    import {useRootStore} from "@/store"
+    import {useBourreStore} from "@/store/bourre"
     import BourrePlayers from "@/components/games/bourre/BourrePlayers.vue"
     import Error from "@/components/Error.vue"
     import BourreGameOverview from "@/components/games/bourre/BourreGameOverview.vue"
@@ -29,9 +31,7 @@
             }
         },
         computed: {
-            ...mapGetters({
-                gameState: 'bourre/gameState',
-            }),
+            ...mapState(useBourreStore, ['gameState']),
             trumpCard() {
                 return this.gameState.trumpCard
             },
@@ -39,8 +39,11 @@
                 return this.gameState.players
             },
         },
+        methods: {
+            ...mapActions(useRootStore, ['clearGame']),
+        },
         beforeUnmount() {
-            this.$store.commit('clearGame')
+            this.clearGame()
         },
     }
 </script>

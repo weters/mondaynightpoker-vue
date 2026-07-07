@@ -14,7 +14,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapState, mapActions} from "pinia"
+import {useRootStore} from "@/store"
+import {useGutsStore} from "@/store/guts"
 import GutsPlayers from "@/components/games/guts/GutsPlayers.vue"
 import Error from "@/components/Error.vue"
 import GutsGameOverview from "@/components/games/guts/GutsGameOverview.vue"
@@ -29,12 +31,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            gameState: 'guts/gameState',
-            cardCount: 'guts/cardCount',
-            bloodyGuts: 'guts/bloodyGuts',
-            allowTrades: 'guts/allowTrades',
-        }),
+        ...mapState(useGutsStore, ['gameState', 'cardCount', 'bloodyGuts', 'allowTrades']),
         participants() {
             return this.gameState.participants
         },
@@ -42,8 +39,11 @@ export default {
             return `${this.cardCount}-Card ${this.bloodyGuts ? 'Bloody ' : ''}Guts${this.allowTrades ? ' with Trades' : ''}`
         },
     },
+    methods: {
+        ...mapActions(useRootStore, ['clearGame']),
+    },
     beforeUnmount() {
-        this.$store.commit('clearGame')
+        this.clearGame()
     },
 }
 </script>

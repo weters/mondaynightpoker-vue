@@ -33,7 +33,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapState, mapActions} from "pinia"
+import {useRootStore} from "@/store"
+import {useGutsStore} from "@/store/guts"
 import ConfirmButton from "@/components/ConfirmButton.vue"
 
 export default {
@@ -45,10 +47,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            canDecide: 'guts/canDecide',
-            hasDecided: 'guts/hasDecided',
-        }),
+        ...mapState(useGutsStore, ['canDecide', 'hasDecided']),
     },
     watch: {
         canDecide(canDecide) {
@@ -58,8 +57,9 @@ export default {
         },
     },
     methods: {
+        ...mapActions(useRootStore, ['webSocketSend']),
         decide(goIn) {
-            this.$store.dispatch('webSocketSend', {action: 'decide', additionalData: {in: goIn}})
+            this.webSocketSend({action: 'decide', additionalData: {in: goIn}})
                 .then(() => {
                     this.localDecision = goIn
                 })

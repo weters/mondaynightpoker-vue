@@ -18,7 +18,9 @@
 
 <script>
 import LittleLCommunity from "./LittleLCommunity.vue"
-import {mapGetters, mapState} from "vuex"
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
+import {usePokerStore} from "@/store/poker"
 import LittleLHand from "./LittleLHand.vue"
 import balance from "../../../mixins/balance"
 import show_error from "../../../mixins/show_error"
@@ -40,11 +42,8 @@ export default {
         }
     },
     computed: {
-        ...mapState(['game']),
-        ...mapGetters({
-            gameState: 'poker/gameState',
-            pokerState: 'poker/pokerState',
-        }),
+        ...mapState(useRootStore, ['game']),
+        ...mapState(usePokerStore, ['gameState', 'pokerState']),
         tradeIns() {
             const tradeIns = Object.keys(this.gameState.tradeIns)
             tradeIns.sort()

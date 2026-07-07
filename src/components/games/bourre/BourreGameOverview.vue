@@ -10,15 +10,14 @@
 
 <script>
     import BourrePot from "@/components/games/bourre/BourrePot.vue"
-    import {mapGetters} from "vuex"
+    import {mapState} from "pinia"
+    import {useBourreStore} from "@/store/bourre"
     import PlayingCardContainer from "../../PlayingCardContainer.vue"
     export default {
         name: "BourreGameOverview",
         components: {PlayingCardContainer, BourrePot},
         computed: {
-            ...mapGetters({
-                gameState: 'bourre/gameState',
-            }),
+            ...mapState(useBourreStore, ['gameState']),
             trumpCard() {
                 return this.gameState && this.gameState.trumpCard
             }

@@ -62,7 +62,9 @@
 </template>
 
 <script>
-import {mapGetters} from "vuex"
+import {mapState} from "pinia"
+import {useRootStore} from "@/store"
+import {useGutsStore} from "@/store/guts"
 import ChipStack from "@/components/ChipStack.vue"
 import PlayingCardContainer from "@/components/PlayingCardContainer.vue"
 import balance from "@/mixins/balance"
@@ -72,20 +74,21 @@ export default {
     components: {ChipStack, PlayingCardContainer},
     mixins: [balance],
     computed: {
-        ...mapGetters({
-            pot: 'guts/pot',
-            overflowPot: 'guts/overflowPot',
-            round: 'guts/round',
-            phase: 'guts/phase',
-            ante: 'guts/ante',
-            maxOwed: 'guts/maxOwed',
-            showdownResult: 'guts/showdownResult',
-            cardCount: 'guts/cardCount',
-            deckHand: 'guts/deckHand',
-            deckCardsRevealed: 'guts/deckCardsRevealed',
-            deckCardsTotal: 'guts/deckCardsTotal',
-            deckWon: 'guts/deckWon',
-        }),
+        ...mapState(useGutsStore, [
+            'pot',
+            'overflowPot',
+            'round',
+            'phase',
+            'ante',
+            'maxOwed',
+            'showdownResult',
+            'cardCount',
+            'deckHand',
+            'deckCardsRevealed',
+            'deckCardsTotal',
+            'deckWon',
+        ]),
+        ...mapState(useRootStore, ['playerDataById']),
         showDeckBattle() {
             return this.deckCardsTotal > 0
         },
@@ -122,7 +125,7 @@ export default {
     },
     methods: {
         getPlayerName(playerId) {
-            const playerData = this.$store.getters.playerDataById(playerId)
+            const playerData = this.playerDataById(playerId)
             return playerData ? playerData.player.displayName : 'Unknown'
         },
     },
