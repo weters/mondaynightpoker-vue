@@ -1,33 +1,45 @@
 <template>
-    <header>
-        <div>
-            <h1>
-                <router-link to="/"><span>Monday Night Poker</span></router-link>
-            </h1>
+  <header>
+    <div>
+      <h1>
+        <router-link to="/">
+          <span>Monday Night Poker</span>
+        </router-link>
+      </h1>
 
-            <ul>
-                <template v-if="user">
-                    <li>
-                        <router-link to="/my-tables">My Tables</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/my-profile">My Profile</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/logout">Log Out</router-link>
-                    </li>
-                </template>
-                <template v-else>
-                    <li>
-                        <router-link to="/signup">Sign Up</router-link>
-                    </li>
-                    <li>
-                        <router-link to="/login">Log In</router-link>
-                    </li>
-                </template>
-            </ul>
-        </div>
-    </header>
+      <ul>
+        <template v-if="user">
+          <li>
+            <router-link to="/my-tables">
+              My Tables
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/my-profile">
+              My Profile
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/logout">
+              Log Out
+            </router-link>
+          </li>
+        </template>
+        <template v-else>
+          <li>
+            <router-link to="/signup">
+              Sign Up
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/login">
+              Log In
+            </router-link>
+          </li>
+        </template>
+      </ul>
+    </div>
+  </header>
 </template>
 
 <script>

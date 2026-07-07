@@ -1,7 +1,11 @@
 <template>
-    <div class="community">
-        <playing-card-container v-for="(card, i) in pokerState.community" :key="i" :card="card" />
-    </div>
+  <div class="community">
+    <playing-card-container
+      v-for="(card, i) in pokerState.community"
+      :key="i"
+      :card="card"
+    />
+  </div>
 </template>
 
 <script>

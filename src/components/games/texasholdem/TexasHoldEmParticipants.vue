@@ -1,13 +1,13 @@
 <template>
-    <div class="texas-hold-em-participants">
-        <div class="container">
-            <texas-hold-em-participant
-                v-for="p in participants"
-                :participant="p"
-                :key="p.playerId"
-            />
-        </div>
+  <div class="texas-hold-em-participants">
+    <div class="container">
+      <texas-hold-em-participant
+        v-for="p in participants"
+        :key="p.playerId"
+        :participant="p"
+      />
     </div>
+  </div>
 </template>
 
 <script>

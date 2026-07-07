@@ -1,45 +1,79 @@
 <template>
-    <div class="sign-up small-content">
-        <form @submit.prevent="submit" class="min">
-            <h2>Create an account</h2>
+  <div class="sign-up small-content">
+    <form
+      class="min"
+      @submit.prevent="submit"
+    >
+      <h2>Create an account</h2>
 
-            <div v-if="success" class="success">
-                <p>Welcome to <strong>Monday Night Poker</strong>.</p>
+      <div
+        v-if="success"
+        class="success"
+      >
+        <p>Welcome to <strong>Monday Night Poker</strong>.</p>
 
-                <p>An email has been sent to {{ email.primary }}.</p>
+        <p>An email has been sent to {{ email.primary }}.</p>
 
-                <p>You will need to verify your account before you can log in.</p>
-            </div>
-            <div v-else>
-                <loading v-if="loading"/>
+        <p>You will need to verify your account before you can log in.</p>
+      </div>
+      <div v-else>
+        <loading v-if="loading" />
 
-                <transition name="error">
-                    <error :message="error" v-if="error"/>
-                </transition>
+        <transition name="error">
+          <error-message
+            v-if="error"
+            :message="error"
+          />
+        </transition>
 
-                <fancy-input label="Display Name" type="text" autocomplete="off" v-model="displayName" pattern="[\p{L}\p{N} ]+" :disabled="loading" />
+        <fancy-input
+          v-model="displayName"
+          label="Display Name"
+          type="text"
+          autocomplete="off"
+          pattern="[\p{L}\p{N} ]+"
+          :disabled="loading"
+        />
 
-                <input-with-confirm label="Email" autocomplete="email" v-model="email"
-                                    placeholder="Email" :disabled="loading"/>
-                <input-with-confirm label="Password" type="password" autocomplete="off" v-model="password"
-                                    placeholder="Password" :disabled="loading"/>
+        <input-with-confirm
+          v-model="email"
+          label="Email"
+          autocomplete="email"
+          placeholder="Email"
+          :disabled="loading"
+        />
+        <input-with-confirm
+          v-model="password"
+          label="Password"
+          type="password"
+          autocomplete="off"
+          placeholder="Password"
+          :disabled="loading"
+        />
 
-                <div class="buttons">
-                    <button type="submit" :disabled="submitDisabled">Sign Up</button>
-                </div>
+        <div class="buttons">
+          <button
+            type="submit"
+            :disabled="submitDisabled"
+          >
+            Sign Up
+          </button>
+        </div>
 
-                <div class="log-in">
-                    Already have an account?
-                    <router-link to="/login">Log in</router-link>
-                </div>
-            </div>
-        </form>
-    </div>
+        <div class="log-in">
+          Already have an account?
+          <router-link to="/login">
+            Log in
+          </router-link>
+        </div>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
 import Loading from "@/components/Loading.vue"
-import Error from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 import client from "@/client"
 import recaptcha from '@/recaptcha'
 import InputWithConfirm from "@/components/formelements/InputWithConfirm.vue"
@@ -48,7 +82,7 @@ import FancyInput from "@/components/formelements/FancyInput.vue"
 export default {
     name: "SignUp",
     title: 'Sign Up',
-    components: {FancyInput, InputWithConfirm, Error, Loading},
+    components: {FancyInput, InputWithConfirm, ErrorMessage, Loading},
     data() {
         return {
             error: null,

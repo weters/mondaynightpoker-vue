@@ -1,12 +1,12 @@
 <template>
-    <div class="acey-deucey-player-list">
-        <acey-deucey-player
-            v-for="participant in participants"
-            :key="participant.playerId"
-            :participant="participant"
-            :player-data="playerDataById(participant.playerId)"
-            />
-    </div>
+  <div class="acey-deucey-player-list">
+    <acey-deucey-player
+      v-for="participant in participants"
+      :key="participant.playerId"
+      :participant="participant"
+      :player-data="playerDataById(participant.playerId)"
+    />
+  </div>
 </template>
 
 <script>

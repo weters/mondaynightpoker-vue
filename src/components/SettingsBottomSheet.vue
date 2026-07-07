@@ -1,21 +1,43 @@
 <template>
-    <teleport to="body">
-        <transition name="bottom-sheet">
-            <div class="bottom-sheet-backdrop" v-if="open" @click.self="$emit('close')">
-                <div class="bottom-sheet-panel" ref="panel">
-                    <div class="drag-handle" @touchstart="onDragStart" @touchmove="onDragMove" @touchend="onDragEnd">
-                        <div class="handle-bar"></div>
-                        <button class="bottom-sheet-close" @click="$emit('close')">
-                            <svg viewBox="0 0 24 24" width="18" height="18"><path :d="mdiClose" fill="currentColor"/></svg>
-                        </button>
-                    </div>
-                    <div class="bottom-sheet-content">
-                        <slot></slot>
-                    </div>
-                </div>
-            </div>
-        </transition>
-    </teleport>
+  <teleport to="body">
+    <transition name="bottom-sheet">
+      <div
+        v-if="open"
+        class="bottom-sheet-backdrop"
+        @click.self="$emit('close')"
+      >
+        <div
+          ref="panel"
+          class="bottom-sheet-panel"
+        >
+          <div
+            class="drag-handle"
+            @touchstart="onDragStart"
+            @touchmove="onDragMove"
+            @touchend="onDragEnd"
+          >
+            <div class="handle-bar" />
+            <button
+              class="bottom-sheet-close"
+              @click="$emit('close')"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                width="18"
+                height="18"
+              ><path
+                :d="mdiClose"
+                fill="currentColor"
+              /></svg>
+            </button>
+          </div>
+          <div class="bottom-sheet-content">
+            <slot />
+          </div>
+        </div>
+      </div>
+    </transition>
+  </teleport>
 </template>
 
 <script>

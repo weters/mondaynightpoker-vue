@@ -1,7 +1,11 @@
 <template>
-    <div class="little-l-participants">
-        <little-l-participant v-for="p in gameState.participants" :key="p.playerId" :participant="p" />
-    </div>
+  <div class="little-l-participants">
+    <little-l-participant
+      v-for="p in gameState.participants"
+      :key="p.playerId"
+      :participant="p"
+    />
+  </div>
 </template>
 
 <script>

@@ -1,31 +1,49 @@
 <template>
-    <form class="pass-the-poop inner hide-required" @submit.prevent="submit">
-        <h4>Pass the Poop</h4>
+  <form
+    class="pass-the-poop inner hide-required"
+    @submit.prevent="submit"
+  >
+    <h4>Pass the Poop</h4>
 
-        <fancy-input label="Ante" type="number" :min="25" :max="400" :step="25" v-model="ante" unit="¢" />
+    <fancy-input
+      v-model="ante"
+      label="Ante"
+      type="number"
+      :min="25"
+      :max="400"
+      :step="25"
+      unit="¢"
+    />
 
-        <fancy-select label="Edition"
-                      v-model="edition"
-                      :options="[
-            [ 'standard', 'Standard' ],
-            [ 'diarrhea', 'Diarrhea' ],
-            [ 'pairs', 'Pairs' ],
-        ]" />
+    <fancy-select
+      v-model="edition"
+      label="Edition"
+      :options="[
+        [ 'standard', 'Standard' ],
+        [ 'diarrhea', 'Diarrhea' ],
+        [ 'pairs', 'Pairs' ],
+      ]"
+    />
 
-        <fancy-select label="Lives"
-                      v-model="lives"
-                      :options="[
-            [ '3', '3' ],
-            [ '2', '2' ],
-            [ '1', '1' ],
-        ]" />
+    <fancy-select
+      v-model="lives"
+      label="Lives"
+      :options="[
+        [ '3', '3' ],
+        [ '2', '2' ],
+        [ '1', '1' ],
+      ]"
+    />
 
-        <toggle label="Allow Blocks" v-model="allowBlocks" />
+    <toggle
+      v-model="allowBlocks"
+      label="Allow Blocks"
+    />
 
-        <div class="buttons">
-            <button>Start</button>
-        </div>
-    </form>
+    <div class="buttons">
+      <button>Start</button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -35,8 +53,9 @@ import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorPassThePoop",
-    inheritAttrs: false,
     components: {FancySelect, Toggle, FancyInput},
+    inheritAttrs: false,
+    emits: ['submit'],
     data() {
         return {
             ante: '150',

@@ -1,25 +1,67 @@
 <template>
-    <div :class="{ 'poker-table-player': true, connected, seated, 'next-picker': isNextPicker }">
-        <div class="player-data">
-            <player-status :connected="connected" :seated="seated"/>
-            <strong class="display-name">
-                <router-link v-if="viewerIsSiteAdmin" :to="`/admin/players/${player.playerId}`">{{ displayName }}</router-link>
-                <template v-else>{{ displayName }}</template>
-            </strong>
-            <span class="next-picker-badge" v-if="isNextPicker">Next Pick</span>
-            <span :class="{ balance: true, negative: balance < 0 }">{{ formatAmount(balance) }}</span>
-            <button type="button" class="icon" @click="editTapped" v-if="canAdmin" :disabled="userClientState.playerId === this.player.playerId">
-                <mdi-icon :icon="mdiAccountEdit"/>
-            </button>
-        </div>
-        <div class="edit-player" v-if="menuOpen">
-            <toggle label="Playing" v-model="isSeated" @change="setPlayerActive"/>
-            <toggle label="Can Start" v-model="canStart" @change="setFlag($event, 'canStart')" v-if="!isSiteAdmin" />
-            <toggle label="Can Terminate" v-model="canTerminate" @change="setFlag($event, 'canTerminate')"  v-if="!isSiteAdmin" />
-            <toggle label="Is Admin" v-model="isTableAdmin" @change="setFlag($event, 'isTableAdmin')" v-if="!isSiteAdmin" />
-            <toggle label="Is Blocked" v-model="isBlocked" @change="setFlag($event, 'isBlocked')" v-if="!isSiteAdmin" />
-        </div>
+  <div :class="{ 'poker-table-player': true, connected, seated, 'next-picker': isNextPicker }">
+    <div class="player-data">
+      <player-status
+        :connected="connected"
+        :seated="seated"
+      />
+      <strong class="display-name">
+        <router-link
+          v-if="viewerIsSiteAdmin"
+          :to="`/admin/players/${player.playerId}`"
+        >{{ displayName }}</router-link>
+        <template v-else>{{ displayName }}</template>
+      </strong>
+      <span
+        v-if="isNextPicker"
+        class="next-picker-badge"
+      >Next Pick</span>
+      <span :class="{ balance: true, negative: balance < 0 }">{{ formatAmount(balance) }}</span>
+      <button
+        v-if="canAdmin"
+        type="button"
+        class="icon"
+        :disabled="userClientState.playerId === player.playerId"
+        @click="editTapped"
+      >
+        <mdi-icon :icon="mdiAccountEdit" />
+      </button>
     </div>
+    <div
+      v-if="menuOpen"
+      class="edit-player"
+    >
+      <toggle
+        v-model="isSeated"
+        label="Playing"
+        @change="setPlayerActive"
+      />
+      <toggle
+        v-if="!isSiteAdmin"
+        v-model="canStart"
+        label="Can Start"
+        @change="setFlag($event, 'canStart')"
+      />
+      <toggle
+        v-if="!isSiteAdmin"
+        v-model="canTerminate"
+        label="Can Terminate"
+        @change="setFlag($event, 'canTerminate')"
+      />
+      <toggle
+        v-if="!isSiteAdmin"
+        v-model="isTableAdmin"
+        label="Is Admin"
+        @change="setFlag($event, 'isTableAdmin')"
+      />
+      <toggle
+        v-if="!isSiteAdmin"
+        v-model="isBlocked"
+        label="Is Blocked"
+        @change="setFlag($event, 'isBlocked')"
+      />
+    </div>
+  </div>
 </template>
 
 <script>

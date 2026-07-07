@@ -1,7 +1,11 @@
 <template>
-    <div class="texas-hold-em-community">
-        <playing-card-container :card="card(i-1)" v-for="i in 5" :key="i"/>
-    </div>
+  <div class="texas-hold-em-community">
+    <playing-card-container
+      v-for="i in 5"
+      :key="i"
+      :card="card(i-1)"
+    />
+  </div>
 </template>
 
 <script>

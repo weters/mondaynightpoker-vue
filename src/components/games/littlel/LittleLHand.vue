@@ -1,16 +1,16 @@
 <template>
-    <div class="little-l-hand">
-        <div class="hand">
-            <div
-                    v-for="card in self.hand"
-                    :key="`${card.rank}.${card.suit}`"
-                    :class="classForCard(card)"
-                    @click="selectCard(card)"
-            >
-                <playing-card-container :card="card"/>
-            </div>
-        </div>
+  <div class="little-l-hand">
+    <div class="hand">
+      <div
+        v-for="card in self.hand"
+        :key="`${card.rank}.${card.suit}`"
+        :class="classForCard(card)"
+        @click="selectCard(card)"
+      >
+        <playing-card-container :card="card" />
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -25,6 +25,7 @@
             canSelect: Boolean,
             modelValue: Array,
         },
+        emits: ['update:modelValue'],
         data() {
             return {
                 selected: [],

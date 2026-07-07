@@ -1,79 +1,153 @@
 <template>
-    <div class="profile small-content">
-        <div>
-            <h2>Manage my profile</h2>
+  <div class="profile small-content">
+    <div>
+      <h2>Manage my profile</h2>
 
-            <form @submit.prevent="saveDisplayName" class="inner">
-                <h3>Change your display name</h3>
+      <form
+        class="inner"
+        @submit.prevent="saveDisplayName"
+      >
+        <h3>Change your display name</h3>
 
-                <transition name="error">
-                    <error :message="error" v-if="error"/>
-                </transition>
+        <transition name="error">
+          <error-message
+            v-if="error"
+            :message="error"
+          />
+        </transition>
 
-                <div class="success" v-if="success">
-                    <p>Your changes have been saved successfully.</p>
-                </div>
-
-                <p>Your display name is how other users will see you online. Only your display name is visible. It does
-                    not
-                    need to be unique.</p>
-
-                <fancy-input type="text" label="Display Name" v-model="displayName" required :disabled="loading"/>
-
-                <div class="buttons">
-                    <button :disabled="loading">Save Changes</button>
-                </div>
-            </form>
-
-            <form @submit.prevent="changePassword" class="inner">
-                <h3>Change password</h3>
-
-                <transition name="error">
-                    <error :message="password.error" v-if="password.error"/>
-                </transition>
-
-                <div class="success" v-if="password.success">
-                    <p>Your password has been updated.</p>
-                </div>
-
-                <fancy-input type="password" label="Old Password" v-model="password.old" required :disabled="loading" />
-
-                <input-with-confirm label="New Password" autocomplete="off" type="password" v-model="password.new" />
-
-                <div class="buttons">
-                    <button :disabled="!password.new.primary || password.new.primary !== password.new.confirm">Change Password</button>
-                </div>
-            </form>
-
-            <loading v-if="loading"/>
-
-            <h3>Danger Zone</h3>
-
-            <h4>Delete Your Account*</h4>
-
-            <p>Deleting your account is irreversible. You may create a new account in the future, but all your current
-                information will be lost.</p>
-
-            <form @submit.prevent="deleteAccount" v-if="confirmDelete">
-                <p class="confirm">Are you sure you want to delete your account? Type your email address to confirm.</p>
-                <fancy-input label="Email" type="text" autocomplete="off" required
-                             v-model="deleteConfirmEmail"/>
-
-                <div class="buttons">
-                    <button type="button" class="secondary" @click="confirmDelete = false; deleteConfirmEmail = ''">
-                        Cancel
-                    </button>
-                    <button type="button" class="destructive" :disabled="!canDeleteAccount">Delete Your Account</button>
-                </div>
-            </form>
-            <div class="delete-your-account" v-else>
-                <button type="button" class="destructive" @click="confirmDelete=true">Delete Your Account</button>
-            </div>
-
-            <p class="note">*In order to keep table balances consistent, we maintain the user record but replace your
-                email, display name, and password with a random string.</p>
+        <div
+          v-if="success"
+          class="success"
+        >
+          <p>Your changes have been saved successfully.</p>
         </div>
+
+        <p>
+          Your display name is how other users will see you online. Only your display name is visible. It does
+          not
+          need to be unique.
+        </p>
+
+        <fancy-input
+          v-model="displayName"
+          type="text"
+          label="Display Name"
+          required
+          :disabled="loading"
+        />
+
+        <div class="buttons">
+          <button :disabled="loading">
+            Save Changes
+          </button>
+        </div>
+      </form>
+
+      <form
+        class="inner"
+        @submit.prevent="changePassword"
+      >
+        <h3>Change password</h3>
+
+        <transition name="error">
+          <error-message
+            v-if="password.error"
+            :message="password.error"
+          />
+        </transition>
+
+        <div
+          v-if="password.success"
+          class="success"
+        >
+          <p>Your password has been updated.</p>
+        </div>
+
+        <fancy-input
+          v-model="password.old"
+          type="password"
+          label="Old Password"
+          required
+          :disabled="loading"
+        />
+
+        <input-with-confirm
+          v-model="password.new"
+          label="New Password"
+          autocomplete="off"
+          type="password"
+        />
+
+        <div class="buttons">
+          <button :disabled="!password.new.primary || password.new.primary !== password.new.confirm">
+            Change Password
+          </button>
+        </div>
+      </form>
+
+      <loading v-if="loading" />
+
+      <h3>Danger Zone</h3>
+
+      <h4>Delete Your Account*</h4>
+
+      <p>
+        Deleting your account is irreversible. You may create a new account in the future, but all your current
+        information will be lost.
+      </p>
+
+      <form
+        v-if="confirmDelete"
+        @submit.prevent="deleteAccount"
+      >
+        <p class="confirm">
+          Are you sure you want to delete your account? Type your email address to confirm.
+        </p>
+        <fancy-input
+          v-model="deleteConfirmEmail"
+          label="Email"
+          type="text"
+          autocomplete="off"
+          required
+        />
+
+        <div class="buttons">
+          <button
+            type="button"
+            class="secondary"
+            @click="confirmDelete = false; deleteConfirmEmail = ''"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            class="destructive"
+            :disabled="!canDeleteAccount"
+          >
+            Delete Your Account
+          </button>
+        </div>
+      </form>
+      <div
+        v-else
+        class="delete-your-account"
+      >
+        <button
+          type="button"
+          class="destructive"
+          @click="confirmDelete=true"
+        >
+          Delete Your Account
+        </button>
+      </div>
+
+      <p class="note">
+        *In order to keep table balances consistent, we maintain the user record but replace your
+        email, display name, and password with a random string.
+      </p>
     </div>
+  </div>
 </template>
 
 <script>
@@ -81,14 +155,14 @@ import {mapActions, mapState} from "pinia"
 import client from "../client"
 import {useRootStore} from "@/store"
 import Loading from "./Loading.vue"
-import Error from "./Error.vue"
+import ErrorMessage from "./ErrorMessage.vue"
 import FancyInput from "@/components/formelements/FancyInput.vue"
 import InputWithConfirm from "@/components/formelements/InputWithConfirm.vue"
 
 export default {
     name: "Profile",
+    components: {InputWithConfirm, FancyInput, ErrorMessage, Loading},
     title: 'My Profile',
-    components: {InputWithConfirm, FancyInput, Error, Loading},
     data() {
         return {
             displayName: useRootStore().user.player.displayName,
@@ -106,6 +180,12 @@ export default {
                 new: {}
             }
         }
+    },
+    computed: {
+        ...mapState(useRootStore, ['user']),
+        canDeleteAccount() {
+            return this.user.player.email === this.deleteConfirmEmail
+        },
     },
     methods: {
         ...mapActions(useRootStore, ['setUserPlayer', 'setNotification', 'setError']),
@@ -151,12 +231,6 @@ export default {
                     this.$router.push('/login')
                 })
                 .catch(err => this.setError(err))
-        },
-    },
-    computed: {
-        ...mapState(useRootStore, ['user']),
-        canDeleteAccount() {
-            return this.user.player.email === this.deleteConfirmEmail
         },
     },
 }

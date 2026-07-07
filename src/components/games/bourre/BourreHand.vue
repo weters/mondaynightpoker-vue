@@ -1,16 +1,22 @@
 <template>
-    <div class="bourre-hand">
-        <bourre-card-picker
-                :can-select="true"
-                :max-select="1"
-                v-model="selected"
-                :round="round"
-        />
+  <div class="bourre-hand">
+    <bourre-card-picker
+      v-model="selected"
+      :can-select="true"
+      :max-select="1"
+      :round="round"
+    />
 
-        <div class="buttons">
-            <button v-if="isTurn" :disabled="selected.length === 0" @click="playCard">Play Card</button>
-        </div>
+    <div class="buttons">
+      <button
+        v-if="isTurn"
+        :disabled="selected.length === 0"
+        @click="playCard"
+      >
+        Play Card
+      </button>
     </div>
+  </div>
 </template>
 
 <script>
@@ -28,6 +34,7 @@
                 required: true,
             },
         },
+        emits: ['error'],
         data() {
             return {
                 selected: [],

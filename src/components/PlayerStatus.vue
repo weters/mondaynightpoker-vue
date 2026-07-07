@@ -1,5 +1,5 @@
 <template>
-    <span :class="{ 'player-status': true, connected, seated }"></span>
+  <span :class="{ 'player-status': true, connected, seated }" />
 </template>
 
 <script>

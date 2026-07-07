@@ -1,9 +1,12 @@
 <template>
-    <transition name="slide-notification">
-        <div class="notification" v-if="notification">
-            <p>{{ notification }}</p>
-        </div>
-    </transition>
+  <transition name="slide-notification">
+    <div
+      v-if="notification"
+      class="notification"
+    >
+      <p>{{ notification }}</p>
+    </div>
+  </transition>
 </template>
 
 <script>

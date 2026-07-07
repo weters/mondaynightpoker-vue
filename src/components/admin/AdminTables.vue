@@ -1,55 +1,73 @@
 <template>
-    <div class="admin-tables big-content">
-        <div>
-            <admin-header/>
+  <div class="admin-tables big-content">
+    <div>
+      <admin-header />
 
-            <loading v-if="loading"/>
-            <error :message="error" v-else-if="error"/>
-            <div v-else-if="Array.isArray(tables) && tables.length > 0">
-                <table class="standard">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Created By</th>
-                        <th>Created</th>
-                        <th>Deleted</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <tr v-for="table in tables" :key="table.uuid">
-                        <td>
-                            <router-link :to="`/table/${encodeURIComponent(table.uuid)}`">{{ table.name }}</router-link>
-                        </td>
-                        <td>{{ table.playerEmail }}</td>
-                        <td>{{ relativeDate(table.created) }}</td>
-                        <td class="deleted">
-                            <toggle :checked="table.deleted" @change="toggled(table, $event)" :disabled="updating"/>
-                        </td>
-                    </tr>
-                    </tbody>
-                </table>
+      <loading v-if="loading" />
+      <error-message
+        v-else-if="error"
+        :message="error"
+      />
+      <div v-else-if="Array.isArray(tables) && tables.length > 0">
+        <table class="standard">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Created By</th>
+              <th>Created</th>
+              <th>Deleted</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="table in tables"
+              :key="table.uuid"
+            >
+              <td>
+                <router-link :to="`/table/${encodeURIComponent(table.uuid)}`">
+                  {{ table.name }}
+                </router-link>
+              </td>
+              <td>{{ table.playerEmail }}</td>
+              <td>{{ relativeDate(table.created) }}</td>
+              <td class="deleted">
+                <toggle
+                  :checked="table.deleted"
+                  :disabled="updating"
+                  @change="toggled(table, $event)"
+                />
+              </td>
+            </tr>
+          </tbody>
+        </table>
 
-                <admin-pagination :start="start" :rows="rows" :count="count" @prev="fetch" @next="fetch"/>
-            </div>
-            <div v-else>
-                <p>No tables</p>
-            </div>
-        </div>
+        <admin-pagination
+          :start="start"
+          :rows="rows"
+          :count="count"
+          @prev="fetch"
+          @next="fetch"
+        />
+      </div>
+      <div v-else>
+        <p>No tables</p>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 import AdminHeader from "@/components/admin/AdminHeader.vue"
 import client from "@/client"
 import Loading from "@/components/Loading.vue"
-import Error from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 import AdminPagination from "@/components/admin/AdminPagination.vue"
 import Toggle from "@/components/formelements/Toggle.vue"
 
 export default {
     name: "AdminTables",
     title: 'Admin/Tables',
-    components: {Toggle, AdminPagination, Error, Loading, AdminHeader},
+    components: {Toggle, AdminPagination, ErrorMessage, Loading, AdminHeader},
     data() {
         return {
             tables: null,
@@ -60,6 +78,15 @@ export default {
             updating: false,
             error: null,
         }
+    },
+    watch: {
+        tables(tables) {
+            if (Array.isArray(tables)) {
+                this.count = tables.length
+            } else {
+                this.count = 0
+            }
+        },
     },
     mounted() {
         this.fetch()
@@ -84,15 +111,6 @@ export default {
                     this.fetch()
                 })
                 .finally(() => this.updating = false)
-        },
-    },
-    watch: {
-        tables(tables) {
-            if (Array.isArray(tables)) {
-                this.count = tables.length
-            } else {
-                this.count = 0
-            }
         },
     },
 }

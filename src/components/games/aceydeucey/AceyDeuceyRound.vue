@@ -1,21 +1,25 @@
 <template>
-    <div class="acey-deucey-round">
-        <div class="metadata">
-            <div class="pot">
-                <span class="label">Pot</span>
-                <acey-deucey-pot :pot="pot"/>
-            </div>
-            <div class="deck">
-                <span class="label">Deck</span>
-                <cards-remaining :number="round.cardsRemaining"/>
-            </div>
-        </div>
-
-        <div class="games">
-            <acey-deucey-game v-for="(game, i) in round.games" :key="game.uuid" :game="game"
-                              :is-active="i === activeGameIndex"/>
-        </div>
+  <div class="acey-deucey-round">
+    <div class="metadata">
+      <div class="pot">
+        <span class="label">Pot</span>
+        <acey-deucey-pot :pot="pot" />
+      </div>
+      <div class="deck">
+        <span class="label">Deck</span>
+        <cards-remaining :number="round.cardsRemaining" />
+      </div>
     </div>
+
+    <div class="games">
+      <acey-deucey-game
+        v-for="(game, i) in round.games"
+        :key="game.uuid"
+        :game="game"
+        :is-active="i === activeGameIndex"
+      />
+    </div>
+  </div>
 </template>
 
 <script>

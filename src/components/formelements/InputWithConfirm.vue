@@ -1,22 +1,24 @@
 <template>
-    <div class="input-with-confirm">
-        <fancy-input :type="type"
-                     :autocomplete="autocomplete"
-                     :disabled="disabled"
-                     :label="label"
-                     v-model="primary"
-                     :required="true"
-                     />
+  <div class="input-with-confirm">
+    <fancy-input
+      v-model="primary"
+      :type="type"
+      :autocomplete="autocomplete"
+      :disabled="disabled"
+      :label="label"
+      :required="true"
+    />
 
-        <fancy-input :type="type"
-                     :autocomplete="autocomplete"
-                     :disabled="disabled"
-                     :label="`Confirm ${label}`"
-                     :show-alert="mismatch"
-                     v-model="confirm"
-                     :required="true"
-        />
-    </div>
+    <fancy-input
+      v-model="confirm"
+      :type="type"
+      :autocomplete="autocomplete"
+      :disabled="disabled"
+      :label="`Confirm ${label}`"
+      :show-alert="mismatch"
+      :required="true"
+    />
+  </div>
 </template>
 
 <script>
@@ -49,6 +51,7 @@ export default {
             required: true,
         }
     },
+    emits: ['update:modelValue'],
     data() {
         return {
             mdiAlertCircle,

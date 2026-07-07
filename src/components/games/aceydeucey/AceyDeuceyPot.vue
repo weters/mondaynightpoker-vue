@@ -1,7 +1,7 @@
 <template>
-    <div class="acey-deucey-pot">
-        <chip-stack :amount="pot"/>
-    </div>
+  <div class="acey-deucey-pot">
+    <chip-stack :amount="pot" />
+  </div>
 </template>
 
 <script>

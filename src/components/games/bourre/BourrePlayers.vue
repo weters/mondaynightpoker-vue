@@ -1,7 +1,16 @@
 <template>
-    <transition-group name="player" class="bourre-players" tag="div">
-        <bourre-player v-for="player in sortedPlayers" :key="player.playerId" :player="player" :player-data="playerDataById(player.playerId)" />
-    </transition-group>
+  <transition-group
+    name="player"
+    class="bourre-players"
+    tag="div"
+  >
+    <bourre-player
+      v-for="player in sortedPlayers"
+      :key="player.playerId"
+      :player="player"
+      :player-data="playerDataById(player.playerId)"
+    />
+  </transition-group>
 </template>
 
 <script>

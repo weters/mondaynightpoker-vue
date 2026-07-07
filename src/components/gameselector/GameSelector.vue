@@ -1,15 +1,26 @@
 <template>
-    <div class="game-selector">
-        <h3>Pick a Game</h3>
+  <div class="game-selector">
+    <h3>Pick a Game</h3>
 
-        <div class="games" v-if="canStart">
-            <component v-for="g in games" :key="g.slug" :is="g.selector" @submit="startGame($event, g.slug)"/>
-        </div>
-        <div class="waiting" v-else>
-            <p>Waiting on the table admin to start the game!</p>
-            <loading/>
-        </div>
+    <div
+      v-if="canStart"
+      class="games"
+    >
+      <component
+        :is="g.selector"
+        v-for="g in games"
+        :key="g.slug"
+        @submit="startGame($event, g.slug)"
+      />
     </div>
+    <div
+      v-else
+      class="waiting"
+    >
+      <p>Waiting on the table admin to start the game!</p>
+      <loading />
+    </div>
+  </div>
 </template>
 
 <script>

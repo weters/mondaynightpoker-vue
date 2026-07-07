@@ -1,16 +1,22 @@
 <template>
-    <div class="verify-account small-content">
-        <div>
-            <h2>Verify Your Account</h2>
+  <div class="verify-account small-content">
+    <div>
+      <h2>Verify Your Account</h2>
 
-            <loading v-if="loading"/>
+      <loading v-if="loading" />
 
-            <p v-if="success">Thank you. You're account has been verified. You may now
-                <router-link to="/login">log in</router-link>
-                <span>.</span></p>
-            <p v-else>We could not verify your account. Please click the link found in your email.</p>
-        </div>
+      <p v-if="success">
+        Thank you. You're account has been verified. You may now
+        <router-link to="/login">
+          log in
+        </router-link>
+        <span>.</span>
+      </p>
+      <p v-else>
+        We could not verify your account. Please click the link found in your email.
+      </p>
     </div>
+  </div>
 </template>
 
 <script>

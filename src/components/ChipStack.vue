@@ -1,18 +1,34 @@
 <template>
-    <div :class="{'chip-stack': true, 'is-zero': amount === 0}">
-        <transition-group tag="div" class="chips" name="stack">
-            <div class="stack" v-for="stack in stacks" :key="stack.color">
-                <div>
-                <transition-group tag="div" name="chip">
-                    <span class="chip" v-for="i in stack.count" :key="i" :class="stack.color"></span>
-                </transition-group>
-                </div>
-            </div>
-        </transition-group>
-        <div class="amount">
-            {{formatAmount(amount)}}
+  <div :class="{'chip-stack': true, 'is-zero': amount === 0}">
+    <transition-group
+      tag="div"
+      class="chips"
+      name="stack"
+    >
+      <div
+        v-for="stack in stacks"
+        :key="stack.color"
+        class="stack"
+      >
+        <div>
+          <transition-group
+            tag="div"
+            name="chip"
+          >
+            <span
+              v-for="i in stack.count"
+              :key="i"
+              class="chip"
+              :class="stack.color"
+            />
+          </transition-group>
         </div>
+      </div>
+    </transition-group>
+    <div class="amount">
+      {{ formatAmount(amount) }}
     </div>
+  </div>
 </template>
 
 <script>
@@ -26,18 +42,6 @@
                 required: true,
             },
         },
-        methods: {
-            getStack(stacks, amount, size, color) {
-                const count = Math.floor(amount / size)
-                const rem = amount % size
-
-                if (count > 0) {
-                    stacks.push({ color, count })
-                }
-
-                return rem
-            }
-        },
         computed: {
             stacks() {
                 const stacks = []
@@ -50,6 +54,18 @@
 
                 return stacks
             },
+        },
+        methods: {
+            getStack(stacks, amount, size, color) {
+                const count = Math.floor(amount / size)
+                const rem = amount % size
+
+                if (count > 0) {
+                    stacks.push({ color, count })
+                }
+
+                return rem
+            }
         },
     }
 </script>

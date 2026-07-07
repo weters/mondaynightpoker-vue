@@ -1,25 +1,38 @@
 <template>
-    <form class="seven-card inner hide-required" @submit.prevent="submit">
-        <h4>Seven Card</h4>
+  <form
+    class="seven-card inner hide-required"
+    @submit.prevent="submit"
+  >
+    <h4>Seven Card</h4>
 
-        <fancy-input label="Ante" type="number" :min="25" :max="400" :step="25" v-model="ante" unit="¢"/>
+    <fancy-input
+      v-model="ante"
+      label="Ante"
+      type="number"
+      :min="25"
+      :max="400"
+      :step="25"
+      unit="¢"
+    />
 
-        <fancy-select label="Variant"
-                      v-model="variant"
-                      :options="[
-                              [ 'stud', 'Seven-Card Stud' ],
-                              [ 'low-card-wild', 'Low Card Wild' ],
-                              [ 'baseball', 'Baseball' ],
-                              [ 'follow-the-queen', 'Follow the Queen' ],
-                              [ 'high-chicago', 'High Chicago' ],
-                              [ 'chiggs', '7 Card Chiggs' ],
-                              [ 'coupons-and-clippings', 'Coupons and Clippings' ],
-            ]"/>
+    <fancy-select
+      v-model="variant"
+      label="Variant"
+      :options="[
+        [ 'stud', 'Seven-Card Stud' ],
+        [ 'low-card-wild', 'Low Card Wild' ],
+        [ 'baseball', 'Baseball' ],
+        [ 'follow-the-queen', 'Follow the Queen' ],
+        [ 'high-chicago', 'High Chicago' ],
+        [ 'chiggs', '7 Card Chiggs' ],
+        [ 'coupons-and-clippings', 'Coupons and Clippings' ],
+      ]"
+    />
 
-        <div class="buttons">
-            <button>Start</button>
-        </div>
-    </form>
+    <div class="buttons">
+      <button>Start</button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -28,8 +41,9 @@ import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorSevenCard",
-    inheritAttrs: false,
     components: {FancySelect, FancyInput},
+    inheritAttrs: false,
+    emits: ['submit'],
     data() {
         return {
             ante: '25',

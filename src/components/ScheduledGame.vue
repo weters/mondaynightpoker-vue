@@ -1,21 +1,38 @@
 <template>
-    <div class="scheduled-game">
-        <h3>Game Scheduled</h3>
+  <div class="scheduled-game">
+    <h3>Game Scheduled</h3>
 
-        <div class="content">
-            <div class="info">
-                <p class="game"><strong>{{ replaceTokens(info.name) }}</strong> starts in <strong>{{ t }}</strong></p>
-                <p class="ante">{{ formatAmount(info.ante) }}</p>
-                <p class="started-by">{{ player }}</p>
-            </div>
+    <div class="content">
+      <div class="info">
+        <p class="game">
+          <strong>{{ replaceTokens(info.name) }}</strong> starts in <strong>{{ t }}</strong>
+        </p>
+        <p class="ante">
+          {{ formatAmount(info.ante) }}
+        </p>
+        <p class="started-by">
+          {{ player }}
+        </p>
+      </div>
 
-            <toggle v-model="localActive" @change="$emit('setPlayerActive', $event)" label="Deal me in!" />
+      <toggle
+        v-model="localActive"
+        label="Deal me in!"
+        @change="$emit('setPlayerActive', $event)"
+      />
 
-            <div class="buttons">
-                <button type="button" @click="$emit('cancel')" class="secondary" v-if="canStart">Cancel</button>
-            </div>
-        </div>
+      <div class="buttons">
+        <button
+          v-if="canStart"
+          type="button"
+          class="secondary"
+          @click="$emit('cancel')"
+        >
+          Cancel
+        </button>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -36,21 +53,22 @@
             canStart: Boolean,
             isPlayerActive: Boolean,
         },
+        emits: ['cancel', 'setPlayerActive'],
         data() {
             return {
                 t: new Date(this.info.start) - new Date(),
                 localActive: this.isPlayerActive,
             }
         },
-        watch: {
-            isPlayerActive(newVal) {
-                this.localActive = newVal
-            },
-        },
         computed: {
             ...mapState(useRootStore, ['playerDataById']),
             player() {
                 return this.playerDataById(this.info.playerId).player.displayName
+            },
+        },
+        watch: {
+            isPlayerActive(newVal) {
+                this.localActive = newVal
             },
         },
         mounted() {

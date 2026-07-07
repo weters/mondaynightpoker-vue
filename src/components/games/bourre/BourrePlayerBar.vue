@@ -1,39 +1,56 @@
 <template>
-    <player-bar :error="error" :is-turn="isTurn">
-        <template #cards>
-            <template v-if="folded">
-                <span class="folded-text">You folded</span>
-            </template>
-            <template v-else>
-                <bourre-discard v-if="isTradeInRound" :hand="hand" @error="showError"/>
-                <bourre-hand v-else :hand="hand" @error="showError"/>
-            </template>
-        </template>
+  <player-bar
+    :error="error"
+    :is-turn="isTurn"
+  >
+    <template #cards>
+      <template v-if="folded">
+        <span class="folded-text">You folded</span>
+      </template>
+      <template v-else>
+        <bourre-discard
+          v-if="isTradeInRound"
+          :hand="hand"
+          @error="showError"
+        />
+        <bourre-hand
+          v-else
+          :hand="hand"
+          @error="showError"
+        />
+      </template>
+    </template>
 
-        <template #gameInfo>
-            <span class="round">
-                <strong>Round:</strong>
-                <span>{{ roundText }}</span>
-            </span>
-            <span class="turn">
-                <strong>Turn:</strong>
-                <span>{{ currentTurn }}</span>
-            </span>
-        </template>
+    <template #gameInfo>
+      <span class="round">
+        <strong>Round:</strong>
+        <span>{{ roundText }}</span>
+      </span>
+      <span class="turn">
+        <strong>Turn:</strong>
+        <span>{{ currentTurn }}</span>
+      </span>
+    </template>
 
-        <template #settings>
-            <p>Game balance: {{ formatAmount(gameData.balance) }}</p>
-            <p><label class="optional"><span>Sit out</span><input type="checkbox" v-model="sitOut" :disabled="sitOutLoading"/></label></p>
+    <template #settings>
+      <p>Game balance: {{ formatAmount(gameData.balance) }}</p>
+      <p>
+        <label class="optional"><span>Sit out</span><input
+          v-model="sitOut"
+          type="checkbox"
+          :disabled="sitOutLoading"
+        ></label>
+      </p>
 
-            <template v-if="canRestart">
-                <confirm-button
-                    label="Restart"
-                    confirm-text="Confirm Restart?"
-                    @confirmed="newBourreGame"
-                />
-            </template>
-        </template>
-    </player-bar>
+      <template v-if="canRestart">
+        <confirm-button
+          label="Restart"
+          confirm-text="Confirm Restart?"
+          @confirmed="newBourreGame"
+        />
+      </template>
+    </template>
+  </player-bar>
 </template>
 
 <script>

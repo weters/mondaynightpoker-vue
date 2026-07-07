@@ -1,22 +1,28 @@
 <template>
-    <div :class="{ 'bourre-player': true, 'is-turn': isCurrentTurn }">
-        <div class="hand">
-            <div class="cards">
-                <template v-for="i in 5" :key="`playing-card-${i}`">
-                    <playing-card-container
-                        :hide-card="hideCard(i)"
-                        :card="playingCard(i)"
-                    />
-                </template>
-            </div>
-        </div>
-
-        <div :class="{ metadata: true, disconnected: !playerData.isConnected }">
-            <span class="name">{{ playerData.player.displayName }}</span>
-            <span class="balance">{{ formatAmount(player.balance) }}</span>
-            <bourre-tricks-tally class="tricks" :tricks="player.tricksWon"/>
-        </div>
+  <div :class="{ 'bourre-player': true, 'is-turn': isCurrentTurn }">
+    <div class="hand">
+      <div class="cards">
+        <template
+          v-for="i in 5"
+          :key="`playing-card-${i}`"
+        >
+          <playing-card-container
+            :hide-card="hideCard(i)"
+            :card="playingCard(i)"
+          />
+        </template>
+      </div>
     </div>
+
+    <div :class="{ metadata: true, disconnected: !playerData.isConnected }">
+      <span class="name">{{ playerData.player.displayName }}</span>
+      <span class="balance">{{ formatAmount(player.balance) }}</span>
+      <bourre-tricks-tally
+        class="tricks"
+        :tricks="player.tricksWon"
+      />
+    </div>
+  </div>
 </template>
 
 <script>

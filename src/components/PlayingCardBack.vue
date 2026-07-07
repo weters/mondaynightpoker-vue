@@ -1,9 +1,11 @@
 <template>
-    <div class="playing-card-back">
-        <img src="/images/poker/card-back.png"
-             srcset="/images/poker/card-back@2x.png 2x, /images/poker/card-back@3x.png 3x"
-             alt=""/>
-    </div>
+  <div class="playing-card-back">
+    <img
+      src="/images/poker/card-back.png"
+      srcset="/images/poker/card-back@2x.png 2x, /images/poker/card-back@3x.png 3x"
+      alt=""
+    >
+  </div>
 </template>
 
 <script>

@@ -1,35 +1,60 @@
 <template>
-    <div class="bet-chips">
-        <div class="presets">
-            <button
-                v-for="preset in presets"
-                :key="preset.label"
-                :class="{ 'chip-pill': true, active: amount === preset.amount }"
-                @click="selectPreset(preset)"
-            >{{ preset.label }}</button>
-        </div>
-
-        <div class="slider-row">
-            <button class="stepper" type="button" @click="nudge(-1)">&minus;</button>
-            <div class="slider-wrap">
-                <input
-                    type="range"
-                    class="bet-slider"
-                    :min="minBet"
-                    :max="sliderMax"
-                    :step="step"
-                    :value="amount"
-                    @input="onSlider"
-                />
-            </div>
-            <button class="stepper" type="button" @click="nudge(1)">+</button>
-        </div>
-
-        <div class="bet-actions">
-            <button class="secondary" type="button" @click="$emit('cancel')">Cancel</button>
-            <button type="button" @click="$emit('submit', effectiveAmount)">{{ submitLabel }}</button>
-        </div>
+  <div class="bet-chips">
+    <div class="presets">
+      <button
+        v-for="preset in presets"
+        :key="preset.label"
+        :class="{ 'chip-pill': true, active: amount === preset.amount }"
+        @click="selectPreset(preset)"
+      >
+        {{ preset.label }}
+      </button>
     </div>
+
+    <div class="slider-row">
+      <button
+        class="stepper"
+        type="button"
+        @click="nudge(-1)"
+      >
+        &minus;
+      </button>
+      <div class="slider-wrap">
+        <input
+          type="range"
+          class="bet-slider"
+          :min="minBet"
+          :max="sliderMax"
+          :step="step"
+          :value="amount"
+          @input="onSlider"
+        >
+      </div>
+      <button
+        class="stepper"
+        type="button"
+        @click="nudge(1)"
+      >
+        +
+      </button>
+    </div>
+
+    <div class="bet-actions">
+      <button
+        class="secondary"
+        type="button"
+        @click="$emit('cancel')"
+      >
+        Cancel
+      </button>
+      <button
+        type="button"
+        @click="$emit('submit', effectiveAmount)"
+      >
+        {{ submitLabel }}
+      </button>
+    </div>
+  </div>
 </template>
 
 <script>

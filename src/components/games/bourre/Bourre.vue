@@ -1,16 +1,19 @@
 <template>
-    <div class="bourre">
-        <h3>Bourré</h3>
-        <transition name="error">
-            <error :message="error" v-if="error"/>
-        </transition>
+  <div class="bourre">
+    <h3>Bourré</h3>
+    <transition name="error">
+      <error-message
+        v-if="error"
+        :message="error"
+      />
+    </transition>
 
-        <bourre-game-overview/>
+    <bourre-game-overview />
 
-        <bourre-players :players="players"/>
+    <bourre-players :players="players" />
 
-        <bourre-player-bar />
-    </div>
+    <bourre-player-bar />
+  </div>
 </template>
 
 <script>
@@ -18,13 +21,13 @@
     import {useRootStore} from "@/store"
     import {useBourreStore} from "@/store/bourre"
     import BourrePlayers from "@/components/games/bourre/BourrePlayers.vue"
-    import Error from "@/components/Error.vue"
+    import ErrorMessage from "@/components/ErrorMessage.vue"
     import BourreGameOverview from "@/components/games/bourre/BourreGameOverview.vue"
     import BourrePlayerBar from "@/components/games/bourre/BourrePlayerBar.vue"
 
     export default {
         name: "Bourre",
-        components: {BourrePlayerBar, BourreGameOverview, Error, BourrePlayers},
+        components: {BourrePlayerBar, BourreGameOverview, ErrorMessage, BourrePlayers},
         data() {
             return {
                 error: null,
@@ -39,11 +42,11 @@
                 return this.gameState.players
             },
         },
-        methods: {
-            ...mapActions(useRootStore, ['clearGame']),
-        },
         beforeUnmount() {
             this.clearGame()
+        },
+        methods: {
+            ...mapActions(useRootStore, ['clearGame']),
         },
     }
 </script>

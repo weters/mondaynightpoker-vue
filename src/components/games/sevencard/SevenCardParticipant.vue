@@ -1,66 +1,99 @@
 <template>
-    <div :class="{'seven-card-participant': true, 'is-turn': isTurn }">
-        <transition-group class="cards" tag="div" name="hand" v-if="hand.length > 0">
-            <div class="card" v-for="(card, i) in hand" :key="i+0">
-                <playing-card-container :card="card"/>
-            </div>
-        </transition-group>
-        <div class="cards" v-else>
-            <div class="card">
-                <playing-card-container :hide-card="true" />
-            </div>
-        </div>
-
-        <!-- Comic-book style effects -->
-        <transition name="comic-pop">
-            <div v-if="showMushroomEffect" class="comic-effect mushroom-effect">
-                Mushroom Card!
-            </div>
-        </transition>
-
-        <transition name="comic-pop">
-            <div v-if="showAntidoteEffect" class="comic-effect antidote-effect">
-                Antidote!
-            </div>
-        </transition>
-
-        <transition name="comic-pop">
-            <div v-if="showNoAntidoteEffect" class="comic-effect no-antidote-effect">
-                Ah! Mushroom!
-            </div>
-        </transition>
-
-        <!-- Coupons and Clippings effects -->
-        <transition name="comic-pop">
-            <div v-if="showBogoEffect" class="comic-effect bogo-effect">
-                BOGO!
-            </div>
-        </transition>
-
-        <transition name="comic-pop">
-            <div v-if="showNailClippingRefundEffect" class="comic-effect nailclipping-refund-effect">
-                Nail clipping found. Meal comp'd!
-            </div>
-        </transition>
-
-        <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
-            <div class="name-hand">
-                <strong class="display-name">{{ playerData.player.displayName }}</strong>
-                <span class="balance">{{ participant.balance > 0 ? formatAmount(participant.balance) : '(All-in)' }}</span>
-                <span v-if="participant.handRank" :class="{'hand-rank': true, 'is-winner': isWinner}">{{ participant.handRank }}</span>
-                <span v-else-if="lastAction" class="last-action">{{ lastAction }}</span>
-            </div>
-        </div>
-
-        <div class="chips">
-            <chip-stack :amount="chipStack" />
-        </div>
-
-        <dealer-button
-            class="dealer-button"
-            v-if="participant.playerId === gameState.dealerId"
-        />
+  <div :class="{'seven-card-participant': true, 'is-turn': isTurn }">
+    <transition-group
+      v-if="hand.length > 0"
+      class="cards"
+      tag="div"
+      name="hand"
+    >
+      <div
+        v-for="(card, i) in hand"
+        :key="i+0"
+        class="card"
+      >
+        <playing-card-container :card="card" />
+      </div>
+    </transition-group>
+    <div
+      v-else
+      class="cards"
+    >
+      <div class="card">
+        <playing-card-container :hide-card="true" />
+      </div>
     </div>
+
+    <!-- Comic-book style effects -->
+    <transition name="comic-pop">
+      <div
+        v-if="showMushroomEffect"
+        class="comic-effect mushroom-effect"
+      >
+        Mushroom Card!
+      </div>
+    </transition>
+
+    <transition name="comic-pop">
+      <div
+        v-if="showAntidoteEffect"
+        class="comic-effect antidote-effect"
+      >
+        Antidote!
+      </div>
+    </transition>
+
+    <transition name="comic-pop">
+      <div
+        v-if="showNoAntidoteEffect"
+        class="comic-effect no-antidote-effect"
+      >
+        Ah! Mushroom!
+      </div>
+    </transition>
+
+    <!-- Coupons and Clippings effects -->
+    <transition name="comic-pop">
+      <div
+        v-if="showBogoEffect"
+        class="comic-effect bogo-effect"
+      >
+        BOGO!
+      </div>
+    </transition>
+
+    <transition name="comic-pop">
+      <div
+        v-if="showNailClippingRefundEffect"
+        class="comic-effect nailclipping-refund-effect"
+      >
+        Nail clipping found. Meal comp'd!
+      </div>
+    </transition>
+
+    <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
+      <div class="name-hand">
+        <strong class="display-name">{{ playerData.player.displayName }}</strong>
+        <span class="balance">{{ participant.balance > 0 ? formatAmount(participant.balance) : '(All-in)' }}</span>
+        <span
+          v-if="participant.handRank"
+          :class="{'hand-rank': true, 'is-winner': isWinner}"
+        >{{ participant.handRank }}</span>
+        <span
+          v-else-if="lastAction"
+          class="last-action"
+        >{{ lastAction }}</span>
+      </div>
+    </div>
+
+    <div class="chips">
+      <chip-stack :amount="chipStack" />
+    </div>
+
+    <dealer-button
+      v-if="participant.playerId === gameState.dealerId"
+      class="dealer-button"
+    />
+  </div>
 </template>
 
 <script>
@@ -179,75 +212,6 @@
                 return `${this.gameState.round}:${ids.join(',')}`
             },
         },
-        mounted() {
-            if (this.gameState.round <= 1) {
-                if (this.participant.hand) {
-                   this.hand = this.participant.hand.slice(0, 1)
-                }
-
-                this.timeout = setTimeout(this.addCardToHand, 250 + this.order * this.dealDelay)
-            } else {
-                this.hand = this.participant.hand || []
-            }
-        },
-        methods: {
-            addCardToHand() {
-                this.timeout = null
-
-                if (!this.participant.hand) {
-                    return
-                }
-
-                const shownLength = this.hand.length
-                const actualLength = this.participant.hand.length
-
-                if (shownLength === actualLength) {
-                    this.hand = this.participant.hand
-                    return
-                }
-
-                this.hand = [...this.participant.hand.slice(0, shownLength+1)]
-                if (shownLength + 1 < actualLength) {
-                    this.timeout = setTimeout(this.addCardToHand, this.numParticipants * this.dealDelay)
-                }
-            },
-            showEffect(effectName) {
-                const dataKey = `show${effectName}Effect`
-                const timeoutKey = `${effectName.toLowerCase()}Timeout`
-
-                // Clear any existing timeout
-                if (this[timeoutKey]) {
-                    clearTimeout(this[timeoutKey])
-                }
-
-                this[dataKey] = true
-                this[timeoutKey] = setTimeout(() => {
-                    this[dataKey] = false
-                    this[timeoutKey] = null
-                }, 2000)
-            },
-        },
-        beforeUnmount() {
-            if (this.timeout) {
-                clearTimeout(this.timeout)
-            }
-            if (this.mushroomTimeout) {
-                clearTimeout(this.mushroomTimeout)
-            }
-            if (this.antidoteTimeout) {
-                clearTimeout(this.antidoteTimeout)
-            }
-            if (this.noAntidoteTimeout) {
-                clearTimeout(this.noAntidoteTimeout)
-            }
-            // Coupons and Clippings timeouts
-            if (this.bogoTimeout) {
-                clearTimeout(this.bogoTimeout)
-            }
-            if (this.nailClippingRefundTimeout) {
-                clearTimeout(this.nailClippingRefundTimeout)
-            }
-        },
         watch: {
             'participant.hand': {
                 handler(newHand) {
@@ -315,6 +279,75 @@
                     }
                 },
                 immediate: true,
+            },
+        },
+        mounted() {
+            if (this.gameState.round <= 1) {
+                if (this.participant.hand) {
+                   this.hand = this.participant.hand.slice(0, 1)
+                }
+
+                this.timeout = setTimeout(this.addCardToHand, 250 + this.order * this.dealDelay)
+            } else {
+                this.hand = this.participant.hand || []
+            }
+        },
+        beforeUnmount() {
+            if (this.timeout) {
+                clearTimeout(this.timeout)
+            }
+            if (this.mushroomTimeout) {
+                clearTimeout(this.mushroomTimeout)
+            }
+            if (this.antidoteTimeout) {
+                clearTimeout(this.antidoteTimeout)
+            }
+            if (this.noAntidoteTimeout) {
+                clearTimeout(this.noAntidoteTimeout)
+            }
+            // Coupons and Clippings timeouts
+            if (this.bogoTimeout) {
+                clearTimeout(this.bogoTimeout)
+            }
+            if (this.nailClippingRefundTimeout) {
+                clearTimeout(this.nailClippingRefundTimeout)
+            }
+        },
+        methods: {
+            addCardToHand() {
+                this.timeout = null
+
+                if (!this.participant.hand) {
+                    return
+                }
+
+                const shownLength = this.hand.length
+                const actualLength = this.participant.hand.length
+
+                if (shownLength === actualLength) {
+                    this.hand = this.participant.hand
+                    return
+                }
+
+                this.hand = [...this.participant.hand.slice(0, shownLength+1)]
+                if (shownLength + 1 < actualLength) {
+                    this.timeout = setTimeout(this.addCardToHand, this.numParticipants * this.dealDelay)
+                }
+            },
+            showEffect(effectName) {
+                const dataKey = `show${effectName}Effect`
+                const timeoutKey = `${effectName.toLowerCase()}Timeout`
+
+                // Clear any existing timeout
+                if (this[timeoutKey]) {
+                    clearTimeout(this[timeoutKey])
+                }
+
+                this[dataKey] = true
+                this[timeoutKey] = setTimeout(() => {
+                    this[dataKey] = false
+                    this[timeoutKey] = null
+                }, 2000)
             },
         }
     }

@@ -1,14 +1,18 @@
 <template>
-    <transition-group name="picker-playing-card" tag="div" :class="{ hand: true, locked: !canSelect}">
-        <playing-card
-                v-for="card in sortedHand"
-                :key="cardId(card)"
-                :class="{ card: true, selected: selected[cardId(card)], 'cannot-play': !canPlayCard(card) }"
-                :rank="card.rank"
-                :suit="card.suit"
-                @click="cardClicked(card)"
-        />
-    </transition-group>
+  <transition-group
+    name="picker-playing-card"
+    tag="div"
+    :class="{ hand: true, locked: !canSelect}"
+  >
+    <playing-card
+      v-for="card in sortedHand"
+      :key="cardId(card)"
+      :class="{ card: true, selected: selected[cardId(card)], 'cannot-play': !canPlayCard(card) }"
+      :rank="card.rank"
+      :suit="card.suit"
+      @click="cardClicked(card)"
+    />
+  </transition-group>
 </template>
 
 <script>
@@ -36,6 +40,7 @@
             },
             round: Number,
         },
+        emits: ['update:modelValue'],
         data() {
             const selected = {}
             if (this.modelValue) {

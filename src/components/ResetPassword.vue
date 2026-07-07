@@ -1,47 +1,84 @@
 <template>
-    <div class="reset-password small-content">
-        <form @submit.prevent="submit">
-            <h2>Reset your password</h2>
+  <div class="reset-password small-content">
+    <form @submit.prevent="submit">
+      <h2>Reset your password</h2>
 
-            <div class="password-changed" v-if="passwordChanged">
-                <p>You have successfully changed your password. You may now proceed to <router-link to="/login">log in</router-link>.</p>
-            </div>
-            <div class="invalid-token" v-else-if="tokenIsValid === false">
-                <p>The reset password URL is no longer valid. Please click <router-link to="/forgot-password">here</router-link> to request a new one to reset your password.</p>
-            </div>
-            <div class="valid-token" v-else-if="tokenIsValid">
-                <transition name="error">
-                    <error :message="error" v-if="error"/>
-                </transition>
+      <div
+        v-if="passwordChanged"
+        class="password-changed"
+      >
+        <p>
+          You have successfully changed your password. You may now proceed to <router-link to="/login">
+            log in
+          </router-link>.
+        </p>
+      </div>
+      <div
+        v-else-if="tokenIsValid === false"
+        class="invalid-token"
+      >
+        <p>
+          The reset password URL is no longer valid. Please click <router-link to="/forgot-password">
+            here
+          </router-link> to request a new one to reset your password.
+        </p>
+      </div>
+      <div
+        v-else-if="tokenIsValid"
+        class="valid-token"
+      >
+        <transition name="error">
+          <error-message
+            v-if="error"
+            :message="error"
+          />
+        </transition>
 
-                <p>Please enter the information below to finish resetting your password.</p>
+        <p>Please enter the information below to finish resetting your password.</p>
 
-                <fancy-input type="text" label="Email Address" autocomplete="email" required hide-required v-model="email" />
+        <fancy-input
+          v-model="email"
+          type="text"
+          label="Email Address"
+          autocomplete="email"
+          required
+          hide-required
+        />
 
-                <input-with-confirm type="password" label="Password" autocomplete="off" placeholder="hunter2"
-                                    v-model="password"/>
+        <input-with-confirm
+          v-model="password"
+          type="password"
+          label="Password"
+          autocomplete="off"
+          placeholder="hunter2"
+        />
 
-                <div class="buttons">
-                    <loading v-if="loading"/>
-                    <button type="submit" :disabled="submitDisabled">Reset</button>
-                </div>
-            </div>
-            <loading v-else />
-        </form>
-    </div>
+        <div class="buttons">
+          <loading v-if="loading" />
+          <button
+            type="submit"
+            :disabled="submitDisabled"
+          >
+            Reset
+          </button>
+        </div>
+      </div>
+      <loading v-else />
+    </form>
+  </div>
 </template>
 
 <script>
 import InputWithConfirm from "@/components/formelements/InputWithConfirm.vue"
 import Loading from "@/components/Loading.vue"
-import Error from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 import client from "@/client"
 import FancyInput from "@/components/formelements/FancyInput.vue"
 
 export default {
     name: "ResetPassword",
     title: 'Reset Password',
-    components: {FancyInput, Error, Loading, InputWithConfirm},
+    components: {FancyInput, ErrorMessage, Loading, InputWithConfirm},
     props: {
         token: {
             type: String,

@@ -1,7 +1,7 @@
 <template>
-    <div class="dealer-button">
-        <span>D</span>
-    </div>
+  <div class="dealer-button">
+    <span>D</span>
+  </div>
 </template>
 
 <script>

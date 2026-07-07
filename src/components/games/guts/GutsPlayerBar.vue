@@ -1,40 +1,51 @@
 <template>
-    <player-bar :error="error" :is-turn="canDecide || canTrade">
-        <template #cards>
-            <template v-if="isGameOver">
-                <p class="game-over-message">Game Over!</p>
-            </template>
-            <template v-else>
-                <guts-hand
-                    :hand="hand"
-                    :card-count="cardCount"
-                    :hidden-cards="hiddenCards"
-                    :can-select="canSelectCards"
-                    :folded="isTradePhase && myDecision === false"
-                    v-model="selectedCards"
-                />
-            </template>
-        </template>
+  <player-bar
+    :error="error"
+    :is-turn="canDecide || canTrade"
+  >
+    <template #cards>
+      <template v-if="isGameOver">
+        <p class="game-over-message">
+          Game Over!
+        </p>
+      </template>
+      <template v-else>
+        <guts-hand
+          v-model="selectedCards"
+          :hand="hand"
+          :card-count="cardCount"
+          :hidden-cards="hiddenCards"
+          :can-select="canSelectCards"
+          :folded="isTradePhase && myDecision === false"
+        />
+      </template>
+    </template>
 
-        <template #actions>
-            <template v-if="!isGameOver">
-                <guts-decision v-if="isDeclarationPhase" @error="showError"/>
-                <guts-trade
-                    v-if="isTradePhase && myDecision"
-                    :selected-cards="selectedCards"
-                    @error="showError"
-                    @clear-selection="clearSelection"
-                />
-                <div v-if="isTradePhase && myDecision === false" class="folded-message">
-                    <p>You folded this round</p>
-                </div>
-            </template>
-        </template>
+    <template #actions>
+      <template v-if="!isGameOver">
+        <guts-decision
+          v-if="isDeclarationPhase"
+          @error="showError"
+        />
+        <guts-trade
+          v-if="isTradePhase && myDecision"
+          :selected-cards="selectedCards"
+          @error="showError"
+          @clear-selection="clearSelection"
+        />
+        <div
+          v-if="isTradePhase && myDecision === false"
+          class="folded-message"
+        >
+          <p>You folded this round</p>
+        </div>
+      </template>
+    </template>
 
-        <template #gameInfo>
-            {{ handRank }}
-        </template>
-    </player-bar>
+    <template #gameInfo>
+      {{ handRank }}
+    </template>
+  </player-bar>
 </template>
 
 <script>

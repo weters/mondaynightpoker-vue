@@ -1,26 +1,50 @@
 <template>
-    <div :class="{ 'ptp-participant': true, 'is-connected': isConnected }">
-        <strong class="name">{{ playerData.player.displayName }}</strong>
+  <div :class="{ 'ptp-participant': true, 'is-connected': isConnected }">
+    <strong class="name">{{ playerData.player.displayName }}</strong>
 
-        <div class="lives">
-            <transition-group name="lives" class="lives">
-                <mdi-icon :icon="mdiPokerChip" v-for="i in participant.lives" :key="i"/>
-                <span class="placeholder" v-if="participant.lives === 0" :key="0"></span>
-            </transition-group>
-        </div>
-
-        <div class="ptp-card-container">
-            <playing-card-container class="ptp-card" :card="card" :hide-card="hideCard"/>
-            <transition name="block">
-                <span class="block-chip" v-if="participant.hasBlock"></span>
-            </transition>
-        </div>
-
-        <span class="is-turn">
-            <mdi-icon :icon="mdiCardsOutline" v-if="isPlayerTurn && goingToDeck"/>
-            <mdi-icon :icon="mdiTimerSand" v-else-if="isPlayerTurn"/>
-        </span>
+    <div class="lives">
+      <transition-group
+        name="lives"
+        class="lives"
+      >
+        <mdi-icon
+          v-for="i in participant.lives"
+          :key="i"
+          :icon="mdiPokerChip"
+        />
+        <span
+          v-if="participant.lives === 0"
+          :key="0"
+          class="placeholder"
+        />
+      </transition-group>
     </div>
+
+    <div class="ptp-card-container">
+      <playing-card-container
+        class="ptp-card"
+        :card="card"
+        :hide-card="hideCard"
+      />
+      <transition name="block">
+        <span
+          v-if="participant.hasBlock"
+          class="block-chip"
+        />
+      </transition>
+    </div>
+
+    <span class="is-turn">
+      <mdi-icon
+        v-if="isPlayerTurn && goingToDeck"
+        :icon="mdiCardsOutline"
+      />
+      <mdi-icon
+        v-else-if="isPlayerTurn"
+        :icon="mdiTimerSand"
+      />
+    </span>
+  </div>
 </template>
 
 <script>

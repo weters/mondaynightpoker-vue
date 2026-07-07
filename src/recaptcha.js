@@ -3,7 +3,7 @@ const baseURL = 'https://www.google.com/recaptcha/api.js?render='
 
 function execute(action) {
     /*global grecaptcha*/
-    return new Promise((resolve, reject) => { // eslint-disable-line
+    return new Promise((resolve, reject) => {  
         grecaptcha.ready(function () {
             try {
                 grecaptcha.execute(siteKey, {action})

@@ -1,12 +1,20 @@
 <template>
-    <div class="playing-card-container">
-        <transition :name="transition" mode="out-in">
-            <span v-if="hideCard"></span>
-            <playing-card v-else-if="card" :suit="card.suit" :rank="card.rank" :is-wild="card.isWild"
-                          :key="`${card.rank}.${card.suit}`"/>
-            <playing-card-back v-else/>
-        </transition>
-    </div>
+  <div class="playing-card-container">
+    <transition
+      :name="transition"
+      mode="out-in"
+    >
+      <span v-if="hideCard" />
+      <playing-card
+        v-else-if="card"
+        :key="`${card.rank}.${card.suit}`"
+        :suit="card.suit"
+        :rank="card.rank"
+        :is-wild="card.isWild"
+      />
+      <playing-card-back v-else />
+    </transition>
+  </div>
 </template>
 
 <script>
@@ -16,14 +24,14 @@ import PlayingCardBack from "./PlayingCardBack.vue"
 export default {
     name: "PlayingCardContainer",
     components: {PlayingCardBack, PlayingCard},
+    props: {
+        card: Object,
+        hideCard: Boolean,
+    },
     data() {
         return {
             transition: 'flip',
         }
-    },
-    props: {
-        card: Object,
-        hideCard: Boolean,
     },
     watch: {
         card() {

@@ -1,18 +1,21 @@
 <template>
-    <div>
-        <error :message="error" v-if="error"/>
-        <loading v-if="loading"/>
-    </div>
+  <div>
+    <error-message
+      v-if="error"
+      :message="error"
+    />
+    <loading v-if="loading" />
+  </div>
 </template>
 
 <script>
-    import Error from "@/components/Error.vue"
+    import ErrorMessage from "@/components/ErrorMessage.vue"
     import Loading from "@/components/Loading.vue"
     import client from "@/client"
 
     export default {
         name: "JoinTable",
-        components: {Loading, Error},
+        components: {Loading, ErrorMessage},
         props: {
             uuid: {
                 type: String,

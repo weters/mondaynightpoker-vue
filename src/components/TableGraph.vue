@@ -1,7 +1,10 @@
 <template>
-    <div class="table-graph">
-        <Bar :data="chartData" :options="chartOptions" />
-    </div>
+  <div class="table-graph">
+    <Bar
+      :data="chartData"
+      :options="chartOptions"
+    />
+  </div>
 </template>
 
 <script>

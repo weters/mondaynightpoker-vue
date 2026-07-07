@@ -1,11 +1,18 @@
 <template>
-    <label class="ante">
-        <span class="ante">Ante</span>
-        <span class="ante-input">
-            <input type="number" :min="min" :max="max" :step="step" :value="modelValue" @input="$emit('update:modelValue', parseInt($event.target.value, 10))"/>
-            <em>¢</em>
-        </span>
-    </label>
+  <label class="ante">
+    <span class="ante">Ante</span>
+    <span class="ante-input">
+      <input
+        type="number"
+        :min="min"
+        :max="max"
+        :step="step"
+        :value="modelValue"
+        @input="$emit('update:modelValue', parseInt($event.target.value, 10))"
+      >
+      <em>¢</em>
+    </span>
+  </label>
 </template>
 
 <script>

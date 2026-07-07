@@ -1,11 +1,13 @@
 <template>
-    <div class="bourre-game-overview">
-        <div class="trump-card">
-            <playing-card-container :card="trumpCard" v-if="trumpCard" />
-        </div>
-        <bourre-pot />
+  <div class="bourre-game-overview">
+    <div class="trump-card">
+      <playing-card-container
+        v-if="trumpCard"
+        :card="trumpCard"
+      />
     </div>
-    
+    <bourre-pot />
+  </div>
 </template>
 
 <script>

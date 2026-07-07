@@ -1,28 +1,45 @@
 <template>
-    <form class="game-selector-texas-hold-em" @submit.prevent="submit">
-        <h4>Texas Hold'Em</h4>
+  <form
+    class="game-selector-texas-hold-em"
+    @submit.prevent="submit"
+  >
+    <h4>Texas Hold'Em</h4>
 
-        <fancy-input label="Ante" type="number" :min="0" :max="50" :step="25" v-model="ante" unit="¢"/>
+    <fancy-input
+      v-model="ante"
+      label="Ante"
+      type="number"
+      :min="0"
+      :max="50"
+      :step="25"
+      unit="¢"
+    />
 
-        <fancy-select label="Blinds" v-model="blinds" :options="[
-            [ '0-0', '0¢/0¢' ],
-            [ '25-25', '25¢/25¢' ],
-            [ '25-50', '25¢/50¢' ],
-            [ '50-100', '50¢/$1' ],
-        ]"/>
+    <fancy-select
+      v-model="blinds"
+      label="Blinds"
+      :options="[
+        [ '0-0', '0¢/0¢' ],
+        [ '25-25', '25¢/25¢' ],
+        [ '25-50', '25¢/50¢' ],
+        [ '50-100', '50¢/$1' ],
+      ]"
+    />
 
-        <fancy-select label="Variant"
-                      v-model="variant"
-                      :options="[
-                              [ 'standard', 'Standard' ],
-                              [ 'pineapple', 'Pineapple' ],
-                              [ 'lazy-pineapple', 'Lazy Pineapple' ],
-            ]"/>
+    <fancy-select
+      v-model="variant"
+      label="Variant"
+      :options="[
+        [ 'standard', 'Standard' ],
+        [ 'pineapple', 'Pineapple' ],
+        [ 'lazy-pineapple', 'Lazy Pineapple' ],
+      ]"
+    />
 
-        <div class="buttons">
-            <button>Start</button>
-        </div>
-    </form>
+    <div class="buttons">
+      <button>Start</button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -31,8 +48,9 @@ import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorTexasHoldEm",
-    inheritAttrs: false,
     components: {FancySelect, FancyInput},
+    inheritAttrs: false,
+    emits: ['submit'],
     data() {
         return {
             ante: '25',

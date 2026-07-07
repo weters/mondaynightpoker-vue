@@ -1,33 +1,42 @@
 <template>
-    <div class="bourre-discard">
-        <bourre-card-picker
-            :can-select="!isTurnOver"
-            :max-select="maxDraw"
-            v-model="selected"
-        />
+  <div class="bourre-discard">
+    <bourre-card-picker
+      v-model="selected"
+      :can-select="!isTurnOver"
+      :max-select="maxDraw"
+    />
 
-        <div :class="{ buttons: true, 'pending-turn': !isTurn }" v-if="!currentPlayer.decided">
-            <template v-if="pending">
-                <span class="pending-label">{{ pendingActionText }} queued</span>
-                <button key="pending" class="pending" @click="pending = null">Cancel</button>
-            </template>
-            <template v-else>
-                <confirm-button
-                    label="Fold"
-                    confirm-text="Confirm Fold?"
-                    button-class="action-fold"
-                    :disabled="selected.length > 0"
-                    @confirmed="fold"
-                />
-                <confirm-button
-                    :label="discardLabel"
-                    confirm-text="Confirm?"
-                    :button-class="selected.length === 0 ? 'action-keep-all' : ''"
-                    @confirmed="discard"
-                />
-            </template>
-        </div>
+    <div
+      v-if="!currentPlayer.decided"
+      :class="{ buttons: true, 'pending-turn': !isTurn }"
+    >
+      <template v-if="pending">
+        <span class="pending-label">{{ pendingActionText }} queued</span>
+        <button
+          key="pending"
+          class="pending"
+          @click="pending = null"
+        >
+          Cancel
+        </button>
+      </template>
+      <template v-else>
+        <confirm-button
+          label="Fold"
+          confirm-text="Confirm Fold?"
+          button-class="action-fold"
+          :disabled="selected.length > 0"
+          @confirmed="fold"
+        />
+        <confirm-button
+          :label="discardLabel"
+          confirm-text="Confirm?"
+          :button-class="selected.length === 0 ? 'action-keep-all' : ''"
+          @confirmed="discard"
+        />
+      </template>
     </div>
+  </div>
 </template>
 
 <script>
@@ -46,6 +55,7 @@ export default {
             required: true,
         },
     },
+    emits: ['error'],
     data() {
         return {
             selected: [],
@@ -67,6 +77,25 @@ export default {
             return this.pending === 'Fold' ? 'Fold' :
                 this.pending === 'Discard' && Object.keys(this.selected).length === 0 ? 'Keep All'
                     : 'Discard'
+        },
+    },
+    watch: {
+        isTurn(isTurn) {
+            if (isTurn && this.pending) {
+                if (this.pending === 'Discard') {
+                    this.discard()
+                } else if (this.pending === 'Fold') {
+                    this.fold()
+                } else {
+                    throw new Error(`unknown pending state: ${this.pending}`)
+                }
+            }
+        },
+        discards: {
+            immediate: true,
+            handler(newValue) {
+                this.selected = newValue || []
+            },
         },
     },
     methods: {
@@ -97,25 +126,6 @@ export default {
                 .catch(err => {
                     this.$emit('error', err)
                 })
-        },
-    },
-    watch: {
-        isTurn(isTurn) {
-            if (isTurn && this.pending) {
-                if (this.pending === 'Discard') {
-                    this.discard()
-                } else if (this.pending === 'Fold') {
-                    this.fold()
-                } else {
-                    throw new Error(`unknown pending state: ${this.pending}`)
-                }
-            }
-        },
-        discards: {
-            immediate: true,
-            handler(newValue) {
-                this.selected = newValue || []
-            },
         },
     },
 }

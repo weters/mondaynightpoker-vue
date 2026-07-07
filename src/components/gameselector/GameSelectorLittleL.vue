@@ -1,36 +1,56 @@
 <template>
-    <form class="little-l inner hide-required" @submit.prevent="submit">
-        <h4>Little L</h4>
+  <form
+    class="little-l inner hide-required"
+    @submit.prevent="submit"
+  >
+    <h4>Little L</h4>
 
-        <fancy-input label="Ante" type="number" :min="25" :max="200" :step="25" v-model="ante" unit="¢"/>
+    <fancy-input
+      v-model="ante"
+      label="Ante"
+      type="number"
+      :min="25"
+      :max="200"
+      :step="25"
+      unit="¢"
+    />
 
-        <div class="control-group initial-deal">
-            <span class="group-label">Initial deal</span>
+    <div class="control-group initial-deal">
+      <span class="group-label">Initial deal</span>
 
-            <div class="controls">
-                <radio-button v-model="initialDeal" value="3" label="3"/>
-                <radio-button v-model="initialDeal" value="4" label="4"/>
-            </div>
-        </div>
+      <div class="controls">
+        <radio-button
+          v-model="initialDeal"
+          value="3"
+          label="3"
+        />
+        <radio-button
+          v-model="initialDeal"
+          value="4"
+          label="4"
+        />
+      </div>
+    </div>
 
-        <div class="control-group trade-ins">
-            <span class="group-label">Trade-ins</span>
+    <div class="control-group trade-ins">
+      <span class="group-label">Trade-ins</span>
 
-            <div class="controls">
-                <toggle v-for="i in 5"
-                        :label="`${i - 1}`"
-                        :key="i"
-                        :value="`${i-1}`"
-                        v-model="tradeIns"
-                        :disabled="i - 1 > parseInt(initialDeal, 10)"
-                />
-            </div>
-        </div>
+      <div class="controls">
+        <toggle
+          v-for="i in 5"
+          :key="i"
+          v-model="tradeIns"
+          :label="`${i - 1}`"
+          :value="`${i-1}`"
+          :disabled="i - 1 > parseInt(initialDeal, 10)"
+        />
+      </div>
+    </div>
 
-        <div class="buttons">
-            <button>Start</button>
-        </div>
-    </form>
+    <div class="buttons">
+      <button>Start</button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -40,8 +60,9 @@ import RadioButton from "@/components/formelements/RadioButton.vue"
 
 export default {
     name: "GameSelectorLittleL",
-    inheritAttrs: false,
     components: {RadioButton, Toggle, FancyInput},
+    inheritAttrs: false,
+    emits: ['submit'],
     data() {
         return {
             ante: '25',

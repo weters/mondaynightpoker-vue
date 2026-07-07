@@ -1,5 +1,5 @@
 <template>
-    <chip-stack :amount="gameState.pot"/>
+  <chip-stack :amount="gameState.pot" />
 </template>
 
 <script>

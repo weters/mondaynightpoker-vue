@@ -1,10 +1,12 @@
 <template>
-    <div :class="{'acey-deucey-player': true, 'is-turn': isTurn, 'is-connected': playerData.isConnected }">
-        <p class="display-name"><strong>{{ playerData.player.displayName }}</strong></p>
-        <div class="balance">
-            {{ formatAmount(balance) }}
-        </div>
+  <div :class="{'acey-deucey-player': true, 'is-turn': isTurn, 'is-connected': playerData.isConnected }">
+    <p class="display-name">
+      <strong>{{ playerData.player.displayName }}</strong>
+    </p>
+    <div class="balance">
+      {{ formatAmount(balance) }}
     </div>
+  </div>
 </template>
 
 <script>

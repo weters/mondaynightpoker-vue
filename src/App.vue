@@ -1,14 +1,14 @@
 <template>
-    <div id="body">
-        <site-header/>
-        <main>
-            <router-view :key="$route.path"/>
-        </main>
-        <site-footer/>
-        <error-banner/>
-        <notification-banner/>
-        <dev-tools v-if="!production"/>
-    </div>
+  <div id="body">
+    <site-header />
+    <main>
+      <router-view :key="$route.path" />
+    </main>
+    <site-footer />
+    <error-banner />
+    <notification-banner />
+    <dev-tools v-if="!production" />
+  </div>
 </template>
 
 <script>

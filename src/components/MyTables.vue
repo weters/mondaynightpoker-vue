@@ -1,19 +1,24 @@
 <template>
-    <div class="my-tables big-content">
-        <div>
-            <div class="page-header">
-                <div class="header-content">
-                    <h2>My Tables</h2>
-                    <p class="subtitle">Manage your poker tables and track your performance</p>
-                </div>
-                <router-link to="/table/create" class="button create-button">
-                    <span class="plus-icon">+</span> Create a Table
-                </router-link>
-            </div>
-
-            <table-list/>
+  <div class="my-tables big-content">
+    <div>
+      <div class="page-header">
+        <div class="header-content">
+          <h2>My Tables</h2>
+          <p class="subtitle">
+            Manage your poker tables and track your performance
+          </p>
         </div>
+        <router-link
+          to="/table/create"
+          class="button create-button"
+        >
+          <span class="plus-icon">+</span> Create a Table
+        </router-link>
+      </div>
+
+      <table-list />
     </div>
+  </div>
 </template>
 
 <script>

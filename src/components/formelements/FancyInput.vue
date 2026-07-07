@@ -1,27 +1,35 @@
 <template>
-    <label
-        :class="{ 'fancy-input': true, 'with-value': inputValue || isFocused || isAutoFilled, 'required': required && !hideRequired, invalid, unit}">
-        <span class="label">{{ label }}</span>
-        <span class="unit" v-if="unit">{{ unit }}</span>
-        <input :type="type"
-               :pattern="pattern"
-               :disabled="disabled"
-               :autocomplete="autocomplete"
-               :required="required"
-               :min="min"
-               :max="max"
-               :step="step"
-               ref="input"
-               v-model="inputValue"
-               @input="$emit('update:modelValue', $event.target.value)"
-               @invalid="isInvalid"
-               @focus="isFocused=true"
-               @blur="isFocused=false"
-        />
-        <transition name="alert">
-            <mdi-icon :icon="mdiAlertCircle" v-if="showAlert"/>
-        </transition>
-    </label>
+  <label
+    :class="{ 'fancy-input': true, 'with-value': inputValue || isFocused || isAutoFilled, 'required': required && !hideRequired, invalid, unit}"
+  >
+    <span class="label">{{ label }}</span>
+    <span
+      v-if="unit"
+      class="unit"
+    >{{ unit }}</span>
+    <input
+      ref="input"
+      v-model="inputValue"
+      :type="type"
+      :pattern="pattern"
+      :disabled="disabled"
+      :autocomplete="autocomplete"
+      :required="required"
+      :min="min"
+      :max="max"
+      :step="step"
+      @input="$emit('update:modelValue', $event.target.value)"
+      @invalid="isInvalid"
+      @focus="isFocused=true"
+      @blur="isFocused=false"
+    >
+    <transition name="alert">
+      <mdi-icon
+        v-if="showAlert"
+        :icon="mdiAlertCircle"
+      />
+    </transition>
+  </label>
 </template>
 
 <script>
@@ -63,6 +71,14 @@ export default {
             invalid: false,
         }
     },
+    watch: {
+        inputValue() {
+            this.invalid = false
+        },
+        modelValue(newValue) {
+            this.inputValue = newValue
+        }
+    },
     mounted() {
         this.$refs.input.addEventListener('animationstart', this.animationStart, { passive: true })
         if (this.autofocus) {
@@ -87,14 +103,6 @@ export default {
         isInvalid() {
             this.invalid = true
         },
-    },
-    watch: {
-        inputValue() {
-            this.invalid = false
-        },
-        modelValue(newValue) {
-            this.inputValue = newValue
-        }
     },
 }
 </script>

@@ -1,9 +1,12 @@
 <template>
-    <transition name="slide-error">
-        <div class="error" v-if="errorMessage">
-            <p>{{ errorMessage }}</p>
-        </div>
-    </transition>
+  <transition name="slide-error">
+    <div
+      v-if="errorMessage"
+      class="error"
+    >
+      <p>{{ errorMessage }}</p>
+    </div>
+  </transition>
 </template>
 
 <script>

@@ -1,32 +1,51 @@
 <template>
-    <div :class="{ 'acey-deucey-game': true, 'is-active': isActive }">
-        <div class="cards">
-            <div class="acey-deucey-card">
-                <playing-card-container :card="game.firstCard" :hide-card="!game.firstCard"/>
-                <div class="card-state">{{ formattedAceState }}</div>
-            </div>
-            <div class="acey-deucey-card">
-                <playing-card-container :card="game.middleCard" :hide-card="!game.middleCard"/>
-                <div class="card-state"></div>
-            </div>
-            <div class="acey-deucey-card">
-                <playing-card-container :card="game.lastCard" :hide-card="!game.lastCard"/>
-                <div class="card-state"></div>
-            </div>
+  <div :class="{ 'acey-deucey-game': true, 'is-active': isActive }">
+    <div class="cards">
+      <div class="acey-deucey-card">
+        <playing-card-container
+          :card="game.firstCard"
+          :hide-card="!game.firstCard"
+        />
+        <div class="card-state">
+          {{ formattedAceState }}
         </div>
-        <div class="bet">
-            <div>
-                <p><strong>Bet</strong></p>
-                <chip-stack :amount="game.bet.amount"/>
-            </div>
-        </div>
-        <div class="result" v-if="result">
-            <div class="result-text">{{ result }}</div>
-            <div v-if="adjustment !== null" :class="{adjustment: true, negative: adjustment < 0}">
-                {{ formatAmount(adjustment) }}
-            </div>
-        </div>
+      </div>
+      <div class="acey-deucey-card">
+        <playing-card-container
+          :card="game.middleCard"
+          :hide-card="!game.middleCard"
+        />
+        <div class="card-state" />
+      </div>
+      <div class="acey-deucey-card">
+        <playing-card-container
+          :card="game.lastCard"
+          :hide-card="!game.lastCard"
+        />
+        <div class="card-state" />
+      </div>
     </div>
+    <div class="bet">
+      <div>
+        <p><strong>Bet</strong></p>
+        <chip-stack :amount="game.bet.amount" />
+      </div>
+    </div>
+    <div
+      v-if="result"
+      class="result"
+    >
+      <div class="result-text">
+        {{ result }}
+      </div>
+      <div
+        v-if="adjustment !== null"
+        :class="{adjustment: true, negative: adjustment < 0}"
+      >
+        {{ formatAmount(adjustment) }}
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>

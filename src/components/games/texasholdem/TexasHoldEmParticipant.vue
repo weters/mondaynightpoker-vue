@@ -1,30 +1,45 @@
 <template>
-    <div :class="classes">
-        <div :class="`cards cards-${numHoleCards}`">
-            <template v-for="(_, i) in numHoleCards" :key="i">
-                <playing-card-container
-                    :card="card(i)"
-                    :hide-card="participant.folded || card(i) === undefined"
-                />
-            </template>
-        </div>
-
-        <span class="name">{{ playerData.player.displayName }}</span>
-        <span class="balance">{{ participant.balance > 0 ? formatAmount(participant.balance) : '(All-in)' }}</span>
-
-        <chip-stack :amount="participant.winnings || participant.currentBet" class="chip-stack"/>
-
-        <div class="info">
-            <span class="hand" v-if="participant.handRank">{{ participant.handRank }}</span>
-            <span class="last-action" v-else-if="lastAction">{{ lastAction }}</span>
-            <span class="void" v-else></span>
-        </div>
-
-        <dealer-button
-            class="them-dealer-button"
-            v-if="participant.playerId === pokerGameState.dealer"
+  <div :class="classes">
+    <div :class="`cards cards-${numHoleCards}`">
+      <template
+        v-for="(_, i) in numHoleCards"
+        :key="i"
+      >
+        <playing-card-container
+          :card="card(i)"
+          :hide-card="participant.folded || card(i) === undefined"
         />
+      </template>
     </div>
+
+    <span class="name">{{ playerData.player.displayName }}</span>
+    <span class="balance">{{ participant.balance > 0 ? formatAmount(participant.balance) : '(All-in)' }}</span>
+
+    <chip-stack
+      :amount="participant.winnings || participant.currentBet"
+      class="chip-stack"
+    />
+
+    <div class="info">
+      <span
+        v-if="participant.handRank"
+        class="hand"
+      >{{ participant.handRank }}</span>
+      <span
+        v-else-if="lastAction"
+        class="last-action"
+      >{{ lastAction }}</span>
+      <span
+        v-else
+        class="void"
+      />
+    </div>
+
+    <dealer-button
+      v-if="participant.playerId === pokerGameState.dealer"
+      class="them-dealer-button"
+    />
+  </div>
 </template>
 
 <script>

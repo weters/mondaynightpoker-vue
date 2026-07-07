@@ -1,8 +1,11 @@
 <template>
-    <span :class="containerClass">
-        <span class="rank">{{ rank }}</span>
-        <mdi-icon class="suit" :icon="suit" />
-    </span>
+  <span :class="containerClass">
+    <span class="rank">{{ rank }}</span>
+    <mdi-icon
+      class="suit"
+      :icon="suit"
+    />
+  </span>
 </template>
 
 <script>

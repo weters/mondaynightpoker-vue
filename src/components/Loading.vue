@@ -1,11 +1,17 @@
 <template>
-    <transition name="loading" appear>
-        <div class="loading">
-            <svg viewBox="0 0 24 24">
-                <path :d="mdiCardsClub" ref="path"/>
-            </svg>
-        </div>
-    </transition>
+  <transition
+    name="loading"
+    appear
+  >
+    <div class="loading">
+      <svg viewBox="0 0 24 24">
+        <path
+          ref="path"
+          :d="mdiCardsClub"
+        />
+      </svg>
+    </div>
+  </transition>
 </template>
 
 <script>

@@ -1,11 +1,15 @@
 <template>
-    <div class="seven-card-hand">
-        <div class="hand">
-            <div v-for="(card, i) in self.hand" class="card" :key="i">
-                <playing-card-container :card="card" />
-            </div>
-        </div>
+  <div class="seven-card-hand">
+    <div class="hand">
+      <div
+        v-for="(card, i) in self.hand"
+        :key="i"
+        class="card"
+      >
+        <playing-card-container :card="card" />
+      </div>
     </div>
+  </div>
 </template>
 
 <script>

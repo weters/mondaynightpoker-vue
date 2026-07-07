@@ -1,12 +1,16 @@
 <template>
-    <transition-group name="participant" tag="div" class="ptp-participants">
-        <pass-the-poop-participant
-                v-for="p in participants"
-                :participant="p"
-                :player-data="playerDataById(p.playerId)"
-                :key="p.playerId"
-        />
-    </transition-group>
+  <transition-group
+    name="participant"
+    tag="div"
+    class="ptp-participants"
+  >
+    <pass-the-poop-participant
+      v-for="p in participants"
+      :key="p.playerId"
+      :participant="p"
+      :player-data="playerDataById(p.playerId)"
+    />
+  </transition-group>
 </template>
 
 <script>

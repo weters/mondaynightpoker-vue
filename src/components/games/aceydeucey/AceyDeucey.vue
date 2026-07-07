@@ -1,38 +1,44 @@
 <template>
-    <div class="acey-deucey">
-        <h3>{{ gameState.name }}</h3>
+  <div class="acey-deucey">
+    <h3>{{ gameState.name }}</h3>
 
-        <acey-deucey-round :round="round"/>
+    <acey-deucey-round :round="round" />
 
-        <acey-deucey-player-list :participants="gameState.participants"/>
+    <acey-deucey-player-list :participants="gameState.participants" />
 
-        <player-bar :error="error" :is-turn="isTurn">
-            <template #actions>
-                <div class="acey-deucey-actions">
-                    <poker-bet-chips
-                        v-if="showBet"
-                        :min-bet="25"
-                        :max-bet="maxBet"
-                        :all-in-amount="maxBet"
-                        all-in-label="Max bet"
-                        action-name="Bet"
-                        @submit="executeBet"
-                        @cancel="showBet = false"
-                    />
-                    <div class="buttons" v-else>
-                        <confirm-button
-                            v-for="action in actions"
-                            :key="action.id"
-                            :label="action.name"
-                            :confirm-text="`Confirm ${action.name}?`"
-                            :skip-confirm="action.id === 'bet'"
-                            @confirmed="handleAction(action)"
-                        />
-                    </div>
-                </div>
-            </template>
-        </player-bar>
-    </div>
+    <player-bar
+      :error="error"
+      :is-turn="isTurn"
+    >
+      <template #actions>
+        <div class="acey-deucey-actions">
+          <poker-bet-chips
+            v-if="showBet"
+            :min-bet="25"
+            :max-bet="maxBet"
+            :all-in-amount="maxBet"
+            all-in-label="Max bet"
+            action-name="Bet"
+            @submit="executeBet"
+            @cancel="showBet = false"
+          />
+          <div
+            v-else
+            class="buttons"
+          >
+            <confirm-button
+              v-for="action in actions"
+              :key="action.id"
+              :label="action.name"
+              :confirm-text="`Confirm ${action.name}?`"
+              :skip-confirm="action.id === 'bet'"
+              @confirmed="handleAction(action)"
+            />
+          </div>
+        </div>
+      </template>
+    </player-bar>
+  </div>
 </template>
 
 <script>
@@ -69,6 +75,11 @@ export default {
             return this.gameState.maxBet
         },
     },
+    watch: {
+        actions() {
+            this.showBet = false
+        },
+    },
     methods: {
         ...mapActions(useRootStore, ['webSocketSend']),
         handleAction(action) {
@@ -84,11 +95,6 @@ export default {
             if (!betAction) return
             this.webSocketSend({action: betAction.id, additionalData: {amount}})
                 .catch(err => this.showError(err))
-        },
-    },
-    watch: {
-        actions() {
-            this.showBet = false
         },
     },
 }

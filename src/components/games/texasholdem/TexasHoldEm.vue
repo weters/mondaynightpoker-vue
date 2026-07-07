@@ -1,25 +1,32 @@
 <template>
-    <div class="texas-hold-em">
-        <h3>{{ replaceTokens(gameState.name) }}</h3>
+  <div class="texas-hold-em">
+    <h3>{{ replaceTokens(gameState.name) }}</h3>
 
-        <poker-pots class="the-poker-pots"/>
+    <poker-pots class="the-poker-pots" />
 
-        <texas-hold-em-community class="the-community"/>
+    <texas-hold-em-community class="the-community" />
 
-        <texas-hold-em-participants class="the-participants" :participants="gameState.participants"/>
+    <texas-hold-em-participants
+      class="the-participants"
+      :participants="gameState.participants"
+    />
 
-        <poker-player-bar :selected-cards="selectedCards">
-            <div :class="`hand hand-${numHoleCards}`">
-                <template v-for="i in numHoleCards" :key="i">
-                    <texas-hold-em-hole-card
-                        :card="cards[i-1]"
-                        v-if="cards && cards.length >= i" :selected="selected === i-1"
-                        @selected="updateSelected(i-1, $event)"
-                    />
-                </template>
-            </div>
-        </poker-player-bar>
-    </div>
+    <poker-player-bar :selected-cards="selectedCards">
+      <div :class="`hand hand-${numHoleCards}`">
+        <template
+          v-for="i in numHoleCards"
+          :key="i"
+        >
+          <texas-hold-em-hole-card
+            v-if="cards && cards.length >= i"
+            :card="cards[i-1]"
+            :selected="selected === i-1"
+            @selected="updateSelected(i-1, $event)"
+          />
+        </template>
+      </div>
+    </poker-player-bar>
+  </div>
 </template>
 
 <script>
@@ -74,6 +81,16 @@ export default {
             ].findIndex(action => action.id === 'discard') >= 0
         }
     },
+    watch: {
+        canDiscard: {
+            handler(canDiscard) {
+                if (!canDiscard) {
+                    this.selected = null
+                }
+            },
+            immediate: true,
+        }
+    },
     methods: {
         updateSelected(card, isSelected) {
             if (!this.canDiscard) {
@@ -86,16 +103,6 @@ export default {
             }
 
             this.selected = card
-        }
-    },
-    watch: {
-        canDiscard: {
-            handler(canDiscard) {
-                if (!canDiscard) {
-                    this.selected = null
-                }
-            },
-            immediate: true,
         }
     }
 }

@@ -1,17 +1,17 @@
 <template>
-    <div class="seven-card">
-        <h3>{{gameState.name}}</h3>
+  <div class="seven-card">
+    <h3>{{ gameState.name }}</h3>
 
-        <div class="board">
-            <chip-stack :amount="gameState.pot" />
-        </div>
-
-        <seven-card-participants />
-
-        <poker-player-bar>
-            <seven-card-hand />
-        </poker-player-bar>
+    <div class="board">
+      <chip-stack :amount="gameState.pot" />
     </div>
+
+    <seven-card-participants />
+
+    <poker-player-bar>
+      <seven-card-hand />
+    </poker-player-bar>
+  </div>
 </template>
 
 <script>

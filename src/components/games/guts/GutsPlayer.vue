@@ -1,22 +1,28 @@
 <template>
-    <div :class="playerClasses">
-        <div class="hand">
-            <div :class="['cards', `cards-${cardCount}`]">
-                <template v-for="i in cardCount" :key="`playing-card-${i}`">
-                    <playing-card-container
-                        :hide-card="hideCard(i)"
-                        :card="getCard(i)"
-                    />
-                </template>
-            </div>
-        </div>
-
-        <div :class="{ metadata: true, disconnected: !playerData.isConnected }">
-            <span class="name">{{ playerData.player.displayName }}</span>
-            <span class="balance">{{ formatAmount(participant.balance) }}</span>
-            <span class="status-badge" :class="statusClass">{{ statusText }}</span>
-        </div>
+  <div :class="playerClasses">
+    <div class="hand">
+      <div :class="['cards', `cards-${cardCount}`]">
+        <template
+          v-for="i in cardCount"
+          :key="`playing-card-${i}`"
+        >
+          <playing-card-container
+            :hide-card="hideCard(i)"
+            :card="getCard(i)"
+          />
+        </template>
+      </div>
     </div>
+
+    <div :class="{ metadata: true, disconnected: !playerData.isConnected }">
+      <span class="name">{{ playerData.player.displayName }}</span>
+      <span class="balance">{{ formatAmount(participant.balance) }}</span>
+      <span
+        class="status-badge"
+        :class="statusClass"
+      >{{ statusText }}</span>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -43,16 +49,6 @@ export default {
         return {
             hiddenCards: 0,
         }
-    },
-    watch: {
-        'participant.traded'(newVal) {
-            if (newVal > 0) {
-                this.hiddenCards = newVal
-                setTimeout(() => {
-                    this.hiddenCards = 0
-                }, 500)
-            }
-        },
     },
     computed: {
         ...mapState(useGutsStore, ['phase', 'isShowdown', 'isTradePhase', 'decisions', 'showdownResult', 'cardCount']),
@@ -100,6 +96,16 @@ export default {
             }
             if (this.participant.decided) return 'Decided'
             return 'Waiting...'
+        },
+    },
+    watch: {
+        'participant.traded'(newVal) {
+            if (newVal > 0) {
+                this.hiddenCards = newVal
+                setTimeout(() => {
+                    this.hiddenCards = 0
+                }, 500)
+            }
         },
     },
     methods: {

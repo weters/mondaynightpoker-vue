@@ -1,14 +1,15 @@
 <template>
-    <div :class="{
-            'texas-hold-em-hole-card': true,
-            selected,
-        }"
-         @click="$emit('selected', !selected)"
-    >
-        <playing-card-container
-            :card="card"
-        />
-    </div>
+  <div
+    :class="{
+      'texas-hold-em-hole-card': true,
+      selected,
+    }"
+    @click="$emit('selected', !selected)"
+  >
+    <playing-card-container
+      :card="card"
+    />
+  </div>
 </template>
 
 <script>
@@ -21,6 +22,7 @@ export default {
         card: Object,
         selected: Boolean,
     },
+    emits: ['selected'],
 }
 </script>
 

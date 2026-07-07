@@ -1,16 +1,19 @@
 <template>
-    <div class="guts">
-        <h3>{{ gameName }}</h3>
-        <transition name="error">
-            <error :message="error" v-if="error"/>
-        </transition>
+  <div class="guts">
+    <h3>{{ gameName }}</h3>
+    <transition name="error">
+      <error-message
+        v-if="error"
+        :message="error"
+      />
+    </transition>
 
-        <guts-game-overview/>
+    <guts-game-overview />
 
-        <guts-players :participants="participants"/>
+    <guts-players :participants="participants" />
 
-        <guts-player-bar/>
-    </div>
+    <guts-player-bar />
+  </div>
 </template>
 
 <script>
@@ -18,13 +21,13 @@ import {mapState, mapActions} from "pinia"
 import {useRootStore} from "@/store"
 import {useGutsStore} from "@/store/guts"
 import GutsPlayers from "@/components/games/guts/GutsPlayers.vue"
-import Error from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 import GutsGameOverview from "@/components/games/guts/GutsGameOverview.vue"
 import GutsPlayerBar from "@/components/games/guts/GutsPlayerBar.vue"
 
 export default {
     name: "Guts",
-    components: {GutsPlayerBar, GutsGameOverview, Error, GutsPlayers},
+    components: {GutsPlayerBar, GutsGameOverview, ErrorMessage, GutsPlayers},
     data() {
         return {
             error: null,
@@ -39,11 +42,11 @@ export default {
             return `${this.cardCount}-Card ${this.bloodyGuts ? 'Bloody ' : ''}Guts${this.allowTrades ? ' with Trades' : ''}`
         },
     },
-    methods: {
-        ...mapActions(useRootStore, ['clearGame']),
-    },
     beforeUnmount() {
         this.clearGame()
+    },
+    methods: {
+        ...mapActions(useRootStore, ['clearGame']),
     },
 }
 </script>

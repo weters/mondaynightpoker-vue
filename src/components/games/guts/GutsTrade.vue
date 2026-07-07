@@ -1,32 +1,45 @@
 <template>
-    <div class="guts-trade">
-        <template v-if="hasTraded">
-            <p class="waiting">Trade complete. Waiting for others...</p>
-        </template>
-        <template v-else-if="canTrade || isTradePhase">
-            <p class="instruction">Select cards to trade (or keep all)</p>
-            <div class="buttons">
-                <template v-if="canTrade">
-                    <confirm-button
-                        :label="tradeButtonLabel"
-                        confirm-text="Confirm?"
-                        @confirmed="submitTrade"
-                    />
-                </template>
-                <template v-else>
-                    <!-- Future action: queue trade for when it's our turn -->
-                    <button :class="{'future-action': true, pending: futureAction !== null}"
-                            @click="handleFutureAction">
-                        {{ futureButtonLabel }}
-                    </button>
-                </template>
-            </div>
-            <p v-if="!canTrade" class="waiting">Waiting for {{ currentTraderName }} to trade...</p>
+  <div class="guts-trade">
+    <template v-if="hasTraded">
+      <p class="waiting">
+        Trade complete. Waiting for others...
+      </p>
+    </template>
+    <template v-else-if="canTrade || isTradePhase">
+      <p class="instruction">
+        Select cards to trade (or keep all)
+      </p>
+      <div class="buttons">
+        <template v-if="canTrade">
+          <confirm-button
+            :label="tradeButtonLabel"
+            confirm-text="Confirm?"
+            @confirmed="submitTrade"
+          />
         </template>
         <template v-else>
-            <p class="waiting">Waiting for {{ currentTraderName }} to trade...</p>
+          <!-- Future action: queue trade for when it's our turn -->
+          <button
+            :class="{'future-action': true, pending: futureAction !== null}"
+            @click="handleFutureAction"
+          >
+            {{ futureButtonLabel }}
+          </button>
         </template>
-    </div>
+      </div>
+      <p
+        v-if="!canTrade"
+        class="waiting"
+      >
+        Waiting for {{ currentTraderName }} to trade...
+      </p>
+    </template>
+    <template v-else>
+      <p class="waiting">
+        Waiting for {{ currentTraderName }} to trade...
+      </p>
+    </template>
+  </div>
 </template>
 
 <script>

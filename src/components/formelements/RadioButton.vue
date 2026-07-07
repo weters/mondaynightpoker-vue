@@ -1,9 +1,14 @@
 <template>
-    <label :class="{ 'radio-button': true, disabled }">
-        <span class="label">{{ label }}</span>
-        <input type="radio" :value="value" :checked="value === modelValue" @change="$emit('update:modelValue', $event.target.checked && value)" />
-        <span class="radio"></span>
-    </label>
+  <label :class="{ 'radio-button': true, disabled }">
+    <span class="label">{{ label }}</span>
+    <input
+      type="radio"
+      :value="value"
+      :checked="value === modelValue"
+      @change="$emit('update:modelValue', $event.target.checked && value)"
+    >
+    <span class="radio" />
+  </label>
 </template>
 
 <script>

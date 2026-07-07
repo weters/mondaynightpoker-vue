@@ -1,21 +1,37 @@
 <template>
-    <div class="playing-card" @click="$emit('click')">
-        <div :class="classes">
-            <span class="center">
-                <img v-if="courtImage" :src="courtImage" :srcset="courtSrcset" class="court-illustration" alt="">
-                <mdi-icon v-else :icon="displaySuit"/>
-            </span>
-            <span class="corner top-left">
-                <span class="rank">{{ displayRank }}</span>
-                <span class="suit"><mdi-icon :icon="displaySuit"/></span>
-            </span>
-            <span class="corner bottom-right">
-                <span class="rank">{{ displayRank }}</span>
-                <span class="suit"><mdi-icon :icon="displaySuit"/></span>
-            </span>
-            <mdi-icon class="wild" :icon="mdiStarCircleOutline" v-if="isWild"/>
-        </div>
+  <div
+    class="playing-card"
+    @click="$emit('click')"
+  >
+    <div :class="classes">
+      <span class="center">
+        <img
+          v-if="courtImage"
+          :src="courtImage"
+          :srcset="courtSrcset"
+          class="court-illustration"
+          alt=""
+        >
+        <mdi-icon
+          v-else
+          :icon="displaySuit"
+        />
+      </span>
+      <span class="corner top-left">
+        <span class="rank">{{ displayRank }}</span>
+        <span class="suit"><mdi-icon :icon="displaySuit" /></span>
+      </span>
+      <span class="corner bottom-right">
+        <span class="rank">{{ displayRank }}</span>
+        <span class="suit"><mdi-icon :icon="displaySuit" /></span>
+      </span>
+      <mdi-icon
+        v-if="isWild"
+        class="wild"
+        :icon="mdiStarCircleOutline"
+      />
     </div>
+  </div>
 </template>
 
 <script>
@@ -25,7 +41,6 @@ import MdiIcon from "@/components/MdiIcon.vue"
 export default {
     name: "PlayingCard",
     components: {MdiIcon},
-    emits: ['click'],
     props: {
         suit: {
             type: String,
@@ -40,6 +55,7 @@ export default {
             default: false,
         },
     },
+    emits: ['click'],
     data() {
         return {
             mdiStarCircleOutline,

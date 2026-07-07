@@ -1,19 +1,23 @@
 <template>
-    <div class="little-l">
-        <h3>{{ gameState.name }}</h3>
+  <div class="little-l">
+    <h3>{{ gameState.name }}</h3>
 
-        <div class="board">
-            <little-l-community/>
+    <div class="board">
+      <little-l-community />
 
-            <poker-pots />
-        </div>
-
-        <little-l-participants/>
-
-        <poker-player-bar :selected-cards="selectedCards">
-            <little-l-hand :can-select="gameState.round === 0" v-model="selectedCards" class="bar-hand"/>
-        </poker-player-bar>
+      <poker-pots />
     </div>
+
+    <little-l-participants />
+
+    <poker-player-bar :selected-cards="selectedCards">
+      <little-l-hand
+        v-model="selectedCards"
+        :can-select="gameState.round === 0"
+        class="bar-hand"
+      />
+    </poker-player-bar>
+  </div>
 </template>
 
 <script>

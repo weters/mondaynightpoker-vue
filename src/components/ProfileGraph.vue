@@ -1,7 +1,10 @@
 <template>
-    <div class="profile-graph">
-        <line-chart :data="chartData" :options="chartOptions" />
-    </div>
+  <div class="profile-graph">
+    <line-chart
+      :data="chartData"
+      :options="chartOptions"
+    />
+  </div>
 </template>
 
 <script>

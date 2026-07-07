@@ -1,17 +1,28 @@
 <template>
-    <div class="poker-pot">
-        <div v-if="totalPots > 1" class="pot-details">
-            <strong>
-                <template v-if="index===0">Main Pot</template>
-                <template v-else>Side Pot {{ index }}</template>
-            </strong>
+  <div class="poker-pot">
+    <div
+      v-if="totalPots > 1"
+      class="pot-details"
+    >
+      <strong>
+        <template v-if="index===0">Main Pot</template>
+        <template v-else>Side Pot {{ index }}</template>
+      </strong>
 
-            <ul v-if="allInParticipants">
-                <li v-for="(name, i) in allInParticipants" :key="i">{{ name }}</li>
-            </ul>
-        </div>
-        <chip-stack class="llp-chip-stack" :amount="pot.amount"/>
+      <ul v-if="allInParticipants">
+        <li
+          v-for="(name, i) in allInParticipants"
+          :key="i"
+        >
+          {{ name }}
+        </li>
+      </ul>
     </div>
+    <chip-stack
+      class="llp-chip-stack"
+      :amount="pot.amount"
+    />
+  </div>
 </template>
 
 <script>

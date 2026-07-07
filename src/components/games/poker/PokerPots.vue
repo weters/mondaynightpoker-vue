@@ -1,13 +1,13 @@
 <template>
-    <div class="poker-pots">
-        <poker-pot
-            v-for="(pot, i) in pokerState.pots"
-            :key="i"
-            :pot="pot"
-            :index="i"
-            :total-pots="pokerState.pots.length"
-        />
-    </div>
+  <div class="poker-pots">
+    <poker-pot
+      v-for="(pot, i) in pokerState.pots"
+      :key="i"
+      :pot="pot"
+      :index="i"
+      :total-pots="pokerState.pots.length"
+    />
+  </div>
 </template>
 
 <script>

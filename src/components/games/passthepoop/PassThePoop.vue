@@ -1,47 +1,57 @@
 <template>
-    <div class="pass-the-poop">
-        <h3>Pass the Poop / {{ gameData.gameState.edition }} Edition</h3>
+  <div class="pass-the-poop">
+    <h3>Pass the Poop / {{ gameData.gameState.edition }} Edition</h3>
 
-        <div class="pot-row">
-            <chip-stack :amount="pot" />
-            <div class="cards-left">
-                <span class="icon"><mdi-icon :icon="mdiCards"/></span>
-                <span class="value">{{ cardsLeftInDeck }}</span>
-            </div>
-        </div>
-
-        <pass-the-poop-participants :participants="participants"/>
-
-        <player-bar :error="error" :is-turn="isTurn">
-            <template #cards>
-                <div class="card">
-                    <transition name="card" mode="out-in">
-                        <playing-card :rank="card.rank" :suit="card.suit" v-if="card"
-                                      :key="`${card.rank}.${card.suit}`"/>
-                    </transition>
-                </div>
-            </template>
-
-            <template #actions>
-                <div class="buttons">
-                    <confirm-button
-                        v-for="a in availableActions"
-                        :key="a.id"
-                        :label="a.name"
-                        :confirm-text="`Confirm ${a.name}?`"
-                        @confirmed="execute(a)"
-                    />
-                </div>
-            </template>
-
-            <template #gameInfo>
-                <span class="turn">
-                    <strong>Turn:</strong>
-                    <span>{{ currentTurn }}</span>
-                </span>
-            </template>
-        </player-bar>
+    <div class="pot-row">
+      <chip-stack :amount="pot" />
+      <div class="cards-left">
+        <span class="icon"><mdi-icon :icon="mdiCards" /></span>
+        <span class="value">{{ cardsLeftInDeck }}</span>
+      </div>
     </div>
+
+    <pass-the-poop-participants :participants="participants" />
+
+    <player-bar
+      :error="error"
+      :is-turn="isTurn"
+    >
+      <template #cards>
+        <div class="card">
+          <transition
+            name="card"
+            mode="out-in"
+          >
+            <playing-card
+              v-if="card"
+              :key="`${card.rank}.${card.suit}`"
+              :rank="card.rank"
+              :suit="card.suit"
+            />
+          </transition>
+        </div>
+      </template>
+
+      <template #actions>
+        <div class="buttons">
+          <confirm-button
+            v-for="a in availableActions"
+            :key="a.id"
+            :label="a.name"
+            :confirm-text="`Confirm ${a.name}?`"
+            @confirmed="execute(a)"
+          />
+        </div>
+      </template>
+
+      <template #gameInfo>
+        <span class="turn">
+          <strong>Turn:</strong>
+          <span>{{ currentTurn }}</span>
+        </span>
+      </template>
+    </player-bar>
+  </div>
 </template>
 
 <script>
@@ -84,13 +94,6 @@
                 return this.gameData.gameState.participants
             },
         },
-        methods: {
-            ...mapActions(useRootStore, ['webSocketSend']),
-            execute(action) {
-                this.webSocketSend({action: action.id})
-                    .catch(err => this.showError(err))
-            },
-        },
         watch: {
             'gameData.gameState.allParticipants': {
                 handler: function (newValue) {
@@ -128,6 +131,13 @@
                     })
                 },
                 immediate: true,
+            },
+        },
+        methods: {
+            ...mapActions(useRootStore, ['webSocketSend']),
+            execute(action) {
+                this.webSocketSend({action: action.id})
+                    .catch(err => this.showError(err))
             },
         },
     }

@@ -1,17 +1,27 @@
 <template>
-    <footer>
-        <div>
-            <ul class="links">
-                <li v-if="isSiteAdmin"><router-link to="/admin">Admin</router-link></li>
-                <li><a href="https://github.com/weters/mondaynightpoker-server">Source Code</a></li>
-            </ul>
-            <p class="copyright">&copy; 2021 Thomas Peters</p>
-            <div class="version">
-                <p class="vue-version">Site Version: <a :href="vueVersionUrl">{{ version }}</a></p>
-                <p class="server-version">Server Version: <a :href="serverVersionUrl">{{ serverVersion }}</a></p>
-            </div>
-        </div>
-    </footer>
+  <footer>
+    <div>
+      <ul class="links">
+        <li v-if="isSiteAdmin">
+          <router-link to="/admin">
+            Admin
+          </router-link>
+        </li>
+        <li><a href="https://github.com/weters/mondaynightpoker-server">Source Code</a></li>
+      </ul>
+      <p class="copyright">
+        &copy; 2021 Thomas Peters
+      </p>
+      <div class="version">
+        <p class="vue-version">
+          Site Version: <a :href="vueVersionUrl">{{ version }}</a>
+        </p>
+        <p class="server-version">
+          Server Version: <a :href="serverVersionUrl">{{ serverVersion }}</a>
+        </p>
+      </div>
+    </div>
+  </footer>
 </template>
 
 <script>

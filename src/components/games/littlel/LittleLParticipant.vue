@@ -1,26 +1,38 @@
 <template>
-    <div :class="{ 'little-l-participant': true, 'is-action': isAction }">
-        <div class="cards">
-            <div v-for="(card, i) in cards" :key="i">
-                <playing-card-container :card="card" :hide-card="participant.didFold || hideCard(i)" />
-            </div>
-        </div>
-
-        <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
-            <div class="participant">
-                <div class="name-hand">
-                    <strong class="display-name">{{ playerData.player.displayName }}</strong>
-                    <span v-if="participant.handRank" :class="{'hand-rank': true, 'is-winner': isWinner}">{{ participant.handRank }}</span>
-                </div>
-                <div class="chips">
-                    {{ formatAmount(participant.balance) }}
-                </div>
-            </div>
-            <div class="bet">
-                <chip-stack :amount="chipStack" class="metadata-chip-stack"/>
-            </div>
-        </div>
+  <div :class="{ 'little-l-participant': true, 'is-action': isAction }">
+    <div class="cards">
+      <div
+        v-for="(card, cardIndex) in cards"
+        :key="cardIndex"
+      >
+        <playing-card-container
+          :card="card"
+          :hide-card="participant.didFold || hideCard(cardIndex)"
+        />
+      </div>
     </div>
+
+    <div :class="{ metadata: true, 'disconnected': !playerData.isConnected }">
+      <div class="participant">
+        <div class="name-hand">
+          <strong class="display-name">{{ playerData.player.displayName }}</strong>
+          <span
+            v-if="participant.handRank"
+            :class="{'hand-rank': true, 'is-winner': isWinner}"
+          >{{ participant.handRank }}</span>
+        </div>
+        <div class="chips">
+          {{ formatAmount(participant.balance) }}
+        </div>
+      </div>
+      <div class="bet">
+        <chip-stack
+          :amount="chipStack"
+          class="metadata-chip-stack"
+        />
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -80,12 +92,6 @@
                 return this.participant.currentBet
             }
         },
-        methods: {
-            formatAmount,
-            hideCard(index) {
-                return index >= this.cards.length - this.hiddenCards
-            }
-        },
         watch: {
             'participant.traded': {
                 handler(newVal) {
@@ -94,6 +100,12 @@
                         this.hiddenCards = 0
                     }, 500)
                 }
+            }
+        },
+        methods: {
+            formatAmount,
+            hideCard(index) {
+                return index >= this.cards.length - this.hiddenCards
             }
         }
     }

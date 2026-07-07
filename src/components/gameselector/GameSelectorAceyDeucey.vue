@@ -1,23 +1,36 @@
 <template>
-    <form class="game-selector-acey-deucey" @submit.prevent="submit">
-        <h4>Acey Deucey</h4>
+  <form
+    class="game-selector-acey-deucey"
+    @submit.prevent="submit"
+  >
+    <h4>Acey Deucey</h4>
 
-        <fancy-input label="Ante" type="number" :min="25" :max="100" :step="25" v-model="ante" unit="¢" />
+    <fancy-input
+      v-model="ante"
+      label="Ante"
+      type="number"
+      :min="25"
+      :max="100"
+      :step="25"
+      unit="¢"
+    />
 
-        <div class="options">
-            <fancy-select label="Edition"
-                          v-model="gameType"
-                          :options="[
-            [ 'standard', 'Standard' ],
-            [ 'continuous shoe', 'Continuous Shoe' ],
-            [ 'chaos', 'Chaos' ],
-        ]" />
-        </div>
+    <div class="options">
+      <fancy-select
+        v-model="gameType"
+        label="Edition"
+        :options="[
+          [ 'standard', 'Standard' ],
+          [ 'continuous shoe', 'Continuous Shoe' ],
+          [ 'chaos', 'Chaos' ],
+        ]"
+      />
+    </div>
 
-        <div class="buttons">
-            <button>Start</button>
-        </div>
-    </form>
+    <div class="buttons">
+      <button>Start</button>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -26,8 +39,9 @@ import FancySelect from "@/components/formelements/FancySelect.vue"
 
 export default {
     name: "GameSelectorAceyDeucey",
-    inheritAttrs: false,
     components: {FancySelect, FancyInput},
+    inheritAttrs: false,
+    emits: ['submit'],
     data() {
         return {
             ante: '25',

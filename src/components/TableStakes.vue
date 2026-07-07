@@ -1,29 +1,43 @@
 <template>
-    <div class="table-stake">
-        <h4>Table Stake</h4>
-        <form @submit.prevent="save" v-if="editTableStake">
-            <fancy-input
-                :min="5"
-                :max="100"
-                :step="5"
-                type="number"
-                label="Table Stakes"
-                unit="$"
-                v-model="tableStake"
-                autofocus
-            />
+  <div class="table-stake">
+    <h4>Table Stake</h4>
+    <form
+      v-if="editTableStake"
+      @submit.prevent="save"
+    >
+      <fancy-input
+        v-model="tableStake"
+        :min="5"
+        :max="100"
+        :step="5"
+        type="number"
+        label="Table Stakes"
+        unit="$"
+        autofocus
+      />
 
-            <div class="buttons">
-                <button type="button" class="secondary" @click="reset">Cancel</button>
-                <button type="submit" :disabled="saving">Save</button>
-            </div>
-        </form>
-        <div v-else>
-            <button @click="editTableStake=true">
-                ${{ userClientState.tableStake / 100 }}
-            </button>
-        </div>
+      <div class="buttons">
+        <button
+          type="button"
+          class="secondary"
+          @click="reset"
+        >
+          Cancel
+        </button>
+        <button
+          type="submit"
+          :disabled="saving"
+        >
+          Save
+        </button>
+      </div>
+    </form>
+    <div v-else>
+      <button @click="editTableStake=true">
+        ${{ userClientState.tableStake / 100 }}
+      </button>
     </div>
+  </div>
 </template>
 
 <script>

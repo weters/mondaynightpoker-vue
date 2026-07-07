@@ -1,32 +1,47 @@
 <template>
-    <div class="create-table small-content">
-        <div>
-            <h2>Create a Table</h2>
+  <div class="create-table small-content">
+    <div>
+      <h2>Create a Table</h2>
 
-            <form @submit.prevent="submit">
-                <error :message="error" v-if="error"/>
+      <form @submit.prevent="submit">
+        <error-message
+          v-if="error"
+          :message="error"
+        />
 
-                <fancy-input label="Table Name" type="text" autocomplete="off" required v-model="name" :disabled="loading" />
+        <fancy-input
+          v-model="name"
+          label="Table Name"
+          type="text"
+          autocomplete="off"
+          required
+          :disabled="loading"
+        />
 
-                <div class="buttons">
-                    <button type="submit" :disabled="loading">Create</button>
-                </div>
-
-                <loading v-if="loading"/>
-            </form>
+        <div class="buttons">
+          <button
+            type="submit"
+            :disabled="loading"
+          >
+            Create
+          </button>
         </div>
+
+        <loading v-if="loading" />
+      </form>
     </div>
+  </div>
 </template>
 
 <script>
-import Error from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 import Loading from "@/components/Loading.vue"
 import client from "@/client"
 import FancyInput from "@/components/formelements/FancyInput.vue"
 
 export default {
     name: "CreateTable",
-    components: {FancyInput, Loading, Error},
+    components: {FancyInput, Loading, ErrorMessage},
     data() {
         return {
             loading: false,

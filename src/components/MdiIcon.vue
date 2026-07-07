@@ -1,7 +1,10 @@
 <template>
-    <svg class="mdi-icon" viewBox="0 0 24 24">
-        <path :d="icon" />
-    </svg>
+  <svg
+    class="mdi-icon"
+    viewBox="0 0 24 24"
+  >
+    <path :d="icon" />
+  </svg>
 </template>
 
 <script>

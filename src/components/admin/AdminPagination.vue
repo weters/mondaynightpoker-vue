@@ -1,8 +1,20 @@
 <template>
-    <div class="admin-pagination">
-        <button type="button" @click.prevent="$emit('prev', start - rows)" :disabled="start <= 0">Previous</button>
-        <button type="button" @click.prevent="$emit('prev', start + rows)" :disabled="count < rows">Next</button>
-    </div>
+  <div class="admin-pagination">
+    <button
+      type="button"
+      :disabled="start <= 0"
+      @click.prevent="$emit('prev', start - rows)"
+    >
+      Previous
+    </button>
+    <button
+      type="button"
+      :disabled="count < rows"
+      @click.prevent="$emit('prev', start + rows)"
+    >
+      Next
+    </button>
+  </div>
 </template>
 
 <script>
@@ -22,6 +34,7 @@ export default {
             required: true,
         },
     },
+    emits: ['prev'],
 }
 </script>
 

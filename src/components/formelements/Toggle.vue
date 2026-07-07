@@ -1,10 +1,17 @@
 <template>
-    <label :class="{ toggle: true, disabled }">
-        <span class="label" v-if="label">{{ label }}</span>
-        <input type="checkbox" :checked="Array.isArray(effectiveValue) ? effectiveValue.includes(value) : effectiveValue" @change="changed"
-               :disabled="disabled"/>
-        <span class="checkbox"></span>
-    </label>
+  <label :class="{ toggle: true, disabled }">
+    <span
+      v-if="label"
+      class="label"
+    >{{ label }}</span>
+    <input
+      type="checkbox"
+      :checked="Array.isArray(effectiveValue) ? effectiveValue.includes(value) : effectiveValue"
+      :disabled="disabled"
+      @change="changed"
+    >
+    <span class="checkbox" />
+  </label>
 </template>
 
 <script>

@@ -1,7 +1,11 @@
 <template>
-    <div class="tricks">
-        <span v-for="i in 5" :class="{ trick: true, won: i <= tricks }" :key="i"></span>
-    </div>
+  <div class="tricks">
+    <span
+      v-for="i in 5"
+      :key="i"
+      :class="{ trick: true, won: i <= tricks }"
+    />
+  </div>
 </template>
 
 <script>

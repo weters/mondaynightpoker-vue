@@ -1,25 +1,28 @@
 <template>
-    <player-bar :error="error" :is-turn="isTurn">
-        <template #cards>
-            <slot></slot>
-        </template>
+  <player-bar
+    :error="error"
+    :is-turn="isTurn"
+  >
+    <template #cards>
+      <slot />
+    </template>
 
-        <template #actions>
-            <poker-actions
-                :actions="actions"
-                :future-actions="futureActions"
-                :selected-cards="selectedCards"
-                :self="self"
-                :poker-state="pokerState"
-                :game-state="gameState"
-                @error="showError"
-            />
-        </template>
+    <template #actions>
+      <poker-actions
+        :actions="actions"
+        :future-actions="futureActions"
+        :selected-cards="selectedCards"
+        :self="self"
+        :poker-state="pokerState"
+        :game-state="gameState"
+        @error="showError"
+      />
+    </template>
 
-        <template #gameInfo>
-            {{ self.handRank }}
-        </template>
-    </player-bar>
+    <template #gameInfo>
+      {{ self.handRank }}
+    </template>
+  </player-bar>
 </template>
 
 <script>

@@ -1,64 +1,89 @@
 <template>
-    <div class="guts-game-overview">
-        <chip-stack :amount="pot"/>
+  <div class="guts-game-overview">
+    <chip-stack :amount="pot" />
 
-        <div class="game-info">
-            <div class="info-item">
-                <span class="label">Round</span>
-                <span class="value">{{ round }}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Phase</span>
-                <span class="value">{{ phaseDisplay }}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Ante</span>
-                <span class="value">{{ formatAmount(ante) }}</span>
-            </div>
-            <div class="info-item">
-                <span class="label">Max Owed</span>
-                <span class="value">{{ formatAmount(maxOwed) }}</span>
-            </div>
-            <div class="info-item" v-if="overflowPot > 0">
-                <span class="label">Overflow</span>
-                <span class="value">{{ formatAmount(overflowPot) }}</span>
-            </div>
-        </div>
-
-        <div class="showdown-result" v-if="showdownResult">
-            <template v-if="showdownResult.allFolded">
-                <p class="all-folded">Everyone folded! Pot carries over to next round.</p>
-            </template>
-            <template v-else>
-                <div class="deck-battle" v-if="showDeckBattle">
-                    <p class="deck-label">The Deck</p>
-                    <div :class="['deck-cards', `deck-cards-${deckCardsTotal}`]">
-                        <playing-card-container
-                            v-for="(card, index) in deckCardsForDisplay"
-                            :key="'deck-' + index"
-                            :card="card"
-                        />
-                    </div>
-                    <p v-if="deckWon !== undefined" :class="['deck-outcome', deckWon ? 'deck-wins' : 'player-wins']">
-                        {{ deckWon ? 'The deck wins!' : 'Player beats the deck!' }}
-                    </p>
-                </div>
-                <p class="winners" v-if="showdownResult.winnerIds && showdownResult.winnerIds.length > 0">
-                    <strong>Winner{{ showdownResult.winnerIds.length > 1 ? 's' : '' }}:</strong>
-                    {{ winnerNames }}
-                    <span class="pot-won">(won {{ formatAmount(showdownResult.potWon) }})</span>
-                </p>
-                <p class="losers" v-if="showdownResult.loserIds && showdownResult.loserIds.length > 0">
-                    <strong>Loser{{ showdownResult.loserIds.length > 1 ? 's' : '' }}:</strong>
-                    {{ loserNames }}
-                    <span class="penalty">(paid {{ formatAmount(showdownResult.penaltyPaid) }} each)</span>
-                </p>
-                <p class="next-pot" v-if="showdownResult.nextPot > 0">
-                    Next pot: {{ formatAmount(showdownResult.nextPot) }}
-                </p>
-            </template>
-        </div>
+    <div class="game-info">
+      <div class="info-item">
+        <span class="label">Round</span>
+        <span class="value">{{ round }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Phase</span>
+        <span class="value">{{ phaseDisplay }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Ante</span>
+        <span class="value">{{ formatAmount(ante) }}</span>
+      </div>
+      <div class="info-item">
+        <span class="label">Max Owed</span>
+        <span class="value">{{ formatAmount(maxOwed) }}</span>
+      </div>
+      <div
+        v-if="overflowPot > 0"
+        class="info-item"
+      >
+        <span class="label">Overflow</span>
+        <span class="value">{{ formatAmount(overflowPot) }}</span>
+      </div>
     </div>
+
+    <div
+      v-if="showdownResult"
+      class="showdown-result"
+    >
+      <template v-if="showdownResult.allFolded">
+        <p class="all-folded">
+          Everyone folded! Pot carries over to next round.
+        </p>
+      </template>
+      <template v-else>
+        <div
+          v-if="showDeckBattle"
+          class="deck-battle"
+        >
+          <p class="deck-label">
+            The Deck
+          </p>
+          <div :class="['deck-cards', `deck-cards-${deckCardsTotal}`]">
+            <playing-card-container
+              v-for="(card, index) in deckCardsForDisplay"
+              :key="'deck-' + index"
+              :card="card"
+            />
+          </div>
+          <p
+            v-if="deckWon !== undefined"
+            :class="['deck-outcome', deckWon ? 'deck-wins' : 'player-wins']"
+          >
+            {{ deckWon ? 'The deck wins!' : 'Player beats the deck!' }}
+          </p>
+        </div>
+        <p
+          v-if="showdownResult.winnerIds && showdownResult.winnerIds.length > 0"
+          class="winners"
+        >
+          <strong>Winner{{ showdownResult.winnerIds.length > 1 ? 's' : '' }}:</strong>
+          {{ winnerNames }}
+          <span class="pot-won">(won {{ formatAmount(showdownResult.potWon) }})</span>
+        </p>
+        <p
+          v-if="showdownResult.loserIds && showdownResult.loserIds.length > 0"
+          class="losers"
+        >
+          <strong>Loser{{ showdownResult.loserIds.length > 1 ? 's' : '' }}:</strong>
+          {{ loserNames }}
+          <span class="penalty">(paid {{ formatAmount(showdownResult.penaltyPaid) }} each)</span>
+        </p>
+        <p
+          v-if="showdownResult.nextPot > 0"
+          class="next-pot"
+        >
+          Next pot: {{ formatAmount(showdownResult.nextPot) }}
+        </p>
+      </template>
+    </div>
+  </div>
 </template>
 
 <script>

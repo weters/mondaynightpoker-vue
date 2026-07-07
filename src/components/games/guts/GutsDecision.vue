@@ -1,35 +1,51 @@
 <template>
-    <div class="guts-decision">
-        <!-- After player has made a local decision, show disabled button -->
-        <template v-if="localDecision !== null">
-            <div class="buttons decision-buttons">
-                <button class="in-button" disabled v-if="localDecision">I'm In</button>
-                <button class="out-button" disabled v-if="!localDecision">I'm Out</button>
-            </div>
-            <p class="waiting-others">Waiting for others...</p>
-        </template>
-        <!-- Cannot decide yet (waiting for round to start) -->
-        <template v-else-if="!canDecide">
-            <p class="waiting">Waiting...</p>
-        </template>
-        <!-- Show decision buttons -->
-        <template v-else>
-            <div class="buttons decision-buttons">
-                <confirm-button
-                    class="in-button"
-                    label="I'm In"
-                    confirm-text="Confirm In?"
-                    @confirmed="decide(true)"
-                />
-                <confirm-button
-                    class="out-button"
-                    label="I'm Out"
-                    confirm-text="Confirm Out?"
-                    @confirmed="decide(false)"
-                />
-            </div>
-        </template>
-    </div>
+  <div class="guts-decision">
+    <!-- After player has made a local decision, show disabled button -->
+    <template v-if="localDecision !== null">
+      <div class="buttons decision-buttons">
+        <button
+          v-if="localDecision"
+          class="in-button"
+          disabled
+        >
+          I'm In
+        </button>
+        <button
+          v-if="!localDecision"
+          class="out-button"
+          disabled
+        >
+          I'm Out
+        </button>
+      </div>
+      <p class="waiting-others">
+        Waiting for others...
+      </p>
+    </template>
+    <!-- Cannot decide yet (waiting for round to start) -->
+    <template v-else-if="!canDecide">
+      <p class="waiting">
+        Waiting...
+      </p>
+    </template>
+    <!-- Show decision buttons -->
+    <template v-else>
+      <div class="buttons decision-buttons">
+        <confirm-button
+          class="in-button"
+          label="I'm In"
+          confirm-text="Confirm In?"
+          @confirmed="decide(true)"
+        />
+        <confirm-button
+          class="out-button"
+          label="I'm Out"
+          confirm-text="Confirm Out?"
+          @confirmed="decide(false)"
+        />
+      </div>
+    </template>
+  </div>
 </template>
 
 <script>
@@ -41,6 +57,7 @@ import ConfirmButton from "@/components/ConfirmButton.vue"
 export default {
     name: "GutsDecision",
     components: {ConfirmButton},
+    emits: ['error'],
     data() {
         return {
             localDecision: null,

@@ -1,8 +1,8 @@
 <template>
-<div class="cards-remaining">
+  <div class="cards-remaining">
     <span class="icon"><mdi-icon :icon="mdiCards" /></span>
     <span>{{ number }}</span>
-</div>
+  </div>
 </template>
 
 <script>

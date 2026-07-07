@@ -1,66 +1,73 @@
 <template>
-    <div class="welcome">
-        <div class="hero">
-            <div class="hero-overlay"></div>
-            <div class="text">
-                <p class="slug">Dealer's Choice Poker Night</p>
+  <div class="welcome">
+    <div class="hero">
+      <div class="hero-overlay" />
+      <div class="text">
+        <p class="slug">
+          Dealer's Choice Poker Night
+        </p>
 
-                <p>Your weekly card game, anywhere in the world.</p>
+        <p>Your weekly card game, anywhere in the world.</p>
 
-                <p>Play classic dealer's choice games with friends&mdash;no downloads, no fees, just poker.</p>
+        <p>Play classic dealer's choice games with friends&mdash;no downloads, no fees, just poker.</p>
 
-                <p class="sign-up">
-                    <router-link to="/signup" class="button hero-button">Get Started</router-link>
-                </p>
-            </div>
-        </div>
-
-        <div class="games">
-            <div class="intro-card">
-                <p>Monday Night Poker is a free platform for playing card games with friends online. Built by a <a href="https://tompeters.me/">developer</a> who wanted to keep his weekly poker tradition alive, it's 100% free and <a href="https://github.com/weters/mondaynightpoker-server/">open source</a> under the MIT License.</p>
-            </div>
-
-            <h2>Seven Games, Endless Variety</h2>
-
-            <ul class="game-list">
-                <li class="game">
-                    <span class="badge badge-betting">Betting</span>
-                    <h3>Acey Deucey</h3>
-                    <p>Two cards are dealt face-up. Bet on whether the third card falls between them&mdash;or hit the post and pay double. Choose from Standard, Continuous Shoe, or Chaos modes.</p>
-                </li>
-                <li class="game">
-                    <span class="badge badge-tricks">Tricks</span>
-                    <h3>Bourré</h3>
-                    <p>A Cajun trick-taking classic. Win the most tricks to claim the pot, but go trickless and you'll match it. Supports standard 4-suit and wild 5-suit decks.</p>
-                </li>
-                <li class="game">
-                    <span class="badge badge-guts">High Stakes</span>
-                    <h3>Guts</h3>
-                    <p>Declare "in" or "out" simultaneously&mdash;stay in and you'd better have the best hand, or pay the pot. Play 2-card, 3-card, Bloody Guts, or with trade-ins.</p>
-                </li>
-                <li class="game">
-                    <span class="badge badge-community">Community</span>
-                    <h3>Little L</h3>
-                    <p>Three-card poker meets community cards arranged in an L shape. Use any single card or two connected cards to build your best three-card hand.</p>
-                </li>
-                <li class="game">
-                    <span class="badge badge-survival">Survival</span>
-                    <h3>Pass the Poop</h3>
-                    <p>Don't get stuck with the lowest card or lose a life. Pass unwanted cards to your neighbor&mdash;unless they block you. Standard, Diarrhea, and Pairs editions.</p>
-                </li>
-                <li class="game">
-                    <span class="badge badge-stud">Stud</span>
-                    <h3>Seven-Card Stud</h3>
-                    <p>The classic: two down, four up, one down. Seven variants including Baseball, Low-Card Wild, Follow the Queen, High-Chicago, Chiggs, and Coupons &amp; Clippings.</p>
-                </li>
-                <li class="game">
-                    <span class="badge badge-community">Community</span>
-                    <h3>Texas Hold'em</h3>
-                    <p>The world's most popular poker game. Two hole cards, five community cards, best five-card hand wins. Includes Pineapple and Lazy Pineapple variants.</p>
-                </li>
-            </ul>
-        </div>
+        <p class="sign-up">
+          <router-link
+            to="/signup"
+            class="button hero-button"
+          >
+            Get Started
+          </router-link>
+        </p>
+      </div>
     </div>
+
+    <div class="games">
+      <div class="intro-card">
+        <p>Monday Night Poker is a free platform for playing card games with friends online. Built by a <a href="https://tompeters.me/">developer</a> who wanted to keep his weekly poker tradition alive, it's 100% free and <a href="https://github.com/weters/mondaynightpoker-server/">open source</a> under the MIT License.</p>
+      </div>
+
+      <h2>Seven Games, Endless Variety</h2>
+
+      <ul class="game-list">
+        <li class="game">
+          <span class="badge badge-betting">Betting</span>
+          <h3>Acey Deucey</h3>
+          <p>Two cards are dealt face-up. Bet on whether the third card falls between them&mdash;or hit the post and pay double. Choose from Standard, Continuous Shoe, or Chaos modes.</p>
+        </li>
+        <li class="game">
+          <span class="badge badge-tricks">Tricks</span>
+          <h3>Bourré</h3>
+          <p>A Cajun trick-taking classic. Win the most tricks to claim the pot, but go trickless and you'll match it. Supports standard 4-suit and wild 5-suit decks.</p>
+        </li>
+        <li class="game">
+          <span class="badge badge-guts">High Stakes</span>
+          <h3>Guts</h3>
+          <p>Declare "in" or "out" simultaneously&mdash;stay in and you'd better have the best hand, or pay the pot. Play 2-card, 3-card, Bloody Guts, or with trade-ins.</p>
+        </li>
+        <li class="game">
+          <span class="badge badge-community">Community</span>
+          <h3>Little L</h3>
+          <p>Three-card poker meets community cards arranged in an L shape. Use any single card or two connected cards to build your best three-card hand.</p>
+        </li>
+        <li class="game">
+          <span class="badge badge-survival">Survival</span>
+          <h3>Pass the Poop</h3>
+          <p>Don't get stuck with the lowest card or lose a life. Pass unwanted cards to your neighbor&mdash;unless they block you. Standard, Diarrhea, and Pairs editions.</p>
+        </li>
+        <li class="game">
+          <span class="badge badge-stud">Stud</span>
+          <h3>Seven-Card Stud</h3>
+          <p>The classic: two down, four up, one down. Seven variants including Baseball, Low-Card Wild, Follow the Queen, High-Chicago, Chiggs, and Coupons &amp; Clippings.</p>
+        </li>
+        <li class="game">
+          <span class="badge badge-community">Community</span>
+          <h3>Texas Hold'em</h3>
+          <p>The world's most popular poker game. Two hole cards, five community cards, best five-card hand wins. Includes Pineapple and Lazy Pineapple variants.</p>
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>

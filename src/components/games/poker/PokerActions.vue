@@ -1,50 +1,61 @@
 <template>
-    <div class="poker-actions">
-        <!-- Bet chips panel (overlays action buttons via grid stack) -->
-        <div class="actions-stack">
-            <transition name="fade" mode="out-in">
-                <div v-if="betAction" key="bet" class="bet-panel">
-                    <poker-bet-chips
-                        :min-bet="pokerState.minBet"
-                        :max-bet="maxBet"
-                        :pot="pokerState.pot || 0"
-                        :all-in-amount="allInAmount"
-                        :action-name="betAction.name"
-                        @submit="handleBetSubmit"
-                        @cancel="betAction = null"
-                    />
-                </div>
-                <div v-else key="actions" class="action-buttons">
-                    <div class="buttons">
-                        <confirm-button
-                            v-for="action in actions"
-                            :key="action.id"
-                            :label="actionLabel(action)"
-                            :confirm-text="actionConfirmText(action)"
-                            :skip-confirm="isLowRisk(action)"
-                            :button-class="actionButtonClass(action)"
-                            @confirmed="handleAction(action)"
-                        />
-
-                        <button
-                            v-for="action in futureActions"
-                            :key="'future-' + action.id"
-                            :class="{'future-action': true, pending: futureAction && futureAction.id === action.id}"
-                            type="button"
-                            @click="handleFutureAction(action)"
-                        >
-                            <template v-if="action.id === 'call'">
-                                {{ callLabel(action) }}
-                            </template>
-                            <template v-else>
-                                {{ action.name }}
-                            </template>
-                        </button>
-                    </div>
-                </div>
-            </transition>
+  <div class="poker-actions">
+    <!-- Bet chips panel (overlays action buttons via grid stack) -->
+    <div class="actions-stack">
+      <transition
+        name="fade"
+        mode="out-in"
+      >
+        <div
+          v-if="betAction"
+          key="bet"
+          class="bet-panel"
+        >
+          <poker-bet-chips
+            :min-bet="pokerState.minBet"
+            :max-bet="maxBet"
+            :pot="pokerState.pot || 0"
+            :all-in-amount="allInAmount"
+            :action-name="betAction.name"
+            @submit="handleBetSubmit"
+            @cancel="betAction = null"
+          />
         </div>
+        <div
+          v-else
+          key="actions"
+          class="action-buttons"
+        >
+          <div class="buttons">
+            <confirm-button
+              v-for="action in actions"
+              :key="action.id"
+              :label="actionLabel(action)"
+              :confirm-text="actionConfirmText(action)"
+              :skip-confirm="isLowRisk(action)"
+              :button-class="actionButtonClass(action)"
+              @confirmed="handleAction(action)"
+            />
+
+            <button
+              v-for="action in futureActions"
+              :key="'future-' + action.id"
+              :class="{'future-action': true, pending: futureAction && futureAction.id === action.id}"
+              type="button"
+              @click="handleFutureAction(action)"
+            >
+              <template v-if="action.id === 'call'">
+                {{ callLabel(action) }}
+              </template>
+              <template v-else>
+                {{ action.name }}
+              </template>
+            </button>
+          </div>
+        </div>
+      </transition>
     </div>
+  </div>
 </template>
 
 <script>

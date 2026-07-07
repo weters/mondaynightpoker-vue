@@ -15,6 +15,13 @@ initAuth()
 
 // Global mixin for methods
 app.mixin({
+    beforeMount() {
+        const title = this.$options.title
+        if (title) {
+            let pageTitle = typeof title === 'function' ? title.call(this) : title
+            this.setTitle(pageTitle)
+        }
+    },
     methods: {
         relativeDate: date => relDate(new Date(date)),
         setTitle(title) {
@@ -22,13 +29,6 @@ app.mixin({
         },
         replaceTokens(string) {
             return string.replace(/\${(-?\d+)}/g, (match, cents) => formatAmount(cents))
-        }
-    },
-    beforeMount() {
-        const title = this.$options.title
-        if (title) {
-            let pageTitle = typeof title === 'function' ? title.call(this) : title
-            this.setTitle(pageTitle)
         }
     }
 })

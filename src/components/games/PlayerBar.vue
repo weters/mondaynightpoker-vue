@@ -1,75 +1,129 @@
 <template>
-    <div :class="{ 'player-bar': true, 'is-turn': isTurn }" ref="bar">
-        <div class="bar-content">
-            <div class="cards-area" v-if="$slots.cards">
-                <slot name="cards"></slot>
-            </div>
-            <div class="actions-area" v-if="$slots.actions">
-                <slot name="actions"></slot>
-            </div>
+  <div
+    ref="bar"
+    :class="{ 'player-bar': true, 'is-turn': isTurn }"
+  >
+    <div class="bar-content">
+      <div
+        v-if="$slots.cards"
+        class="cards-area"
+      >
+        <slot name="cards" />
+      </div>
+      <div
+        v-if="$slots.actions"
+        class="actions-area"
+      >
+        <slot name="actions" />
+      </div>
+    </div>
+
+    <p class="game-info">
+      <span
+        v-if="isTurn"
+        class="turn-badge"
+      >YOUR TURN</span>
+      <slot name="gameInfo" />
+      <span
+        v-if="gameRules.length"
+        class="help-trigger"
+        @click="rulesOpen = true"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+        ><path
+          :d="mdiHelpCircleOutline"
+          fill="currentColor"
+        /></svg>
+      </span>
+      <span
+        class="settings-trigger"
+        @click="settingsOpen = true"
+      >
+        <svg
+          viewBox="0 0 24 24"
+          width="20"
+          height="20"
+        ><path
+          :d="mdiCog"
+          fill="currentColor"
+        /></svg>
+      </span>
+    </p>
+
+    <transition name="player-bar-error">
+      <error-message
+        v-if="combinedError"
+        :message="combinedError"
+        class="error"
+      />
+    </transition>
+
+    <settings-bottom-sheet
+      :open="settingsOpen"
+      @close="settingsOpen = false"
+    >
+      <div class="settings">
+        <div class="balance-display">
+          <span class="balance-label">Table balance</span>
+          <span class="balance-amount">{{ formatAmount(userClientState.balance) }}</span>
         </div>
 
-        <p class="game-info">
-            <span class="turn-badge" v-if="isTurn">YOUR TURN</span>
-            <slot name="gameInfo"></slot>
-            <span class="help-trigger" v-if="gameRules.length" @click="rulesOpen = true">
-                <svg viewBox="0 0 24 24" width="20" height="20"><path :d="mdiHelpCircleOutline" fill="currentColor"/></svg>
-            </span>
-            <span class="settings-trigger" @click="settingsOpen = true">
-                <svg viewBox="0 0 24 24" width="20" height="20"><path :d="mdiCog" fill="currentColor"/></svg>
-            </span>
+        <p>
+          <toggle
+            v-model="dealMeIn"
+            label="Deal me in!"
+            :disabled="dealMeInLoading"
+          />
+        </p>
+        <p>
+          <toggle
+            v-model="muteSounds"
+            label="Mute sounds"
+          />
         </p>
 
-        <transition name="player-bar-error">
-            <mnp-error :message="combinedError" v-if="combinedError" class="error"/>
-        </transition>
+        <slot name="settings" />
 
-        <settings-bottom-sheet :open="settingsOpen" @close="settingsOpen = false">
-            <div class="settings">
-                <div class="balance-display">
-                    <span class="balance-label">Table balance</span>
-                    <span class="balance-amount">{{ formatAmount(userClientState.balance) }}</span>
-                </div>
+        <template v-if="isTableAdmin || canTerminate">
+          <h3>Admin</h3>
+          <div class="buttons">
+            <confirm-button
+              v-if="canTerminate"
+              label="Terminate"
+              confirm-text="Confirm Terminate?"
+              danger
+              @confirmed="terminateGame"
+            />
+          </div>
+        </template>
+      </div>
+    </settings-bottom-sheet>
 
-                <p>
-                    <toggle label="Deal me in!" v-model="dealMeIn" :disabled="dealMeInLoading"/>
-                </p>
-                <p>
-                    <toggle label="Mute sounds" v-model="muteSounds"/>
-                </p>
-
-                <slot name="settings"></slot>
-
-                <template v-if="isTableAdmin || canTerminate">
-                    <h3>Admin</h3>
-                    <div class="buttons">
-                        <confirm-button
-                            v-if="canTerminate"
-                            label="Terminate"
-                            confirm-text="Confirm Terminate?"
-                            danger
-                            @confirmed="terminateGame"
-                        />
-                    </div>
-                </template>
-            </div>
-        </settings-bottom-sheet>
-
-        <settings-bottom-sheet :open="rulesOpen" @close="rulesOpen = false">
-            <div class="rules">
-                <h3>How to Play</h3>
-                <div v-for="section in gameRules" :key="section.title" class="rule-section">
-                    <h4>{{ section.title }}</h4>
-                    <p>{{ section.body }}</p>
-                </div>
-            </div>
-        </settings-bottom-sheet>
-    </div>
+    <settings-bottom-sheet
+      :open="rulesOpen"
+      @close="rulesOpen = false"
+    >
+      <div class="rules">
+        <h3>How to Play</h3>
+        <div
+          v-for="section in gameRules"
+          :key="section.title"
+          class="rule-section"
+        >
+          <h4>{{ section.title }}</h4>
+          <p>{{ section.body }}</p>
+        </div>
+      </div>
+    </settings-bottom-sheet>
+  </div>
 </template>
 
 <script>
 import {useRootStore} from "@/store"
-import MnpError from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 import Toggle from "@/components/formelements/Toggle.vue"
 import SettingsBottomSheet from "@/components/SettingsBottomSheet.vue"
 import ConfirmButton from "@/components/ConfirmButton.vue"
@@ -78,8 +132,8 @@ import {mdiCog, mdiHelpCircleOutline} from '@mdi/js'
 
 export default {
     name: "PlayerBar",
+    components: {ConfirmButton, SettingsBottomSheet, Toggle, ErrorMessage},
     mixins: [playerBarShared],
-    components: {ConfirmButton, SettingsBottomSheet, Toggle, MnpError},
     props: {
         isTurn: Boolean,
         error: [String, Error],
@@ -100,16 +154,16 @@ export default {
             return useRootStore().gameRules
         },
     },
+    watch: {
+        dealMeIn(active) {
+            this.toggleDealMeIn(active)
+        },
+    },
     mounted() {
         const main = document.querySelector('main')
         if (main && this.$refs.bar) {
             main.style.paddingBottom = `${this.$refs.bar.offsetHeight + 8}px`
         }
-    },
-    watch: {
-        dealMeIn(active) {
-            this.toggleDealMeIn(active)
-        },
     },
 }
 </script>

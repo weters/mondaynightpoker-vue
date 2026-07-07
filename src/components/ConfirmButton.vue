@@ -1,14 +1,17 @@
 <template>
-    <button
-        :class="buttonClasses"
-        :disabled="disabled"
-        :style="{ minWidth: fixedWidth }"
-        @click="handleClick"
+  <button
+    :class="buttonClasses"
+    :disabled="disabled"
+    :style="{ minWidth: fixedWidth }"
+    @click="handleClick"
+  >
+    <transition
+      name="confirm-text"
+      mode="out-in"
     >
-        <transition name="confirm-text" mode="out-in">
-            <span :key="confirming ? 'confirm' : 'label'">{{ displayText }}</span>
-        </transition>
-    </button>
+      <span :key="confirming ? 'confirm' : 'label'">{{ displayText }}</span>
+    </transition>
+  </button>
 </template>
 
 <script>
@@ -68,6 +71,12 @@ export default {
         }
         confirmBus.addEventListener('reset-others', this._onResetOthers)
     },
+    beforeUnmount() {
+        confirmBus.removeEventListener('reset-others', this._onResetOthers)
+        if (this.resetTimeout) {
+            clearTimeout(this.resetTimeout)
+        }
+    },
     methods: {
         handleClick() {
             if (this.skipConfirm) {
@@ -100,12 +109,6 @@ export default {
                 this.resetTimeout = null
             }
         },
-    },
-    beforeUnmount() {
-        confirmBus.removeEventListener('reset-others', this._onResetOthers)
-        if (this.resetTimeout) {
-            clearTimeout(this.resetTimeout)
-        }
     },
 }
 </script>

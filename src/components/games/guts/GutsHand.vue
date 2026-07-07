@@ -1,17 +1,17 @@
 <template>
-    <div :class="['guts-hand', `guts-hand-${cardCount}`, { folded }]">
-        <div
-            v-for="(card, index) in hand"
-            :key="`${card.rank}.${card.suit}`"
-            :class="classForCard(card, index)"
-            @click="selectCard(card)"
-        >
-            <playing-card-container
-                :card="card"
-                :hide-card="hideCard(index)"
-            />
-        </div>
+  <div :class="['guts-hand', `guts-hand-${cardCount}`, { folded }]">
+    <div
+      v-for="(card, index) in hand"
+      :key="`${card.rank}.${card.suit}`"
+      :class="classForCard(card, index)"
+      @click="selectCard(card)"
+    >
+      <playing-card-container
+        :card="card"
+        :hide-card="hideCard(index)"
+      />
     </div>
+  </div>
 </template>
 
 <script>

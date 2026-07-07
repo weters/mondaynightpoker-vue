@@ -1,38 +1,53 @@
 <template>
-    <div class="poker-table-player-list">
-        <h3>Players</h3>
+  <div class="poker-table-player-list">
+    <h3>Players</h3>
 
-        <transition name="error">
-            <error :message="error" v-if="error"/>
-        </transition>
+    <transition name="error">
+      <error-message
+        v-if="error"
+        :message="error"
+      />
+    </transition>
 
-        <div class="player-list">
-            <poker-table-player v-for="client in clients" :player="client" :key="client.player.id"
-                                :menu-open="openMenuPlayerId === client.player.id"
-                                @toggle-menu="toggleMenu(client.player.id)"/>
-        </div>
-
-        <div class="guests" v-if="guestClients.length > 0">
-            <h4>Guests</h4>
-
-            <ul>
-                <li v-for="client in guestClients" :key="client.player.id">{{ client.player.displayName }}</li>
-            </ul>
-        </div>
+    <div class="player-list">
+      <poker-table-player
+        v-for="client in clients"
+        :key="client.player.id"
+        :player="client"
+        :menu-open="openMenuPlayerId === client.player.id"
+        @toggle-menu="toggleMenu(client.player.id)"
+      />
     </div>
+
+    <div
+      v-if="guestClients.length > 0"
+      class="guests"
+    >
+      <h4>Guests</h4>
+
+      <ul>
+        <li
+          v-for="client in guestClients"
+          :key="client.player.id"
+        >
+          {{ client.player.displayName }}
+        </li>
+      </ul>
+    </div>
+  </div>
 </template>
 
 <script>
     import {mapActions, mapState} from "pinia"
     import {useRootStore} from "@/store"
     import balance from "@/mixins/balance"
-    import Error from "@/components/Error.vue"
+    import ErrorMessage from "@/components/ErrorMessage.vue"
     import PokerTablePlayer from "@/components/PokerTablePlayer.vue"
 
     export default {
         name: "PokerTablePlayerList",
+        components: {PokerTablePlayer, ErrorMessage},
         mixins: [balance],
-        components: {PokerTablePlayer, Error},
         props: {
             clientState: {
                 type: Object,

@@ -1,24 +1,24 @@
 <template>
-    <div class="dev-tools">
-        <h2>Dev Tools</h2>
+  <div class="dev-tools">
+    <h2>Dev Tools</h2>
 
-        <table>
-            <tbody>
-            <tr>
-                <th>ID</th>
-                <td>{{ player.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ player.displayName }}</td>
-            </tr>
-            <tr>
-                <th>Admin</th>
-                <td>{{ player.isSiteAdmin }}</td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
+    <table>
+      <tbody>
+        <tr>
+          <th>ID</th>
+          <td>{{ player.id }}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>{{ player.displayName }}</td>
+        </tr>
+        <tr>
+          <th>Admin</th>
+          <td>{{ player.isSiteAdmin }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </template>
 
 <script>

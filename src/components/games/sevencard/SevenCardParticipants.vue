@@ -1,7 +1,11 @@
 <template>
-    <div class="seven-card-participants">
-        <seven-card-participant v-for="p in participants" :key="p.playerId" :participant="p" />
-    </div>
+  <div class="seven-card-participants">
+    <seven-card-participant
+      v-for="p in participants"
+      :key="p.playerId"
+      :participant="p"
+    />
+  </div>
 </template>
 
 <script>

@@ -1,16 +1,17 @@
 <template>
-    <div class="container">
-        <div class="error">
-            <p>{{ formattedMessage }}</p>
-        </div>
+  <div class="container">
+    <div class="error">
+      <p>{{ formattedMessage }}</p>
     </div>
+  </div>
 </template>
 
 <script>
     export default {
-        name: "Error",
+        name: "ErrorMessage",
         props: {
             message: {
+                type: [String, Error],
                 required: true,
             },
         },

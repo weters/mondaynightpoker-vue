@@ -1,32 +1,59 @@
 <template>
-    <div class="log-in small-content hide-required">
-        <form @submit.prevent="submit">
+  <div class="log-in small-content hide-required">
+    <form @submit.prevent="submit">
+      <h2>Log in to Monday Night Poker</h2>
 
-            <h2>Log in to Monday Night Poker</h2>
+      <loading v-if="loading" />
 
-            <loading v-if="loading"/>
+      <transition name="error">
+        <error-message
+          v-if="error"
+          :message="error"
+        />
+      </transition>
 
-            <transition name="error">
-                <error :message="error" v-if="error"/>
-            </transition>
+      <fancy-input
+        v-model="email"
+        type="text"
+        label="Email Address"
+        autocomplete="email"
+        required
+        hide-required
+      />
+      <fancy-input
+        v-model="password"
+        type="password"
+        label="Password"
+        autocomplete="current-password"
+        required
+        hide-required
+      />
 
-            <fancy-input type="text" label="Email Address" autocomplete="email" required hide-required v-model="email" />
-            <fancy-input type="password" label="Password" autocomplete="current-password" required hide-required v-model="password" />
+      <div class="buttons">
+        <button
+          type="submit"
+          :disabled="submitDisabled"
+        >
+          Log In
+        </button>
+      </div>
 
-            <div class="buttons">
-                <button type="submit" :disabled="submitDisabled">Log In</button>
-            </div>
-
-            <div class="help">
-                <p>Don't have an account?
-                    <router-link to="/signup">Sign up</router-link>
-                </p>
-                <p>Forgot password?
-                    <router-link to="/forgot-password">Reset your password</router-link>
-                </p>
-            </div>
-        </form>
-    </div>
+      <div class="help">
+        <p>
+          Don't have an account?
+          <router-link to="/signup">
+            Sign up
+          </router-link>
+        </p>
+        <p>
+          Forgot password?
+          <router-link to="/forgot-password">
+            Reset your password
+          </router-link>
+        </p>
+      </div>
+    </form>
+  </div>
 </template>
 
 <script>
@@ -34,13 +61,13 @@ import {mapActions} from "pinia"
 import client from "@/client"
 import {useRootStore} from "@/store"
 import Loading from "@/components/Loading.vue"
-import Error from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 import FancyInput from "@/components/formelements/FancyInput.vue"
 
 export default {
     name: "LogIn",
     title: 'Log In',
-    components: {FancyInput, Error, Loading},
+    components: {FancyInput, ErrorMessage, Loading},
     data() {
         return {
             email: null,
@@ -49,13 +76,13 @@ export default {
             error: null,
         }
     },
-    mounted() {
-        this.clearUser()
-    },
     computed: {
         submitDisabled() {
             return this.loading
         },
+    },
+    mounted() {
+        this.clearUser()
     },
     methods: {
         ...mapActions(useRootStore, ['clearUser', 'setUser']),

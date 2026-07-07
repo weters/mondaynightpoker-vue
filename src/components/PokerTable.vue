@@ -1,77 +1,124 @@
 <template>
-    <div class="poker-table big-content">
-        <div>
-            <div class="table-header">
-                <h2><span class="table-name">{{ tableName }}</span></h2>
-                <button @click="copy" class="invite-button" v-if="table">
-                    <mdi-icon :icon="mdiContentCopy"/>
-                    <span>Copy Invite Link</span>
-                </button>
-            </div>
+  <div class="poker-table big-content">
+    <div>
+      <div class="table-header">
+        <h2><span class="table-name">{{ tableName }}</span></h2>
+        <button
+          v-if="table"
+          class="invite-button"
+          @click="copy"
+        >
+          <mdi-icon :icon="mdiContentCopy" />
+          <span>Copy Invite Link</span>
+        </button>
+      </div>
 
-            <div class="guest" v-if="!isSeated">
-                <div class="buttons">
-                    <button @click="$router.push(`/table/${uuid}/join`)">Join Table</button>
-                </div>
-            </div>
-
-            <template v-if="game">
-                <component v-if="gameComponent" :is="gameComponent"/>
-            </template>
-            <template v-else-if="clientState">
-                <transition name="scheduled-game">
-                    <scheduled-game
-                        v-if="scheduledGame"
-                        class="pt-scheduled-game"
-                        :info="scheduledGame"
-                        :can-start="canStart"
-                        :is-player-active="userClientState.active"
-                        @setPlayerActive="setPlayerActive"
-                        @cancel="cancelGame"
-                    />
-                </transition>
-
-                <div class="player-settings">
-                    <h3>Your Settings</h3>
-
-                    <div class="columns">
-                        <table-stakes/>
-
-                        <form class="player-state" v-if="userClientState.isSeated">
-                            <toggle :model-value="userClientState.active" label="Deal me in!" :disabled="playButtonDisabled"
-                                    @change="setPlayerActive"/>
-                            <toggle v-model="muteSounds" label="Mute sounds" class="mute-sounds"/>
-                            <p class="details">If you want to sit out, uncheck "Deal me in!"</p>
-                        </form>
-                    </div>
-                </div>
-
-                <div class="main-content">
-                    <poker-table-player-list :client-state="clientState"/>
-                    <game-selector/>
-                </div>
-            </template>
-            <template v-else>
-                <loading/>
-            </template>
-
-            <dealer-log class="dealer-log"/>
-
-            <div class="admin-actions" v-if="clientState && !game && isTableAdmin">
-                <h3>Admin</h3>
-                <form class="clone-table" @submit.prevent="cloneTable">
-                    <error :message="cloneError" v-if="cloneError"/>
-                    <p class="details">Clone this table to start a fresh session with the same players. Balances reset to zero, table stake carries over, and everyone starts in sit-out.</p>
-                    <fancy-input label="New Table Name" type="text" autocomplete="off" required
-                                 v-model="cloneName" :disabled="cloneLoading"/>
-                    <div class="buttons">
-                        <button type="submit" :disabled="cloneLoading || !cloneName">Clone Table</button>
-                    </div>
-                    <loading v-if="cloneLoading"/>
-                </form>
-            </div>
+      <div
+        v-if="!isSeated"
+        class="guest"
+      >
+        <div class="buttons">
+          <button @click="$router.push(`/table/${uuid}/join`)">
+            Join Table
+          </button>
         </div>
+      </div>
+
+      <template v-if="game">
+        <component
+          :is="gameComponent"
+          v-if="gameComponent"
+        />
+      </template>
+      <template v-else-if="clientState">
+        <transition name="scheduled-game">
+          <scheduled-game
+            v-if="scheduledGame"
+            class="pt-scheduled-game"
+            :info="scheduledGame"
+            :can-start="canStart"
+            :is-player-active="userClientState.active"
+            @set-player-active="setPlayerActive"
+            @cancel="cancelGame"
+          />
+        </transition>
+
+        <div class="player-settings">
+          <h3>Your Settings</h3>
+
+          <div class="columns">
+            <table-stakes />
+
+            <form
+              v-if="userClientState.isSeated"
+              class="player-state"
+            >
+              <toggle
+                :model-value="userClientState.active"
+                label="Deal me in!"
+                :disabled="playButtonDisabled"
+                @change="setPlayerActive"
+              />
+              <toggle
+                v-model="muteSounds"
+                label="Mute sounds"
+                class="mute-sounds"
+              />
+              <p class="details">
+                If you want to sit out, uncheck "Deal me in!"
+              </p>
+            </form>
+          </div>
+        </div>
+
+        <div class="main-content">
+          <poker-table-player-list :client-state="clientState" />
+          <game-selector />
+        </div>
+      </template>
+      <template v-else>
+        <loading />
+      </template>
+
+      <dealer-log class="dealer-log" />
+
+      <div
+        v-if="clientState && !game && isTableAdmin"
+        class="admin-actions"
+      >
+        <h3>Admin</h3>
+        <form
+          class="clone-table"
+          @submit.prevent="cloneTable"
+        >
+          <error-message
+            v-if="cloneError"
+            :message="cloneError"
+          />
+          <p class="details">
+            Clone this table to start a fresh session with the same players. Balances reset to zero, table stake carries over, and everyone starts in sit-out.
+          </p>
+          <fancy-input
+            v-model="cloneName"
+            label="New Table Name"
+            type="text"
+            autocomplete="off"
+            required
+            :disabled="cloneLoading"
+          />
+          <div class="buttons">
+            <button
+              type="submit"
+              :disabled="cloneLoading || !cloneName"
+            >
+              Clone Table
+            </button>
+          </div>
+          <loading v-if="cloneLoading" />
+        </form>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -92,7 +139,7 @@ import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiContentCopy} from "@mdi/js"
 import audioplayer from "@/audioplayer"
 import FancyInput from "@/components/formelements/FancyInput.vue"
-import Error from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 
 export default {
     name: "PokerTable",
@@ -102,7 +149,7 @@ export default {
         Toggle,
         GameSelector,
         FancyInput,
-        Error,
+        ErrorMessage,
         ScheduledGame, DealerLog, Loading, PokerTablePlayerList,
     },
     props: {
@@ -133,6 +180,23 @@ export default {
         },
         tableName() {
             return this.table && this.table.name
+        },
+    },
+    watch: {
+        table(table) {
+            if (table) {
+                this.setTitle(this.tableName)
+            }
+        },
+        game(newVal, oldVal) {
+            if (newVal && !oldVal) {
+                this.$nextTick(() => {
+                    this.$el.scrollIntoView({behavior: 'smooth'})
+                })
+            }
+        },
+        muteSounds(newVal) {
+            audioplayer.setMuted(newVal)
         },
     },
     mounted() {
@@ -181,23 +245,6 @@ export default {
                 .then(() => window.scrollTo(0, 0))
                 .catch(err => this.cloneError = err)
                 .finally(() => this.cloneLoading = false)
-        },
-    },
-    watch: {
-        table(table) {
-            if (table) {
-                this.setTitle(this.tableName)
-            }
-        },
-        game(newVal, oldVal) {
-            if (newVal && !oldVal) {
-                this.$nextTick(() => {
-                    this.$el.scrollIntoView({behavior: 'smooth'})
-                })
-            }
-        },
-        muteSounds(newVal) {
-            audioplayer.setMuted(newVal)
         },
     },
 }

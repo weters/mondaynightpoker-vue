@@ -1,103 +1,174 @@
 <template>
-    <div class="table-list">
-        <error :message="error" v-if="error"/>
+  <div class="table-list">
+    <error-message
+      v-if="error"
+      :message="error"
+    />
 
-        <loading v-if="loading"/>
+    <loading v-if="loading" />
 
-        <div class="columns" v-if="tables">
-            <div class="tables-section">
-                <h3 class="section-label">Your Tables</h3>
-                <div class="table-card" v-if="tables.length > 0">
-                    <table class="standard">
-                        <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Created</th>
-                            <th>Balance</th>
-                            <th>Graph</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr v-for="table in tables" :key="table.uuid">
-                            <td>
-                                <router-link :to="`/table/${table.uuid}`">{{ table.name }}</router-link>
-                            </td>
-                            <td>{{ relativeDate(table.created) }}</td>
-                            <td :class="{balance: true, negative: table.balance < 0, positive: table.balance > 0 }">{{ formatAmount(table.balance) }}</td>
-                            <td class="graph">
-                                <toggle v-model="graph" :value="table.uuid"/>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <admin-pagination v-if="tables.length > 0" :start="start" :rows="rows" :count="tables.length" @prev="changePage"/>
-                <div class="empty-state" v-else>
-                    <p>You haven't joined any tables yet.</p>
-                    <p>Create a new table to get started playing with your friends!</p>
-                </div>
-            </div>
-
-            <div class="profile-section" v-if="profile">
-                <h3 class="section-label">Performance</h3>
-
-                <div class="time-filter">
-                    <button v-for="preset in presets" :key="preset.label"
-                            :class="['secondary', { active: activePreset === preset.label }]"
-                            @click="applyPreset(preset)">{{ preset.label }}</button>
-                    <div class="date-inputs">
-                        <input type="date" v-model="fromDate" @change="applyCustomDates"/>
-                        <input type="date" v-model="toDate" @change="applyCustomDates"/>
-                    </div>
-                </div>
-
-                <div class="stats-cards">
-                    <div class="stat-card">
-                        <span class="stat-value">{{ profile.stats.tablesJoined }}</span>
-                        <span class="stat-label">Tables Joined</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value">{{ profile.stats.gamesPlayed }}</span>
-                        <span class="stat-label">Games Played</span>
-                    </div>
-                    <div class="stat-card">
-                        <span class="stat-value" :class="{ negative: profile.stats.totalWinnings < 0 }">{{ formatAmount(profile.stats.totalWinnings) }}</span>
-                        <span class="stat-label">Total Winnings</span>
-                    </div>
-                </div>
-
-                <div class="winnings-by-game" v-if="Object.keys(profile.stats.winningsByGame).length > 0">
-                    <h4>Winnings by Game</h4>
-                    <table class="standard">
-                        <thead>
-                            <tr>
-                                <th>Game</th>
-                                <th class="text-right">Games</th>
-                                <th class="text-right">Winnings</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr v-for="(amount, game) in profile.stats.winningsByGame" :key="game">
-                                <td>{{ game }}</td>
-                                <td class="text-right">{{ profile.stats.gamesCountByType[game] || 0 }}</td>
-                                <td class="text-right" :class="{ negative: amount < 0, positive: amount > 0 }">{{ formatAmount(amount) }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="balance-graph" v-if="profile.graphData && profile.graphData.length > 0">
-                    <h4>Cumulative Winnings</h4>
-                    <profile-graph :tables="profile.graphData"/>
-                </div>
-            </div>
+    <div
+      v-if="tables"
+      class="columns"
+    >
+      <div class="tables-section">
+        <h3 class="section-label">
+          Your Tables
+        </h3>
+        <div
+          v-if="tables.length > 0"
+          class="table-card"
+        >
+          <table class="standard">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Created</th>
+                <th>Balance</th>
+                <th>Graph</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="table in tables"
+                :key="table.uuid"
+              >
+                <td>
+                  <router-link :to="`/table/${table.uuid}`">
+                    {{ table.name }}
+                  </router-link>
+                </td>
+                <td>{{ relativeDate(table.created) }}</td>
+                <td :class="{balance: true, negative: table.balance < 0, positive: table.balance > 0 }">
+                  {{ formatAmount(table.balance) }}
+                </td>
+                <td class="graph">
+                  <toggle
+                    v-model="graph"
+                    :value="table.uuid"
+                  />
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
+        <admin-pagination
+          v-if="tables.length > 0"
+          :start="start"
+          :rows="rows"
+          :count="tables.length"
+          @prev="changePage"
+        />
+        <div
+          v-else
+          class="empty-state"
+        >
+          <p>You haven't joined any tables yet.</p>
+          <p>Create a new table to get started playing with your friends!</p>
+        </div>
+      </div>
+
+      <div
+        v-if="profile"
+        class="profile-section"
+      >
+        <h3 class="section-label">
+          Performance
+        </h3>
+
+        <div class="time-filter">
+          <button
+            v-for="preset in presets"
+            :key="preset.label"
+            :class="['secondary', { active: activePreset === preset.label }]"
+            @click="applyPreset(preset)"
+          >
+            {{ preset.label }}
+          </button>
+          <div class="date-inputs">
+            <input
+              v-model="fromDate"
+              type="date"
+              @change="applyCustomDates"
+            >
+            <input
+              v-model="toDate"
+              type="date"
+              @change="applyCustomDates"
+            >
+          </div>
+        </div>
+
+        <div class="stats-cards">
+          <div class="stat-card">
+            <span class="stat-value">{{ profile.stats.tablesJoined }}</span>
+            <span class="stat-label">Tables Joined</span>
+          </div>
+          <div class="stat-card">
+            <span class="stat-value">{{ profile.stats.gamesPlayed }}</span>
+            <span class="stat-label">Games Played</span>
+          </div>
+          <div class="stat-card">
+            <span
+              class="stat-value"
+              :class="{ negative: profile.stats.totalWinnings < 0 }"
+            >{{ formatAmount(profile.stats.totalWinnings) }}</span>
+            <span class="stat-label">Total Winnings</span>
+          </div>
+        </div>
+
+        <div
+          v-if="Object.keys(profile.stats.winningsByGame).length > 0"
+          class="winnings-by-game"
+        >
+          <h4>Winnings by Game</h4>
+          <table class="standard">
+            <thead>
+              <tr>
+                <th>Game</th>
+                <th class="text-right">
+                  Games
+                </th>
+                <th class="text-right">
+                  Winnings
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(amount, game) in profile.stats.winningsByGame"
+                :key="game"
+              >
+                <td>{{ game }}</td>
+                <td class="text-right">
+                  {{ profile.stats.gamesCountByType[game] || 0 }}
+                </td>
+                <td
+                  class="text-right"
+                  :class="{ negative: amount < 0, positive: amount > 0 }"
+                >
+                  {{ formatAmount(amount) }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div
+          v-if="profile.graphData && profile.graphData.length > 0"
+          class="balance-graph"
+        >
+          <h4>Cumulative Winnings</h4>
+          <profile-graph :tables="profile.graphData" />
+        </div>
+      </div>
     </div>
+  </div>
 </template>
 
 <script>
 import Loading from "@/components/Loading.vue"
-import Error from "@/components/Error.vue"
+import ErrorMessage from "@/components/ErrorMessage.vue"
 import client from "@/client"
 import balance from "../mixins/balance"
 import ProfileGraph from "./ProfileGraph.vue"
@@ -106,7 +177,7 @@ import AdminPagination from "@/components/admin/AdminPagination.vue"
 
 export default {
     name: "TableList",
-    components: {AdminPagination, Toggle, ProfileGraph, Error, Loading},
+    components: {AdminPagination, Toggle, ProfileGraph, ErrorMessage, Loading},
     mixins: [balance],
     data() {
         return {
@@ -130,6 +201,14 @@ export default {
                 { label: 'All', months: 0 },
             ],
         }
+    },
+    watch: {
+        graph() {
+            const allTables = {}
+            this.tables.forEach(tbl => allTables[tbl.uuid] = true)
+            this.graph.forEach(g => delete (allTables[g]))
+            localStorage.setItem('exclude-tables', JSON.stringify(allTables))
+        },
     },
     mounted() {
         const excludeTables = JSON.parse(localStorage.getItem('exclude-tables')) || {}
@@ -190,14 +269,6 @@ export default {
                 this.to = ''
             }
             this.fetchProfile()
-        },
-    },
-    watch: {
-        graph() {
-            const allTables = {}
-            this.tables.forEach(tbl => allTables[tbl.uuid] = true)
-            this.graph.forEach(g => delete (allTables[g]))
-            localStorage.setItem('exclude-tables', JSON.stringify(allTables))
         },
     },
 }
