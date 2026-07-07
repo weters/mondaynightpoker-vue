@@ -7,7 +7,9 @@
         </transition>
 
         <div class="player-list">
-            <poker-table-player v-for="client in clients" :player="client" :key="client.player.id" />
+            <poker-table-player v-for="client in clients" :player="client" :key="client.player.id"
+                                :menu-open="openMenuPlayerId === client.player.id"
+                                @toggle-menu="toggleMenu(client.player.id)"/>
         </div>
 
         <div class="guests" v-if="guestClients.length > 0">
@@ -41,6 +43,7 @@
             return {
                 error: null,
                 currentUserActive: clientState[user.player.id].active,
+                openMenuPlayerId: null,
             }
         },
         computed: {
@@ -57,6 +60,9 @@
             },
         },
         methods: {
+            toggleMenu(playerId) {
+                this.openMenuPlayerId = this.openMenuPlayerId === playerId ? null : playerId
+            },
             setFlag(event, client, key) {
                 const data = {
                     playerId: client.playerId,

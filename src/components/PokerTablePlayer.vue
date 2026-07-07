@@ -12,7 +12,7 @@
                 <mdi-icon :icon="mdiAccountEdit"/>
             </button>
         </div>
-        <div class="edit-player" v-if="showMenu">
+        <div class="edit-player" v-if="menuOpen">
             <toggle label="Playing" v-model="isSeated" @change="setPlayerActive"/>
             <toggle label="Can Start" v-model="canStart" @change="setFlag($event, 'canStart')" v-if="!isSiteAdmin" />
             <toggle label="Can Terminate" v-model="canTerminate" @change="setFlag($event, 'canTerminate')"  v-if="!isSiteAdmin" />
@@ -27,7 +27,6 @@ import PlayerStatus from "@/components/PlayerStatus.vue"
 import balance from "@/mixins/balance"
 import MdiIcon from "@/components/MdiIcon.vue"
 import {mdiAccountEdit} from "@mdi/js"
-import bus from "@/bus"
 import Toggle from "@/components/formelements/Toggle.vue"
 import {mapGetters} from "vuex"
 
@@ -40,11 +39,16 @@ export default {
             type: Object,
             required: true,
         },
+        // the parent list owns which player's menu is open so sibling menus close
+        menuOpen: {
+            type: Boolean,
+            default: false,
+        },
     },
+    emits: ['toggle-menu'],
     data() {
         return {
             mdiAccountEdit,
-            showMenu: false,
             isSeated: this.player.active,
             canStart: this.player.canStart,
             canTerminate: this.player.canTerminate,
@@ -79,22 +83,9 @@ export default {
             return this.player.balance
         },
     },
-    mounted() {
-        bus.on('edit-player', this.onEditPlayer)
-    },
-    beforeUnmount() {
-        // pass the handler so only this component's listener is removed
-        bus.off('edit-player', this.onEditPlayer)
-    },
     methods: {
-        onEditPlayer(comp) {
-            if (this !== comp) {
-                this.showMenu = false
-            }
-        },
         editTapped() {
-            bus.emit('edit-player', this)
-            this.showMenu = !this.showMenu
+            this.$emit('toggle-menu')
         },
         setFlag(value, flag) {
             const data = {

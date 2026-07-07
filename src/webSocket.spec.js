@@ -214,6 +214,11 @@ describe('WebSocketClient', () => {
             expect(store.dispatch).toHaveBeenCalledWith('scheduledGame', {start: 'soon'})
         })
 
+        it('dispatches unsolicited server errors to the store', () => {
+            receive({key: 'error', value: 'something broke'})
+            expect(store.dispatch).toHaveBeenCalledWith('error', 'something broke')
+        })
+
         it('throws on unknown message keys', () => {
             expect(() => receive({key: 'bogus'})).toThrow('could not process message')
         })

@@ -13,7 +13,6 @@
     "test:watch": "vitest"
   },
   "dependencies": {
-    "mitt": "^3.0.1",
     "vue": "^3.4.21",
     "vue-router": "^4.2.5",
     "vuex": "^4.1.0"

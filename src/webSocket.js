@@ -1,5 +1,4 @@
 import { v4 as uuid } from 'uuid'
-import bus from "./bus"
 import {formatAmount} from "@/currency"
 
 const baseURL = import.meta.env.VITE_WEBSOCKET_URL || 'ws://localhost:5080'
@@ -154,7 +153,7 @@ export class WebSocketClient {
                 this.store.commit('addLogs', message.data)
                 break
             case 'error':
-                bus.emit('error', message.value)
+                this.store.dispatch('error', message.value)
                 break
             case 'scheduledGame':
                 this.store.dispatch('scheduledGame', message.data)

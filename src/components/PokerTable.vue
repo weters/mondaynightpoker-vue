@@ -81,7 +81,6 @@ import PokerTablePlayerList from "@/components/games/PokerTablePlayerList.vue"
 import Loading from "@/components/Loading.vue"
 import client from "@/client"
 import DealerLog from "./DealerLog.vue"
-import bus from "../bus"
 import ScheduledGame from "./ScheduledGame.vue"
 import {componentForSlug} from "@/games"
 
@@ -145,11 +144,8 @@ export default {
                 this.showError(err)
                 this.$router.push('/my-tables')
             })
-
-        bus.on('error', this.listenForError)
     },
     beforeUnmount() {
-        bus.off('error', this.listenForError)
         webSocket.disconnect()
         this.$store.commit('clearLogs')
     },
@@ -159,9 +155,6 @@ export default {
             navigator.clipboard.writeText(url)
                 .then(() => this.$store.dispatch('notification', 'Link has been copied'))
                 .catch(() => console.log('Could not copy URL to the clipboard'))
-        },
-        listenForError(err) {
-            this.showError(err)
         },
         showError(err) {
             this.$store.dispatch('error', err)
