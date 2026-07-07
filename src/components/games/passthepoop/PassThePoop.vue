@@ -88,7 +88,7 @@
         },
         methods: {
             execute(action) {
-                this.$store.dispatch('webSocketSend', {action: 'execute', subject: String(action.id)})
+                this.$store.dispatch('webSocketSend', {action: action.id})
                     .catch(err => this.showError(err))
             },
         },

@@ -25,7 +25,7 @@
                             :key="action.id"
                             :label="action.name"
                             :confirm-text="`Confirm ${action.name}?`"
-                            :skip-confirm="action.name.toLowerCase() === 'bet'"
+                            :skip-confirm="action.id === 'bet'"
                             @confirmed="handleAction(action)"
                         />
                     </div>
@@ -72,17 +72,17 @@ export default {
     },
     methods: {
         handleAction(action) {
-            if (action.name.toLowerCase() === 'bet') {
+            if (action.id === 'bet') {
                 this.showBet = true
                 return
             }
-            this.$store.dispatch('webSocketSend', {action: 'execute', subject: String(action.id)})
+            this.$store.dispatch('webSocketSend', {action: action.id})
                 .catch(err => this.showError(err))
         },
         executeBet(amount) {
-            const betAction = this.actions.find(a => a.name.toLowerCase() === 'bet')
+            const betAction = this.actions.find(a => a.id === 'bet')
             if (!betAction) return
-            this.$store.dispatch('webSocketSend', {action: 'execute', subject: String(betAction.id), additionalData: {amount}})
+            this.$store.dispatch('webSocketSend', {action: betAction.id, additionalData: {amount}})
                 .catch(err => this.showError(err))
         },
     },
