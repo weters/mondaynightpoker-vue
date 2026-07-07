@@ -48,8 +48,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../variables';
-
 .toggle {
     display:     flex;
     align-items: center;

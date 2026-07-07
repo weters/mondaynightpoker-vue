@@ -43,7 +43,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables.scss';
     div.bourre-players {
         $margin: calc(#{$spacing} / -2);
         display: flex;

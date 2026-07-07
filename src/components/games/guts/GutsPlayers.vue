@@ -30,8 +30,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
-
 div.guts-players {
     $margin: calc(#{$spacing} / -2);
     display: flex;

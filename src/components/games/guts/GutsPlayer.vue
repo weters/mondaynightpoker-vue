@@ -133,8 +133,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
-
 div.guts-player {
     @include card;
     padding: $spacing-medium;

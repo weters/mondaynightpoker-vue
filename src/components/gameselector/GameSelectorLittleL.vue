@@ -65,8 +65,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../variables.scss';
-
 form.little-l {
     .toggle {
         margin-bottom: $spacing-medium;

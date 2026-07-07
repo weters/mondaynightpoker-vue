@@ -104,8 +104,6 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:color';
-@import '../../../variables';
-
 .texas-hold-em-actions {
     button {
         span:not(:last-child) {

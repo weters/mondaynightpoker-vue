@@ -27,8 +27,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables.scss';
-
 .page-header {
     display: flex;
     justify-content: space-between;

@@ -55,7 +55,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables';
     div.chip-stack {
         --offset: 3px;
         --size: 14px;

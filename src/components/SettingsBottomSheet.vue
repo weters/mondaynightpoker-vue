@@ -65,8 +65,6 @@ export default {
 
 <style lang="scss">
 @use 'sass:color';
-@import '../variables';
-
 .bottom-sheet-backdrop {
     position: fixed;
     inset: 0;

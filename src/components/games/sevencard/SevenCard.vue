@@ -33,7 +33,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables';
     .seven-card {
         div.board {
             width: min-content;

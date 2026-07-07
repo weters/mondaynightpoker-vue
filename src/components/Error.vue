@@ -23,8 +23,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables';
-
     div.error {
         p {
             border-left:  3px solid $error;

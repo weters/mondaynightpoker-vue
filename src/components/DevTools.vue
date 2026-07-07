@@ -40,7 +40,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
 .dev-tools {
     border-radius:    5px;
     background-color: $peach;

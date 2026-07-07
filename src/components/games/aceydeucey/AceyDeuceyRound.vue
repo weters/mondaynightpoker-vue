@@ -60,8 +60,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .acey-deucey-round {
     .metadata {
         display: flex;

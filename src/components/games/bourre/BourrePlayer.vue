@@ -93,8 +93,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
-
 div.bourre-player {
     border: 1px solid $border-color;
     padding: $spacing-medium;

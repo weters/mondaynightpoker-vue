@@ -32,8 +32,6 @@ export default {
 <style lang="scss">
 @use 'sass:color';
 @import url("https://use.typekit.net/ukr2lpr.css");
-@import './variables';
-
 * {
     padding:                  0;
     margin:                   0;

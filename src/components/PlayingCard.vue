@@ -101,8 +101,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables.scss';
-
 .playing-card {
     position:       relative;
     width:          100%;

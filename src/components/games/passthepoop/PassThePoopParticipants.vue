@@ -30,8 +30,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables.scss';
-
     div.ptp-participants {
         $margin:         calc(#{$spacing} / -2);
         display:         flex;

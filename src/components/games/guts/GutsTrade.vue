@@ -129,8 +129,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .guts-trade {
     text-align: center;
 

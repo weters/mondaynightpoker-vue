@@ -41,8 +41,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../variables.scss';
-
 div.game-selector {
     h3 {
         @include section-header;

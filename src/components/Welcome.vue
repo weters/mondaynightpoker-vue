@@ -71,8 +71,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables.scss';
-
 .welcome {
     .hero {
         background:      url(../assets/poker_smoke.jpeg) center;

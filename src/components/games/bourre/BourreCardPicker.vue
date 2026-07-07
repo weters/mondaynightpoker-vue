@@ -92,8 +92,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables';
-
     .hand {
         display: flex;
         gap: 3px;

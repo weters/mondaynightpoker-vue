@@ -99,8 +99,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .ptp-participant {
     display:        flex;
     flex-direction: column;

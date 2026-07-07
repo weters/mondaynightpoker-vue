@@ -113,8 +113,6 @@ export default {
 </script>
 
 <style lang="scss" . scoped>
-@import '../../../variables.scss';
-
 div.acey-deucey-game {
     border:                1px solid $border-color;
     display:               grid;

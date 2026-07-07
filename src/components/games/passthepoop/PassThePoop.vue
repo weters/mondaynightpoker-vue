@@ -135,8 +135,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables';
-
     .pass-the-poop {
         .pot-row {
             display: flex;

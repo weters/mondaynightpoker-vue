@@ -68,8 +68,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables.scss';
-
     div.loading {
         position: relative;
         width:    40px;

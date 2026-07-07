@@ -13,8 +13,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables.scss';
-
 $size: 10px;
 span.player-status {
     display:          inline-block;

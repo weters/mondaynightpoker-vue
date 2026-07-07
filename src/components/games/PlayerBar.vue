@@ -115,8 +115,6 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:color';
-@import '../../variables';
-
 .player-bar {
     background:              rgba(255, 255, 255, 0.15);
     backdrop-filter:         blur(10px);

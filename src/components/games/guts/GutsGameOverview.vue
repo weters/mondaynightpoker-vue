@@ -130,8 +130,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
-
 div.guts-game-overview {
     text-align: center;
     margin-bottom: $spacing;

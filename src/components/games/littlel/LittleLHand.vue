@@ -67,8 +67,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables.scss';
-
     div.hand {
         display: flex;
         gap: 3px;

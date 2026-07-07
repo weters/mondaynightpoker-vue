@@ -101,8 +101,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../variables';
-
 .edit-player {
     border: 1px solid $border-color;
     padding: $spacing;

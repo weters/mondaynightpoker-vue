@@ -320,8 +320,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables.scss';
-
     $max-width: 599px;
 
     div.seven-card-participant {

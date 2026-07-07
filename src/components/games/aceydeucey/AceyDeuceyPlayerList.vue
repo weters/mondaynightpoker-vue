@@ -24,7 +24,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
 .acey-deucey-player-list {
     display: flex;
     flex-wrap: wrap;

@@ -115,8 +115,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables.scss';
-
 div.poker-table-player {
     $parent: &;
     padding: $spacing-medium;

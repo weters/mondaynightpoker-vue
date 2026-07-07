@@ -16,7 +16,14 @@ export default defineConfig({
     preprocessorOptions: {
       scss: {
         api: 'modern-compiler',
-        silenceDeprecations: ['legacy-js-api', 'import'],
+        // every component style block gets the design tokens/mixins injected;
+        // variables.scss itself must not import itself
+        additionalData(source, filename) {
+          if (filename.endsWith('variables.scss')) {
+            return source
+          }
+          return '@use "@/variables" as *;\n' + source
+        },
       },
     },
   },

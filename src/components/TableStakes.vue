@@ -61,8 +61,6 @@ export default {
 </script>
 
 <style scoped lang="scss">
-@import '../variables.scss';
-
 div.table-stake {
     @include card;
     padding: $spacing;

@@ -25,8 +25,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .poker-pots {
     display: flex;
     flex-wrap: wrap;

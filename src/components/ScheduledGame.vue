@@ -67,8 +67,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables';
-
     .scheduled-game {
         background-color: white;
         border-radius:    $border-radius;

@@ -97,8 +97,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .folded-text {
     color: $text-color-light;
     font-style: italic;

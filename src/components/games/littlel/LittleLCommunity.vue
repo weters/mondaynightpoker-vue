@@ -20,7 +20,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables';
     .community {
         max-width: 150px;
         display: grid;

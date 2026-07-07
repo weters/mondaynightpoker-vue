@@ -43,8 +43,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables.scss';
-
 footer {
     color: $text-color-light;
     font-size: 0.8em;

@@ -13,8 +13,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables.scss';
-
 div.playing-card-back {
     border-radius: $border-radius-card;
     position:      relative;

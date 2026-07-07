@@ -95,8 +95,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
-
 div.acey-deucey {
     .acey-deucey-actions {
         padding: $spacing-medium 0;

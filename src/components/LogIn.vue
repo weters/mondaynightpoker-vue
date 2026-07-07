@@ -74,8 +74,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
-
 form .loading {
     position: absolute;
     bottom:   $spacing-small;

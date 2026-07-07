@@ -191,8 +191,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
-
 .player-profile {
     > div {
         @include page-width;

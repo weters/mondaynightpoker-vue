@@ -27,7 +27,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables.scss';
     div.bourre-game-overview {
         & > * {
             margin: 0 auto;

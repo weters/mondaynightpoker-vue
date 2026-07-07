@@ -99,8 +99,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables.scss';
-
     $max-width: 599px;
 
     div.little-l-participant {

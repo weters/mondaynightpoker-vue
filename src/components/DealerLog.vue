@@ -32,8 +32,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables';
-
     .dealer-log {
         h3 {
             @include section-header;

@@ -17,7 +17,6 @@
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
     div.tricks {
         display: grid;
         grid-template-columns: repeat(5, 1fr);

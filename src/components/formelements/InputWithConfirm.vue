@@ -88,8 +88,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../variables';
-
 label {
     &:first-child {
         margin-bottom: -1px;

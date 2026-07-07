@@ -125,8 +125,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../variables';
-
     .poker-table-player-list {
         h3 {
             @include section-header;

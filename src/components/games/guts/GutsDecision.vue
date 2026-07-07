@@ -73,8 +73,6 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:color';
-@import '../../../variables';
-
 .guts-decision {
     text-align: center;
 

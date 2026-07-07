@@ -139,8 +139,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .bet-chips {
     display: flex;
     flex-direction: column;

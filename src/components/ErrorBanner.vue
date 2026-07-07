@@ -25,8 +25,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
-
 .error {
     border-radius:    $border-radius 0 0 $border-radius;
     border-left:      3px solid $error;

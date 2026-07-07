@@ -43,8 +43,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .poker-pot {
     background-color: $gray;
     padding: $spacing-medium;

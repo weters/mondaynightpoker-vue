@@ -112,8 +112,6 @@ export default {
 
 <style lang="scss" scoped>
 @use 'sass:color';
-@import '../variables';
-
 .confirm-button {
     transition: background-color $transition-fast, color $transition-fast;
 

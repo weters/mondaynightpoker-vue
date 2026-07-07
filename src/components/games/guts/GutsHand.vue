@@ -91,8 +91,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .guts-hand {
     display: flex;
     gap: 4px;

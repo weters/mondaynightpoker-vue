@@ -15,7 +15,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../variables.scss';
     span {
         $size: 16px;
         display: inline-block;

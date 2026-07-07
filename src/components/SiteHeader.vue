@@ -42,8 +42,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
-
 header {
     background-color: #011f26;
     color:            white;

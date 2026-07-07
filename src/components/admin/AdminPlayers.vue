@@ -85,8 +85,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../variables';
-
 @media (max-width: #{$media-small-table-width}) {
     table.standard td:nth-child(1)::before { content: 'ID' }
     table.standard td:nth-child(2)::before { content: 'Email' }

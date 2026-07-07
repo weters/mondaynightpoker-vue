@@ -53,8 +53,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
-
 div.acey-deucey-player {
     border:              0 solid $border-color;
     border-bottom-width: 3px;

@@ -102,8 +102,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .texas-hold-em {
     .the-community {
         max-width: 500px;

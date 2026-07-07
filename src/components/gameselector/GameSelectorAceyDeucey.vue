@@ -51,8 +51,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../variables.scss';
-
 div.buttons {
     margin: $spacing 0 0;
 }

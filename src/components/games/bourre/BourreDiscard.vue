@@ -125,8 +125,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .bourre-discard {
     display:         flex;
     align-items:     center;

@@ -62,8 +62,6 @@
 </script>
 
 <style scoped lang="scss">
-    @import '../variables';
-
     .text-playing-card {
         border: 1px solid $border-color;
         border-radius: $border-radius;

@@ -84,8 +84,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables';
-
     .bourre-hand {
         display: flex;
         align-items: center;

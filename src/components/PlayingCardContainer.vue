@@ -42,8 +42,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables.scss';
-
 div.playing-card-container {
     perspective:      200px;
     width:            100%;

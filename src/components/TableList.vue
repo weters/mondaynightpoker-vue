@@ -204,8 +204,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
-
 .section-label {
     @include section-header;
 }

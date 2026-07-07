@@ -25,8 +25,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
-
 div.texas-hold-em-hole-card {
     &.selected {
         position: relative;

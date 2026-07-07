@@ -20,7 +20,6 @@
 </script>
 
 <style lang="scss" scoped>
-    @import '../../../variables';
     .little-l-participants {
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

@@ -18,8 +18,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../variables';
-
 .notification {
     border-radius:    $border-radius 0 0 $border-radius;
     border-left:      3px solid $green;

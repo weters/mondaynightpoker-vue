@@ -26,8 +26,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables.scss';
-
 div.texas-hold-em-participants {
     & > div.container {
         display: grid;

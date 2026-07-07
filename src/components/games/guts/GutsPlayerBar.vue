@@ -100,8 +100,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '../../../variables';
-
 .game-over-message {
     text-align: center;
     font-size: 1.2em;
