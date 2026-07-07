@@ -1,4 +1,5 @@
 import store from './store'
+import { clearStoredUser } from './session'
 
 const baseURL = import.meta.env.VITE_API_URL || 'http://localhost:5080'
 const withAuthorization = true
@@ -94,6 +95,11 @@ class Client {
         return this._get(`/player/auth/${jwt}`)
     }
 
+    // refreshAuth exchanges the current (still valid) token for a fresh one
+    refreshAuth() {
+        return this._post(`/player/auth/refresh`, null, withAuthorization)
+    }
+
     getServerInfo() {
         return this._get(`/health`)
     }
@@ -155,6 +161,13 @@ class Client {
         }
 
         return fetch(`${baseURL}${path}`, init).then(async res => {
+            if (res.status === 401 && withAuthorization) {
+                // the session is no longer valid (e.g., expired token); force a fresh login
+                clearStoredUser()
+                window.location.assign('/login?redirect=' + encodeURIComponent(window.location.pathname + window.location.search))
+                throw new Error('session expired')
+            }
+
             if (res.status >= 400) {
                 const respObj = await res.json()
                 throw new Error(respObj.message || res.statusText)
