@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mondaynightpoker-vue
+  labels:
+    app: mondaynightpoker-vue
+    type: frontend
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - mondaynight.bid
+      secretName: tls-mondaynightpoker
+  rules:
+    - host: mondaynight.bid
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: mondaynightpoker-vue
+                port:
+                  number: 80
