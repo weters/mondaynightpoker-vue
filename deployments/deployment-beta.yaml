@@ -22,6 +22,7 @@ spec:
       containers:
         - name: mondaynightpoker-vue-beta
           image: ghcr.io/weters/mondaynightpoker-vue:beta
+          imagePullPolicy: Always
           readinessProbe:
             httpGet:
               port: 80
