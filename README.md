@@ -42,13 +42,13 @@ UI, and Pinia store, all registered in [`src/games/index.js`](src/games/index.js
 
 | Game | Slug | Notes |
 | --- | --- | --- |
-| 🃏 **Acey Deucey** | `acey-deucey` | In-between / red dog |
-| 🇫🇷 **Bourré** | `bourre` | Trick-taking, pot-carrying |
-| 😬 **Guts** | `guts` | 2-card guts with trade & declare |
-| ♠️ **Texas Hold'em** | `texas-hold-em` | Community-card poker |
-| 7️⃣ **Seven Card** | `seven-card` | Seven-card stud |
-| 🇱 **Little L** | `little-l` | Community-card variant |
-| 💩 **Pass the Poop** | `pass-the-poop` | Last-card-standing elimination |
+| **Acey Deucey** | `acey-deucey` | In-between / red dog |
+| **Bourré** | `bourre` | Trick-taking, pot-carrying |
+| **Guts** | `guts` | 2-card guts with trade & declare |
+| **Texas Hold'em** | `texas-hold-em` | Community-card poker |
+| **Seven Card** | `seven-card` | Seven-card stud |
+| **Little L** | `little-l` | Community-card variant |
+| **Pass the Poop** | `pass-the-poop` | Last-card-standing elimination |
 
 Game slugs are shared with the backend's game factory — the two sides stay in sync via matching tests
 on each repo, so adding a game means adding it in both places.
