@@ -121,7 +121,7 @@ jobs:
           chmod 600 ~/.kube/config
       - name: Deploy to beta
         run: |
-          kubectl delete ingress mondaynightpoker-vue --ignore-not-found
+          kubectl apply -f deployments/ingress.yaml
           kubectl apply -f deployments/deployment-beta.yaml
           kubectl apply -f deployments/service.yaml
           kubectl apply -f deployments/ingress-beta.yaml
