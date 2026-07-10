@@ -77,16 +77,45 @@
 
         .card {
             position: relative;
+            transition: transform $dur-fast $ease-spring, box-shadow $dur-fast $ease-spring;
+            cursor: pointer;
 
-            &.selected::after {
-                border-radius:    $border-radius;
-                content:          '';
-                position:         absolute;
-                top:              0;
-                left:             0;
-                right:            0;
-                bottom:           0;
-                background-color: rgba($red, 0.5);
+            // Selected == marked to trade: the card lifts, gets a gold ring, and
+            // shows an ember cross so the intent is unmistakable (not colour alone).
+            &.selected {
+                z-index: $z-raised;
+                transform: translateY(-10%);
+                box-shadow: $shadow-card-lift;
+
+                &::before {
+                    content: '';
+                    position: absolute;
+                    inset: 0;
+                    border-radius: $radius-card;
+                    background: rgba(#000, 0.45);
+                    outline: 2px solid $gold;
+                    outline-offset: -2px;
+                    z-index: 2;
+                }
+
+                &::after {
+                    content: '\2715';
+                    position: absolute;
+                    top: 2px;
+                    right: 6px;
+                    color: $accent;
+                    font-size: 1.4em;
+                    font-weight: $fw-bold;
+                    z-index: 3;
+                }
+            }
+
+            @media (prefers-reduced-motion: reduce) {
+                transition: box-shadow $dur-fast linear;
+
+                &.selected {
+                    transform: none;
+                }
             }
         }
     }

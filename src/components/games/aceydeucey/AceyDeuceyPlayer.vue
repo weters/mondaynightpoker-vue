@@ -59,24 +59,51 @@ export default {
 
 <style lang="scss" scoped>
 div.acey-deucey-player {
-    border:              0 solid $border-color;
-    border-bottom-width: 3px;
-    padding:             $spacing-medium;
-    margin:              $spacing-medium;
+    background:     $felt-rail;
+    border:         1px solid $felt-hairline;
+    border-radius:  $radius-sm;
+    box-shadow:     $shadow-felt-sm;
+    color:          $on-felt;
+    padding:        $space-2 $space-3;
+    min-width:      120px;
+    transition:     box-shadow $dur-normal $ease-standard, border-color $dur-normal $ease-standard;
 
     &.is-turn {
-        border-bottom-color: $primary;
+        @include current-turn;
     }
 
     p {
         margin: 0;
     }
 
+    p.display-name {
+        font-size:     $fs-sm;
+        font-weight:   $fw-semibold;
+        color:         $on-felt;
+        white-space:   nowrap;
+        overflow:      hidden;
+        text-overflow: ellipsis;
+    }
+
+    div.balance {
+        @include numeric;
+        color:      $on-felt-muted;
+        font-size:  $fs-xs;
+        margin-top: 2px;
+    }
+
     &:not(.is-connected) {
         p.display-name strong {
-            font-weight: normal;
+            font-weight: $fw-regular;
             font-style:  italic;
+            color:       $on-felt-faint;
         }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    div.acey-deucey-player {
+        transition: box-shadow $dur-fast linear, border-color $dur-fast linear;
     }
 }
 </style>

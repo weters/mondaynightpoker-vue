@@ -58,31 +58,52 @@ export default {
 
 <style lang="scss" scoped>
 .poker-pot {
-    background-color: $gray;
-    padding: $spacing-medium;
-    border-radius: $border-radius;
+    display:         flex;
+    flex-direction:  column;
+    align-items:     center;
+    gap:             $space-2;
 
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: $spacing-medium;
+    min-width:       120px;
+    padding:         $space-3 $space-4;
+    border-radius:   $radius-md;
+    background:      radial-gradient(120% 100% at 50% 0%, $felt-surface 0%, $felt-base 100%);
+    border:          1px solid $felt-hairline;
+    box-shadow:      inset 0 0 50px rgba(#000, 0.35), $shadow-felt-sm;
+    color:           $on-felt;
 
     div.pot-details {
-        width: 100%;
+        width:      100%;
+        text-align: center;
+
         strong {
-            font-weight: normal;
+            display:        block;
+            font-weight:    $fw-semibold;
+            font-size:      $fs-2xs;
+            text-transform: uppercase;
+            letter-spacing: $tracking-caps;
+            color:          $on-felt-muted;
         }
 
         ul {
-            font-size: 0.8em;
-            margin: 0;
-            padding: 0;
-            list-style: none;
+            font-size:   $fs-2xs;
+            color:       $on-felt-faint;
+            margin:      $space-1 0 0;
+            padding:     0;
+            list-style:  none;
+            line-height: $lh-snug;
         }
     }
 
+    // The pot figure is gold, tabular, and softly lit — the table's heartbeat.
     .llp-chip-stack {
         margin-top: auto;
+
+        :deep(.amount) {
+            @include numeric;
+            font-size:   $fs-xl;
+            color:       $gold-soft;
+            text-shadow: 0 0 12px rgba($gold, 0.4);
+        }
     }
 }
 </style>

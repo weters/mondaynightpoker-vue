@@ -1,6 +1,9 @@
 <template>
-  <div class="poker-table big-content">
-    <div>
+  <div
+    class="poker-table big-content"
+    :class="{ 'in-game': game }"
+  >
+    <div class="poker-table-surface">
       <div class="table-header">
         <h2><span class="table-name">{{ tableName }}</span></h2>
         <button
@@ -253,18 +256,32 @@ export default {
 <style lang="scss" scoped>
 .poker-table {
 
+    // The active game sits on the dark "night" felt; pre-game chrome stays light.
+    // .poker-table-surface is the sheet that App.vue paints white by default;
+    // here we repaint it as felt (padding/radius/width come from the global rule).
+    &.in-game > .poker-table-surface {
+        background:
+            radial-gradient(circle at 1px 1px, rgba(#fff, 0.015) 1px, transparent 0),
+            radial-gradient(120% 80% at 50% 0%, $mnp-felt-800 0%, $felt-base 70%),
+            $felt-base;
+        background-size: 4px 4px, auto, auto;
+        color: $on-felt;
+        box-shadow: $shadow-felt-lg;
+    }
+
     .table-header {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: $spacing + $spacing-medium;
         padding-bottom: $spacing;
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid $hairline;
 
         h2 {
             margin: 0;
-            font-size: 1.5rem;
-            font-weight: 600;
+            font-size: $fs-xl;
+            font-weight: $fw-bold;
+            letter-spacing: $tracking-tight;
             color: $secondary;
 
             .table-name {
@@ -279,25 +296,60 @@ export default {
             display: flex;
             align-items: center;
             gap: $spacing-small;
+            @include tap-target;
             padding: $spacing-medium $spacing;
-            background: white;
-            border: 1px solid $border-color;
-            border-radius: $border-radius;
+            background: $surface-card;
+            border: 1px solid $hairline;
+            border-radius: $radius-md;
             color: $primary;
-            font-weight: 500;
+            font-weight: $fw-semibold;
             cursor: pointer;
-            transition: all $transition-fast;
+            transition: background $dur-fast $ease-standard, color $dur-fast $ease-standard,
+                        border-color $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard;
 
             &:hover {
                 background: $primary;
-                color: white;
+                color: $accent-ink;
                 border-color: $primary;
                 box-shadow: $shadow-md;
+            }
+
+            &:focus-visible {
+                @include focus-ring;
             }
 
             .mdi-icon {
                 width: 1.1em;
                 height: 1.1em;
+            }
+        }
+    }
+
+    // ---- In-game (felt) overrides ----
+    &.in-game {
+        .table-header {
+            border-bottom-color: $felt-hairline;
+
+            h2 .table-name {
+                background: none;
+                -webkit-text-fill-color: $gold-soft;
+                color: $gold-soft;
+            }
+
+            .invite-button {
+                background: $felt-rail;
+                border-color: $felt-hairline;
+                color: $on-felt;
+
+                &:hover {
+                    background: $accent;
+                    border-color: $accent;
+                    color: $accent-ink;
+                }
+
+                &:focus-visible {
+                    @include focus-ring-on-felt;
+                }
             }
         }
     }
@@ -348,8 +400,8 @@ export default {
         }
 
         p.details {
-            font-size: 0.85em;
-            color: $text-color-light;
+            font-size: $fs-sm;
+            color: $ink-muted;
             margin: $spacing-medium 0 0;
         }
 
@@ -382,7 +434,7 @@ export default {
 
         p {
             margin: 0 0 $spacing-medium;
-            color: $text-color-light;
+            color: $ink-muted;
         }
 
         .loading {
@@ -437,33 +489,43 @@ export default {
     }
 
     .pt-scheduled-game {
-        border-radius:       0 $border-radius-large 0 0;
+        border-radius:       0 $radius-lg 0 0;
         box-shadow:          $shadow-lg;
         position:            fixed;
         bottom:              0;
         left:                0;
-        z-index:             10;
+        z-index:             $z-raised;
         max-width:           500px;
-        border:              1px solid $primary;
+        border:              1px solid $accent;
         border-left-width:   0;
         border-bottom-width: 0;
 
         @media (max-width: $mobile-max) {
             left:              $spacing + $spacing-medium;
             right:             $spacing + $spacing-medium;
-            border-radius:     $border-radius-large $border-radius-large 0 0;
+            border-radius:     $radius-lg $radius-lg 0 0;
             max-width:         none;
             border-left-width: 1px;
         }
     }
 
     .scheduled-game-enter-active, .scheduled-game-leave-active {
-        transition: all 200ms ease-in;
+        transition: transform $dur-slow $ease-spring, opacity $dur-slow $ease-standard;
     }
 
     .scheduled-game-enter-from, .scheduled-game-leave-to {
         opacity:   0;
         transform: translateY(100%);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .scheduled-game-enter-active, .scheduled-game-leave-active {
+            transition: opacity $dur-fast linear;
+        }
+
+        .scheduled-game-enter-from, .scheduled-game-leave-to {
+            transform: none;
+        }
     }
 
     div.player-settings {
@@ -496,8 +558,8 @@ export default {
             padding: $spacing;
 
             p.details {
-                font-size: 0.85em;
-                color: $text-color-light;
+                font-size: $fs-sm;
+                color: $ink-muted;
                 margin: 0 0 $spacing-medium;
             }
 

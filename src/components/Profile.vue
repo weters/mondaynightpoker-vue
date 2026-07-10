@@ -88,64 +88,66 @@
 
       <loading v-if="loading" />
 
-      <h3>Danger Zone</h3>
+      <section class="danger-zone">
+        <h3>Danger Zone</h3>
 
-      <h4>Delete Your Account*</h4>
+        <h4>Delete Your Account*</h4>
 
-      <p>
-        Deleting your account is irreversible. You may create a new account in the future, but all your current
-        information will be lost.
-      </p>
-
-      <form
-        v-if="confirmDelete"
-        @submit.prevent="deleteAccount"
-      >
-        <p class="confirm">
-          Are you sure you want to delete your account? Type your email address to confirm.
+        <p>
+          Deleting your account is irreversible. You may create a new account in the future, but all your current
+          information will be lost.
         </p>
-        <fancy-input
-          v-model="deleteConfirmEmail"
-          label="Email"
-          type="text"
-          autocomplete="off"
-          required
-        />
 
-        <div class="buttons">
-          <button
-            type="button"
-            class="secondary"
-            @click="confirmDelete = false; deleteConfirmEmail = ''"
-          >
-            Cancel
-          </button>
+        <form
+          v-if="confirmDelete"
+          @submit.prevent="deleteAccount"
+        >
+          <p class="confirm">
+            Are you sure you want to delete your account? Type your email address to confirm.
+          </p>
+          <fancy-input
+            v-model="deleteConfirmEmail"
+            label="Email"
+            type="text"
+            autocomplete="off"
+            required
+          />
+
+          <div class="buttons">
+            <button
+              type="button"
+              class="secondary"
+              @click="confirmDelete = false; deleteConfirmEmail = ''"
+            >
+              Cancel
+            </button>
+            <button
+              type="button"
+              class="destructive"
+              :disabled="!canDeleteAccount"
+            >
+              Delete Your Account
+            </button>
+          </div>
+        </form>
+        <div
+          v-else
+          class="delete-your-account"
+        >
           <button
             type="button"
             class="destructive"
-            :disabled="!canDeleteAccount"
+            @click="confirmDelete=true"
           >
             Delete Your Account
           </button>
         </div>
-      </form>
-      <div
-        v-else
-        class="delete-your-account"
-      >
-        <button
-          type="button"
-          class="destructive"
-          @click="confirmDelete=true"
-        >
-          Delete Your Account
-        </button>
-      </div>
 
-      <p class="note">
-        *In order to keep table balances consistent, we maintain the user record but replace your
-        email, display name, and password with a random string.
-      </p>
+        <p class="note">
+          *In order to keep table balances consistent, we maintain the user record but replace your
+          email, display name, and password with a random string.
+        </p>
+      </section>
     </div>
   </div>
 </template>
@@ -237,19 +239,50 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h2 {
+    margin-bottom: $space-5;
+}
+
+form.inner {
+    padding-bottom: $space-6;
+    margin-bottom:  $space-6;
+    border-bottom:  1px solid $hairline;
+
+    h3 {
+        margin-bottom: $space-4;
+    }
+}
+
 div.success {
-    color: $primary;
+    color:         $positive;
+    font-weight:   $fw-medium;
+    margin-bottom: $space-4;
 }
 
 p.confirm {
-    color: $red;
+    color: $negative;
 }
 
 div.delete-your-account {
-    margin-bottom: $spacing;
+    margin-bottom: $space-5;
 }
 
 div.buttons {
-    margin-bottom: $spacing;
+    margin-bottom: $space-5;
+}
+
+.danger-zone {
+    h3 {
+        color: $negative;
+    }
+
+    h4 {
+        margin-bottom: $space-2;
+        font-size:     $fs-base;
+    }
+
+    p.note {
+        margin-top: $space-5;
+    }
 }
 </style>

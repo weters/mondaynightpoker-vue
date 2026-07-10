@@ -40,7 +40,7 @@
                 </td>
                 <td>{{ relativeDate(table.created) }}</td>
                 <td :class="{balance: true, negative: table.balance < 0, positive: table.balance > 0 }">
-                  {{ formatAmount(table.balance) }}
+                  <span class="amount">{{ formatAmount(table.balance) }}</span>
                 </td>
                 <td class="graph">
                   <toggle
@@ -63,8 +63,20 @@
           v-else
           class="empty-state"
         >
-          <p>You haven't joined any tables yet.</p>
-          <p>Create a new table to get started playing with your friends!</p>
+          <mdi-icon
+            class="empty-icon"
+            :icon="mdiCardsPlayingOutline"
+          />
+          <h3>No tables yet</h3>
+          <p class="note">
+            Create a new table to get started playing with your friends!
+          </p>
+          <router-link
+            to="/table/create"
+            class="button"
+          >
+            Create a Table
+          </router-link>
         </div>
       </div>
 
@@ -101,16 +113,16 @@
 
         <div class="stats-cards">
           <div class="stat-card">
-            <span class="stat-value">{{ profile.stats.tablesJoined }}</span>
+            <span class="stat-value amount">{{ profile.stats.tablesJoined }}</span>
             <span class="stat-label">Tables Joined</span>
           </div>
           <div class="stat-card">
-            <span class="stat-value">{{ profile.stats.gamesPlayed }}</span>
+            <span class="stat-value amount">{{ profile.stats.gamesPlayed }}</span>
             <span class="stat-label">Games Played</span>
           </div>
           <div class="stat-card">
             <span
-              class="stat-value"
+              class="stat-value amount"
               :class="{ negative: profile.stats.totalWinnings < 0 }"
             >{{ formatAmount(profile.stats.totalWinnings) }}</span>
             <span class="stat-label">Total Winnings</span>
@@ -147,7 +159,7 @@
                   class="text-right"
                   :class="{ negative: amount < 0, positive: amount > 0 }"
                 >
-                  {{ formatAmount(amount) }}
+                  <span class="amount">{{ formatAmount(amount) }}</span>
                 </td>
               </tr>
             </tbody>
@@ -167,8 +179,10 @@
 </template>
 
 <script>
+import {mdiCardsPlayingOutline} from "@mdi/js"
 import Loading from "@/components/Loading.vue"
 import ErrorMessage from "@/components/ErrorMessage.vue"
+import MdiIcon from "@/components/MdiIcon.vue"
 import client from "@/client"
 import balance from "../mixins/balance"
 import ProfileGraph from "./ProfileGraph.vue"
@@ -177,10 +191,11 @@ import AdminPagination from "@/components/admin/AdminPagination.vue"
 
 export default {
     name: "TableList",
-    components: {AdminPagination, Toggle, ProfileGraph, ErrorMessage, Loading},
+    components: {AdminPagination, Toggle, ProfileGraph, ErrorMessage, Loading, MdiIcon},
     mixins: [balance],
     data() {
         return {
+            mdiCardsPlayingOutline,
             loading: true,
             tables: null,
             error: null,
@@ -281,9 +296,9 @@ export default {
 
 .table-card {
     @include card;
-    padding: $spacing;
+    padding: $space-5;
 
-    @media (max-width: #{$media-small-table-width}) {
+    @media (max-width: $bp-phone) {
         td:nth-child(1)::before { content: 'Name' }
         td:nth-child(2)::before { content: 'Created' }
         td:nth-child(3)::before { content: 'Balance' }
@@ -292,21 +307,34 @@ export default {
 }
 
 .admin-pagination {
-    margin-top: $spacing;
+    margin-top: $space-5;
 }
 
 .empty-state {
     @include card;
-    padding: $spacing * 1.5;
-    text-align: center;
-    color: $text-color-light;
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    padding:        $space-8 $space-5;
+    text-align:     center;
 
-    p {
-        margin: 0 0 $spacing-medium 0;
+    .empty-icon {
+        width:         56px;
+        height:        56px;
+        color:         $ink-faint;
+        margin-bottom: $space-4;
+    }
 
-        &:last-child {
-            margin-bottom: 0;
-        }
+    h3 {
+        margin:        0 0 $space-2 0;
+        border-bottom: none;
+        padding-bottom: 0;
+        color:         $ink;
+    }
+
+    .note {
+        margin: 0 0 $space-5 0;
+        max-width: 40ch;
     }
 }
 
@@ -316,13 +344,10 @@ table.standard {
     .balance {
         text-align: right;
 
-        &.negative {
-            color: $red;
-        }
+        .amount { @include numeric; }
 
-        &.positive {
-            color: $light-green;
-        }
+        &.negative { color: $negative; }
+        &.positive { color: $positive; }
     }
 
     .graph {
@@ -333,7 +358,7 @@ table.standard {
         justify-content: center;
     }
 
-    @media (max-width: #{$media-small-table-width}) {
+    @media (max-width: $bp-phone) {
         .balance, .graph {
             text-align: left;
         }
@@ -362,102 +387,124 @@ table label {
 }
 
 .columns {
-    @media (min-width: 1000px) {
-        display: grid;
+    @media (min-width: $bp-desktop) {
+        display:      grid;
         grid-template-columns: 1fr 1fr;
-        grid-gap: $spacing;
-        align-items: start;
+        grid-gap:     $space-5;
+        align-items:  start;
     }
 }
 
 .tables-section, .profile-section {
-    @media (max-width: 999px) {
-        margin-bottom: $spacing;
+    @media (max-width: #{$bp-desktop - 1px}) {
+        margin-bottom: $space-5;
     }
 }
 
 .profile-section {
     h4 {
         @include section-header;
-        font-size: 1em;
+        font-size: $fs-base;
     }
 
     .time-filter {
-        display: flex;
-        align-items: center;
-        gap: $spacing-small;
-        margin-bottom: $spacing;
-        flex-wrap: wrap;
+        display:       flex;
+        align-items:   center;
+        gap:           $space-2;
+        margin-bottom: $space-5;
+        flex-wrap:     wrap;
 
         button {
             &.secondary.active {
                 background-color: $primary;
-                color: white;
+                border-color:      $primary;
+                color:            #fff;
             }
         }
 
         .date-inputs {
-            display: flex;
-            gap: $spacing-small;
-            margin-left: $spacing-small;
+            display:      flex;
+            gap:          $space-2;
+            margin-left:  $space-2;
 
             input {
-                padding: 7px 14px;
-                border: 1px solid $border-color;
-                border-radius: $border-radius-small;
-                font-size: 1em;
+                padding:       10px 14px;
+                border:        1px solid $hairline;
+                border-radius: $radius-sm;
+                background:    $surface-card;
+                color:         $ink;
+                font-size:     $fs-base;
+                font-family:   $font-text;
+
+                &:focus-visible {
+                    @include focus-ring;
+                }
+
+                &:focus {
+                    border-color: $primary;
+                    box-shadow:   0 0 0 3px rgba($primary, 0.15);
+                }
+            }
+        }
+
+        @media (max-width: $bp-phone) {
+            .date-inputs {
+                margin-left: 0;
+                width:       100%;
+
+                input { flex: 1 1 0; min-width: 0; }
             }
         }
     }
 
     .stats-cards {
-        display: grid;
+        display:               grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: $spacing-medium;
-        margin-bottom: $spacing;
+        gap:                   $space-3;
+        margin-bottom:         $space-5;
 
         .stat-card {
             @include card;
-            padding: $spacing;
-            display: flex;
+            padding:        $space-5;
+            display:        flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            align-items:    center;
+            text-align:     center;
 
             .stat-value {
-                font-size: 1.5em;
-                font-weight: 600;
-                color: $primary;
+                @include numeric;
+                font-size:   $fs-lg;
+                font-weight: $fw-semibold;
+                color:       $primary;
 
                 &.negative {
-                    color: $error;
+                    color: $negative;
                 }
             }
 
             .stat-label {
-                font-size: 0.85em;
-                color: $text-color-light;
-                margin-top: $spacing-small;
+                font-size:     $fs-xs;
+                color:         $ink-muted;
+                margin-top:    $space-1;
+                text-transform: uppercase;
+                letter-spacing: $tracking-wide;
             }
         }
     }
 
     .winnings-by-game {
-        margin-bottom: $spacing;
+        margin-bottom: $space-5;
 
         .text-right {
             text-align: right;
+
+            .amount { @include numeric; }
         }
 
-        .negative {
-            color: $red;
-        }
+        .negative { color: $negative; }
+        .positive { color: $positive; }
 
-        .positive {
-            color: $light-green;
-        }
-
-        @media (max-width: #{$media-small-table-width}) {
+        @media (max-width: $bp-phone) {
             td:nth-child(1)::before { content: 'Game' }
             td:nth-child(2)::before { content: 'Games' }
             td:nth-child(3)::before { content: 'Winnings' }
@@ -469,7 +516,7 @@ table label {
     }
 
     .balance-graph {
-        margin-bottom: $spacing;
+        margin-bottom: $space-5;
     }
 }
 </style>

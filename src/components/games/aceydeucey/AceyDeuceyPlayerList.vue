@@ -30,8 +30,10 @@ export default {
 
 <style lang="scss" scoped>
 .acey-deucey-player-list {
-    display: flex;
-    flex-wrap: wrap;
-    margin: -1 * $spacing-medium;
+    display:         flex;
+    flex-wrap:       wrap;
+    justify-content: center;
+    gap:             $space-2;
+    margin-bottom:   $spacing;
 }
 </style>

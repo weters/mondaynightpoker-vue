@@ -19,4 +19,11 @@
 </script>
 
 <style lang="scss" scoped>
+    :deep(.amount) {
+        @include numeric;
+        font-size:   $fs-xl;
+        font-weight: $fw-bold;
+        color:       $gold-soft;
+        text-shadow: 0 0 12px rgba($gold, 0.4);
+    }
 </style>

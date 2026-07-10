@@ -132,16 +132,44 @@ export default {
 
 <style lang="scss" scoped>
 .edit-player {
-    border: 1px solid $border-color;
-    padding: $spacing;
-    border-radius: $border-radius;
-    margin-bottom: $spacing;
+    @include card;
+    padding:       $space-5;
+    margin-bottom: $space-5;
 
     table {
+        width: 100%;
+
         th {
-            border-width: 1px;
-            text-align: left;
+            text-align:  left;
+            color:       $ink-muted;
+            font-weight: $fw-semibold;
+            width:       35%;
+            white-space: nowrap;
         }
+
+        @media (max-width: $bp-phone) {
+            tr, th, td {
+                display: block;
+                width:   100%;
+            }
+
+            th {
+                padding:        $space-3 0 $space-1 0;
+                font-size:      $fs-xs;
+                text-transform: uppercase;
+                letter-spacing: $tracking-wide;
+            }
+
+            td {
+                padding:     0 0 $space-3 0;
+                text-align:  left;
+                white-space: normal;
+            }
+        }
+    }
+
+    > button.secondary {
+        margin-top: $space-2;
     }
 }
 </style>

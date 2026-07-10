@@ -110,7 +110,12 @@ export default {
 
 <style lang="scss" scoped>
 .folded-text {
-    color: $text-color-light;
-    font-style: italic;
+    display:       inline-block;
+    padding:       $space-1 $space-3;
+    background:    rgba(#000, 0.25);
+    border-radius: $radius-pill;
+    color:         $on-felt-faint;
+    font-style:    italic;
+    font-size:     $fs-sm;
 }
 </style>

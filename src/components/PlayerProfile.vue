@@ -40,16 +40,16 @@
 
         <div class="stats-cards">
           <div class="stat-card">
-            <span class="stat-value">{{ profile.stats.tablesJoined }}</span>
+            <span class="stat-value amount">{{ profile.stats.tablesJoined }}</span>
             <span class="stat-label">Tables Joined</span>
           </div>
           <div class="stat-card">
-            <span class="stat-value">{{ profile.stats.gamesPlayed }}</span>
+            <span class="stat-value amount">{{ profile.stats.gamesPlayed }}</span>
             <span class="stat-label">Games Played</span>
           </div>
           <div class="stat-card">
             <span
-              class="stat-value"
+              class="stat-value amount"
               :class="{ negative: profile.stats.totalWinnings < 0 }"
             >{{ formatAmount(profile.stats.totalWinnings) }}</span>
             <span class="stat-label">Total Winnings</span>
@@ -86,7 +86,7 @@
                   class="text-right"
                   :class="{ negative: amount < 0, positive: amount > 0 }"
                 >
-                  {{ formatAmount(amount) }}
+                  <span class="amount">{{ formatAmount(amount) }}</span>
                 </td>
               </tr>
             </tbody>
@@ -122,7 +122,7 @@
                   </router-link>
                 </td>
                 <td :class="{ negative: table.balance < 0 }">
-                  {{ formatAmount(table.balance) }}
+                  <span class="amount">{{ formatAmount(table.balance) }}</span>
                 </td>
                 <td>{{ new Date(table.created).toLocaleDateString() }}</td>
               </tr>
@@ -250,7 +250,7 @@ export default {
     }
 
     h2 {
-        margin-bottom: $spacing;
+        margin-bottom: $space-5;
     }
 
     h3 {
@@ -258,81 +258,103 @@ export default {
     }
 
     .time-filter {
-        display: flex;
-        align-items: center;
-        gap: $spacing-small;
-        margin-bottom: $spacing;
-        flex-wrap: wrap;
+        display:       flex;
+        align-items:   center;
+        gap:           $space-2;
+        margin-bottom: $space-5;
+        flex-wrap:     wrap;
 
         button {
             &.secondary.active {
                 background-color: $primary;
-                color: white;
+                border-color:      $primary;
+                color:            #fff;
             }
         }
 
         .date-inputs {
-            display: flex;
-            gap: $spacing-small;
-            margin-left: $spacing-small;
+            display:     flex;
+            gap:         $space-2;
+            margin-left: $space-2;
 
             input {
-                padding: 7px 14px;
-                border: 1px solid $border-color;
-                border-radius: $border-radius-small;
-                font-size: 1em;
+                padding:       10px 14px;
+                border:        1px solid $hairline;
+                border-radius: $radius-sm;
+                background:    $surface-card;
+                color:         $ink;
+                font-size:     $fs-base;
+                font-family:   $font-text;
+
+                &:focus-visible {
+                    @include focus-ring;
+                }
+
+                &:focus {
+                    border-color: $primary;
+                    box-shadow:   0 0 0 3px rgba($primary, 0.15);
+                }
+            }
+        }
+
+        @media (max-width: $bp-phone) {
+            .date-inputs {
+                margin-left: 0;
+                width:       100%;
+
+                input { flex: 1 1 0; min-width: 0; }
             }
         }
     }
 
     .stats-cards {
-        display: grid;
+        display:               grid;
         grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-        gap: $spacing-medium;
-        margin-bottom: $spacing;
+        gap:                   $space-3;
+        margin-bottom:         $space-5;
 
         .stat-card {
             @include card;
-            padding: $spacing;
-            display: flex;
+            padding:        $space-5;
+            display:        flex;
             flex-direction: column;
-            align-items: center;
-            text-align: center;
+            align-items:    center;
+            text-align:     center;
 
             .stat-value {
-                font-size: 1.5em;
-                font-weight: 600;
-                color: $primary;
+                @include numeric;
+                font-size:   $fs-lg;
+                font-weight: $fw-semibold;
+                color:       $primary;
 
                 &.negative {
-                    color: $error;
+                    color: $negative;
                 }
             }
 
             .stat-label {
-                font-size: 0.85em;
-                color: $text-color-light;
-                margin-top: $spacing-small;
+                font-size:      $fs-xs;
+                color:          $ink-muted;
+                margin-top:     $space-1;
+                text-transform: uppercase;
+                letter-spacing: $tracking-wide;
             }
         }
     }
 
     .winnings-by-game {
-        margin-bottom: $spacing;
+        margin-bottom: $space-5;
 
         .text-right {
             text-align: right;
+
+            .amount { @include numeric; }
         }
 
-        .negative {
-            color: $red;
-        }
+        .negative { color: $negative; }
+        .positive { color: $positive; }
 
-        .positive {
-            color: $light-green;
-        }
-
-        @media (max-width: #{$media-small-table-width}) {
+        @media (max-width: $bp-phone) {
             td:nth-child(1)::before { content: 'Game' }
             td:nth-child(2)::before { content: 'Games' }
             td:nth-child(3)::before { content: 'Winnings' }
@@ -344,14 +366,16 @@ export default {
     }
 
     .balance-graph {
-        margin-bottom: $spacing;
+        margin-bottom: $space-5;
     }
 
     .tables-section {
-        margin-bottom: $spacing;
+        margin-bottom: $space-5;
+
+        .amount { @include numeric; }
 
         td a {
-            color: $primary;
+            color:           $primary;
             text-decoration: none;
 
             &:hover {
@@ -360,11 +384,11 @@ export default {
         }
 
         td.negative {
-            color: $error;
+            color: $negative;
         }
 
         .admin-pagination {
-            margin-top: $spacing-medium;
+            margin-top: $space-3;
         }
     }
 }

@@ -72,12 +72,13 @@ export default {
         display: flex;
         justify-content: center;
         align-items: stretch;
+        gap: $space-6;
         margin-bottom: $spacing;
 
         & > div {
             display: flex;
             flex-direction: column;
-            margin: 2px;
+            align-items: center;
 
             & >:nth-child(2) {
                 margin-top: auto;
@@ -85,12 +86,12 @@ export default {
         }
 
         span.label {
-            font-weight: bold;
-        }
-
-        /* cards remaining */
-        & > :nth-child(2) {
-            margin-left: $spacing-medium;
+            font-size:      $fs-2xs;
+            font-weight:    $fw-semibold;
+            text-transform: uppercase;
+            letter-spacing: $tracking-caps;
+            color:          $on-felt-muted;
+            margin-bottom:  $space-2;
         }
     }
 }
@@ -104,6 +105,6 @@ export default {
     @media (min-width: 800px) {
         grid-template-columns: 1fr 1fr 1fr 1fr;
     }
-    grid-gap:              $spacing-medium;
+    grid-gap:              $space-3;
 }
 </style>

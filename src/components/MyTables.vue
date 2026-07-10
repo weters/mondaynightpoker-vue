@@ -33,46 +33,55 @@ export default {
 
 <style lang="scss" scoped>
 .page-header {
-    display: flex;
+    display:        flex;
     justify-content: space-between;
-    align-items: flex-start;
-    padding-bottom: $spacing;
-    margin-bottom: $spacing;
-    border-bottom: 1px solid $border-color;
+    align-items:    flex-start;
+    gap:            $space-5;
+    padding-bottom: $space-5;
+    margin-bottom:  $space-5;
+    border-bottom:  1px solid $hairline;
 
-    @media (max-width: $mobile-max) {
+    @media (max-width: $bp-phone) {
         flex-direction: column;
-        gap: $spacing;
+        gap:            $space-4;
     }
 
     .header-content {
         h2 {
-            margin: 0 0 $spacing-small 0;
-            color: $text-color;
+            margin: 0 0 $space-1 0;
+            color:  $ink;
         }
 
         .subtitle {
-            margin: 0;
-            color: $text-color-light;
-            font-size: 0.95em;
+            margin:    0;
+            color:     $ink-muted;
+            font-size: $fs-sm;
         }
     }
 
     .create-button {
-        box-shadow: $shadow-md;
-        transition: transform $transition-fast, box-shadow $transition-fast;
-        display: inline-flex;
-        align-items: center;
-        gap: $spacing-small;
+        flex-shrink: 0;
+        box-shadow:  $shadow-md;
+        transition:  transform $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard;
 
         .plus-icon {
-            font-size: 1.2em;
-            font-weight: bold;
+            font-size:   $fs-md;
+            font-weight: $fw-bold;
+            line-height: 1;
         }
 
         &:hover {
-            transform: translateY(-2px);
+            transform:  translateY(-2px);
             box-shadow: $shadow-hover;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: box-shadow $dur-fast linear;
+            &:hover { transform: none; }
+        }
+
+        @media (max-width: $bp-phone) {
+            width: 100%;
         }
     }
 }

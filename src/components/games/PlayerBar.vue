@@ -27,7 +27,12 @@
       <span
         v-if="gameRules.length"
         class="help-trigger"
+        role="button"
+        tabindex="0"
+        aria-label="How to play"
         @click="rulesOpen = true"
+        @keydown.enter.prevent="rulesOpen = true"
+        @keydown.space.prevent="rulesOpen = true"
       >
         <svg
           viewBox="0 0 24 24"
@@ -40,7 +45,12 @@
       </span>
       <span
         class="settings-trigger"
+        role="button"
+        tabindex="0"
+        aria-label="Settings"
         @click="settingsOpen = true"
+        @keydown.enter.prevent="settingsOpen = true"
+        @keydown.space.prevent="settingsOpen = true"
       >
         <svg
           viewBox="0 0 24 24"
@@ -171,26 +181,31 @@ export default {
 <style lang="scss" scoped>
 @use 'sass:color';
 .player-bar {
-    background:              rgba(255, 255, 255, 0.15);
-    backdrop-filter:         blur(10px);
-    -webkit-backdrop-filter: blur(10px); /* Safari */
-    border-top:              2px solid rgba(255, 255, 255, 0.3);
+    background:              rgba($felt-rail, 0.72);
+    backdrop-filter:         blur(12px);
+    -webkit-backdrop-filter: blur(12px); /* Safari */
+    border-top:              2px solid $felt-hairline;
+    color:                   $on-felt;
 
     position:                fixed;
     bottom:                  0;
     left:                    0;
     right:                   0;
-    z-index:                 100;
+    z-index:                 $z-player-bar;
 
+    transition: box-shadow $dur-normal $ease-standard, border-color $dur-normal $ease-standard;
+
+    // Current turn — the single most important glance state.
     &.is-turn {
-        box-shadow: 0 -2px 12px rgba($primary, 0.3);
+        border-top-color: $accent;
+        box-shadow:       0 -2px 16px rgba($orange, 0.4);
     }
 }
 
 .bar-content {
     display:     flex;
     align-items: center;
-    padding:     $spacing-small $spacing-medium;
+    padding:     $space-2 $spacing-medium;
     gap:         $spacing-medium;
     flex-wrap:   wrap;
 
@@ -206,10 +221,11 @@ export default {
         justify-content: center;
     }
 
-    // Compact buttons inside the bar
+    // Compact buttons inside the bar (still ≥44px hit area via tap-target)
     :deep(button:not(.icon):not(.chip-pill)) {
-        padding:   5px 12px;
-        font-size: 0.85em;
+        @include tap-target;
+        padding:   $space-2 $space-3;
+        font-size: $fs-sm;
     }
 
     :deep(div.buttons) {
@@ -218,23 +234,23 @@ export default {
 }
 
 .error {
-    background-color: white;
+    background-color: $surface-card;
     position:         absolute;
     bottom:           100%;
     right:            0;
-    margin-bottom:    4px;
-    border-radius:    $border-radius;
+    margin-bottom:    $space-1;
+    border-radius:    $radius-md;
     box-shadow:       $shadow-md;
 
     :deep(p) {
         margin:        0;
         padding:       $spacing-small $spacing-medium;
-        border-radius: $border-radius;
+        border-radius: $radius-md;
     }
 }
 
 .player-bar-error-enter-active, .player-bar-error-leave-active {
-    transition: transform 300ms ease, opacity 300ms ease;
+    transition: transform $dur-normal $ease-standard, opacity $dur-normal $ease-standard;
 }
 
 .player-bar-error-enter-from, .player-bar-error-leave-to {
@@ -242,17 +258,27 @@ export default {
     opacity:   0;
 }
 
+@media (prefers-reduced-motion: reduce) {
+    .player-bar-error-enter-active, .player-bar-error-leave-active {
+        transition: opacity $dur-fast linear;
+    }
+
+    .player-bar-error-enter-from, .player-bar-error-leave-to {
+        transform: none;
+    }
+}
+
 p.game-info {
-    background-color: #333;
-    color:            white;
-    font-size:        0.75em;
+    background-color: $felt-base;
+    color:            $on-felt-muted;
+    font-size:        $fs-xs;
     margin:           0;
-    padding:          2px $spacing-medium;
-    padding-bottom:   calc(2px + env(safe-area-inset-bottom));
+    padding:          $space-1 $spacing-medium;
+    padding-bottom:   calc(#{$space-1} + env(safe-area-inset-bottom));
     display:          flex;
     align-items:      center;
     gap:              $spacing-small;
-    line-height:      1.4;
+    line-height:      $lh-snug;
 
     :deep(strong)::after {
         content: ' ';
@@ -260,32 +286,48 @@ p.game-info {
 }
 
 .turn-badge {
-    background:    $primary;
-    color:         white;
-    font-size:     0.8em;
-    font-weight:   bold;
-    padding:       1px 5px;
-    border-radius: $border-radius-small;
-    margin-right:  $spacing-small;
-    animation:     badge-pulse 2s ease-in-out infinite;
+    background:      $accent;
+    color:          $accent-ink;
+    font-size:      $fs-2xs;
+    font-weight:    $fw-bold;
+    text-transform: uppercase;
+    letter-spacing: $tracking-wide;
+    padding:        2px $space-2;
+    border-radius:  $radius-pill;
+    margin-right:   $spacing-small;
+    box-shadow:     0 0 12px rgba($orange, 0.55);
+    animation:      badge-pulse 2s ease-in-out infinite;
 }
 
 @keyframes badge-pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.6; }
+    0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba($orange, 0.55); }
+    50%      { opacity: 0.72; box-shadow: 0 0 6px rgba($orange, 0.3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .turn-badge {
+        animation: none;
+    }
 }
 
 .help-trigger,
 .settings-trigger {
     cursor:      pointer;
-    opacity:     0.7;
-    padding:     10px 6px;
-    margin:      -10px 0;
+    color:       $on-felt-muted;
+    padding:     $space-2 $space-1;
+    margin:      -8px 0;
+    @include tap-target;
     display:     flex;
     align-items: center;
+    justify-content: center;
+    border-radius: $radius-xs;
 
     &:hover {
-        opacity: 1;
+        color: $on-felt;
+    }
+
+    &:focus-visible {
+        @include focus-ring-on-felt;
     }
 
     &::before {
@@ -301,51 +343,51 @@ p.game-info {
     display:        flex;
     flex-direction: column;
     gap:            2px;
-    background:     linear-gradient(135deg, rgba(white, 0.06) 0%, rgba($peach, 0.08) 100%);
-    border:         1px solid rgba(white, 0.1);
-    border-radius:  $border-radius;
+    background:     linear-gradient(135deg, rgba(#fff, 0.05) 0%, rgba($peach, 0.09) 100%);
+    border:         1px solid $felt-hairline;
+    border-radius:  $radius-md;
     padding:        $spacing-medium;
     margin:         $spacing 0;
 
     .balance-label {
-        font-size:      0.7em;
+        font-size:      $fs-2xs;
         text-transform: uppercase;
-        letter-spacing: 0.1em;
-        color:          rgba(white, 0.45);
-        font-weight:    600;
+        letter-spacing: $tracking-caps;
+        color:          $on-felt-faint;
+        font-weight:    $fw-semibold;
     }
 
     .balance-amount {
-        font-size:      1.2em;
-        font-weight:    700;
-        color:          $peach;
-        letter-spacing: -0.01em;
+        @include numeric;
+        font-size:      $fs-lg;
+        font-weight:    $fw-bold;
+        color:          $gold-soft;
     }
 }
 
 .rules {
     h3 {
         margin:      0 0 $spacing;
-        font-size:   1.1em;
-        color:       white;
-        font-weight: 600;
+        font-size:   $fs-lg;
+        color:       $on-felt;
+        font-weight: $fw-semibold;
     }
 
     .rule-section {
         margin-bottom: $spacing;
 
         h4 {
-            margin:      0 0 4px;
-            font-size:   0.9em;
-            color:       rgba(white, 0.85);
-            font-weight: 600;
+            margin:      0 0 $space-1;
+            font-size:   $fs-sm;
+            color:       $on-felt;
+            font-weight: $fw-semibold;
         }
 
         p {
             margin:      0;
-            font-size:   0.85em;
-            color:       rgba(white, 0.6);
-            line-height: 1.5;
+            font-size:   $fs-sm;
+            color:       $on-felt-muted;
+            line-height: $lh-normal;
         }
     }
 }

@@ -28,30 +28,47 @@ export default {
 
 <style lang="scss" scoped>
 div.texas-hold-em-hole-card {
+    cursor:        pointer;
+    border-radius: $radius-card;
+    transition:    transform $dur-fast $ease-spring,
+                   box-shadow $dur-fast $ease-spring;
+
+    // Selected == marked to discard: the card lifts, gets a gold ring, and
+    // shows an ember cross so the intent is unmistakable (not colour alone).
     &.selected {
-        position: relative;
-        z-index: 1;
+        position:   relative;
+        z-index:    1;
+        transform:  translateY(-10%);
+        box-shadow: $shadow-card-lift;
 
         &::before {
-            border-radius:    $border-radius;
-            content:          '';
-            position:         absolute;
-            background-color: #000a;
-            top:              0;
-            right:            0;
-            bottom:           0;
-            left:             0;
-            z-index: 2;
+            content:        '';
+            position:       absolute;
+            inset:          0;
+            border-radius:  $radius-card;
+            background:     rgba(#000, 0.45);
+            outline:        2px solid $gold;
+            outline-offset: -2px;
+            z-index:        2;
         }
 
         &::after {
-            position: absolute;
-            top: 0;
-            right: 5px;
-            content: '\2715';
-            color: $red;
-            font-size: 2em;
-            z-index: 3;
+            content:     '\2715';
+            position:    absolute;
+            top:         2px;
+            right:       6px;
+            color:       $accent;
+            font-size:   1.6em;
+            font-weight: $fw-bold;
+            z-index:     3;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: box-shadow $dur-fast linear;
+
+        &.selected {
+            transform: none;
         }
     }
 }

@@ -24,6 +24,13 @@ import balance from "../mixins/balance"
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, CategoryScale, LinearScale, Filler)
 
+// mirrors $positive / $negative / $hairline / $ink-muted in variables.scss —
+// chart.js renders to <canvas>, so it can't consume SCSS tokens directly.
+const CHART_POSITIVE = '#3F9E5A'
+const CHART_NEGATIVE = '#E53935'
+const CHART_GRID = '#E3DFD7'
+const CHART_LABEL = '#8C867C'
+
 export default {
     name: "ProfileGraph",
     components: { LineChart: Line },
@@ -59,20 +66,22 @@ export default {
                     pointRadius: this.cumulativeBalance.length > 30 ? 0 : 3,
                     pointHoverRadius: 5,
                     borderWidth: 2,
+                    // colors mirror $positive / $negative in variables.scss (chart.js can't
+                    // consume SCSS tokens directly, so the hex is duplicated here on purpose)
                     borderColor: ctx => {
-                        if (!ctx.chart.chartArea) return 'black'
+                        if (!ctx.chart.chartArea) return CHART_POSITIVE
                         const { ctx: canvasCtx, chartArea: { top, bottom } } = ctx.chart
                         const gradient = canvasCtx.createLinearGradient(0, top, 0, bottom)
-                        gradient.addColorStop(0, '#4CAF50')
-                        gradient.addColorStop(1, '#F26E50')
+                        gradient.addColorStop(0, CHART_POSITIVE)
+                        gradient.addColorStop(1, CHART_NEGATIVE)
                         return gradient
                     },
                     backgroundColor: ctx => {
                         if (!ctx.chart.chartArea) return 'transparent'
                         const { ctx: canvasCtx, chartArea: { top, bottom } } = ctx.chart
                         const gradient = canvasCtx.createLinearGradient(0, top, 0, bottom)
-                        gradient.addColorStop(0, 'rgba(76, 175, 80, 0.15)')
-                        gradient.addColorStop(1, 'rgba(242, 110, 80, 0.15)')
+                        gradient.addColorStop(0, 'rgba(63, 158, 90, 0.15)')
+                        gradient.addColorStop(1, 'rgba(229, 57, 53, 0.15)')
                         return gradient
                     },
                     segment: {
@@ -80,7 +89,7 @@ export default {
                             const y0 = ctx.p0.parsed.y
                             const y1 = ctx.p1.parsed.y
                             const avg = (y0 + y1) / 2
-                            return avg < 0 ? '#F26E50' : '#4CAF50'
+                            return avg < 0 ? CHART_NEGATIVE : CHART_POSITIVE
                         },
                     },
                 }],
@@ -101,12 +110,16 @@ export default {
                 },
                 scales: {
                     y: {
+                        grid: { color: CHART_GRID },
                         ticks: {
+                            color: CHART_LABEL,
                             callback: value => '$' + value,
                         },
                     },
                     x: {
+                        grid: { color: CHART_GRID },
                         ticks: {
+                            color: CHART_LABEL,
                             maxTicksLimit: 12,
                         },
                     },

@@ -50,4 +50,23 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+div.verify-account {
+    text-align: center;
+
+    h2 {
+        margin-bottom: $space-6;
+    }
+
+    .loading {
+        margin-bottom: $space-4;
+    }
+
+    p {
+        color:       $ink-muted;
+        line-height: $lh-loose;
+        max-width:   40em;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
 </style>

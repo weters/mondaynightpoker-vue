@@ -17,8 +17,6 @@
         <p>You will need to verify your account before you can log in.</p>
       </div>
       <div v-else>
-        <loading v-if="loading" />
-
         <transition name="error">
           <error-message
             v-if="error"
@@ -52,6 +50,7 @@
         />
 
         <div class="buttons">
+          <loading v-if="loading" />
           <button
             type="submit"
             :disabled="submitDisabled"
@@ -139,24 +138,37 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-form .loading {
-    position: absolute;
-    bottom:   $spacing-small;
-    right:    $spacing-small;
+h2 {
+    margin-bottom: $space-6;
+}
+
+div.buttons {
+    align-items: center;
 }
 
 .log-in {
-    font-size:   0.8em;
-    color:       $text-color-light;
-    border-top:  1px solid $border-color;
-    padding-top: $spacing;
-    margin-top:  $spacing;
+    font-size:   $fs-sm;
+    color:       $ink-muted;
+    border-top:  1px solid $hairline;
+    padding-top: $space-5;
+    margin-top:  $space-5;
 }
 
 div.sign-up {
     div.success {
+        border-left:   3px solid $positive;
+        padding:       $space-3 0 $space-3 $space-4;
+
+        p {
+            line-height: $lh-loose;
+        }
+
         p:last-child {
             margin: 0;
+        }
+
+        strong {
+            color: $primary;
         }
     }
 }

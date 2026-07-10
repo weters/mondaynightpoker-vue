@@ -89,35 +89,45 @@
 
 <style lang="scss" scoped>
     .scheduled-game {
-        background-color: white;
-        border-radius:    $border-radius;
-        padding:          $spacing;
+        background-color: $surface-card;
+        border-radius:    $radius-md;
+        padding:          $space-5;
+        color:            $ink;
+
+        h3 {
+            margin:         0 0 $space-3 0;
+            border-bottom:  none;
+            padding-bottom: 0;
+            @include section-header;
+            font-size: $fs-xs;
+        }
 
         .content {
-            display: flex;
-            flex-wrap: wrap;
+            display:     flex;
+            flex-wrap:   wrap;
             align-items: center;
+            gap:         $space-2 $space-4;
 
             div.info {
                 order: 1;
-                flex: 1 1 25%;
+                flex:  1 1 25%;
+
+                p + p {
+                    margin-top: $space-1;
+                }
             }
 
             div.buttons {
-                flex: 0 0 auto;
-                margin-left: auto;
-                padding-left: $spacing;
-                order: 2;
+                flex:         0 0 auto;
+                margin-left:  auto;
+                padding-left: $space-4;
+                order:        2;
             }
 
             label {
                 order: 3;
-                flex: 0 0 100%;
+                flex:  0 0 100%;
                 width: auto;
-
-                input {
-                    width: auto;
-                }
             }
         }
 
@@ -126,24 +136,32 @@
         }
 
         .game {
+            @include numeric;
+
             strong {
+                font-weight: $fw-semibold;
+                color:       $primary;
             }
         }
 
         .ante {
-            font-weight: bold;
+            @include numeric;
+            font-weight: $fw-semibold;
+            color:       $ink;
 
             &::before {
-                font-weight: normal;
+                font-weight: $fw-regular;
+                color:       $ink-muted;
                 content:     'Ante: ';
             }
         }
 
         .started-by {
-            font-weight: bold;
+            font-weight: $fw-semibold;
 
             &::before {
-                font-weight: normal;
+                font-weight: $fw-regular;
+                color:       $ink-muted;
                 content:     'Started by: ';
             }
         }
@@ -156,7 +174,7 @@
     label {
         display:     flex;
         align-items: center;
-        margin-top:  $spacing-medium;
+        margin-top:  $space-3;
 
         input {
             order: 1;
@@ -164,7 +182,7 @@
 
         span {
             order:       2;
-            margin-left: $spacing-small;
+            margin-left: $space-3;
         }
     }
 </style>

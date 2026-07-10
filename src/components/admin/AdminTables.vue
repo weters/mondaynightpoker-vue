@@ -49,27 +49,40 @@
           @next="fetch"
         />
       </div>
-      <div v-else>
-        <p>No tables</p>
+      <div
+        v-else
+        class="empty-state"
+      >
+        <mdi-icon
+          class="empty-icon"
+          :icon="mdiTableOff"
+        />
+        <h3>No tables</h3>
+        <p class="note">
+          No tables have been created yet.
+        </p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import {mdiTableOff} from "@mdi/js"
 import AdminHeader from "@/components/admin/AdminHeader.vue"
 import client from "@/client"
 import Loading from "@/components/Loading.vue"
 import ErrorMessage from "@/components/ErrorMessage.vue"
+import MdiIcon from "@/components/MdiIcon.vue"
 import AdminPagination from "@/components/admin/AdminPagination.vue"
 import Toggle from "@/components/formelements/Toggle.vue"
 
 export default {
     name: "AdminTables",
     title: 'Admin/Tables',
-    components: {Toggle, AdminPagination, ErrorMessage, Loading, AdminHeader},
+    components: {Toggle, AdminPagination, ErrorMessage, Loading, AdminHeader, MdiIcon},
     data() {
         return {
+            mdiTableOff,
             tables: null,
             start: 0,
             rows: 25,
@@ -118,11 +131,51 @@ export default {
 
 <style lang="scss" scoped>
 table.standard {
+    width: 100%;
+
     td.deleted {
         text-align: center;
     }
     label {
         display: inline-flex;
+        margin: 0;
+    }
+
+    @media (max-width: $bp-phone) {
+        td.deleted {
+            text-align: left;
+        }
+
+        td:nth-child(1)::before { content: 'Name' }
+        td:nth-child(2)::before { content: 'Created By' }
+        td:nth-child(3)::before { content: 'Created' }
+        td:nth-child(4)::before { content: 'Deleted' }
+    }
+}
+
+.empty-state {
+    @include card;
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    padding:        $space-8 $space-5;
+    text-align:     center;
+
+    .empty-icon {
+        width:         56px;
+        height:        56px;
+        color:         $ink-faint;
+        margin-bottom: $space-4;
+    }
+
+    h3 {
+        margin:         0 0 $space-2 0;
+        border-bottom:  none;
+        padding-bottom: 0;
+        color:          $ink;
+    }
+
+    .note {
         margin: 0;
     }
 }

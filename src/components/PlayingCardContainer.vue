@@ -55,8 +55,8 @@ div.playing-card-container {
     width:            100%;
     aspect-ratio:     2.5 / 3.5;
     position:         relative;
-    background-color: #eee;
-    border-radius:    $border-radius-card;
+    background-color: rgba(#000, 0.06);
+    border-radius:    $radius-card;
     overflow:         visible;
 
     & > * {
@@ -65,20 +65,20 @@ div.playing-card-container {
     }
 
     .background {
-        border-radius:    $border-radius-card;
-        box-shadow:       inset 1px 2px 2px rgba(black, 0.1);
-        background-color: rgba(black, 0.1);
-        border:           1px solid rgba(black, 0.1);
+        border-radius:    $radius-card;
+        box-shadow:       inset 1px 2px 2px rgba(#000, 0.1);
+        background-color: rgba(#000, 0.1);
+        border:           1px solid rgba(#000, 0.1);
         margin:           2px;
     }
 }
 
 .flip-leave-active {
-    transition: all 300ms ease-in;
+    transition: transform $dur-normal $ease-accel;
 }
 
 .flip-enter-active {
-    transition: all 300ms ease-out;
+    transition: transform $dur-normal $ease-standard;
 }
 
 .flip-leave-to {
@@ -90,11 +90,27 @@ div.playing-card-container {
 }
 
 .vanish-enter-active, .vanish-leave-active {
-    transition: all 300ms;
+    transition: transform $dur-normal $ease-standard, opacity $dur-normal $ease-standard;
 }
 
 .vanish-enter-from, .vanish-leave-to {
     transform: translateY(-50%);
     opacity:   0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .flip-leave-active,
+    .flip-enter-active,
+    .vanish-enter-active,
+    .vanish-leave-active {
+        transition: opacity $dur-fast linear;
+    }
+
+    .flip-leave-to,
+    .flip-enter-from,
+    .vanish-enter-from,
+    .vanish-leave-to {
+        transform: none;
+    }
 }
 </style>

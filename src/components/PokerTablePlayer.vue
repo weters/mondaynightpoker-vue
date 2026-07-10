@@ -163,15 +163,15 @@ div.poker-table-player {
     $parent: &;
     padding: $spacing-medium;
     border: 1px solid transparent;
-    border-radius: $border-radius-small;
-    transition: background-color $transition-fast;
+    border-radius: $radius-sm;
+    transition: background-color $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard;
 
     &:hover {
         background-color: rgba($primary, 0.03);
     }
 
     &:not(:last-child) {
-        border-bottom: 1px solid rgba($border-color, 0.5);
+        border-bottom: 1px solid rgba($hairline, 0.6);
         padding-bottom: $spacing-medium;
     }
 
@@ -209,8 +209,8 @@ div.poker-table-player {
         .display-name {
             margin-right: auto;
             white-space: nowrap;
-            color: $text-color;
-            font-weight: 500;
+            color: $ink;
+            font-weight: $fw-medium;
 
             a {
                 color: inherit;
@@ -223,47 +223,50 @@ div.poker-table-player {
             }
 
             @at-root #{$parent}:not(.connected) .display-name {
-                color:      $text-color-light;
+                color:      $ink-muted;
                 font-style: italic;
             }
         }
 
         span.balance {
-            font-weight: 600;
-            font-size: 0.95em;
+            @include numeric;
+            font-weight: $fw-semibold;
+            font-size: $fs-sm;
             color:       $primary;
             white-space: nowrap;
             padding: $spacing-small $spacing-medium;
             background: rgba($primary, 0.08);
-            border-radius: $border-radius-small;
+            border-radius: $radius-sm;
 
             &.negative {
-                color: $error;
-                background: rgba($error, 0.08);
+                color: $negative;
+                background: rgba($negative, 0.08);
             }
         }
 
         span.next-picker-badge {
-            font-size: 0.7em;
-            font-weight: 600;
+            font-size: $fs-2xs;
+            font-weight: $fw-semibold;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: white;
-            background: $orange;
+            letter-spacing: $tracking-wide;
+            color: $accent-ink;
+            background: $accent;
             padding: $spacing-small $spacing-medium;
-            border-radius: $border-radius-small;
+            border-radius: $radius-sm;
             white-space: nowrap;
         }
 
         button.icon {
             margin-left: $spacing-small;
+            @include tap-target;
             padding: $spacing-small;
             background: transparent;
             border: 1px solid transparent;
-            border-radius: $border-radius-small;
-            color: $text-color-light;
+            border-radius: $radius-sm;
+            color: $ink-muted;
             cursor: pointer;
-            transition: all $transition-fast;
+            transition: background $dur-fast $ease-standard, color $dur-fast $ease-standard,
+                        border-color $dur-fast $ease-standard;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -271,7 +274,11 @@ div.poker-table-player {
             &:hover:not(:disabled) {
                 background: $gray;
                 color: $primary;
-                border-color: $border-color;
+                border-color: $hairline;
+            }
+
+            &:focus-visible {
+                @include focus-ring;
             }
 
             &:disabled {
@@ -290,7 +297,7 @@ div.poker-table-player {
         margin-top: $spacing-medium;
         padding: $spacing-medium;
         background: $gray;
-        border-radius: $border-radius-small;
+        border-radius: $radius-sm;
         display: flex;
         flex-wrap: wrap;
         gap: $spacing-medium $spacing;

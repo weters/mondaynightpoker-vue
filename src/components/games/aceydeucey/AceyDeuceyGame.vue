@@ -136,17 +136,25 @@ export default {
 
 <style lang="scss" scoped>
 div.acey-deucey-game {
-    border:                1px solid $border-color;
+    background:            $felt-rail;
+    border:                1px solid $felt-hairline;
+    border-radius:         $radius-md;
+    box-shadow:            $shadow-felt-sm;
+    color:                 $on-felt;
     display:               grid;
     grid-template-columns: 1fr 1fr;
-    padding:               $spacing-medium;
+    padding:               $space-3;
+    transition:            box-shadow $dur-normal $ease-standard,
+                           border-color $dur-normal $ease-standard,
+                           opacity $dur-normal $ease-standard;
 
     &.is-active {
-        box-shadow: 0 0 5px 2px rgba($orange, 0.25);
+        @include current-turn;
     }
 
     &:not(.is-active) {
-        opacity: 0.5;
+        opacity: 0.55;
+        filter:  grayscale(0.3);
     }
 
     div.cards {
@@ -157,7 +165,18 @@ div.acey-deucey-game {
             flex: 1 1 125px;
 
             &:nth-child(2) {
-                margin: 0 $spacing-medium;
+                margin: 0 $space-3;
+            }
+
+            div.card-state {
+                text-align:     center;
+                margin-top:     $space-1;
+                min-height:     1.2em;
+                font-size:      $fs-xs;
+                font-weight:    $fw-semibold;
+                text-transform: uppercase;
+                letter-spacing: $tracking-wide;
+                color:          $on-felt-muted;
             }
         }
     }
@@ -168,23 +187,46 @@ div.acey-deucey-game {
             flex-direction:   column;
             align-items:      center;
             width: min-content;
+
+            p {
+                margin:         0 0 $space-1;
+                font-size:      $fs-2xs;
+                font-weight:    $fw-semibold;
+                text-transform: uppercase;
+                letter-spacing: $tracking-caps;
+                color:          $on-felt-muted;
+            }
         }
     }
 
     div.result {
         justify-self: flex-end;
+        align-self:   center;
+        text-align:   right;
 
         div.result-text {
             text-transform: uppercase;
-            font-weight:    bold;
-            color:          $secondary;
+            font-weight:    $fw-bold;
+            font-size:      $fs-sm;
+            letter-spacing: $tracking-wide;
+            color:          $gold-soft;
         }
 
         div.adjustment {
+            @include numeric;
+            font-weight: $fw-semibold;
+            color:       $positive;
+
             &.negative {
-                color: $red;
+                color: $negative;
             }
         }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    div.acey-deucey-game {
+        transition: none;
     }
 }
 </style>

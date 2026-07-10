@@ -91,9 +91,29 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-label {
-    &:first-child {
-        margin-bottom: -1px;
+.input-with-confirm {
+    :deep(label.fancy-input) {
+        position: relative;
+
+        input {
+            border-radius: 0;
+        }
+
+        &:focus-within {
+            z-index: 1;
+        }
+
+        &:first-child {
+            margin-bottom: -1px;
+
+            input {
+                border-radius: $radius-sm $radius-sm 0 0;
+            }
+        }
+
+        &:last-child input {
+            border-radius: 0 0 $radius-sm $radius-sm;
+        }
     }
 }
 </style>

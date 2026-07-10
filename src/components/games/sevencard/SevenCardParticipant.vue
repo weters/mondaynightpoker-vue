@@ -122,14 +122,25 @@ const { hand } = useDealAnimation({
 
 <style lang="scss" scoped>
     div.seven-card-participant {
-        border: 1px solid $border-color;
-        padding:   $spacing-small;
+        background:    $felt-rail;
+        border:        1px solid $felt-hairline;
+        border-radius: $radius-md;
+        box-shadow:    $shadow-felt-md;
+        color:         $on-felt;
+        padding:       $spacing-small;
         display: flex;
         flex-wrap: wrap;
         position: relative;
+        transition: box-shadow $dur-normal $ease-standard;
 
+        // Current turn — the single most important glance state.
         &.is-turn {
             @include current-turn;
+            box-shadow: $shadow-felt-md, $glow-turn;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: box-shadow $dur-fast linear;
         }
 
         .dealer-button {
@@ -164,36 +175,38 @@ const { hand } = useDealAnimation({
             margin-top: $spacing-small;
 
             strong.display-name {
-                font-weight: normal;
+                font-weight: $fw-semibold;
             }
 
             span.balance {
+                @include numeric;
                 display: block;
                 margin: 0;
-                color: $text-color-light;
-                font-size: 0.7em;
+                color: $on-felt-muted;
+                font-size: $fs-xs;
             }
 
             &.disconnected {
                 font-style: italic;
-                color: $text-color-light;
+                color: $on-felt-faint;
             }
 
             .hand-rank {
                 display:     block;
-                font-size:   1.2em;
-                color: $text-color-light;
+                font-size:   $fs-md;
+                color: $on-felt-muted;
 
                 &.is-winner {
-                    font-weight: bold;
-                    color: black;
+                    font-weight: $fw-bold;
+                    color: $gold-soft;
+                    text-shadow: 0 0 10px rgba($gold, 0.35);
                 }
             }
 
             .last-action {
                 display: block;
-                font-size: 0.9em;
-                color: $text-color-light;
+                font-size: $fs-sm;
+                color: $on-felt-muted;
                 font-style: italic;
             }
         }
@@ -201,11 +214,21 @@ const { hand } = useDealAnimation({
 
     // Hand card animation
     .hand-enter-active {
-        transition: all 250ms;
+        transition: transform $dur-normal $ease-standard, opacity $dur-normal $ease-standard;
     }
 
     .hand-enter-from {
         transform: translateY(-100%);
         opacity:   0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hand-enter-active {
+            transition: opacity $dur-fast linear;
+        }
+
+        .hand-enter-from {
+            transform: none;
+        }
     }
 </style>

@@ -48,15 +48,29 @@
     }
 
     .participant-move {
-        transition: transform 1s;
+        transition: transform $dur-slow $ease-standard;
     }
 
     .participant-leave-active {
-        transition: all 500ms;
+        transition: transform $dur-slow $ease-standard, opacity $dur-slow $ease-standard;
     }
 
     .participant-leave-to {
         transform: translateY(-100%);
         opacity: 0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .participant-move {
+            transition: none;
+        }
+
+        .participant-leave-active {
+            transition: opacity $dur-fast linear;
+        }
+
+        .participant-leave-to {
+            transform: none;
+        }
     }
 </style>

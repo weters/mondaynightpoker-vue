@@ -42,23 +42,34 @@ export default {
 
 <style lang="scss" scoped>
 .dev-tools {
-    border-radius:    5px;
-    background-color: $peach;
-    padding:          5px;
-    position:         fixed;
-    top:              75px;
-    right:            5px;
-    font-size:        12px;
+    position:      fixed;
+    top:           84px;
+    right:         $space-2;
+    z-index:       $z-devtools;
+    background:    $mnp-gold-300;
+    color:         $mnp-ink-900;
+    border-radius: $radius-sm;
+    box-shadow:    $shadow-md;
+    padding:       $space-2 $space-3;
+    font-size:     $fs-xs;
 
     h2 {
-        font-size: 14px;
-        margin: 0;
+        margin:         0 0 $space-1;
+        font-size:      $fs-xs;
+        font-weight:    $fw-bold;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
+        color:          $mnp-ink-900;
     }
 
     table {
         margin: 0;
+        border-collapse: collapse;
+
         th {
-            text-align: left;
+            text-align:    left;
+            padding-right: $space-2;
+            font-weight:   $fw-semibold;
         }
     }
 }

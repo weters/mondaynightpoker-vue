@@ -97,7 +97,7 @@
 <style lang="scss" scoped>
     .hand {
         display: flex;
-        gap: 3px;
+        gap: $space-1;
         max-width: 100%;
         min-width: 0;
 
@@ -112,33 +112,48 @@
 
         .card {
             display: inline-block;
+            cursor:  pointer;
+            transition: opacity $dur-fast $ease-standard, filter $dur-fast $ease-standard;
 
             &.cannot-play {
-                opacity: 0.3;
+                opacity: 0.35;
+                filter:  grayscale(0.4);
+                cursor:  default;
             }
+        }
+
+        // "Selected" itself is styled by PlayingCard's own .selected treatment
+        // (lift + gold outline, per spec 5.4) — here we only handle the
+        // "can no longer act" (locked) dimming on top of that.
+        &.locked .card {
+            cursor: default;
 
             &.selected {
-                filter: invert(100%);
-
-                @at-root .locked#{&} {
-                    filter:    brightness(0.5);
-                    transform: none;
-                }
+                opacity: 0.65;
             }
         }
     }
 
-    .picker-playing-card-leave.card.selected {
-        filter: none;
-    }
-
     .picker-playing-card-leave-active {
-        transition: transform 400ms, opacity 400ms;
+        transition: transform $dur-slow $ease-standard, opacity $dur-slow $ease-standard;
     }
 
     .picker-playing-card-leave-to.card.selected {
         transform: translateY(-100%);
         opacity:   0;
-        filter: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .hand .card {
+            transition: opacity $dur-fast linear;
+        }
+
+        .picker-playing-card-leave-active {
+            transition: opacity $dur-fast linear;
+        }
+
+        .picker-playing-card-leave-to.card.selected {
+            transform: none;
+        }
     }
 </style>

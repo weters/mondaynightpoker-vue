@@ -36,7 +36,6 @@ export default {
     padding:                  0;
     margin:                   0;
     box-sizing:               border-box;
-    outline:                  none;
 
     -moz-text-size-adjust:    100%;
     -ms-text-size-adjust:     100%;
@@ -44,11 +43,23 @@ export default {
     text-size-adjust:         100%;
 }
 
+// Focus policy: keyboard users always see the canonical ring;
+// mouse/touch users don't get an outline on click.
+:focus-visible {
+    @include focus-ring;
+}
+
+:focus:not(:focus-visible) {
+    outline: none;
+}
+
 html, body {
-    background-color: $background-color;
-    color:            $text-color;
-    font-family:      $font-text;
-    height:           100%;
+    background:               $surface-page;
+    color:                    $ink;
+    font-family:              $font-text;
+    height:                   100%;
+    -webkit-font-smoothing:   antialiased;
+    text-rendering:           optimizeLegibility;
 }
 
 #body {
@@ -70,8 +81,11 @@ html, body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: $font-text;
-    font-weight: bold;
+    font-family:    $font-text;
+    font-weight:    $fw-bold;
+    line-height:    $lh-tight;
+    letter-spacing: $tracking-tight;
+    color:          $ink;
 }
 
 
@@ -80,13 +94,14 @@ h1, h2, h3, h4, h5, h6, table, ul, ol, p {
 }
 
 h2 {
-    font-size: 2em;
+    font-size: $fs-xl;
 }
 
 h3 {
-    border-bottom: 1px solid $dark-green;
-    font-weight:   normal;
-    font-size:     1.6em;
+    font-size:      $fs-lg;
+    font-weight:    $fw-semibold;
+    border-bottom:  1px solid $hairline;
+    padding-bottom: $spacing-small;
 }
 
 ul, ol {
@@ -95,27 +110,31 @@ ul, ol {
 
 main {
     & > .small-content {
-        background: linear-gradient(#011f26, #011f26 120px, $background-color 121px);
+        background: linear-gradient($surface-header, $surface-header 120px, $surface-page 121px);
         overflow:   auto;
 
         & > * {
-            background-color: white;
-            max-width:        600px;
-            padding:          $spacing $spacing $spacing * 4;
-            margin:           $spacing auto 0;
+            background:     $surface-card;
+            max-width:      600px;
+            padding:        $spacing $spacing $spacing * 4;
+            margin:         $spacing auto 0;
+            border-radius:  $radius-lg $radius-lg 0 0;
+            box-shadow:     $shadow-md;
         }
     }
 
     & > .big-content {
-        background:     linear-gradient(#011f26, #011f26 120px, $background-color 121px);
+        background:     linear-gradient($surface-header, $surface-header 120px, $surface-page 121px);
         padding-bottom: $spacing * 4;
         overflow:       auto;
 
         & > * {
             @include page-width;
-            background-color: white;
-            padding:          $spacing $spacing $spacing * 4;
-            margin-top:       $spacing;
+            background:     $surface-card;
+            padding:        $spacing $spacing $spacing * 4;
+            margin-top:     $spacing;
+            border-radius:  $radius-lg $radius-lg 0 0;
+            box-shadow:     $shadow-md;
 
             @media (max-width: #{$page-width-max-width}) {
                 margin-top: 0;
@@ -125,7 +144,7 @@ main {
 }
 
 .error-enter-active, .error-leave-active {
-    transition: all 250ms;
+    transition: all $dur-normal $ease-standard;
 }
 
 .error-enter-from, .error-leave-to {
@@ -134,10 +153,16 @@ main {
 }
 
 a {
-    color: $orange;
+    color:                   $accent;
+    text-decoration-color:   rgba($orange, 0.35);
+    text-underline-offset:   2px;
+
+    &:hover {
+        text-decoration-color: $accent;
+    }
 
     &:visited {
-        color: $text-color;
+        color: $accent;
     }
 }
 
@@ -145,12 +170,16 @@ table.standard {
     border-collapse: collapse;
 
     tr {
-        border-bottom: 1px solid $border-color;
+        border-bottom: 1px solid $hairline;
     }
 
     thead th {
-        padding:             12px 4px;
-        border-bottom-color: $dark-green;
+        padding:        12px 4px;
+        border-bottom:  2px solid $primary;
+        color:          $ink;
+        font-size:      $fs-xs;
+        text-transform: uppercase;
+        letter-spacing: $tracking-wide;
     }
 
     td {
@@ -158,7 +187,7 @@ table.standard {
     }
 
     tr:nth-child(even) {
-        background-color: $gray;
+        background: $gray;
     }
 
     @media (max-width: #{ $media-small-table-width }) {
@@ -174,7 +203,7 @@ table.standard {
         }
 
         tr {
-            border-bottom: 1px solid $dark-green;
+            border-bottom: 1px solid $hairline;
         }
 
         td {
@@ -184,7 +213,7 @@ table.standard {
             white-space:  nowrap;
 
             &::before {
-                color:        $text-color-light;
+                color:        $ink-muted;
                 width:        calc(40% - #{$spacing-medium});
                 position:     absolute;
                 left:         0;
@@ -195,60 +224,85 @@ table.standard {
 }
 
 @mixin button {
-    padding:          7px 14px;
-    font-weight:      bold;
-    background-color: $orange;
-    text-decoration:  none;
-    border-radius:    4px;
-    color:            white;
-    font-size:        1.0em;
+    display: inline-flex; align-items: center; justify-content: center; gap: $space-2;
+    @include tap-target;
+    padding: 10px 18px;
+    font-family: $font-text; font-weight: $fw-semibold; font-size: $fs-base; line-height: 1;
+    background: $accent; color: $accent-ink;
+    border: 1px solid transparent; border-radius: $radius-sm; text-decoration: none;
+    cursor: pointer;
+    transition: background $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard, transform $dur-instant $ease-standard;
 
-    &:active {
-        background-color: color.adjust($orange, $lightness: -10%);
-    }
+    &:hover  { background: $accent-hover; }
+    &:active { background: $accent-pressed; transform: translateY(1px); }
+    &:focus-visible { @include focus-ring; }
+    &:disabled { background: $accent; opacity: 0.4; cursor: not-allowed; transform: none; }
 
-    &:disabled {
-        opacity: 0.1;
+    @media (prefers-reduced-motion: reduce) {
+        transition: background $dur-fast linear;
+        &:active { transform: none; }
     }
 }
 
 a.button {
-    display: inline-block;
+    display: inline-flex;
     @include button;
 }
 
 button:not(.icon) {
     @include button;
-    border-width: 0;
 
     &.secondary {
-        background-color: transparent;
-        color:            $orange;
+        background: transparent;
+        color:      $accent;
+        border:     1px solid rgba($orange, 0.4);
+
+        &:hover {
+            background: rgba($orange, 0.08);
+        }
     }
 
     &.destructive {
-        background-color: $red;
+        background: $destructive;
+
+        &:hover {
+            background: $mnp-red-600;
+        }
     }
 }
 
 button.icon {
-    border:           none;
-    padding:          0;
-    background-color: transparent;
+    @include tap-target;
+    display:    inline-flex;
+    align-items: center;
+    justify-content: center;
+    border:     none;
+    padding:    0;
+    background: transparent;
+    cursor:     pointer;
 
     path {
-        fill: $orange;
+        fill: $accent;
+    }
+
+    &:hover path {
+        fill: $accent-hover;
     }
 
     &:active path {
-        fill: color.adjust($orange, $lightness: -10%);
+        fill: $accent-pressed;
+    }
+
+    &:focus-visible {
+        @include focus-ring;
     }
 
     &:disabled, &:disabled:active {
         opacity: 0.2;
+        cursor:  not-allowed;
 
         & path {
-            fill: $orange;
+            fill: $accent;
         }
     }
 }
@@ -262,19 +316,24 @@ label {
         -webkit-appearance:  none;
         -moz-appearance:     none;
         padding:             14px;
-        font-size:           16px;
+        font-size:           $fs-base;
         font-family:         $font-text;
-        border:              1px solid $border-color;
-        border-radius:       0;
-        background-color:    #fff;
+        border:              1px solid $hairline;
+        border-radius:       $radius-sm;
+        background-color:    $surface-card;
         background-image:    url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjwhRE9DVFlQRSBzdmcgUFVCTElDICItLy9XM0MvL0RURCBTVkcgMS4xLy9FTiIgImh0dHA6Ly93d3cudzMub3JnL0dyYXBoaWNzL1NWRy8xLjEvRFREL3N2ZzExLmR0ZCI+CjxzdmcgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiBwcmVzZXJ2ZUFzcGVjdFJhdGlvPSJ4TWlkWU1pZCBtZWV0IiB2aWV3Qm94PSIwIDAgNDAwIDMwMCIgd2lkdGg9IjQwMCIgaGVpZ2h0PSIzMDAiPjxkZWZzPjxwYXRoIGQ9Ik0yMDAgMjk5LjE2TDQwMCAwTDAgMEwyMDAgMjk5LjE2WiIgaWQ9ImRzOUpFd3NLIj48L3BhdGg+PC9kZWZzPjxnPjxnPjxnPjx1c2UgeGxpbms6aHJlZj0iI2RzOUpFd3NLIiBvcGFjaXR5PSIxIiBmaWxsPSIjY2NjY2NjIiBmaWxsLW9wYWNpdHk9IjEiPjwvdXNlPjwvZz48L2c+PC9nPjwvc3ZnPg==');
         background-repeat:   no-repeat;
         background-position: right .7em center;
         background-size:     .65em;
-        color:               $green;
+        color:               $ink;
 
         &::-ms-expand {
             display: none;
+        }
+
+        &:focus {
+            border-color: $primary;
+            box-shadow:   0 0 0 3px rgba($primary, 0.15);
         }
     }
 
@@ -283,16 +342,22 @@ label {
         -moz-appearance:    none;
         appearance:         none;
 
-        border:             1px solid $border-color;
-        border-radius:      0;
-        color:              $green;
+        border:             1px solid $hairline;
+        border-radius:      $radius-sm;
+        background:         $surface-card;
+        color:              $ink;
         font-family:        $font-text;
-        font-size:          16px;
+        font-size:          $fs-base;
         padding:            14px;
         width:              100%;
 
         &::placeholder {
-            color: #aaaaaa;
+            color: $ink-faint;
+        }
+
+        &:focus {
+            border-color: $primary;
+            box-shadow:   0 0 0 3px rgba($primary, 0.15);
         }
     }
 }
@@ -301,10 +366,11 @@ div.buttons {
     display:         flex;
     gap:             $spacing-medium;
     justify-content: center;
+    flex-wrap:       wrap;
 }
 
 p.note {
-    color:     $text-color-light;
-    font-size: 0.7em;
+    color:     $ink-muted;
+    font-size: $fs-sm;
 }
 </style>

@@ -90,27 +90,34 @@ export default {
 .bottom-sheet-backdrop {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 200;
+    background: rgba(#000, 0.6);
+    z-index: $z-overlay;
     display: flex;
     align-items: flex-end;
+    justify-content: center;
     backdrop-filter: blur(4px);
     -webkit-backdrop-filter: blur(4px);
 }
 
 .bottom-sheet-panel {
-    background: #333;
-    color: rgba(white, 0.9);
+    background: $felt-rail;
+    color: $on-felt;
     width: 100%;
     max-height: 70vh;
-    border-radius: 16px 16px 0 0;
+    border-radius: $radius-lg $radius-lg 0 0;
     overflow-y: auto;
     padding-bottom: env(safe-area-inset-bottom);
-    transition: transform 200ms ease;
+    transition: transform $dur-normal $ease-spring;
     position: relative;
-    box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.4);
+    box-shadow: $shadow-felt-lg;
 
-    // Subtle top-edge highlight
+    // desktop: anchor bottom-center, constrained width
+    @media (min-width: $bp-phone) {
+        max-width: 480px;
+        margin: 0 auto;
+    }
+
+    // Subtle top-edge highlight (brass/ember charm)
     &::before {
         content: '';
         position: absolute;
@@ -121,12 +128,12 @@ export default {
         background: linear-gradient(
             90deg,
             transparent,
-            rgba($peach, 0.3) 20%,
-            rgba($peach, 0.5) 50%,
-            rgba($peach, 0.3) 80%,
+            rgba($gold, 0.35) 20%,
+            rgba($peach, 0.55) 50%,
+            rgba($gold, 0.35) 80%,
             transparent
         );
-        border-radius: 16px 16px 0 0;
+        border-radius: $radius-lg $radius-lg 0 0;
     }
 }
 
@@ -138,43 +145,49 @@ export default {
     cursor: grab;
     position: sticky;
     top: 0;
-    border-radius: 16px 16px 0 0;
+    background: $felt-rail;
+    border-radius: $radius-lg $radius-lg 0 0;
     z-index: 1;
 
     .handle-bar {
-        width: 36px;
+        width: 40px;
         height: 4px;
-        border-radius: 2px;
-        background: rgba(white, 0.2);
-        transition: background $transition-fast;
+        border-radius: $radius-pill;
+        background: $on-felt-faint;
+        transition: background $dur-fast $ease-standard;
     }
 
     &:active .handle-bar {
-        background: rgba($peach, 0.5);
+        background: rgba($peach, 0.6);
     }
 
     .bottom-sheet-close {
         position: absolute;
         right: $spacing-medium;
-        background: rgba(white, 0.08);
+        @include tap-target;
+        background: rgba(#fff, 0.08);
         border: none;
-        color: rgba(white, 0.5);
+        color: $on-felt-muted;
         cursor: pointer;
-        width: 32px;
-        height: 32px;
-        border-radius: 50%;
+        width: 36px;
+        height: 36px;
+        border-radius: $radius-pill;
         display: flex;
         align-items: center;
         justify-content: center;
-        transition: color $transition-fast, background $transition-fast;
+        transition: color $dur-fast $ease-standard, background $dur-fast $ease-standard;
 
         svg {
             flex-shrink: 0;
         }
 
         &:hover {
-            color: rgba(white, 0.9);
-            background: rgba(white, 0.15);
+            color: $on-felt;
+            background: rgba(#fff, 0.16);
+        }
+
+        &:focus-visible {
+            @include focus-ring-on-felt;
         }
     }
 }
@@ -183,77 +196,94 @@ export default {
     padding: 0 $spacing $spacing;
 
     h3 {
-        font-size: 0.7em;
-        font-weight: 700;
+        font-size: $fs-xs;
+        font-weight: $fw-bold;
         text-transform: uppercase;
-        letter-spacing: 0.12em;
-        color: rgba($peach, 0.6);
-        border-bottom: 1px solid rgba(white, 0.08);
+        letter-spacing: $tracking-caps;
+        color: $gold-soft;
+        border-bottom: 1px solid $felt-hairline;
         padding-bottom: $spacing-small;
         margin: $spacing 0 $spacing-medium;
     }
 
+    h4 {
+        color: $on-felt;
+    }
+
     p {
         margin: $spacing-medium 0;
-        font-size: 0.9em;
-        color: rgba(white, 0.8);
+        font-size: $fs-sm;
+        color: $on-felt-muted;
     }
 
     div.buttons {
         margin: $spacing-small 0 0;
     }
 
-    // Style toggles for dark background
-    :deep(.toggle) {
+    // Style toggles for dark felt background
+    // (this style block is intentionally unscoped, so plain descendant
+    // selectors reach the child components — :deep() only works in scoped CSS)
+    .toggle {
         span.label {
-            color: rgba(white, 0.85);
+            color: $on-felt;
         }
 
         span.checkbox {
-            background-color: rgba(white, 0.08);
-            border-color: rgba(white, 0.15);
+            background-color: rgba(#fff, 0.08);
+            border-color: $felt-hairline;
         }
 
         input[type=checkbox]:checked + span.checkbox {
-            background-color: rgba($peach, 0.3);
+            background-color: rgba($peach, 0.35);
             border-color: $peach;
+        }
+
+        input[type=checkbox]:focus-visible + span.checkbox {
+            @include focus-ring-on-felt;
         }
     }
 
-    // Style confirm buttons for dark background
-    :deep(.confirm-button) {
-        background-color: rgba(white, 0.08);
-        border: 1px solid rgba(white, 0.12);
-        color: rgba(white, 0.85);
+    // Style confirm buttons for dark felt background
+    .confirm-button {
+        background-color: rgba(#fff, 0.08);
+        border: 1px solid $felt-hairline;
+        color: $on-felt;
 
         &:hover {
-            background-color: rgba(white, 0.14);
+            background-color: rgba(#fff, 0.14);
+        }
+
+        &:focus-visible {
+            @include focus-ring-on-felt;
         }
 
         &.danger:not(.confirming) {
-            background-color: rgba($orange, 0.15);
-            border-color: rgba($orange, 0.3);
-            color: $orange;
+            background-color: rgba($accent, 0.16);
+            border-color: rgba($accent, 0.35);
+            color: $accent-hover;
 
             &:hover {
-                background-color: rgba($orange, 0.25);
+                background-color: rgba($accent, 0.26);
             }
         }
     }
 }
 
 // Transitions
-.bottom-sheet-enter-active,
-.bottom-sheet-leave-active {
-    transition: opacity 250ms ease;
+.bottom-sheet-enter-active {
+    transition: opacity $dur-slow $ease-standard;
 
     .bottom-sheet-panel {
-        transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
+        transition: transform $dur-slow $ease-spring;
     }
 }
 
-.bottom-sheet-leave-active .bottom-sheet-panel {
-    transition: transform 200ms ease;
+.bottom-sheet-leave-active {
+    transition: opacity $dur-normal $ease-standard;
+
+    .bottom-sheet-panel {
+        transition: transform $dur-normal $ease-accel;
+    }
 }
 
 .bottom-sheet-enter-from,
@@ -262,6 +292,28 @@ export default {
 
     .bottom-sheet-panel {
         transform: translateY(100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .bottom-sheet-panel {
+        transition: none;
+    }
+
+    .bottom-sheet-enter-active,
+    .bottom-sheet-leave-active {
+        transition: opacity $dur-fast linear;
+
+        .bottom-sheet-panel {
+            transition: none;
+        }
+    }
+
+    .bottom-sheet-enter-from,
+    .bottom-sheet-leave-to {
+        .bottom-sheet-panel {
+            transform: none;
+        }
     }
 }
 </style>

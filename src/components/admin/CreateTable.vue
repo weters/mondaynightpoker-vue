@@ -27,7 +27,12 @@
           </button>
         </div>
 
-        <loading v-if="loading" />
+        <div
+          v-if="loading"
+          class="loading-wrap"
+        >
+          <loading />
+        </div>
       </form>
     </div>
   </div>
@@ -61,5 +66,10 @@ export default {
 }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.loading-wrap {
+    display:         flex;
+    justify-content: center;
+    margin-top:      $space-4;
+}
 </style>

@@ -116,37 +116,50 @@ export default {
 <style lang="scss" scoped>
 @use 'sass:color';
 .confirm-button {
-    transition: background-color $transition-fast, color $transition-fast;
+    transition: background-color $dur-fast $ease-standard, color $dur-fast $ease-standard;
 
     &.confirming {
         animation: confirm-pulse 1s ease-in-out infinite;
     }
 
+    // "danger" mirrors the global button.destructive treatment (spec 4.1)
     &.danger {
-        background-color: $orange;
-        border-color: $orange;
+        background-color: $destructive;
+        border-color:     $destructive;
 
         &:hover {
-            background-color: color.adjust($orange, $lightness: -10%);
-            border-color: color.adjust($orange, $lightness: -10%);
+            background-color: $mnp-red-600;
+            border-color:     $mnp-red-600;
+        }
+
+        &:active {
+            background-color: $mnp-red-600;
         }
     }
 
     &.action-fold {
-        background-color: $red;
+        background-color: $destructive;
+
+        &:hover {
+            background-color: $mnp-red-600;
+        }
 
         &:active {
-            background-color: color.adjust($red, $lightness: -10%);
+            background-color: $mnp-red-600;
         }
     }
 
     &.action-check {
         background-color: transparent;
-        color: $orange;
-        border: 1px solid $orange;
+        color:            $accent;
+        border:           1px solid rgba($accent, 0.4);
+
+        &:hover {
+            background-color: rgba($accent, 0.08);
+        }
 
         &:active {
-            background-color: rgba($orange, 0.1);
+            background-color: rgba($accent, 0.15);
         }
     }
 
@@ -155,8 +168,21 @@ export default {
     &.action-keep-all {
         background-color: $light-green;
 
+        &:hover {
+            background-color: color.adjust($light-green, $lightness: -6%);
+        }
+
         &:active {
             background-color: color.adjust($light-green, $lightness: -10%);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: background-color $dur-fast linear, color $dur-fast linear;
+
+        &.confirming {
+            animation: none;
+            box-shadow: 0 0 0 2px rgba(white, 0.5);
         }
     }
 }
@@ -164,17 +190,17 @@ export default {
 @keyframes confirm-pulse {
     0%, 100% {
         box-shadow: 0 0 0 0 rgba(white, 0.4);
-        transform: scale(1);
+        transform:  scale(1);
     }
     50% {
         box-shadow: 0 0 8px 3px rgba(white, 0.6);
-        transform: scale(1.05);
+        transform:  scale(1.05);
     }
 }
 
 .confirm-text-enter-active,
 .confirm-text-leave-active {
-    transition: opacity 150ms ease;
+    transition: opacity $dur-fast $ease-standard;
 }
 
 .confirm-text-enter-from,

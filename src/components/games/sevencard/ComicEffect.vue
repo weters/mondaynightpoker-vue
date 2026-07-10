@@ -29,12 +29,12 @@ defineProps({
     left: 50%;
     transform: translateX(-50%);
     max-width: 120px;
-    padding: 6px 10px;
-    font-size: 0.8em;
-    font-weight: bold;
+    padding: $space-1 $space-2;
+    font-size: $fs-sm;
+    font-weight: $fw-bold;
     text-align: center;
-    border-radius: 8px;
-    z-index: 100;
+    border-radius: $radius-md;
+    z-index: $z-raised;
     pointer-events: none;
     white-space: nowrap;
 
@@ -47,54 +47,56 @@ defineProps({
         bottom: -4px;
         background: inherit;
         z-index: -1;
-        border-radius: 12px;
+        border-radius: $radius-lg;
         opacity: 0.3;
     }
 }
 
+// Personality stays (comic-book splash), but every hue now comes from the
+// token palette so the effects agree with the rest of the felt.
 .mushroom-effect {
-    background: linear-gradient(135deg, #8B4513, #551a1a);
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 8px rgba(139, 69, 19, 0.6);
+    background: linear-gradient(135deg, $mnp-ember-600, $mnp-ink-900);
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(#000, 0.5);
+    box-shadow: 0 2px 8px rgba($mnp-ember-600, 0.6);
 }
 
 .antidote-effect {
-    background: linear-gradient(135deg, #4CAF50, #1B5E20);
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.6);
+    background: linear-gradient(135deg, $positive, $mnp-ink-900);
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(#000, 0.5);
+    box-shadow: 0 2px 8px rgba($positive, 0.6);
 }
 
 .no-antidote-effect {
-    background: linear-gradient(135deg, #f44336, #b71c1c);
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 8px rgba(244, 67, 54, 0.6);
+    background: linear-gradient(135deg, $negative, $mnp-red-600);
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(#000, 0.5);
+    box-shadow: 0 2px 8px rgba($negative, 0.6);
 }
 
 .bogo-effect {
-    background: linear-gradient(135deg, #FFD700, #FFA500);
-    color: #000;
-    text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.5);
-    box-shadow: 0 2px 8px rgba(255, 215, 0, 0.6);
+    background: linear-gradient(135deg, $gold-soft, $gold);
+    color: $suit-black;
+    text-shadow: 1px 1px 2px rgba(#fff, 0.5);
+    box-shadow: 0 2px 8px rgba($gold, 0.6);
 }
 
 .nailclipping-refund-effect {
-    background: linear-gradient(135deg, #4CAF50, #1B5E20);
-    color: white;
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
-    box-shadow: 0 2px 8px rgba(76, 175, 80, 0.6);
+    background: linear-gradient(135deg, $positive, $mnp-ink-900);
+    color: #fff;
+    text-shadow: 1px 1px 2px rgba(#000, 0.5);
+    box-shadow: 0 2px 8px rgba($positive, 0.6);
     max-width: 180px;
     white-space: normal;
 }
 
 .comic-pop-enter-active {
-    animation: comic-pop-in 0.3s ease-out;
+    animation: comic-pop-in $dur-slow $ease-spring;
 }
 
 .comic-pop-leave-active {
-    animation: comic-pop-out 0.2s ease-in;
+    animation: comic-pop-out $dur-normal $ease-accel;
 }
 
 @keyframes comic-pop-in {
@@ -120,5 +122,28 @@ defineProps({
         opacity: 0;
         transform: translateX(-50%) scale(0.5);
     }
+}
+
+// Reduced motion: keep the splash legible (it carries game info) but drop
+// the scale/travel — fade only, leaving the base translateX(-50%) centering
+// untouched.
+@media (prefers-reduced-motion: reduce) {
+    .comic-pop-enter-active {
+        animation: comic-pop-fade-in $dur-fast linear;
+    }
+
+    .comic-pop-leave-active {
+        animation: comic-pop-fade-out $dur-fast linear;
+    }
+}
+
+@keyframes comic-pop-fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+@keyframes comic-pop-fade-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
 }
 </style>

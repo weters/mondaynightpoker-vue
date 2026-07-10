@@ -102,14 +102,22 @@ export default {
 
 <style lang="scss" scoped>
 div.acey-deucey {
+    h3 {
+        text-align:     center;
+        color:          $gold-soft;
+        border-bottom:  1px solid $felt-hairline;
+        font-weight:    $fw-semibold;
+        letter-spacing: $tracking-tight;
+    }
+
     .acey-deucey-actions {
-        padding: $spacing-medium 0;
+        padding: $space-3 0;
 
         .buttons {
             display:         flex;
             align-items:     center;
             justify-content: center;
-            gap:             $spacing-medium;
+            gap:             $space-3;
             margin:          0;
             flex-wrap:       wrap;
         }

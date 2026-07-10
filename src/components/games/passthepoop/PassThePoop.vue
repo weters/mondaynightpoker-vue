@@ -145,21 +145,43 @@
 
 <style lang="scss" scoped>
     .pass-the-poop {
+        h3 {
+            text-align:     center;
+            color:          $gold-soft;
+            border-bottom:  1px solid $felt-hairline;
+            font-weight:    $fw-semibold;
+            letter-spacing: $tracking-tight;
+        }
+
         .pot-row {
-            display: flex;
-            align-items: center;
+            display:         flex;
+            align-items:     center;
             justify-content: center;
-            gap: $spacing;
-            margin-bottom: $spacing;
+            gap:             $space-6;
+            margin-bottom:   $spacing;
+
+            :deep(.chip-stack .amount) {
+                font-size:   $fs-xl;
+                color:       $gold-soft;
+                text-shadow: 0 0 12px rgba($gold, 0.4);
+            }
 
             .cards-left {
-                display: flex;
+                display:        flex;
                 flex-direction: column;
-                align-items: center;
+                align-items:    center;
+                color:          $on-felt-muted;
 
                 span.icon {
                     display: block;
-                    width: 21.5px;
+                    width:   21.5px;
+                }
+
+                span.value {
+                    @include numeric;
+                    margin-top:  2px;
+                    font-weight: $fw-semibold;
+                    color:       $on-felt;
                 }
             }
         }
@@ -171,17 +193,27 @@
 
         .buttons {
             white-space: nowrap;
-            width: min-content;
-            margin: 0 auto;
+            width:       min-content;
+            margin:      0 auto;
         }
     }
 
     .card-enter-active, .card-leave-active {
-        transition: all 500ms;
+        transition: transform $dur-slow $ease-standard, opacity $dur-slow $ease-standard;
     }
 
     .card-enter-from, .card-leave-to {
-        opacity: 0;
+        opacity:   0;
         transform: translateY(-100%);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .card-enter-active, .card-leave-active {
+            transition: opacity $dur-fast linear;
+        }
+
+        .card-enter-from, .card-leave-to {
+            transform: none;
+        }
     }
 </style>

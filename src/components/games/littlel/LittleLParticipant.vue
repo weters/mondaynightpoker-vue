@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'little-l-participant': true, 'is-action': isAction }">
+  <div :class="{ 'little-l-participant': true, 'is-action': isAction, 'is-folded': participant.didFold }">
     <div class="cards">
       <div
         v-for="(card, cardIndex) in cards"
@@ -17,7 +17,11 @@
         <div class="name-hand">
           <strong class="display-name">{{ playerData.player.displayName }}</strong>
           <span
-            v-if="participant.handRank"
+            v-if="participant.didFold"
+            class="folded-chip"
+          >Folded</span>
+          <span
+            v-else-if="participant.handRank"
             :class="{'hand-rank': true, 'is-winner': isWinner}"
           >{{ participant.handRank }}</span>
         </div>
@@ -115,12 +119,27 @@
     $max-width: 599px;
 
     div.little-l-participant {
-        border: 1px solid $border-color;
-        padding:   $spacing-medium;
+        background:    $felt-rail;
+        border:        1px solid $felt-hairline;
+        border-radius: $radius-md;
+        box-shadow:    $shadow-felt-md;
+        color:         $on-felt;
+        padding:       $spacing-medium;
+        transition:    box-shadow $dur-normal $ease-standard;
 
+        // Current turn — the single most important glance state.
         &.is-action {
-            border-color: $orange;
-            box-shadow: 0 0 5px $orange;
+            @include current-turn;
+            box-shadow: $shadow-felt-md, $glow-turn;
+        }
+
+        &.is-folded {
+            opacity: 0.5;
+            filter: grayscale(0.4);
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            transition: box-shadow $dur-fast linear;
         }
 
         div.cards {
@@ -146,31 +165,45 @@
             grid-template-columns: 2fr 1fr;
 
             strong.display-name {
+                font-weight: $fw-semibold;
             }
 
             &.disconnected {
                 strong.display-name {
-                    font-weight: normal;
+                    font-weight: $fw-regular;
                     font-style: italic;
-                    color: $text-color-light;
+                    color: $on-felt-faint;
                 }
             }
 
             .participant {
+                .chips {
+                    @include numeric;
+                    color: $on-felt-muted;
+                    font-size: $fs-sm;
+                }
+
                 .name-hand {
                     .hand-rank {
                         display:     block;
-                        font-size:   1.2em;
-                        color: $text-color-light;
+                        font-size:   $fs-md;
+                        color: $on-felt-muted;
 
                         &.is-winner {
-                            font-weight: bold;
-                            color: black;
+                            font-weight: $fw-bold;
+                            color: $gold-soft;
+                            text-shadow: 0 0 10px rgba($gold, 0.35);
                         }
                     }
-                }
 
-                .chips {
+                    .folded-chip {
+                        display:        block;
+                        font-size:      $fs-2xs;
+                        font-weight:    $fw-bold;
+                        text-transform: uppercase;
+                        letter-spacing: $tracking-wide;
+                        color:          $on-felt-faint;
+                    }
                 }
             }
 

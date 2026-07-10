@@ -1,5 +1,5 @@
 <template>
-  <div :class="{ 'ptp-participant': true, 'is-connected': isConnected }">
+  <div :class="{ 'ptp-participant': true, 'is-connected': isConnected, 'current-turn': isPlayerTurn, 'is-out': participant.lives === 0 }">
     <strong class="name">{{ playerData.player.displayName }}</strong>
 
     <div class="lives">
@@ -32,6 +32,10 @@
           class="block-chip"
         />
       </transition>
+      <span
+        v-if="participant.lives === 0"
+        class="out-badge"
+      >OUT</span>
     </div>
 
     <span class="is-turn">
@@ -129,38 +133,66 @@ export default {
 
 <style lang="scss" scoped>
 .ptp-participant {
+    background:     $felt-rail;
+    border:         1px solid $felt-hairline;
+    border-radius:  $radius-sm;
+    box-shadow:     $shadow-felt-sm;
+    color:          $on-felt;
     display:        flex;
     flex-direction: column;
     max-width:      100px;
     align-items:    center;
+    padding:        $space-2;
+    transition:     box-shadow $dur-normal $ease-standard,
+                   border-color $dur-normal $ease-standard,
+                   opacity $dur-normal $ease-standard;
 
     strong.name {
-        overflow: hidden;
-        display:  block;
+        overflow:      hidden;
+        display:       block;
+        width:         100%;
+        text-align:    center;
+        white-space:   nowrap;
+        text-overflow: ellipsis;
+        font-size:     $fs-xs;
+        font-weight:   $fw-semibold;
+        color:         $on-felt;
 
         @media(max-width: 500px) {
-            font-size: 10px;
+            font-size: $fs-2xs;
         }
     }
 
     &:not(.is-connected) {
         strong.name {
-            font-weight: normal;
+            font-weight: $fw-regular;
             font-style:  italic;
-            color:       $text-color-light;
+            color:       $on-felt-faint;
         }
+    }
+
+    // Turn — the single most important glance state (spec 5.3).
+    &.current-turn {
+        @include current-turn;
+    }
+
+    // Eliminated — dimmed + a clear textual "OUT" label, never colour alone.
+    &.is-out {
+        opacity: 0.5;
+        filter:  grayscale(0.5);
     }
 
     .lives {
         display:               grid;
         grid-template-columns: repeat(3, 1fr);
-        grid-gap:              $spacing-small;
-        margin:                $spacing-small 0;
+        grid-gap:              $space-1;
+        margin:                $space-1 0;
         width:                 100%;
         align-items:           center;
 
         svg {
             width: 100%;
+            fill:  $peach;
         }
 
         span.placeholder {
@@ -174,7 +206,8 @@ export default {
         display:    inline-block;
         width:      25px;
         height:     25px;
-        margin-top: $spacing-small;
+        margin-top: $space-1;
+        color:      $gold-soft;
     }
 
     div.ptp-card-container {
@@ -187,20 +220,31 @@ export default {
             right:            5px;
             width:            19px;
             height:           19px;
-            background-color: $red;
+            background-color: $negative;
             border-radius:    50%;
-            border:           2px dotted white;
-            box-shadow:       2px 1px rgba(black, 0.3);
+            border:           2px dotted rgba(#fff, 0.85);
+            box-shadow:       2px 1px 0 rgba(#000, 0.3);
+        }
 
-            fill:             $red;
-            outline:          white 3px;
+        .out-badge {
+            position:       absolute;
+            inset:          0;
+            display:        flex;
+            align-items:    center;
+            justify-content: center;
+            background:     rgba(#000, 0.55);
+            border-radius:  $radius-card;
+            color:          $on-felt-faint;
+            font-size:      $fs-2xs;
+            font-weight:    $fw-bold;
+            letter-spacing: $tracking-caps;
         }
     }
 }
 
 .lives-leave-active {
-    animation:       lose-life 500ms;
-    animation-delay: 1000ms;
+    animation:       lose-life $dur-slow;
+    animation-delay: $dur-celebrate;
 }
 
 @keyframes lose-life {
@@ -215,11 +259,29 @@ export default {
 }
 
 .block-leave-active {
-    transition: 1000ms all;
+    transition: transform $dur-slow $ease-standard, opacity $dur-slow $ease-standard;
 }
 
 .block-leave-to {
     transform: translateY(-200%);
     opacity:   0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .ptp-participant {
+        transition: opacity $dur-fast linear;
+    }
+
+    .lives-leave-active {
+        animation: none;
+    }
+
+    .block-leave-active {
+        transition: opacity $dur-fast linear;
+    }
+
+    .block-leave-to {
+        transform: none;
+    }
 }
 </style>

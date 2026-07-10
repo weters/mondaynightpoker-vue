@@ -1,57 +1,230 @@
-$background-color: #f2f2f2;
-$red: #e53935;
-$yellow: #FBC02D;
-$black: #222;
-$card-font: gesta, serif;
+@use 'sass:color';
 
-$text-color: #011F26;
-$text-color-light: #999;
+// ============================================================
+// MONDAY NIGHT POKER — DESIGN TOKENS ("Midnight Felt")
+// Legacy names preserved. Prefer the SEMANTIC tokens in new code.
+// ============================================================
 
-$font-text: gesta, sans-serif;
+// ---- 1.1 Brand raw palette (do not use directly in components;
+//          use the semantic aliases below) ----
+$mnp-ink-900:      #011F26; // deepest teal-ink (was $dark-green)
+$mnp-ink-800:      #063038;
+$mnp-teal-700:     #0F4C59; // signature felt teal (was $green)
+$mnp-teal-600:     #14606F;
+$mnp-teal-500:     #1C7C8C;
+$mnp-felt-900:     #06201F; // table background, darkest
+$mnp-felt-800:     #0A2C2A; // felt surface
+$mnp-felt-700:     #0E3A36; // felt rail / raised felt
+$mnp-ember-600:    #E2593B; // pressed ember
+$mnp-ember-500:    #F26E50; // ember accent (was $orange)
+$mnp-ember-300:    #F2A679; // warm peach (was $peach)
+$mnp-gold-500:     #E5B769; // brass — winner/pot only
+$mnp-gold-300:     #F2D9A6;
+$mnp-red-600:      #C62F2F;
+$mnp-red-500:      #E53935; // suit red / destructive (was $red)
+$mnp-green-500:    #3F9E5A; // positive / "up" money
+$mnp-green-400:    #4CAF50; // (was $light-green)
+$mnp-yellow-500:   #FBC02D; // wild-card marker (was $yellow)
+$mnp-paper-50:     #F6F3EE; // warm page paper
+$mnp-paper-0:      #FFFFFF;
+$mnp-card-ivory:   #FBF7EF; // playing-card face
+$mnp-neutral-100:  #EFECE6;
+$mnp-neutral-200:  #E3DFD7; // hairline borders
+$mnp-neutral-400:  #B4AEA3;
+$mnp-neutral-500:  #8C867C; // muted text on light
+$mnp-neutral-700:  #47433C; // warm dark grey
 
-$spacing: 24px;
-$spacing-medium: 12px;
-$spacing-small: 4px;
+// ---- 1.2 LEGACY NAMES (kept working; retuned values) ----
+$background-color: $mnp-paper-50;   // warm paper, not #f2f2f2 grey
+$red:              $mnp-red-500;
+$yellow:           $mnp-yellow-500;
+$black:            #20211F;          // warm near-black
+$card-font:        gesta, serif;
 
-$border-color: #e0e0e0;
-$border-radius: 8px;
-$border-radius-card: 4px;
-$border-radius-small: 4px;
-$border-radius-large: 12px;
+$text-color:       #10201F;          // near-black teal-ink on light
+$text-color-light: $mnp-neutral-500;
 
-$dark-green: #011F26;
-$green: #0F4C59;
-$peach: #F2A679;
-$orange: #F26E50;
-$gray: #F2F2F2;
-$light-green: #4CAF50;
+$font-text:        gesta, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
 
-$primary: $green;
-$secondary: $dark-green;
-$error: $orange;
+$spacing:          24px;
+$spacing-medium:   12px;
+$spacing-small:    4px;
 
-// Shadows for depth
-$shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.08);
-$shadow-md: 0 4px 12px rgba(0, 0, 0, 0.1);
-$shadow-lg: 0 8px 24px rgba(0, 0, 0, 0.12);
-$shadow-hover: 0 6px 16px rgba(0, 0, 0, 0.15);
+$border-color:     $mnp-neutral-200;
+$border-radius:        10px;         // was 8px — softer, modern
+$border-radius-card:   6px;
+$border-radius-small:  6px;
+$border-radius-large:  16px;
 
-// Transitions
-$transition-fast: 150ms ease;
-$transition-normal: 250ms ease;
+$dark-green:       $mnp-ink-900;
+$green:            $mnp-teal-700;
+$peach:            $mnp-ember-300;
+$orange:           $mnp-ember-500;
+$gray:             $mnp-neutral-100; // was #F2F2F2 — warm zebra stripe
+$light-green:      $mnp-green-400;
 
-// radio and checkboxes
-$control-width: 40px;
-$control-size: 20px;
+$primary:          $green;
+$secondary:        $dark-green;
+$error:            $orange;
 
+// radio / checkbox geometry
+$control-width:    40px;
+$control-size:     20px;
+
+// breakpoints (legacy names + new)
 $media-small-table-width: 600px;
-$mobile-max: 600px;
+$mobile-max:              600px;
 
-// Player bar
-$bar-padding-v: 6px;
-$bar-padding-v-landscape: 3px;
+// player bar
+$bar-padding-v:            6px;
+$bar-padding-v-landscape:  3px;
 
-$page-width-max-width: 1000px;
+$page-width-max-width:     1000px;
+
+// ---- 1.3 SEMANTIC COLOR TOKENS (USE THESE IN NEW CODE) ----
+
+// Light chrome (lobby / auth / profile)
+$surface-page:     $background-color;   // page paper
+$surface-card:     $mnp-paper-0;        // white cards
+$surface-sunken:   $mnp-neutral-100;    // wells, zebra rows, inputs at rest
+$surface-header:   $mnp-ink-900;        // top nav bar
+$ink:              $text-color;         // primary text on light
+$ink-muted:        $mnp-neutral-500;    // secondary text on light
+$ink-faint:        $mnp-neutral-400;    // placeholder / disabled label
+$hairline:         $border-color;       // 1px dividers on light
+
+// Dark felt (live table + bottom sheets + dark overlays)
+$felt-base:        $mnp-felt-900;       // table page background
+$felt-surface:     $mnp-felt-800;       // felt playing area
+$felt-rail:        $mnp-felt-700;       // raised bars, rails, seats
+$on-felt:          #EAF2F0;             // primary text on felt
+$on-felt-muted:    rgba(#EAF2F0, 0.62); // secondary text on felt
+$on-felt-faint:    rgba(#EAF2F0, 0.40); // tertiary / disabled on felt
+$felt-hairline:    rgba(#EAF2F0, 0.12); // dividers on felt
+
+// Accents (role-restricted)
+$accent:           $orange;             // the ONE action color
+$accent-hover:     $mnp-ember-300;
+$accent-pressed:   $mnp-ember-600;
+$accent-ink:       #FFFFFF;             // text/icon on accent fills
+$gold:             $mnp-gold-500;       // winner, pot celebration ONLY
+$gold-soft:        $mnp-gold-300;
+
+// Status
+$positive:         $mnp-green-500;      // money up, success
+$negative:         $mnp-red-500;        // money down, error text
+$destructive:      $mnp-red-500;        // destructive buttons
+$warning:          $mnp-yellow-500;
+
+// Playing cards
+$card-face:        $mnp-card-ivory;
+$card-face-edge:   #D8CFBE;
+$suit-red:         $mnp-red-500;        // hearts / diamonds
+$suit-black:       #1C1E1D;             // clubs / spades  (use, not pure #000)
+$suit-star:        $mnp-green-400;      // stars suit
+$wild-marker:      $mnp-yellow-500;
+
+// ---- 1.4 TYPOGRAPHY SCALE (px, 1rem = 16px base) ----
+$font-display:     gioviale, $font-text;   // logo / hero only
+$font-numeric:     $font-text;             // pair with tabular-nums utility
+
+$fs-2xs:  0.6875rem; // 11px  micro-labels, card-corner meta
+$fs-xs:   0.75rem;   // 12px  captions, section-header, badges
+$fs-sm:   0.875rem;  // 14px  secondary body, dense tables
+$fs-base: 1rem;      // 16px  body / inputs (never smaller on inputs → no iOS zoom)
+$fs-md:   1.125rem;  // 18px  lead paragraph
+$fs-lg:   1.375rem;  // 22px  h3
+$fs-xl:   1.75rem;   // 28px  h2
+$fs-2xl:  2.25rem;   // 36px  h1 / hero
+$fs-3xl:  3rem;      // 48px  marketing hero
+
+$lh-tight:  1.15;
+$lh-snug:   1.3;
+$lh-normal: 1.5;
+$lh-loose:  1.65;
+
+$fw-regular:  400;
+$fw-medium:   500;
+$fw-semibold: 600;
+$fw-bold:     700;
+
+$tracking-tight:  -0.01em;
+$tracking-normal: 0;
+$tracking-wide:   0.05em;   // section headers
+$tracking-caps:   0.12em;   // all-caps micro labels
+
+// ---- 1.5 SPACING SCALE (extends legacy trio) ----
+$space-0:   0;
+$space-1:   $spacing-small;    // 4
+$space-2:   8px;
+$space-3:   $spacing-medium;   // 12
+$space-4:   16px;
+$space-5:   $spacing;          // 24
+$space-6:   32px;
+$space-8:   48px;
+$space-10:  64px;
+
+// ---- 1.6 RADII (aliases to legacy) ----
+$radius-xs:   4px;
+$radius-sm:   $border-radius-small;   // 6
+$radius-md:   $border-radius;         // 10
+$radius-lg:   $border-radius-large;   // 16
+$radius-pill: 1000px;
+$radius-card: $border-radius-card;    // 6 (playing cards)
+
+// ---- 1.7 SHADOWS (legacy names retuned + felt variants) ----
+$shadow-sm:    0 1px 2px rgba(#0A1512, 0.06), 0 1px 3px rgba(#0A1512, 0.08);
+$shadow-md:    0 3px 8px rgba(#0A1512, 0.10), 0 8px 20px rgba(#0A1512, 0.08);
+$shadow-lg:    0 8px 24px rgba(#0A1512, 0.14), 0 16px 48px rgba(#0A1512, 0.10);
+$shadow-hover: 0 6px 16px rgba(#0A1512, 0.16);
+
+// depth on the dark felt (shadows read as glow/lift, not drop)
+$shadow-felt-sm:   0 1px 2px rgba(#000, 0.35);
+$shadow-felt-md:   0 4px 14px rgba(#000, 0.40);
+$shadow-felt-lg:   0 10px 34px rgba(#000, 0.50);
+$shadow-card-rest: 0 2px 6px rgba(#000, 0.30);   // a dealt card lying on felt
+$shadow-card-lift: 0 8px 20px rgba(#000, 0.45);  // selected / hovered card
+
+// signature glows
+$glow-turn:   0 0 0 2px $accent, 0 0 16px rgba($orange, 0.55);
+$glow-winner: 0 0 0 2px $gold, 0 0 22px rgba($gold, 0.60);
+
+// ---- 1.8 Z-INDEX SCALE (use tokens, stop inventing numbers) ----
+$z-base:        0;
+$z-raised:      10;   // scheduled-game corner card, sticky sub-headers
+$z-dropdown:    50;
+$z-player-bar:  100;  // fixed bottom action bar
+$z-sticky-nav:  120;
+$z-overlay:     200;  // bottom-sheet backdrop, modal scrim
+$z-modal:       210;
+$z-toast:       1000; // error / notification banners
+$z-devtools:    1100;
+
+// ---- 1.9 MOTION (see Section 6 for usage) ----
+$dur-instant: 90ms;
+$dur-fast:    150ms;
+$dur-normal:  240ms;
+$dur-slow:    360ms;
+$dur-celebrate: 900ms;
+
+$ease-standard: cubic-bezier(0.2, 0, 0, 1);      // enter/move (Material-ish)
+$ease-accel:    cubic-bezier(0.3, 0, 1, 1);      // exit
+$ease-spring:   cubic-bezier(0.22, 1, 0.36, 1);  // sheets, cards settling
+$ease-emphasis: cubic-bezier(0.34, 1.56, 0.64, 1); // overshoot for pot/win pop
+
+// legacy transition tokens (retuned to tokens above)
+$transition-fast:   $dur-fast $ease-standard;
+$transition-normal: $dur-normal $ease-standard;
+
+// ---- 1.10 BREAKPOINTS (new names; legacy $mobile-max kept) ----
+$bp-phone:   600px;   // == $mobile-max / $media-small-table-width
+$bp-tablet:  900px;
+$bp-desktop: 1000px;  // == $page-width-max-width
+$bp-wide:    1280px;
+
+// ============================================================
+// MIXINS — signatures unchanged; internals modernized
+// ============================================================
 
 @mixin page-width {
     max-width: 85vw;
@@ -68,27 +241,27 @@ $page-width-max-width: 1000px;
 
 @mixin inline-label {
     display:        block;
-    font-size:      16px;
-    color:          #aaa;
+    font-size:      $fs-base;
+    color:          $ink-faint;
     position:       absolute;
-    top:            15px;
-    left:           15px;
-
-    transition:     all 100ms;
+    top:            16px;
+    left:           14px;
+    transition:     all $dur-fast $ease-standard;
     z-index:        2;
     pointer-events: none;
 }
 
 @mixin inline-label-with-value {
     span.label {
-        font-size: 10px;
-        top:       6px;
-        left:      6px;
+        font-size: $fs-2xs;
+        top:       7px;
+        left:      14px;
+        color:     $primary;
     }
 
     input, select {
-        padding-top:    19px;
-        padding-bottom: 9px;
+        padding-top:    22px;
+        padding-bottom: 8px;
     }
 }
 
@@ -103,31 +276,67 @@ $page-width-max-width: 1000px;
 }
 
 @mixin current-turn {
-    border-color: $orange;
-    box-shadow: 0 0 4px $orange;
+    border-color: $accent;
+    box-shadow:   $glow-turn;
 }
 
 @mixin card {
-    background: white;
+    background:    $surface-card;
     border-radius: $border-radius;
-    box-shadow: $shadow-sm;
-    border: 1px solid $border-color;
+    box-shadow:    $shadow-sm;
+    border:        1px solid $hairline;
 }
 
 @mixin card-hover {
-    transition: box-shadow $transition-fast, transform $transition-fast;
+    transition: box-shadow $dur-fast $ease-standard,
+                transform  $dur-fast $ease-standard;
 
     &:hover {
         box-shadow: $shadow-hover;
-        transform: translateY(-2px);
+        transform:  translateY(-2px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: box-shadow $dur-fast linear;
+        &:hover { transform: none; }
     }
 }
 
 @mixin section-header {
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size:      $fs-xs;
+    font-weight:    $fw-semibold;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    color: $text-color-light;
-    margin-bottom: $spacing-medium;
+    letter-spacing: $tracking-wide;
+    color:          $ink-muted;
+    margin-bottom:  $spacing-medium;
+}
+
+// ============================================================
+// NEW HELPER MIXINS (optional, encouraged)
+// ============================================================
+
+// tabular figures for money/chips so digits don't jitter
+@mixin numeric {
+    font-family: $font-numeric;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: $tracking-tight;
+}
+
+// the ONE canonical focus ring — call inside :focus-visible
+@mixin focus-ring($color: $accent) {
+    outline: 2px solid $color;
+    outline-offset: 2px;
+    border-radius: $radius-xs;
+}
+
+// felt-context focus ring (higher contrast on dark)
+@mixin focus-ring-on-felt {
+    outline: 2px solid $gold-soft;
+    outline-offset: 2px;
+}
+
+// guarantees a 44px hit area without changing visual size
+@mixin tap-target($min: 44px) {
+    min-width:  $min;
+    min-height: $min;
 }

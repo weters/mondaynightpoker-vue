@@ -97,20 +97,20 @@
             }
 
             span.chip {
-                border: 2px dotted white;
-                &.white { background-color: #F5F5F5; border-color: #3F51B5; }
-                &.red { background-color: #f44336; }
+                border: 2px dotted rgba(#fff, 0.85);
+                &.white { background-color: #F5F3EE; border-color: $primary; }
+                &.red { background-color: $suit-red; }
                 &.blue { background-color: #3F51B5; }
                 &.gray { background-color: #607D8B; }
-                &.green { background-color: #4CAF50; }
-                &.orange { background-color: #FF9800; }
-                &.pink { background-color: #BA68C8; }
-                &.black { background-color: #272727; }
+                &.green { background-color: $positive; }
+                &.orange { background-color: $warning; }
+                &.pink { background-color: #C879D6; }
+                &.black { background-color: #232522; }
 
                 top: 0;
                 left: 0;
                 position: absolute;
-                box-shadow: 2px 1px 0 rgba(black, 0.2);
+                box-shadow: 2px 1px 0 rgba(#000, 0.25);
                 border-radius: 100%;
                 display: block;
                 height: var(--size);
@@ -124,7 +124,7 @@
             }
 
             span.chip-enter-active, span.chip-leave-active {
-                transition: all 500ms;
+                transition: top $dur-slow $ease-spring, opacity $dur-slow $ease-spring;
             }
 
             span.chip-enter-from, span.chip-leave-to {
@@ -135,7 +135,8 @@
     }
 
     .amount {
-        font-weight: bold;
+        @include numeric;
+        font-weight: $fw-bold;
         text-align: center;
 
         @at-root .is-zero & {
@@ -146,7 +147,7 @@
 
 
     .stack {
-        transition: all 500ms;
+        transition: transform $dur-slow $ease-spring, opacity $dur-slow $ease-spring;
     }
 
     .stack-leave-active {
@@ -156,5 +157,17 @@
     .stack-enter-from, .stack-leave-to {
         opacity: 0;
         transform: translateY(30px);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        div.chips .stack span.chip-enter-active,
+        div.chips .stack span.chip-leave-active,
+        .stack {
+            transition: opacity $dur-fast linear;
+        }
+
+        .stack-enter-from, .stack-leave-to {
+            transform: none;
+        }
     }
 </style>

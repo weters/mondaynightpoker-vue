@@ -115,22 +115,30 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@media (max-width: #{$media-small-table-width}) {
+@media (max-width: $bp-phone) {
     table.standard td:nth-child(1)::before { content: 'ID' }
     table.standard td:nth-child(2)::before { content: 'Email' }
     table.standard td:nth-child(3)::before { content: 'Display Name' }
-    table.standard td:nth-child(4)::before { content: 'Joined' }
+    table.standard td:nth-child(4)::before { content: 'Status' }
+    table.standard td:nth-child(5)::before { content: 'Joined' }
+    table.standard td:nth-child(6)::before { content: 'Actions' }
 }
 
-div.player-list {
-    .pl-loading {
-        position: absolute;
-    }
+h3 {
+    margin-top: $space-6;
+}
 
-    form.search {
-        border-width: 0;
-        padding:      0;
-        width:        auto;
-    }
+.pl-loading {
+    position:    absolute;
+    margin-left: $space-3;
+}
+
+form.search {
+    max-width:     360px;
+    margin-bottom: $space-3;
+}
+
+table.standard {
+    width: 100%;
 }
 </style>

@@ -70,24 +70,32 @@ div.game-selector {
             width: 100%;
             padding: $spacing;
 
+            // The game being configured reads as the "selected" card.
+            // Ring via box-shadow avoids any layout shift from a border change.
+            &:focus-within {
+                border-color: $accent;
+                box-shadow: $shadow-hover, 0 0 0 2px $accent;
+            }
+
             h4 {
                 margin: 0 0 $spacing-medium;
-                font-size: 1.1rem;
-                font-weight: 600;
+                font-size: $fs-lg;
+                font-weight: $fw-semibold;
+                letter-spacing: $tracking-tight;
                 color: $secondary;
                 padding-bottom: $spacing-medium;
-                border-bottom: 1px solid $border-color;
+                border-bottom: 1px solid $hairline;
             }
 
             .buttons {
                 margin-top: $spacing;
                 padding-top: $spacing-medium;
-                border-top: 1px solid $border-color;
+                border-top: 1px solid $hairline;
 
                 button[type="submit"] {
                     width: 100%;
                     padding: $spacing-medium;
-                    font-weight: 500;
+                    font-weight: $fw-semibold;
                 }
             }
         }
@@ -119,7 +127,7 @@ div.game-selector {
         text-align: center;
 
         p {
-            color: $text-color-light;
+            color: $ink-muted;
             margin: 0 0 $spacing;
         }
 

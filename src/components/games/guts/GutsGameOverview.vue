@@ -13,18 +13,18 @@
       </div>
       <div class="info-item">
         <span class="label">Ante</span>
-        <span class="value">{{ formatAmount(ante) }}</span>
+        <span class="value value--money">{{ formatAmount(ante) }}</span>
       </div>
       <div class="info-item">
         <span class="label">Max Owed</span>
-        <span class="value">{{ formatAmount(maxOwed) }}</span>
+        <span class="value value--money">{{ formatAmount(maxOwed) }}</span>
       </div>
       <div
         v-if="overflowPot > 0"
         class="info-item"
       >
         <span class="label">Overflow</span>
-        <span class="value">{{ formatAmount(overflowPot) }}</span>
+        <span class="value value--money">{{ formatAmount(overflowPot) }}</span>
       </div>
     </div>
 
@@ -161,6 +161,7 @@ export default {
 div.guts-game-overview {
     text-align: center;
     margin-bottom: $spacing;
+    color: $on-felt;
 
     .chip-stack {
         margin: 0 auto;
@@ -169,29 +170,41 @@ div.guts-game-overview {
     .game-info {
         display: flex;
         justify-content: center;
-        gap: $spacing;
+        gap: $space-3;
         margin: $spacing-medium 0;
         flex-wrap: wrap;
 
         .info-item {
-            background: $background-color;
-            padding: $spacing-small $spacing-medium;
-            border-radius: $border-radius;
+            background: rgba(#000, 0.18);
+            border: 1px solid $felt-hairline;
+            padding: $space-2 $spacing-medium;
+            border-radius: $radius-md;
 
             .label {
-                font-size: 0.8em;
-                color: $text-color-light;
+                font-size: $fs-2xs;
+                text-transform: uppercase;
+                letter-spacing: $tracking-caps;
+                color: $on-felt-muted;
                 display: block;
             }
 
             .value {
-                font-weight: bold;
+                font-weight: $fw-bold;
+                color: $on-felt;
+
+                &.value--money {
+                    @include numeric;
+                }
             }
         }
     }
 
     .showdown-result {
-        @include card;
+        background: $felt-rail;
+        border: 1px solid $felt-hairline;
+        border-radius: $radius-md;
+        box-shadow: $shadow-felt-md;
+        color: $on-felt;
         padding: $spacing;
         margin-top: $spacing-medium;
         text-align: center;
@@ -199,12 +212,15 @@ div.guts-game-overview {
         .deck-battle {
             margin-bottom: $spacing-medium;
             padding-bottom: $spacing-medium;
-            border-bottom: 1px solid $border-color;
+            border-bottom: 1px solid $felt-hairline;
 
             .deck-label {
-                font-weight: bold;
+                font-weight: $fw-semibold;
+                text-transform: uppercase;
+                letter-spacing: $tracking-wide;
+                font-size: $fs-xs;
                 margin-bottom: $spacing-small;
-                color: $text-color-light;
+                color: $on-felt-muted;
             }
 
             .deck-cards {
@@ -225,15 +241,15 @@ div.guts-game-overview {
             }
 
             .deck-outcome {
-                font-weight: bold;
+                font-weight: $fw-bold;
                 margin-top: $spacing-small;
 
                 &.deck-wins {
-                    color: $red;
+                    color: $negative;
                 }
 
                 &.player-wins {
-                    color: $light-green;
+                    color: $positive;
                 }
             }
         }
@@ -242,25 +258,30 @@ div.guts-game-overview {
             margin: $spacing-small 0;
 
             &.all-folded {
-                color: $text-color-light;
+                color: $on-felt-muted;
                 font-style: italic;
             }
 
             &.winners {
-                color: $light-green;
+                color: $positive;
+                font-weight: $fw-semibold;
             }
 
             &.losers {
-                color: $red;
+                color: $negative;
+                font-weight: $fw-semibold;
             }
 
             .pot-won, .penalty {
+                @include numeric;
                 font-size: 0.9em;
                 opacity: 0.8;
             }
 
             &.next-pot {
-                font-weight: bold;
+                @include numeric;
+                font-weight: $fw-bold;
+                color: $gold-soft;
                 margin-top: $spacing-medium;
             }
         }

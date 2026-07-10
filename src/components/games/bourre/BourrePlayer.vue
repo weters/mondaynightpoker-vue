@@ -98,9 +98,14 @@ export default {
 
 <style lang="scss" scoped>
 div.bourre-player {
-    border: 1px solid $border-color;
-    padding: $spacing-medium;
-    max-width: 400px;
+    background:     $felt-rail;
+    border:         1px solid $felt-hairline;
+    border-radius:  $radius-md;
+    box-shadow:     $shadow-felt-sm;
+    color:          $on-felt;
+    padding:        $space-3;
+    max-width:      400px;
+    transition:     box-shadow $dur-normal $ease-standard, border-color $dur-normal $ease-standard;
 
     &.is-turn {
         @include current-turn;
@@ -119,14 +124,23 @@ div.bourre-player {
         grid-template-columns: 1fr auto;
         justify-items:         start;
         align-items:           center;
+        margin-top:            $space-2;
 
         .name {
-            font-weight: bold;
+            font-weight: $fw-semibold;
+            font-size:   $fs-sm;
+            color:       $on-felt;
+        }
+
+        .balance {
+            @include numeric;
+            color:     $on-felt-muted;
+            font-size: $fs-xs;
         }
 
         &.disconnected .name {
-            color:       $text-color-light;
-            font-weight: normal;
+            color:       $on-felt-faint;
+            font-weight: $fw-regular;
             font-style:  italic;
         }
 
@@ -138,7 +152,7 @@ div.bourre-player {
 }
 
 .trade-in-leave-active, .trade-in-enter-active {
-    transition: all 1s;
+    transition: transform $dur-celebrate $ease-spring, opacity $dur-celebrate $ease-spring;
 }
 
 .trade-in-leave-to, .trade-in-enter-from {
@@ -147,11 +161,11 @@ div.bourre-player {
 }
 
 .game-leave-active {
-    transition: all 500ms ease-in;
+    transition: transform $dur-slow $ease-accel;
 }
 
 .game-enter-active {
-    transition: all 500ms ease-out;
+    transition: transform $dur-slow $ease-standard;
 }
 
 .game-leave-to {
@@ -160,5 +174,27 @@ div.bourre-player {
 
 .game-enter-from {
     transform: rotate3d(0, 1, 0, 90deg)
+}
+
+@media (prefers-reduced-motion: reduce) {
+    div.bourre-player {
+        transition: box-shadow $dur-fast linear, border-color $dur-fast linear;
+    }
+
+    .trade-in-leave-active, .trade-in-enter-active {
+        transition: opacity $dur-fast linear;
+    }
+
+    .trade-in-leave-to, .trade-in-enter-from {
+        transform: none;
+    }
+
+    .game-leave-active, .game-enter-active {
+        transition: none;
+    }
+
+    .game-leave-to, .game-enter-from {
+        transform: none;
+    }
 }
 </style>

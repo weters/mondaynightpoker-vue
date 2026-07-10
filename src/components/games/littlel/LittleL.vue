@@ -61,10 +61,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.little-l {
+    h3 {
+        text-align: center;
+        color: $gold-soft;
+        border-bottom: 1px solid $felt-hairline;
+        font-weight: $fw-semibold;
+        letter-spacing: $tracking-tight;
+    }
+}
+
 div.board {
     display:       flex;
     margin-bottom: $spacing;
     align-items:   flex-end;
+    padding:       $space-3 $space-4;
+    background:    $felt-surface;
+    border:        1px solid $felt-hairline;
+    border-radius: $radius-lg;
+    box-shadow:    inset 0 0 90px rgba(#000, 0.35), $shadow-felt-sm;
+    color:         $on-felt;
 
     & > :first-child {
         flex: 1 0 100px;
@@ -75,7 +91,9 @@ div.board {
     }
 
     :deep(.amount) {
-        font-size: 1.4em;
+        font-size: $fs-lg;
+        color: $gold-soft;
+        text-shadow: 0 0 12px rgba($gold, 0.4);
     }
 
     @media (max-width: #{$mobile-max}) {

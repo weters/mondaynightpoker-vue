@@ -165,17 +165,18 @@ export default {
 
 <style lang="scss" scoped>
 .bet-chips {
-    display: flex;
+    display:        flex;
     flex-direction: column;
-    gap: $spacing-small;
+    gap:            $space-2;
 }
 
+// Quick preset chips — horizontal scroll on narrow phones.
 .presets {
-    display: flex;
-    gap: $spacing-small;
-    overflow-x: auto;
+    display:                    flex;
+    gap:                        $space-1;
+    overflow-x:                 auto;
     -webkit-overflow-scrolling: touch;
-    padding: 2px 0;
+    padding:                    2px 0;
 
     &::-webkit-scrollbar {
         display: none;
@@ -183,106 +184,134 @@ export default {
 }
 
 .chip-pill {
-    flex: 0 0 auto;
-    padding: 2px 8px;
-    border-radius: 999px;
-    font-size: 0.8em;
-    font-weight: bold;
-    white-space: nowrap;
-    background: $gray;
-    color: $text-color;
-    border: 1px solid $border-color;
-    cursor: pointer;
-    transition: all $transition-fast;
+    @include tap-target;
+    flex:           0 0 auto;
+    padding:        $space-1 $space-3;
+    border-radius:  $radius-pill;
+    font-family:    $font-text;
+    font-size:      $fs-sm;
+    font-weight:    $fw-semibold;
+    white-space:    nowrap;
+    background:     $felt-rail;
+    color:          $on-felt;
+    border:         1px solid $felt-hairline;
+    cursor:         pointer;
+    transition:     background $dur-fast $ease-standard,
+                    color $dur-fast $ease-standard,
+                    border-color $dur-fast $ease-standard;
 
-    &:hover, &.active {
-        background: $primary;
-        color: white;
-        border-color: $primary;
+    &:hover {
+        border-color: rgba($accent, 0.6);
+    }
+
+    &.active {
+        background:    $accent;
+        color:        $accent-ink;
+        border-color: $accent;
+    }
+
+    &:focus-visible {
+        @include focus-ring-on-felt;
     }
 }
 
 .slider-row {
-    display: flex;
+    display:     flex;
     align-items: center;
-    gap: $spacing-small;
+    gap:         $space-2;
 }
 
 .stepper {
-    flex: 0 0 auto;
-    width: 28px;
-    height: 28px;
-    padding: 0;
-    border-radius: 50%;
-    font-size: 1.1em;
-    font-weight: bold;
-    line-height: 1;
-    background: $gray;
-    color: $text-color;
-    border: 1px solid $border-color;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
+    @include tap-target;
+    flex:            0 0 auto;
+    width:           44px;
+    height:          44px;
+    padding:         0;
+    border-radius:   $radius-pill;
+    font-size:       $fs-lg;
+    font-weight:     $fw-bold;
+    line-height:     1;
+    background:      $felt-rail;
+    color:           $on-felt;
+    border:          1px solid $felt-hairline;
+    cursor:          pointer;
+    display:         flex;
+    align-items:     center;
     justify-content: center;
+    transition:      background $dur-fast $ease-standard,
+                     border-color $dur-fast $ease-standard;
+
+    &:hover {
+        border-color: rgba($accent, 0.6);
+    }
 
     &:active {
-        background: $primary;
-        color: white;
-        border-color: $primary;
+        background:    $accent;
+        color:        $accent-ink;
+        border-color: $accent;
+    }
+
+    &:focus-visible {
+        @include focus-ring-on-felt;
     }
 }
 
 .slider-wrap {
-    flex: 1;
+    flex:      1;
     min-width: 0;
 }
 
 .bet-slider {
-    width: 100%;
-    height: 24px;
+    width:      100%;
+    height:     44px;
     -webkit-appearance: none;
     appearance: none;
     background: transparent;
-    cursor: pointer;
+    cursor:     pointer;
 
     &::-webkit-slider-runnable-track {
-        height: 6px;
-        border-radius: 3px;
-        background: $border-color;
+        height:        6px;
+        border-radius: $radius-pill;
+        background:    rgba($accent, 0.3);
     }
 
     &::-webkit-slider-thumb {
         -webkit-appearance: none;
-        appearance: none;
-        width: 20px;
-        height: 20px;
+        appearance:    none;
+        width:         22px;
+        height:        22px;
         border-radius: 50%;
-        background: $primary;
-        border: 2px solid white;
-        box-shadow: $shadow-sm;
-        margin-top: -7px;
+        background:    $accent;
+        border:        2px solid $card-face;
+        box-shadow:    $shadow-felt-sm;
+        margin-top:    -8px;
     }
 
     &::-moz-range-track {
-        height: 6px;
-        border-radius: 3px;
-        background: $border-color;
-        border: none;
+        height:        6px;
+        border-radius: $radius-pill;
+        background:    rgba($accent, 0.3);
+        border:        none;
     }
 
     &::-moz-range-thumb {
-        width: 20px;
-        height: 20px;
+        width:         22px;
+        height:        22px;
         border-radius: 50%;
-        background: $primary;
-        border: 2px solid white;
-        box-shadow: $shadow-sm;
+        background:    $accent;
+        border:        2px solid $card-face;
+        box-shadow:    $shadow-felt-sm;
+    }
+
+    &:focus-visible {
+        &::-webkit-slider-thumb { box-shadow: $glow-turn; }
+        &::-moz-range-thumb     { box-shadow: $glow-turn; }
     }
 }
 
 .bet-actions {
-    display: flex;
-    gap: $spacing-small;
+    display:         flex;
+    gap:             $space-2;
     justify-content: flex-end;
 }
 </style>

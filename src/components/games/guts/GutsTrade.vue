@@ -146,8 +146,9 @@ export default {
 
     .instruction {
         margin: 0 0 2px;
-        font-weight: bold;
-        font-size: 0.85em;
+        font-weight: $fw-semibold;
+        font-size: $fs-sm;
+        color: $on-felt;
     }
 
     .buttons {
@@ -157,20 +158,25 @@ export default {
 
         button {
             min-width: 100px;
-            font-weight: bold;
+            font-weight: $fw-semibold;
 
+            // Future action: queued for when it becomes our turn — a neutral
+            // felt fill with a pending gold glow (never colour-alone: label
+            // text also changes to "Queued").
             &.future-action {
-                background-color: #888;
+                background-color: $felt-rail;
+                border: 1px solid $felt-hairline;
+                color: $on-felt;
 
                 &.pending {
-                    box-shadow: 0 0 5px 2px $yellow;
+                    box-shadow: 0 0 0 2px $gold, 0 0 10px 2px rgba($gold, 0.5);
                 }
             }
         }
     }
 
     .waiting {
-        color: $text-color-light;
+        color: $on-felt-muted;
         font-style: italic;
         margin: $spacing-small 0 0;
     }

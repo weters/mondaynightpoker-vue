@@ -177,11 +177,11 @@
             gap: $spacing-small $spacing;
 
             li {
-                color: $text-color-light;
-                font-size: 0.9em;
+                color: $ink-muted;
+                font-size: $fs-sm;
                 padding: $spacing-small $spacing-medium;
                 background: $gray;
-                border-radius: $border-radius-small;
+                border-radius: $radius-sm;
             }
         }
     }

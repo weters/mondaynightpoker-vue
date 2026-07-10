@@ -91,14 +91,26 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-div.forgot-password {
-    div.buttons {
-        position: relative;
-        .loading {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-        }
+h2 {
+    margin-bottom: $space-6;
+}
+
+p {
+    color: $ink-muted;
+}
+
+div.buttons {
+    align-items: center;
+}
+
+div.success {
+    border-left: 3px solid $positive;
+    padding:     $space-3 0 $space-3 $space-4;
+
+    p {
+        margin:      0;
+        color:       $ink;
+        line-height: $lh-loose;
     }
 }
 </style>

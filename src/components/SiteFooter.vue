@@ -57,13 +57,25 @@ export default {
 
 <style lang="scss" scoped>
 footer {
-    color: $text-color-light;
-    font-size: 0.8em;
-    padding: $spacing 0;
+    background:   $surface-page;
+    border-top:   1px solid $hairline;
+    color:        $ink-muted;
+    font-size:    $fs-sm;
+    padding:      $spacing 0;
 
     a {
-        color: $green;
+        color:           $accent;
         text-decoration: none;
+        border-radius:   $radius-xs;
+
+        &:hover {
+            text-decoration:       underline;
+            text-decoration-color: rgba($orange, 0.5);
+        }
+
+        &:focus-visible {
+            @include focus-ring;
+        }
     }
 
     p {
@@ -73,37 +85,49 @@ footer {
     & > div {
         @include page-width;
 
-        display: flex;
-        flex-wrap: wrap;
+        display:     flex;
+        flex-wrap:   wrap;
+        align-items: center;
+        gap:         $space-2 $space-4;
 
         p.copyright {
             order: 1;
+            color: $ink-faint;
         }
 
         ul.links {
-            order: 2;
+            order:      2;
             list-style: none;
-            padding: 0;
-            margin: 0 0 0 auto;
-            display: flex;
+            padding:    0;
+            margin:     0 0 0 auto;
+            display:    flex;
+
             li {
                 &:not(:first-child) {
-                    margin-left: $spacing;
+                    margin-left: $space-4;
+                }
+
+                a {
+                    @include tap-target;
+                    display:     inline-flex;
+                    align-items: center;
                 }
             }
         }
 
         div.version {
-            order: 3;
-            flex: 0 0 100%;
-            margin-top: $spacing-medium;
+            order:      3;
+            flex:       0 0 100%;
+            margin-top: $space-1;
+            color:      $ink-faint;
+            font-size:  $fs-xs;
         }
 
         @media (max-width: #{$mobile-max}) {
             display: block;
 
             ul.links {
-                margin-bottom: $spacing-medium;
+                margin-bottom: $space-2;
             }
         }
     }

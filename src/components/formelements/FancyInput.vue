@@ -121,27 +121,53 @@ label.fancy-input {
         top:                0;
         padding:            14px 0;
         width:              2em;
-        background-color:   $gray;
-        color:              $green;
+        background-color:   $surface-sunken;
+        color:              $primary;
         text-align:         center;
-        border:             1px solid $border-color;
+        border:             1px solid $hairline;
         border-right-width: 0;
+        border-radius:      $radius-sm 0 0 $radius-sm;
     }
 
     span.label {
         @include inline-label;
     }
 
-    &.invalid input {
-        border-color: $red;
-        position:     relative;
-        z-index:      1;
+    input {
+        transition: border-color $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard;
+
+        // tidy the native Chrome/Safari yellow autofill flash to match the card surface
+        &:-webkit-autofill,
+        &:-webkit-autofill:focus {
+            -webkit-text-fill-color: $ink;
+            box-shadow:              0 0 0 1000px $surface-card inset;
+        }
+    }
+
+    &:hover input:not(:focus):not(:disabled) {
+        border-color: $ink-faint;
+    }
+
+    &.invalid {
+        span.label {
+            color: $negative;
+        }
+
+        input {
+            border-color: $negative;
+            position:     relative;
+            z-index:      1;
+
+            &:focus {
+                box-shadow: 0 0 0 3px rgba($negative, 0.15);
+            }
+        }
     }
 
     &.required {
         span.label::after {
             content: '*';
-            color:   $orange;
+            color:   $accent;
         }
     }
 
@@ -170,24 +196,32 @@ label.fancy-input {
         width:       1em;
         height:      1em;
         margin-left: $spacing-small;
-        fill:        $orange;
+        fill:        $accent;
         position:    absolute;
         top:         50%;
         right:       14px;
         transform:   translateY(-50%);
     }
 
-    .alert-enter-active {
-        transition: opacity 400ms, transform 200ms;
-    }
-
+    .alert-enter-active,
     .alert-leave-active {
-        transition: opacity 200ms, transform 400ms;
+        transition: opacity $dur-normal $ease-standard, transform $dur-normal $ease-standard;
     }
 
     .alert-enter-from, .alert-leave-to {
         transform: translateY(100%);
         opacity:   0;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .alert-enter-active,
+        .alert-leave-active {
+            transition: opacity $dur-fast linear;
+        }
+
+        .alert-enter-from, .alert-leave-to {
+            transform: none;
+        }
     }
 }
 </style>

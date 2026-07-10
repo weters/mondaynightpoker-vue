@@ -102,7 +102,7 @@ form.little-l {
         }
 
         div.controls {
-            border-left: 1px solid $border-color;
+            border-left: 1px solid $hairline;
             padding-left: $spacing-medium;
             margin-left: $spacing-small;
         }

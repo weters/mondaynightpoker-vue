@@ -1,10 +1,20 @@
 <template>
-  <div>
-    <error-message
-      v-if="error"
-      :message="error"
-    />
-    <loading v-if="loading" />
+  <div class="join-table small-content">
+    <div class="join-table-inner">
+      <error-message
+        v-if="error"
+        :message="error"
+      />
+      <div
+        v-if="loading"
+        class="join-table-loading"
+      >
+        <loading />
+        <p class="note">
+          Joining the table&hellip;
+        </p>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,6 +54,17 @@
     }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+.join-table-loading {
+    display:        flex;
+    flex-direction: column;
+    align-items:    center;
+    gap:            $space-4;
+    padding:        $space-8 0;
+    text-align:     center;
 
+    .note {
+        margin: 0;
+    }
+}
 </style>

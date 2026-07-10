@@ -56,14 +56,17 @@ export default {
 
 <style lang="scss" scoped>
 header {
-    background-color: #011f26;
-    color:            white;
-    height:           74px;
+    position:   relative;
+    background: $surface-header;
+    color:      $on-felt;
+    height:     74px;
+    box-shadow: 0 1px 0 rgba(#000, 0.3);
 
     $max-width: 650px;
 
     @media (max-width: #{$max-width}) {
-        height: auto;
+        height:  auto;
+        padding: $space-3 0;
     }
 
     & > div {
@@ -76,16 +79,36 @@ header {
         }
 
         a {
-            color:           white;
+            color:           $on-felt;
             text-decoration: none;
         }
 
         h1 {
-            font-family: gioviale, sans-serif;
-            line-height: 74px;
-            height:      74px;
-            margin:      0;
-            padding:     0;
+            margin:         0;
+            padding:        0;
+            height:         74px;
+            line-height:    74px;
+            font-family:    $font-display;
+            font-size:      $fs-lg;
+            font-weight:    $fw-regular;
+            letter-spacing: $tracking-wide;
+
+            @media (max-width: #{$max-width}) {
+                height:      auto;
+                line-height: $lh-snug;
+                text-align:  center;
+                padding:     $space-2 0 $space-3;
+            }
+
+            a {
+                display:       inline-flex;
+                align-items:   center;
+                border-radius: $radius-xs;
+
+                &:focus-visible {
+                    @include focus-ring-on-felt;
+                }
+            }
         }
 
         ul {
@@ -93,19 +116,44 @@ header {
             margin:      0 0 0 auto;
             padding:     0;
             display:     flex;
-            font-weight: bold;
+            align-items: center;
+            font-weight: $fw-semibold;
+            font-size:   $fs-sm;
 
             @media (max-width: #{$max-width}) {
-                margin: 0 0 $spacing;
-
+                margin:          0 0 $space-2;
                 justify-content: center;
+                flex-wrap:       wrap;
             }
 
             li {
-                font-size:   0.9em;
-
                 &:not(:first-child) {
-                    margin-left: $spacing;
+                    margin-left: $space-2;
+                }
+
+                a {
+                    @include tap-target;
+                    display:       inline-flex;
+                    align-items:   center;
+                    padding:       0 $space-3;
+                    border-radius: $radius-xs;
+                    transition:    color $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard;
+
+                    &:hover {
+                        color: $peach;
+                    }
+
+                    &:focus-visible {
+                        @include focus-ring-on-felt;
+                    }
+
+                    &.router-link-active {
+                        box-shadow: inset 0 -2px 0 $accent;
+                    }
+
+                    @media (prefers-reduced-motion: reduce) {
+                        transition: color $dur-fast linear;
+                    }
                 }
             }
         }

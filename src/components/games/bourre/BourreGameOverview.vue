@@ -1,12 +1,16 @@
 <template>
   <div class="bourre-game-overview">
     <div class="trump-card">
+      <span class="label">Trump</span>
       <playing-card-container
         v-if="trumpCard"
         :card="trumpCard"
       />
     </div>
-    <bourre-pot />
+    <div class="pot">
+      <span class="label">Pot</span>
+      <bourre-pot />
+    </div>
   </div>
 </template>
 
@@ -29,15 +33,35 @@
 
 <style lang="scss" scoped>
     div.bourre-game-overview {
+        display:         flex;
+        align-items:     flex-start;
+        justify-content: center;
+        gap:             $space-6;
+        padding:         $space-4 $space-4 $space-3;
+        margin:          0 auto $spacing;
+        max-width:       420px;
+        background:      $felt-rail;
+        border:          1px solid $felt-hairline;
+        border-radius:   $radius-md;
+        box-shadow:      $shadow-felt-sm;
+
         & > * {
-            margin: 0 auto;
-        }
-        .trump-card {
-            max-width: 75px;
+            display:        flex;
+            flex-direction: column;
+            align-items:    center;
         }
 
-        & > :nth-child(2) {
-            margin: $spacing-medium auto $spacing;
+        .label {
+            font-size:      $fs-2xs;
+            font-weight:    $fw-semibold;
+            text-transform: uppercase;
+            letter-spacing: $tracking-caps;
+            color:          $on-felt-muted;
+            margin-bottom:  $space-2;
+        }
+
+        .trump-card {
+            width: 75px;
         }
     }
 </style>

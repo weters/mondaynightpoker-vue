@@ -30,35 +30,53 @@ export default {
 
 <style lang="scss" scoped>
 .error {
-    border-radius:    $border-radius 0 0 $border-radius;
-    border-left:      3px solid $error;
-    background-color: white;
-    position:         fixed;
-    bottom:           $spacing-medium;
-    right:            0;
-    box-shadow:       0 2px 4px rgba(black, 0.1);
-    min-width:        150px;
-    z-index:          1000;
+    position:      fixed;
+    bottom:        $space-3;
+    right:         0;
+    z-index:       $z-toast;
+    min-width:     220px;
+    max-width:     min(360px, calc(100vw - #{$space-4}));
+    background:    $surface-card;
+    border-left:   3px solid $negative;
+    border-radius: $radius-md 0 0 $radius-md;
+    box-shadow:    $shadow-md;
 
     p {
-        &::before {
-            content:     'ERROR';
-            font-weight: bold;
-            font-size:   0.7em;
-            display:     block;
-            color:       $error;
-        }
+        margin:    0;
+        padding:   $space-3 $space-4;
+        color:     $ink;
+        font-size: $fs-sm;
+        line-height: $lh-snug;
 
-        margin:  0;
-        padding: $spacing-medium;
+        &::before {
+            content:        'ERROR';
+            display:        block;
+            margin-bottom:  $space-1;
+            color:          $negative;
+            font-weight:    $fw-bold;
+            font-size:      $fs-2xs;
+            letter-spacing: $tracking-caps;
+        }
     }
 }
 
 .slide-error-enter-active, .slide-error-leave-active {
-    transition: all 300ms;
+    transition: transform $dur-slow $ease-standard, opacity $dur-slow $ease-standard;
 }
 
 .slide-error-enter-from, .slide-error-leave-to {
     transform: translateX(100%);
+    opacity:   0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .slide-error-enter-active, .slide-error-leave-active {
+        transition: opacity $dur-fast linear;
+    }
+
+    .slide-error-enter-from, .slide-error-leave-to {
+        transform: none;
+        opacity:   0;
+    }
 }
 </style>

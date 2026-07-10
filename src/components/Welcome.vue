@@ -2,23 +2,25 @@
   <div class="welcome">
     <div class="hero">
       <div class="hero-overlay" />
-      <div class="text">
-        <p class="slug">
+      <div class="hero-content">
+        <p class="eyebrow">
           Dealer's Choice Poker Night
         </p>
 
-        <p>Your weekly card game, anywhere in the world.</p>
+        <h1 class="headline">
+          Your weekly poker night, anywhere in the world.
+        </h1>
 
-        <p>Play classic dealer's choice games with friends&mdash;no downloads, no fees, just poker.</p>
-
-        <p class="sign-up">
-          <router-link
-            to="/signup"
-            class="button hero-button"
-          >
-            Get Started
-          </router-link>
+        <p class="subhead">
+          Play classic dealer's choice games with friends&mdash;no downloads, no fees, just poker.
         </p>
+
+        <router-link
+          to="/signup"
+          class="button hero-button"
+        >
+          Get Started
+        </router-link>
       </div>
     </div>
 
@@ -82,91 +84,105 @@ export default {
     .hero {
         background:      url(../assets/poker_smoke.jpeg) center;
         background-size: cover;
-        min-height:      475px;
         position:        relative;
-        overflow:        auto;
+        display:         flex;
+        align-items:     center;
+        min-height:      420px;
+        padding:         $space-8 $space-5;
+
+        @media (min-width: #{$bp-phone}) {
+            min-height: 560px;
+            padding:    $space-10 $space-6;
+        }
 
         .hero-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, rgba(0, 0, 0, 0.4) 0%, rgba(0, 0, 0, 0.1) 100%);
+            inset:    0;
+            // felt-tinted scrim so the hero reads as part of the brand, not a stock photo
+            background:
+                linear-gradient(160deg, rgba($mnp-felt-900, 0.55) 0%, rgba($mnp-ink-900, 0.8) 55%, rgba($mnp-felt-900, 0.92) 100%);
             pointer-events: none;
         }
 
-        .text {
-            $width: 450px;
+        .hero-content {
+            position:   relative;
+            z-index:    1;
+            max-width:  640px;
+            margin:     0 auto;
+            width:      100%;
+        }
 
-            @include card;
-            box-shadow: $shadow-lg;
-            padding: $spacing * 1.5;
-            max-width: $width;
-            position: absolute;
-            left: 50%;
-            top: 45%;
-            transform: translateY(-50%);
-            margin: 0 $spacing 0 0;
-            z-index: 1;
+        .eyebrow {
+            font-family:    $font-text;
+            font-size:      $fs-xs;
+            font-weight:    $fw-semibold;
+            text-transform: uppercase;
+            letter-spacing: $tracking-caps;
+            color:          $gold-soft;
+            text-shadow:    0 1px 8px rgba(#000, 0.4);
+            margin-bottom:  $space-3;
+        }
 
-            p {
-                line-height: 1.6;
-                color: $text-color;
+        .headline {
+            font-family:   $font-display;
+            font-size:     clamp(#{$fs-2xl}, 5vw + 1rem, #{$fs-3xl});
+            font-weight:   $fw-bold;
+            line-height:   $lh-tight;
+            letter-spacing: $tracking-tight;
+            color:         #fff;
+            text-shadow:   0 2px 16px rgba(#000, 0.4);
+            margin-bottom: $space-4;
+        }
+
+        .subhead {
+            font-size:     $fs-md;
+            line-height:   $lh-loose;
+            color:         $on-felt-muted;
+            text-shadow:   0 1px 8px rgba(#000, 0.4);
+            max-width:     42em;
+            margin-bottom: $space-6;
+        }
+
+        .hero-button {
+            padding:    13px 28px;
+            font-size:  $fs-md;
+            box-shadow: $shadow-md;
+            transition: transform $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard;
+
+            &:hover {
+                transform:  translateY(-2px);
+                box-shadow: $shadow-hover;
             }
 
-            p.slug {
-                font-size: 1.4em;
-                font-weight: bold;
-                color: $primary;
-                margin-bottom: $spacing;
-            }
-
-            @media(max-width: calc(600px + 2 * #{$spacing})) {
-                left: auto;
-                right: $spacing;
-                margin: 0 0 0 $spacing;
-            }
-
-            p.sign-up {
-                margin: $spacing-medium 0 0 0;
-                text-align: right;
-            }
-
-            .hero-button {
-                box-shadow: $shadow-md;
-                transition: transform $transition-fast, box-shadow $transition-fast;
-
-                &:hover {
-                    transform: translateY(-2px);
-                    box-shadow: $shadow-hover;
-                }
+            @media (prefers-reduced-motion: reduce) {
+                transition: box-shadow $dur-fast linear;
+                &:hover { transform: none; }
             }
         }
     }
 
     .games {
         @include page-width;
-        margin-top: $spacing * 1.5;
-        padding-bottom: $spacing * 1.5;
+        margin-top:     $space-6;
+        padding-bottom: $space-6;
 
         .intro-card {
             @include card;
-            padding: $spacing;
-            margin-bottom: $spacing * 1.5;
+            padding:       $space-5;
+            margin-bottom: $space-6;
 
             p {
-                margin: 0;
-                line-height: 1.7;
-                color: $text-color;
+                margin:      0;
+                line-height: $lh-loose;
+                color:       $ink;
 
                 a {
-                    color: $primary;
+                    color:           $primary;
                     text-decoration: none;
-                    font-weight: 500;
+                    font-weight:     $fw-medium;
 
                     &:hover {
-                        color: $orange;
+                        color:           $accent;
                         text-decoration: underline;
                     }
                 }
@@ -174,54 +190,54 @@ export default {
         }
 
         h2 {
-            color: $text-color;
-            margin-bottom: $spacing;
-            position: relative;
-            display: inline-block;
+            color:         $ink;
+            margin-bottom: $space-5;
+            position:      relative;
+            display:       inline-block;
 
             &::after {
-                content: '';
-                position: absolute;
-                bottom: -4px;
-                left: 0;
-                width: 60px;
-                height: 3px;
-                background: $orange;
-                border-radius: 2px;
+                content:       '';
+                position:      absolute;
+                bottom:        -4px;
+                left:          0;
+                width:         60px;
+                height:        3px;
+                background:    $accent;
+                border-radius: $radius-xs;
             }
         }
 
         .game-list {
             list-style: none;
-            margin: $spacing 0 0 0;
-            padding: 0;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            grid-gap: $spacing;
+            margin:     $space-5 0 0 0;
+            padding:    0;
+            display:    grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-gap:   $space-5;
 
             @media (max-width: 399px) {
                 display: block;
 
                 .game {
-                    margin-bottom: $spacing;
+                    margin-bottom: $space-5;
                 }
             }
 
             .game {
                 @include card;
                 @include card-hover;
-                padding: $spacing;
+                padding:  $space-5;
                 position: relative;
 
                 .badge {
-                    display: inline-block;
-                    font-size: 0.65rem;
-                    font-weight: 600;
+                    display:        inline-block;
+                    font-size:      $fs-2xs;
+                    font-weight:    $fw-semibold;
                     text-transform: uppercase;
-                    letter-spacing: 0.05em;
-                    padding: 4px 8px;
-                    border-radius: $border-radius-small;
-                    margin-bottom: $spacing-medium;
+                    letter-spacing: $tracking-wide;
+                    padding:        4px 8px;
+                    border-radius:  $radius-sm;
+                    margin-bottom:  $space-3;
                 }
 
                 .badge-community {
@@ -241,30 +257,30 @@ export default {
 
                 .badge-betting {
                     background: rgba(76, 175, 80, 0.1);
-                    color: $light-green;
+                    color:      $light-green;
                 }
 
                 .badge-survival {
                     background: rgba(251, 192, 45, 0.15);
-                    color: #b38600;
+                    color:      #b38600;
                 }
 
                 .badge-guts {
                     background: rgba(229, 57, 53, 0.1);
-                    color: $red;
+                    color:      $negative;
                 }
 
                 h3 {
-                    margin: 0 0 $spacing-medium 0;
-                    color: $primary;
-                    font-size: 1.15em;
+                    margin:    0 0 $space-3 0;
+                    color:     $primary;
+                    font-size: $fs-md;
                 }
 
                 p {
-                    margin: 0;
-                    line-height: 1.65;
-                    color: $text-color;
-                    font-size: 0.95em;
+                    margin:      0;
+                    line-height: $lh-loose;
+                    color:       $ink-muted;
+                    font-size:   $fs-sm;
                 }
             }
         }

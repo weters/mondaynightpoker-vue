@@ -241,23 +241,47 @@ export default {
 
 .action-buttons {
     .buttons {
-        display: flex;
-        flex-wrap: wrap;
+        display:         flex;
+        flex-wrap:       wrap;
         justify-content: center;
-        gap: $spacing-small;
-        margin: 0;
+        align-items:     stretch;
+        gap:             $space-1;
+        margin:          0;
 
         :deep(> *) {
-            flex: 0 1 0;
+            flex: 0 1 auto;
         }
     }
 }
 
+// A pre-selected next move: neutral felt-rail chip that waits its turn,
+// glowing gold once armed. Never an action color (it hasn't fired yet).
 button.future-action {
-    background-color: #888;
+    @include tap-target;
+    background:    $felt-rail;
+    color:         $on-felt;
+    border:        1px solid $felt-hairline;
+    box-shadow:    none;
+    transition:    background $dur-fast $ease-standard,
+                   border-color $dur-fast $ease-standard,
+                   box-shadow $dur-fast $ease-standard;
+
+    &:hover {
+        background:   $mnp-felt-800;
+        border-color: rgba($gold, 0.5);
+    }
+
+    &:focus-visible {
+        @include focus-ring-on-felt;
+    }
 
     &.pending {
-        box-shadow: 0 0 5px 2px $yellow;
+        border-color: $gold;
+        box-shadow:   0 0 0 2px rgba($gold, 0.9), 0 0 14px rgba($gold, 0.5);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: background $dur-fast linear, border-color $dur-fast linear;
     }
 }
 
@@ -267,5 +291,11 @@ button.future-action {
 
 .fade-enter-from, .fade-leave-to {
     opacity: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .fade-enter-active, .fade-leave-active {
+        transition: opacity $dur-fast linear;
+    }
 }
 </style>

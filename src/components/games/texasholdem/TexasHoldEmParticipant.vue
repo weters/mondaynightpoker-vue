@@ -110,20 +110,40 @@ export default {
 <style lang="scss" scoped>
 div.texas-hold-em-participant {
     $root:          &;
-    border:         1px solid $border-color;
-    padding:        $spacing-small;
+    background:      $felt-rail;
+    border:         1px solid $felt-hairline;
+    border-radius:  $radius-sm;
+    box-shadow:     $shadow-felt-sm;
+    color:          $on-felt;
+    padding:        $space-1;
     display:        flex;
     flex-direction: column;
     position:       relative;
+    transition:     box-shadow $dur-normal $ease-standard,
+                    border-color $dur-normal $ease-standard,
+                    opacity $dur-normal $ease-standard;
 
+    // Turn — accent ring (mixin also drives the glow).
     &.current-turn {
         @include current-turn;
+    }
+
+    // Winner — gold ring, gold only ever appears on wins and the pot.
+    &.won {
+        border-color: $gold;
+        box-shadow:   $glow-winner;
+    }
+
+    // Folded / lost — dimmed and desaturated (never colour alone).
+    &.lost {
+        opacity: 0.55;
+        filter:  grayscale(0.4);
     }
 
     &:not(.is-connected) {
         span.name {
             font-style: italic;
-            color:      $text-color-light;
+            color:      $on-felt-faint;
         }
     }
 
@@ -137,44 +157,59 @@ div.texas-hold-em-participant {
         }
     }
 
+    span.name {
+        display:       block;
+        margin-top:    $space-1;
+        color:         $on-felt;
+        font-size:     $fs-xs;
+        font-weight:   $fw-semibold;
+        white-space:   nowrap;
+        overflow:      hidden;
+        text-overflow: ellipsis;
+    }
+
     span.balance {
         display:   block;
         margin:    0;
-        color:     $text-color-light;
-        font-size: 0.7em;
+        @include   numeric;
+        color:     $on-felt-muted;
+        font-size: $fs-2xs;
     }
 
     .chip-stack {
         margin-top: auto;
-        padding:    $spacing-small 0;
+        padding:    $space-1 0;
         align-self: center;
     }
 
     .info {
         & > span {
-            font-size: 0.8em;
-            padding:   4px;
+            font-size:     $fs-2xs;
+            padding:       3px $space-1;
+            border-radius: $radius-xs;
         }
 
         .last-action {
-            background-color: $peach;
+            background-color: rgba($peach, 0.18);
+            color:            $peach;
             display:          block;
         }
 
         .hand {
             display:          block;
-            color:            white;
-            background-color: rgba(black, 0.75);
+            color:            $on-felt;
+            background-color: rgba(#000, 0.38);
             margin:           0;
+            font-weight:      $fw-semibold;
 
             @at-root #{$root}.won .info .hand {
-                color:            white;
-                background-color: $green;
+                color:            $mnp-ink-900;
+                background-color: $gold;
             }
 
             @at-root #{$root}.lost .info .hand {
-                background-color: $dark-green;
-                color:            rgba(white, 0.5);
+                background-color: rgba(#000, 0.38);
+                color:            $on-felt-faint;
             }
         }
 
@@ -187,8 +222,8 @@ div.texas-hold-em-participant {
 
     .them-dealer-button {
         position: absolute;
-        bottom:   $spacing-small;
-        right:    $spacing-small;
+        bottom:   $space-1;
+        right:    $space-1;
     }
 }
 </style>

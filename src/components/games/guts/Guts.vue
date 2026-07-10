@@ -51,4 +51,14 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.guts {
+    h3 {
+        text-align: center;
+        color: $gold-soft;
+        border-bottom: 1px solid $felt-hairline;
+        font-weight: $fw-semibold;
+        letter-spacing: $tracking-tight;
+    }
+}
+</style>

@@ -18,6 +18,14 @@
       <span class="name">{{ playerData.player.displayName }}</span>
       <span class="balance">{{ formatAmount(participant.balance) }}</span>
       <span
+        v-if="isWinner"
+        class="result-badge winner"
+      >Winner</span>
+      <span
+        v-else-if="isLoser"
+        class="result-badge loser"
+      >Paid Penalty</span>
+      <span
         class="status-badge"
         :class="statusClass"
       >{{ statusText }}</span>
@@ -134,19 +142,25 @@ export default {
 
 <style lang="scss" scoped>
 div.guts-player {
-    @include card;
+    background: $felt-rail;
+    border: 1px solid $felt-hairline;
+    border-radius: $radius-md;
+    box-shadow: $shadow-felt-md;
+    color: $on-felt;
     padding: $spacing-medium;
     max-width: 250px;
-    transition: border-color 300ms, box-shadow 300ms;
+    transition: box-shadow $dur-normal $ease-standard;
 
     &.is-winner {
-        border-color: $light-green;
-        box-shadow: 0 0 10px rgba($light-green, 0.3);
+        box-shadow: $shadow-felt-md, $glow-winner;
     }
 
     &.is-loser {
-        border-color: $red;
-        box-shadow: 0 0 10px rgba($red, 0.3);
+        box-shadow: $shadow-felt-md, 0 0 0 2px rgba($negative, 0.55), 0 0 16px rgba($negative, 0.35);
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        transition: box-shadow $dur-fast linear;
     }
 
     .hand {
@@ -170,48 +184,66 @@ div.guts-player {
         gap: $spacing-small;
 
         .name {
-            font-weight: bold;
+            font-weight: $fw-semibold;
             grid-column: 1;
         }
 
         &.disconnected .name {
-            color: $text-color-light;
-            font-weight: normal;
+            color: $on-felt-faint;
+            font-weight: $fw-regular;
             font-style: italic;
         }
 
         .balance {
+            @include numeric;
             grid-column: 2;
-            font-size: 0.9em;
-            color: $text-color-light;
+            font-size: $fs-sm;
+            color: $on-felt-muted;
+        }
+
+        .result-badge {
+            grid-column: 1 / -1;
+            font-size: $fs-2xs;
+            font-weight: $fw-bold;
+            text-transform: uppercase;
+            letter-spacing: $tracking-wide;
+
+            &.winner {
+                color: $gold-soft;
+            }
+
+            &.loser {
+                color: $negative;
+            }
         }
 
         .status-badge {
             grid-column: 1 / -1;
-            font-size: 0.75em;
-            padding: 2px 8px;
-            border-radius: $border-radius;
+            font-size: $fs-2xs;
+            padding: 2px $space-2;
+            border-radius: $radius-sm;
             text-transform: uppercase;
-            font-weight: bold;
+            letter-spacing: $tracking-wide;
+            font-weight: $fw-bold;
 
             &.waiting {
-                background: $background-color;
-                color: $text-color-light;
+                background: rgba(#000, 0.25);
+                color: $on-felt-muted;
             }
 
             &.decided {
-                background: $primary;
-                color: white;
+                background: $accent;
+                color: $accent-ink;
             }
 
             &.in {
-                background: $light-green;
-                color: white;
+                background: $positive;
+                color: #fff;
             }
 
             &.out {
-                background: $text-color-light;
-                color: white;
+                background: rgba(#000, 0.35);
+                color: $on-felt-muted;
             }
         }
     }

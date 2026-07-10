@@ -27,6 +27,7 @@ export default {
 
 <style lang="scss" scoped>
     div.cards-remaining {
+        @include numeric;
         display: flex;
         flex-direction: column;
         align-items: stretch;

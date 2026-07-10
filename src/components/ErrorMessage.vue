@@ -26,14 +26,21 @@
 <style lang="scss" scoped>
     div.error {
         p {
-            border-left:  3px solid $error;
-            padding-left: $spacing-medium;
+            margin:       0;
+            border-left:  3px solid $negative;
+            padding:      $space-2 0 $space-2 $space-4;
+            color:        $ink;
+            font-size:    $fs-sm;
+            line-height:  $lh-snug;
 
             &::before {
-                content:     'ERROR';
-                display:     block;
-                font-weight: bold;
-                font-size:   0.6em;
+                content:        'ERROR';
+                display:        block;
+                margin-bottom:  $space-1;
+                color:          $negative;
+                font-weight:    $fw-bold;
+                font-size:      $fs-2xs;
+                letter-spacing: $tracking-caps;
             }
         }
     }

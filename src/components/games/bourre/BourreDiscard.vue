@@ -136,7 +136,7 @@ export default {
     display:         flex;
     align-items:     center;
     justify-content: space-between;
-    gap:             8px;
+    gap:             $space-2;
 
     @media (max-width: $mobile-max) {
         flex-wrap:       wrap;
@@ -157,21 +157,37 @@ div.buttons {
         text-align: center;
     }
 
-
     .pending-label {
         margin-right: $spacing-small;
-        font-size:    .8rem;
-        font-weight:  bold;
+        font-size:    $fs-sm;
+        font-weight:  $fw-semibold;
+        color:        $on-felt;
         animation:    2s pulse ease-in-out infinite;
+    }
+
+    button.pending {
+        background: transparent;
+        color:      $accent;
+        border:     1px solid rgba($orange, 0.4);
+
+        &:hover  { background: rgba($orange, 0.08); }
+        &:active { background: rgba($orange, 0.15); }
     }
 
     @keyframes pulse {
         0%, 100% {
-            color: black;
+            color: $on-felt;
         }
 
         50% {
-            color: $yellow;
+            color: $gold-soft;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .pending-label {
+            animation: none;
+            color:     $gold-soft;
         }
     }
 }

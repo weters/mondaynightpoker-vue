@@ -122,51 +122,73 @@ export default {
     width:          100%;
     aspect-ratio:   2.5 / 3.5;
     container-type: inline-size;
+
+    // Selected/active card — how a player sees which cards they've picked to
+    // discard/trade. Consumers add `.selected` to this root.
+    &.selected {
+        z-index: $z-raised;
+
+        .big-card {
+            transform:  translateY(-10%);
+            box-shadow: $shadow-card-lift;
+            outline:    2px solid $gold;
+        }
+    }
 }
 
 div.big-card {
-    background:    linear-gradient(135deg, #ffffff, #f5f0e8);
-    border-radius: $border-radius-card;
-    border:        1px solid #d0c8b8;
-    box-shadow:    inset 0 1px 3px rgba(0, 0, 0, 0.06),
-                   inset 0 -1px 2px rgba(255, 255, 255, 0.8),
-                   0 2px 6px rgba(0, 0, 0, 0.1);
+    background:    linear-gradient(135deg, $card-face, #F3ECDE);
+    border-radius: $radius-card;
+    border:        1px solid $card-face-edge;
+    color:         $suit-black;
+    box-shadow:    inset 0 1px 3px rgba(#000, 0.06),
+                   inset 0 -1px 2px rgba(#fff, 0.8),
+                   $shadow-card-rest;
 
     position:      absolute;
     inset:         0;
     overflow:      hidden;
+    transition:    transform $dur-fast $ease-spring, box-shadow $dur-fast $ease-standard;
+
+    :deep(svg) {
+        fill: $suit-black;
+
+        &.wild {
+            fill: $wild-marker;
+        }
+    }
 
     // Noise texture overlay
     &::before {
         content: '';
         position: absolute;
         inset: 0;
-        background-image: radial-gradient(circle at 1px 1px, rgba(0,0,0,0.015) 1px, transparent 0);
+        background-image: radial-gradient(circle at 1px 1px, rgba(#000,0.015) 1px, transparent 0);
         background-size: 4px 4px;
         pointer-events: none;
         z-index: 1;
     }
 
     &.hearts, &.diamonds {
-        color: $red;
+        color: $suit-red;
 
         :deep(svg) {
-            fill: $red;
+            fill: $suit-red;
 
             &.wild {
-                fill: $yellow;
+                fill: $wild-marker;
             }
         }
     }
 
     &.stars {
-        color: $light-green;
+        color: $suit-star;
 
         :deep(svg) {
-            fill: $light-green;
+            fill: $suit-star;
 
             &.wild {
-                fill: $yellow;
+                fill: $wild-marker;
             }
         }
     }
@@ -207,7 +229,7 @@ div.big-card {
         left:     0;
         bottom:   0;
         width:    30%;
-        fill:     $yellow;
+        fill:     $wild-marker;
     }
 
     .center {
@@ -228,6 +250,17 @@ div.big-card {
             height:     95cqi;
             object-fit: fill;
         }
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    div.big-card {
+        transition: box-shadow $dur-fast linear;
+    }
+
+    // Keep the state legible (outline + shadow) but drop the travel.
+    .playing-card.selected .big-card {
+        transform: none;
     }
 }
 </style>

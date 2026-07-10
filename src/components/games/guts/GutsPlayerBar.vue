@@ -114,9 +114,10 @@ export default {
 <style lang="scss" scoped>
 .game-over-message {
     text-align: center;
-    font-size: 1.2em;
-    font-weight: bold;
-    color: $primary;
+    font-size: $fs-md;
+    font-weight: $fw-bold;
+    letter-spacing: $tracking-tight;
+    color: $gold-soft;
     margin: 0;
 }
 
@@ -124,7 +125,7 @@ export default {
     text-align: center;
 
     p {
-        color: $text-color-light;
+        color: $on-felt-muted;
         font-style: italic;
         margin: 0;
     }

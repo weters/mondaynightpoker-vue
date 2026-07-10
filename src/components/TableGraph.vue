@@ -25,6 +25,20 @@ import balance from "../mixins/balance"
 
 ChartJS.register(Title, Tooltip, Legend, BarElement, LineElement, LineController, PointElement, CategoryScale, LinearScale)
 
+// mirrors $positive / $negative / $hairline / $ink-muted / $suit-black in variables.scss —
+// chart.js renders to <canvas>, so it can't consume SCSS tokens directly.
+const CHART_POSITIVE = '#3F9E5A'
+const CHART_NEGATIVE = '#E53935'
+const CHART_INK = '#1C1E1D'
+const CHART_GRID = '#E3DFD7'
+const CHART_LABEL = '#8C867C'
+
+// hex -> rgba() with alpha, so the bar fills can reuse the same tokens as the line
+function withAlpha(hex, alpha) {
+    const n = parseInt(hex.slice(1), 16)
+    return `rgba(${(n >> 16) & 255}, ${(n >> 8) & 255}, ${n & 255}, ${alpha})`
+}
+
 export default {
     name: "TableGraph",
     components: { Bar },
@@ -62,18 +76,18 @@ export default {
                     type: 'bar',
                     data: this.balances,
                     order: 1,
-                    backgroundColor: this.balances.map(value => value < 0 ? 'rgba(255, 0, 0, 0.4)' : 'rgba(0, 0, 0, 0.4)'),
+                    backgroundColor: this.balances.map(value => value < 0 ? withAlpha(CHART_NEGATIVE, 0.4) : withAlpha(CHART_POSITIVE, 0.4)),
                 }, {
                     label: 'Overall Winnings',
                     type: 'line',
                     data: this.cumulativeBalance,
                     order: 0,
                     backgroundColor: 'transparent',
-                    borderColor: this.cumulativeBalance.map(value => value < 0 ? 'red' : 'black'),
+                    borderColor: this.cumulativeBalance.map(value => value < 0 ? CHART_NEGATIVE : CHART_INK),
                     segment: {
                         borderColor: ctx => {
                             const value = ctx.p1.parsed.y
-                            return value < 0 ? 'red' : 'black'
+                            return value < 0 ? CHART_NEGATIVE : CHART_INK
                         }
                     },
                 }],
@@ -84,11 +98,17 @@ export default {
                 responsive: true,
                 scales: {
                     y: {
+                        grid: { color: CHART_GRID },
                         ticks: {
+                            color: CHART_LABEL,
                             callback: function (value) {
                                 return '$' + value
                             },
                         },
+                    },
+                    x: {
+                        grid: { color: CHART_GRID },
+                        ticks: { color: CHART_LABEL },
                     },
                 },
             }

@@ -58,18 +58,31 @@ export default {
 .toggle {
     display:     flex;
     align-items: center;
+    position:    relative;
+    @include tap-target;
+    cursor:      pointer;
 
     input[type=checkbox] {
-        display: none;
+        // visually hidden but still focusable/tabbable (unlike display:none)
+        position: absolute;
+        width:    1px;
+        height:   1px;
+        margin:   -1px;
+        opacity:  0;
+        overflow: hidden;
 
         &:checked + span.checkbox {
             background-color: $peach;
             border-color:     $peach;
 
             &::before {
-                background-color: $orange;
-                left:             $control-width - $control-size - 1px;
+                background-color: $accent;
+                left:             $control-width - $control-size + 2px;
             }
+        }
+
+        &:focus-visible + span.checkbox {
+            @include focus-ring;
         }
     }
 
@@ -81,30 +94,46 @@ export default {
     span.checkbox {
         order:            1;
         display:          block;
+        flex-shrink:      0;
         width:            $control-width;
         height:           $control-size;
-        border-radius:    1000px;
-        background-color: rgba(black, 0.05);
+        border-radius:    $radius-pill;
+        background-color: $surface-sunken;
         position:         relative;
-        transition:       all 300ms ease-in-out;
-        border:           1px solid $border-color;
+        transition:       background-color $dur-fast $ease-standard, border-color $dur-fast $ease-standard;
+        border:           1px solid $hairline;
 
         &::before {
             display:          block;
             content:          '';
-            width:            $control-size;
-            height:           $control-size;
+            width:            $control-size - 6px;
+            height:           $control-size - 6px;
             position:         absolute;
-            top:              -1px;
-            left:             -1px;
-            border-radius:    9999px;
-            background-color: $border-color;
-            transition:       left 150ms ease-in-out;
+            top:              2px;
+            left:             2px;
+            border-radius:    $radius-pill;
+            background-color: $surface-card;
+            box-shadow:       $shadow-sm;
+            transition:       left $dur-fast $ease-standard, background-color $dur-fast $ease-standard;
         }
     }
 
-    &.disabled span.checkbox {
-        opacity: 0.2;
+    &.disabled {
+        cursor: not-allowed;
+
+        span.checkbox {
+            opacity: 0.2;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        span.checkbox {
+            transition: background-color $dur-fast linear, border-color $dur-fast linear;
+
+            &::before {
+                transition: background-color $dur-fast linear;
+            }
+        }
     }
 }
 </style>

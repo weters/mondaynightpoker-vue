@@ -40,6 +40,14 @@ label.fancy-label {
         @include inline-label;
     }
 
+    select {
+        transition: border-color $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard;
+    }
+
+    &:hover select:not(:focus) {
+        border-color: $ink-faint;
+    }
+
     @include inline-label-with-value;
 }
 </style>

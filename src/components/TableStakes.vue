@@ -86,10 +86,7 @@ div.table-stake {
     padding: $spacing;
 
     h4 {
-        margin: 0 0 $spacing-medium;
-        font-size: 0.9rem;
-        font-weight: 600;
-        color: $secondary;
+        @include section-header;
     }
 
     form {
@@ -106,21 +103,27 @@ div.table-stake {
     }
 
     & > div > button {
+        @include numeric;
+        @include tap-target;
         width: 100%;
         padding: $spacing-medium $spacing;
-        font-size: 1.5rem;
-        font-weight: 600;
+        font-size: $fs-xl;
+        font-weight: $fw-bold;
         background: linear-gradient(135deg, rgba($primary, 0.08), rgba($secondary, 0.08));
-        border: 2px dashed $border-color;
-        border-radius: $border-radius;
+        border: 2px dashed $hairline;
+        border-radius: $radius-md;
         color: $primary;
         cursor: pointer;
-        transition: all $transition-fast;
+        transition: background $dur-fast $ease-standard, border-color $dur-fast $ease-standard;
 
         &:hover {
             border-style: solid;
             border-color: $primary;
             background: rgba($primary, 0.05);
+        }
+
+        &:focus-visible {
+            @include focus-ring;
         }
     }
 }

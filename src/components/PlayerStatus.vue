@@ -18,23 +18,23 @@ span.player-status {
     display:          inline-block;
     width:            $size;
     height:           $size;
-    border-radius:    $size;
-    background-color: $border-color;
+    border-radius:    $radius-pill;
+    background-color: $hairline;
     flex-shrink: 0;
-    transition: all $transition-fast;
+    transition: background-color $dur-fast $ease-standard, box-shadow $dur-fast $ease-standard;
 
     &.connected {
-        background-color: $text-color-light;
+        background-color: $ink-muted;
     }
 
     &.seated {
-        background-color: $orange;
+        background-color: $accent;
         box-shadow: 0 0 0 2px rgba($orange, 0.2);
     }
 
     &.connected.seated {
-        background-color: $light-green;
-        box-shadow: 0 0 0 2px rgba($light-green, 0.2);
+        background-color: $positive;
+        box-shadow: 0 0 0 2px rgba($positive, 0.2);
     }
 }
 </style>

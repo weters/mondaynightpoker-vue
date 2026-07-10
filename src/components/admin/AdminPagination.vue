@@ -2,6 +2,7 @@
   <div class="admin-pagination">
     <button
       type="button"
+      class="secondary"
       :disabled="start <= 0"
       @click.prevent="$emit('prev', start - rows)"
     >
@@ -9,6 +10,7 @@
     </button>
     <button
       type="button"
+      class="secondary"
       :disabled="count < rows"
       @click.prevent="$emit('prev', start + rows)"
     >
@@ -43,7 +45,7 @@ export default {
     display: flex;
 
     & > :not(:first-child) {
-        margin-left: $spacing-medium;
+        margin-left: $space-3;
     }
 }
 </style>

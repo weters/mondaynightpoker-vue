@@ -3,8 +3,6 @@
     <form @submit.prevent="submit">
       <h2>Log in to Monday Night Poker</h2>
 
-      <loading v-if="loading" />
-
       <transition name="error">
         <error-message
           v-if="error"
@@ -30,6 +28,7 @@
       />
 
       <div class="buttons">
+        <loading v-if="loading" />
         <button
           type="submit"
           :disabled="submitDisabled"
@@ -104,30 +103,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-form .loading {
-    position: absolute;
-    bottom:   $spacing-small;
-    right:    $spacing-small;
+h2 {
+    margin-bottom: $space-6;
+}
+
+div.buttons {
+    align-items: center;
 }
 
 div.help {
-    font-size:   0.8em;
-    border-top:  1px solid $border-color;
-    color:       $text-color-light;
-    padding-top: $spacing;
-    margin-top:  $spacing;
+    font-size:   $fs-sm;
+    border-top:  1px solid $hairline;
+    color:       $ink-muted;
+    padding-top: $space-5;
+    margin-top:  $space-5;
 
     p {
         margin: 0;
     }
 
     p:not(:first-child) {
-        margin-top: $spacing-medium;
+        margin-top: $space-3;
     }
-}
-
-div.forgot-password {
-    font-size:  0.8em;
-    margin-top: $spacing;
 }
 </style>

@@ -124,4 +124,41 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+h2 {
+    margin-bottom: $space-6;
+}
+
+form > .loading {
+    display: flex;
+    margin:  $space-6 auto;
+}
+
+p {
+    color:       $ink-muted;
+    line-height: $lh-loose;
+}
+
+div.buttons {
+    align-items: center;
+}
+
+div.password-changed {
+    border-left: 3px solid $positive;
+    padding:     $space-3 0 $space-3 $space-4;
+
+    p {
+        margin: 0;
+        color:  $ink;
+    }
+}
+
+div.invalid-token {
+    border-left: 3px solid $negative;
+    padding:     $space-3 0 $space-3 $space-4;
+
+    p {
+        margin: 0;
+        color:  $ink;
+    }
+}
 </style>

@@ -71,6 +71,12 @@
     }
 
     .player-move {
-        transition: transform 1s;
+        transition: transform $dur-slow $ease-standard;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .player-move {
+            transition: none;
+        }
     }
 </style>

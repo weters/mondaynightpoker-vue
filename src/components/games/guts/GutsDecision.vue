@@ -94,15 +94,15 @@ export default {
     text-align: center;
 
     .waiting {
-        color: $text-color-light;
+        color: $on-felt-muted;
         font-style: italic;
         margin: 0;
     }
 
     .waiting-others {
-        color: $text-color-light;
+        color: $on-felt-muted;
         font-style: italic;
-        font-size: 0.9em;
+        font-size: $fs-sm;
         margin: 0;
     }
 
@@ -114,36 +114,36 @@ export default {
         &.decision-buttons {
             button, :deep(.confirm-button) {
                 min-width: 80px;
-                font-weight: bold;
+                font-weight: $fw-semibold;
             }
         }
     }
 
     .in-button,
     :deep(.in-button:not(.confirming)) {
-        background: $light-green;
-        border-color: $light-green;
+        background: $positive;
+        border-color: $positive;
 
         &:hover {
-            background: color.adjust($light-green, $lightness: -10%);
-            border-color: color.adjust($light-green, $lightness: -10%);
+            background: color.adjust($positive, $lightness: -8%);
+            border-color: color.adjust($positive, $lightness: -8%);
         }
     }
 
     .out-button,
     :deep(.out-button:not(.confirming)) {
-        background: $text-color-light;
-        border-color: $text-color-light;
+        background: $mnp-neutral-700;
+        border-color: $mnp-neutral-700;
 
         &:hover {
-            background: color.adjust($text-color-light, $lightness: -10%);
-            border-color: color.adjust($text-color-light, $lightness: -10%);
+            background: color.adjust($mnp-neutral-700, $lightness: -8%);
+            border-color: color.adjust($mnp-neutral-700, $lightness: -8%);
         }
     }
 
     .in-button:disabled,
     .out-button:disabled {
-        opacity: 0.6;
+        opacity: 0.4;
         cursor: not-allowed;
 
         &:hover {
@@ -153,13 +153,13 @@ export default {
     }
 
     .in-button:disabled {
-        background: $light-green;
-        border-color: $light-green;
+        background: $positive;
+        border-color: $positive;
     }
 
     .out-button:disabled {
-        background: $text-color-light;
-        border-color: $text-color-light;
+        background: $mnp-neutral-700;
+        border-color: $mnp-neutral-700;
     }
 }
 </style>

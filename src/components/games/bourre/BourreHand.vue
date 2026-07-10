@@ -91,7 +91,7 @@
     .bourre-hand {
         display: flex;
         align-items: center;
-        gap: 8px;
+        gap: $space-2;
 
         @media (max-width: $mobile-max) {
             flex-wrap: wrap;
