@@ -120,5 +120,6 @@ jobs:
           chmod 600 ~/.kube/config
       - name: Deploy to beta
         run: |
-          kubectl rollout restart deployment/mondaynightpoker-vue-beta
+          kubectl set image deployment/mondaynightpoker-vue-beta \
+            mondaynightpoker-vue-beta=ghcr.io/weters/mondaynightpoker-vue:beta
           kubectl rollout status deployment/mondaynightpoker-vue-beta --timeout=300s
