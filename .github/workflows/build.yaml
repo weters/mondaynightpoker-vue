@@ -112,6 +112,7 @@ jobs:
     needs: build
     if: github.ref == 'refs/heads/beta'
     steps:
+      - uses: actions/checkout@v4
       - uses: azure/setup-kubectl@v4
       - name: Configure kubectl
         run: |
@@ -120,6 +121,7 @@ jobs:
           chmod 600 ~/.kube/config
       - name: Deploy to beta
         run: |
+          kubectl apply -f deployments/ingress-beta.yaml
           kubectl set image deployment/mondaynightpoker-vue-beta \
             mondaynightpoker-vue-beta=ghcr.io/weters/mondaynightpoker-vue:beta
           kubectl rollout status deployment/mondaynightpoker-vue-beta --timeout=300s
