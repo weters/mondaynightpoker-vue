@@ -6,6 +6,7 @@ metadata:
     app: mondaynightpoker-vue-beta
     type: frontend
 spec:
+  ingressClassName: nginx
   tls:
     - hosts:
         - beta.mondaynight.bid
