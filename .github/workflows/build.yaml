@@ -121,6 +121,8 @@ jobs:
           chmod 600 ~/.kube/config
       - name: Deploy to beta
         run: |
+          kubectl apply -f deployments/deployment-beta.yaml
+          kubectl apply -f deployments/service.yaml
           kubectl apply -f deployments/ingress-beta.yaml
           kubectl set image deployment/mondaynightpoker-vue-beta \
             mondaynightpoker-vue-beta=ghcr.io/weters/mondaynightpoker-vue:beta
