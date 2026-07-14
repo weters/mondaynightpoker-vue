@@ -42,13 +42,8 @@
                 const tail = players.splice(offset)
                 tail.push(...players)
                 return tail
-            }
-        },
-        methods: {
-            playerDataById(id) {
-                return this.playerDataById(id)
             },
-        }
+        },
     }
 </script>
 

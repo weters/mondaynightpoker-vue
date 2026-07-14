@@ -24,7 +24,10 @@
         </div>
       </div>
 
-      <template v-if="game">
+      <!-- Wait for clientState before mounting the game: on reload the game message
+           can arrive before clientState, and the game subtree (PlayerBar, participant
+           lists) dereferences per-player clientState during render. -->
+      <template v-if="game && clientState">
         <component
           :is="gameComponent"
           v-if="gameComponent"

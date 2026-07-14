@@ -9,7 +9,9 @@ export default {
         return {
             localError: null,
             errorTimeout: null,
-            dealMeIn: useRootStore().userClientState.active,
+            // userClientState is null until the first clientState message arrives
+            // (e.g. reloading into an active game); guard so data() can't throw.
+            dealMeIn: useRootStore().userClientState?.active ?? true,
             dealMeInLoading: false,
             confirmTerminate: false,
             confirmRestart: false,

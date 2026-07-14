@@ -71,7 +71,9 @@ export default {
     data() {
         return {
             error: null,
-            sitOut: !useRootStore().userClientState.active,
+            // userClientState is null until the first clientState message arrives
+            // (e.g. reloading into an active game), so default to not sitting out.
+            sitOut: !(useRootStore().userClientState?.active ?? true),
             sitOutLoading: false,
         }
     },
