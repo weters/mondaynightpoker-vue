@@ -2,9 +2,60 @@
   <div class="poker-table big-content">
     <div>
       <div class="table-header">
-        <h2><span class="table-name">{{ tableName }}</span></h2>
+        <form
+          v-if="editingName"
+          class="rename-form"
+          @submit.prevent="saveTableName"
+        >
+          <error-message
+            v-if="renameError"
+            :message="renameError"
+          />
+          <fancy-input
+            v-model="editName"
+            label="Table Name"
+            type="text"
+            autocomplete="off"
+            autofocus
+            required
+            :disabled="renameLoading"
+            @keydown.esc="cancelEditName"
+          />
+          <div class="buttons">
+            <button
+              type="button"
+              class="secondary"
+              :disabled="renameLoading"
+              @click="cancelEditName"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              :disabled="renameLoading || !editName.trim()"
+            >
+              Save
+            </button>
+          </div>
+          <loading v-if="renameLoading" />
+        </form>
+        <h2 v-else>
+          <button
+            v-if="isTableAdmin"
+            type="button"
+            class="table-name editable"
+            title="Tap to rename table"
+            @click="startEditName"
+          >
+            {{ tableName }}
+          </button>
+          <span
+            v-else
+            class="table-name"
+          >{{ tableName }}</span>
+        </h2>
         <button
-          v-if="table"
+          v-if="table && !editingName"
           class="invite-button"
           @click="copy"
         >
@@ -171,6 +222,10 @@ export default {
             cloneName: '',
             cloneLoading: false,
             cloneError: null,
+            editingName: false,
+            editName: '',
+            renameLoading: false,
+            renameError: null,
         }
     },
     computed: {
@@ -239,6 +294,35 @@ export default {
                 })
                 .finally(() => this.playButtonDisabled = false)
         },
+        startEditName() {
+            this.editName = this.tableName
+            this.renameError = null
+            this.editingName = true
+        },
+        cancelEditName() {
+            if (this.renameLoading) return
+            this.editingName = false
+            this.renameError = null
+        },
+        saveTableName() {
+            const name = this.editName.trim()
+            if (this.renameLoading || !name) return
+
+            if (name === this.tableName) {
+                this.editingName = false
+                return
+            }
+
+            this.renameLoading = true
+            this.renameError = null
+            client.renameTable(this.uuid, name)
+                .then(res => {
+                    this.table = res
+                    this.editingName = false
+                })
+                .catch(err => this.renameError = err)
+                .finally(() => this.renameLoading = false)
+        },
         cloneTable() {
             if (this.cloneLoading || !this.cloneName) return
             this.cloneLoading = true
@@ -275,6 +359,43 @@ export default {
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
                 background-clip: text;
+            }
+
+            button.table-name {
+                border: none;
+                padding: 0;
+                margin: 0;
+                font: inherit;
+                cursor: pointer;
+                text-align: left;
+
+                &:hover, &:focus-visible {
+                    text-decoration: underline dashed;
+                    text-underline-offset: 4px;
+                }
+            }
+        }
+
+        form.rename-form {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            gap: $spacing;
+            flex-wrap: wrap;
+
+            > div.container {
+                flex-basis: 100%;
+            }
+
+            label.fancy-input {
+                flex: 1;
+                min-width: 200px;
+                margin: 0;
+            }
+
+            div.buttons {
+                margin: 0;
+                white-space: nowrap;
             }
         }
 

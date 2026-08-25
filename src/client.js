@@ -45,6 +45,12 @@ class Client {
         }, withAuthorization)
     }
 
+    renameTable(uuid, name) {
+        return this._post(`/table/${encodeURIComponent(uuid)}/name`, {
+            name,
+        }, withAuthorization)
+    }
+
     updatePlayer(playerId, { email, displayName, newPassword, oldPassword }) {
         return this._post(`/player/${encodeURIComponent(playerId)}`, {
             email,
